@@ -7409,6 +7409,7 @@ BOOL GLGaeaServer::RequestTradeLock ( DWORD dwClientID, DWORD dwGaeaID, GLMSG::S
 
 BOOL GLGaeaServer::ServerSlotEventGen( GLMSG::SNET_SLOT_EVENT_GEN_FLD * pNetMsg )
 {
+	if ( !pNetMsg ) return FALSE;
 
 	SNATIVEID nidMAP( pNetMsg->dwMapID );
 	GLLandMan *pLandMan = GetByMapID( nidMAP );
@@ -7417,19 +7418,21 @@ BOOL GLGaeaServer::ServerSlotEventGen( GLMSG::SNET_SLOT_EVENT_GEN_FLD * pNetMsg 
 	{
 		if( pNetMsg->bRoll )
 		{
+			/*security hardening: validate reward item exists before setting reward state*/
+			SNATIVEID sRewardID(pNetMsg->dwMid, pNetMsg->dwSid);
+			SITEM* pItem = GLItemMan::GetInstance().GetItem( sRewardID );
+			if ( !pItem ) return FALSE;
+
 			GLMSG::SNET_SLOT_EVENT_GEN_BRD NetMsgBrd;
 			NetMsgBrd.wMin = pNetMsg->wMin;
 			NetMsgBrd.wMax = pNetMsg->wMax;
 			NetMsgBrd.wWin = 0;
 			NetMsgBrd.bRoll = true;
 			
-			m_sItemSlotReward = SNATIVEID(pNetMsg->dwMid,pNetMsg->dwSid);
+			m_sItemSlotReward = sRewardID;
 			m_wSlotMin = pNetMsg->wMin;
 			m_wSlotMax = pNetMsg->wMax;
 			m_wMaxChar = pNetMsg->wMaxChar;
-
-			SITEM* pItem = GLItemMan::GetInstance().GetItem( m_sItemSlotReward );
-			if ( !pItem ) return FALSE;
 
 			const char *szItem = pItem->GetName();
 			CString strTEXT;

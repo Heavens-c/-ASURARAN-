@@ -12,17 +12,17 @@
 #define new DEBUG_NEW
 #endif
 
-//	Note : ÀÎº¥¾ÆÀÌÅÛÀ» ¼Ò¸ğ½ÃÅ´.
-//		2. ¼Ò¸ğ¸¦ Å¬¶óÀÌ¾ğÆ®¿¡ ¾Ë¸².
-//		3. b2AGENT º¯¼ö´Â Å¬¶óÀÌ¾ğÆ®¿¡ ¾Ë¸±¶§ ÇÊµå¿ÍÀÇ ¿¬°á¼ºÀÌ ºÒÈ®½Ç ÇÒ °æ¿ì¸¦ ´ëºñÇÏ¿©
-//			¿¡ÀÌÁ¯Æ®¸¦ ÅëÇØ¼­ ¾Ë¸±¼ö ÀÖµµ·Ï ÇÔ.
+//	Note : ì¸ë²¤ì•„ì´í…œì„ ì†Œëª¨ì‹œí‚´.
+//		2. ì†Œëª¨ë¥¼ í´ë¼ì´ì–¸íŠ¸ì— ì•Œë¦¼.
+//		3. b2AGENT ë³€ìˆ˜ëŠ” í´ë¼ì´ì–¸íŠ¸ì— ì•Œë¦´ë•Œ í•„ë“œì™€ì˜ ì—°ê²°ì„±ì´ ë¶ˆí™•ì‹¤ í•  ê²½ìš°ë¥¼ ëŒ€ë¹„í•˜ì—¬
+//			ì—ì´ì ¼íŠ¸ë¥¼ í†µí•´ì„œ ì•Œë¦´ìˆ˜ ìˆë„ë¡ í•¨.
 bool GLChar::DoDrugInvenItem ( WORD wPosX, WORD wPosY, bool b2AGENT )
 {
-	//	ÀÎº¥ÀÇ ¾ÆÀÌÅÛ È®ÀÎ.
+	//	ì¸ë²¤ì˜ ì•„ì´í…œ í™•ì¸.
 	SINVENITEM *pINVENITEM = m_cInventory.FindPosItem ( wPosX, wPosY );
 	if ( !pINVENITEM )		return false;
 
-	//	¾ÆÀÌÅÛ Á¤º¸ °¡Á®¿È.
+	//	ì•„ì´í…œ ì •ë³´ ê°€ì ¸ì˜´.
 	SITEM* pItem = GLItemMan::GetInstance().GetItem ( pINVENITEM->sItemCustom.sNativeID );
 	if ( !pItem )			return false;
 
@@ -30,16 +30,16 @@ bool GLChar::DoDrugInvenItem ( WORD wPosX, WORD wPosY, bool b2AGENT )
 	{
 		if ( pINVENITEM->sItemCustom.wTurnNum > 0 )		pINVENITEM->sItemCustom.wTurnNum--;
 	
-		//	Note :¾ÆÀÌÅÛÀÇ ¼ÒÀ¯ ÀÌÀü °æ·Î ±â·Ï.
+		//	Note :ì•„ì´í…œì˜ ì†Œìœ  ì´ì „ ê²½ë¡œ ê¸°ë¡.
 		//
 		GLITEMLMT::GetInstance().ReqItemRoute ( pINVENITEM->sItemCustom, ID_CHAR, m_dwCharID, ID_CHAR, 0, EMITEM_ROUTE_DELETE, 1 );
 
 		if ( pINVENITEM->sItemCustom.wTurnNum==0 )
 		{
-			//	¾ÆÀÌÅÆ Á¦°Å.
+			//	ì•„ì´íƒ¬ ì œê±°.
 			m_cInventory.DeleteItem ( wPosX, wPosY );
 
-			//	[ÀÚ½Å¿¡°Ô] ÀÎ¹ê¿¡ ¾ÆÀÌÅÆ Á¦°Å.
+			//	[ìì‹ ì—ê²Œ] ì¸ë°´ì— ì•„ì´íƒ¬ ì œê±°.
 			GLMSG::SNETPC_INVEN_DELETE NetMsg_Inven_Delete;
 			NetMsg_Inven_Delete.wPosX = wPosX;
 			NetMsg_Inven_Delete.wPosY = wPosY;
@@ -48,7 +48,7 @@ bool GLChar::DoDrugInvenItem ( WORD wPosX, WORD wPosY, bool b2AGENT )
 		}
 		else
 		{
-			//	[ÀÚ½Å¿¡°Ô] ÀÎ¹ê ¾ÆÀÌÅÆ ¼Ò¸ğµÊ.
+			//	[ìì‹ ì—ê²Œ] ì¸ë°´ ì•„ì´íƒ¬ ì†Œëª¨ë¨.
 			GLMSG::SNETPC_INVEN_DRUG_UPDATE NetMsg_Inven_Update;
 			NetMsg_Inven_Update.wPosX = wPosX;
 			NetMsg_Inven_Update.wPosY = wPosY;
@@ -60,7 +60,7 @@ bool GLChar::DoDrugInvenItem ( WORD wPosX, WORD wPosY, bool b2AGENT )
 	}
 
 
-	// ÄğÅ¸ÀÓ Àû¿ë
+	// ì¿¨íƒ€ì„ ì ìš©
 	if ( pItem->sBasicOp.IsCoolTime() ) 
 	{
 		SetCoolTime( pINVENITEM->sItemCustom.sNativeID , pItem->sBasicOp.emCoolType );
@@ -80,27 +80,27 @@ bool GLChar::DoDrugSlotItem ( EMSLOT emSLOT,  WORD wNum )
 	SITEM* pItem = GLItemMan::GetInstance().GetItem ( sSLOTITEM.sNativeID );
 	if ( !pItem )					return false;
 
-	// ¼Ò¸ğ¼º ¾ÆÀÌÅÛÀÏ °æ¿ì
+	// ì†Œëª¨ì„± ì•„ì´í…œì¼ ê²½ìš°
 	if ( pItem->ISINSTANCE() )
 	{
 		if ( sSLOTITEM.wTurnNum >= wNum )		sSLOTITEM.wTurnNum -= wNum;
 
-		//	Note :¾ÆÀÌÅÛÀÇ ¼ÒÀ¯ ÀÌÀü °æ·Î ±â·Ï.
+		//	Note :ì•„ì´í…œì˜ ì†Œìœ  ì´ì „ ê²½ë¡œ ê¸°ë¡.
 		//
 		GLITEMLMT::GetInstance().ReqItemRoute ( sSLOTITEM, ID_CHAR, m_dwCharID, ID_CHAR, 0, EMITEM_ROUTE_DELETE, sSLOTITEM.wTurnNum );
 
 		if ( sSLOTITEM.wTurnNum==0 )
 		{
-			//	HOLD ¾ÆÀÌÅÆ Á¦°Å.
+			//	HOLD ì•„ì´íƒ¬ ì œê±°.
 			RELEASE_SLOT_ITEM ( emSLOT );
 
-			//	[ÀÚ½Å¿¡°Ô] ½½·Ô¿¡ ÀÖ¾ú´ø ¾ÆÀÌÅÆ Á¦°Å.
+			//	[ìì‹ ì—ê²Œ] ìŠ¬ë¡¯ì— ìˆì—ˆë˜ ì•„ì´íƒ¬ ì œê±°.
 			GLMSG::SNETPC_PUTON_RELEASE NetMsg_Release(emSLOT);
 			GLGaeaServer::GetInstance().SENDTOCLIENT(m_dwClientID,&NetMsg_Release);
 		}
 		else
 		{
-			//	[ÀÚ½Å¿¡°Ô] ¿¬¸¶Á¦ÀÇ ¿¬¸¶°¡´É È½¼ö °¨¼Ò.
+			//	[ìì‹ ì—ê²Œ] ì—°ë§ˆì œì˜ ì—°ë§ˆê°€ëŠ¥ íšŸìˆ˜ ê°ì†Œ.
 			GLMSG::SNETPC_PUTON_DRUG_UPDATE NetMsg_Update;
 			NetMsg_Update.emSlot = emSLOT;
 			NetMsg_Update.wTurnNum = sSLOTITEM.wTurnNum;
@@ -109,11 +109,11 @@ bool GLChar::DoDrugSlotItem ( EMSLOT emSLOT,  WORD wNum )
 	}
 	else
 	{
-		//	±âÇÑ ¾ÆÀÌÅÛÀÏ °æ¿ì
+		//	ê¸°í•œ ì•„ì´í…œì¼ ê²½ìš°
 		GLITEMLMT::GetInstance().ReqItemRoute ( sSLOTITEM, ID_CHAR, m_dwCharID, ID_CHAR, 0, EMITEM_ROUTE_DELETE, 0 );
 	}
 
-	// ÄğÅ¸ÀÓ Àû¿ë
+	// ì¿¨íƒ€ì„ ì ìš©
 	if ( pItem->sBasicOp.IsCoolTime() ) 
 	{
 		SetCoolTime( sSLOTITEM.sNativeID , pItem->sBasicOp.emCoolType );
@@ -138,11 +138,11 @@ bool GLChar::IsInsertToInven ( PITEMDROP pItemDrop, bool bVietnamInven )
 		WORD wINVENX = pItem->sBasicOp.wInvenSizeX;
 		WORD wINVENY = pItem->sBasicOp.wInvenSizeY;
 
-		//	°ãÄ§ ¾ÆÀÌÅÛÀÏ °æ¿ì.
+		//	ê²¹ì¹¨ ì•„ì´í…œì¼ ê²½ìš°.
 		WORD wPILENUM = pItem->sDrugOp.wPileNum;
 		SNATIVEID sNID = pItem->sBasicOp.sNativeID;
 
-		//	³Ö±â ¿äÃ»µÈ ¾ÆÀÌÅÛ¼ö. ( ÀÜ¿©·®. )
+		//	ë„£ê¸° ìš”ì²­ëœ ì•„ì´í…œìˆ˜. ( ì”ì—¬ëŸ‰. )
 		WORD wREQINSRTNUM = ( pItemDrop->sItemCustom.wTurnNum );
 
 		BOOL bITEM_SPACE = TRUE;
@@ -168,7 +168,7 @@ bool GLChar::IsInsertToInven ( PITEMDROP pItemDrop, bool bVietnamInven )
 	return true;
 }
 
-/* ºñÈ°¼ºÈ­ ÀÎº¥Åä¸®¿¡µµ ¹«¾ğ°¡ ³ÖÀ»¼ö ÀÖ´Ù.*/
+/* ë¹„í™œì„±í™” ì¸ë²¤í† ë¦¬ì—ë„ ë¬´ì–¸ê°€ ë„£ì„ìˆ˜ ìˆë‹¤.*/
 bool GLChar::IsInsertToInvenEx ( PITEMDROP pItemDrop )
 {
 	GASSERT(pItemDrop&&"GLChar::IsItemToInven()");
@@ -182,11 +182,11 @@ bool GLChar::IsInsertToInvenEx ( PITEMDROP pItemDrop )
 		WORD wINVENX = pItem->sBasicOp.wInvenSizeX;
 		WORD wINVENY = pItem->sBasicOp.wInvenSizeY;
 
-		//	°ãÄ§ ¾ÆÀÌÅÛÀÏ °æ¿ì.
+		//	ê²¹ì¹¨ ì•„ì´í…œì¼ ê²½ìš°.
 		WORD wPILENUM = pItem->sDrugOp.wPileNum;
 		SNATIVEID sNID = pItem->sBasicOp.sNativeID;
 
-		//	³Ö±â ¿äÃ»µÈ ¾ÆÀÌÅÛ¼ö. ( ÀÜ¿©·®. )
+		//	ë„£ê¸° ìš”ì²­ëœ ì•„ì´í…œìˆ˜. ( ì”ì—¬ëŸ‰. )
 		WORD wREQINSRTNUM = ( pItemDrop->sItemCustom.wTurnNum );
 
 		BOOL bITEM_SPACE = m_cInventory.ValidPileInsrt ( wREQINSRTNUM, sNID, wPILENUM, wINVENX, wINVENY, true );
@@ -214,7 +214,7 @@ HRESULT GLChar::InsertToVNGainInven( PITEMDROP pItemDrop )
  	bool bITEM_SPACE = IsInsertToInven ( pItemDrop, TRUE );
 	if ( !bITEM_SPACE )
 	{
-		//	ÀÎ¹êÀÌ °¡µæÂ÷¼­ ¾ÆÀÌÅÆÀ» ³ÖÀ»¼ö ¾ø½À´Ï´Ù.
+		//	ì¸ë°´ì´ ê°€ë“ì°¨ì„œ ì•„ì´íƒ¬ì„ ë„£ì„ìˆ˜ ì—†ìŠµë‹ˆë‹¤.
 		GLMSG::SNETPC_REQ_TAKE_FB NetMsg;
 		NetMsg.emCrow = CROW_ITEM;
 		NetMsg.emTakeFB = EMTAKE_FB_INVEN_ERROR;
@@ -229,17 +229,17 @@ HRESULT GLChar::InsertToVNGainInven( PITEMDROP pItemDrop )
 		WORD wINVENX = pItem->sBasicOp.wInvenSizeX;
 		WORD wINVENY = pItem->sBasicOp.wInvenSizeY;
 
-		//	°ãÄ§ ¾ÆÀÌÅÛÀÏ °æ¿ì.
+		//	ê²¹ì¹¨ ì•„ì´í…œì¼ ê²½ìš°.
 		WORD wPILENUM = pItem->sDrugOp.wPileNum;
 		SNATIVEID sNID = pItem->sBasicOp.sNativeID;
 
-		//	³Ö±â ¿äÃ»µÈ ¾ÆÀÌÅÛ¼ö. ( ÀÜ¿©·®. )
+		//	ë„£ê¸° ìš”ì²­ëœ ì•„ì´í…œìˆ˜. ( ì”ì—¬ëŸ‰. )
 		WORD wREQINSRTNUM = ( pItemDrop->sItemCustom.wTurnNum );
 
 
 
-		//	Note : ´õ °ãÃÄÁú¼ö ÀÖ´Â ¾ÆÀÌÅÛÀÌ ÀÖ´ÂÁö °Ë»çÇÏ¿© ÀÎº¥¿¡ µé¾î°¡¾ßÇÏ´Â
-		//		¾ÆÀÌÅÛ Á¡°Ë ¼ıÀÚ¸¦ °¨¼Ò½ÃÅ´.
+		//	Note : ë” ê²¹ì³ì§ˆìˆ˜ ìˆëŠ” ì•„ì´í…œì´ ìˆëŠ”ì§€ ê²€ì‚¬í•˜ì—¬ ì¸ë²¤ì— ë“¤ì–´ê°€ì•¼í•˜ëŠ”
+		//		ì•„ì´í…œ ì ê²€ ìˆ«ìë¥¼ ê°ì†Œì‹œí‚´.
 		GLInventory::CELL_MAP &ItemMap = *m_cVietnamInventory.GetItemList();
 		GLInventory::CELL_MAP_ITER iter = ItemMap.begin();
 		for ( ; iter!=ItemMap.end(); ++iter )
@@ -249,15 +249,15 @@ HRESULT GLChar::InsertToVNGainInven( PITEMDROP pItemDrop )
 			if ( sITEMCUSTOM.sNativeID != sNID )		continue;
 			if ( sITEMCUSTOM.wTurnNum>=wPILENUM )		continue;
 
-			//	±âÁ¸ ¾ÆÀÌÅÛ °ãÄ§ ¿©À¯ºĞ.
+			//	ê¸°ì¡´ ì•„ì´í…œ ê²¹ì¹¨ ì—¬ìœ ë¶„.
 			WORD wSURPLUSNUM = wPILENUM - sITEMCUSTOM.wTurnNum;
 
 			if ( wREQINSRTNUM > wSURPLUSNUM )
 			{
-				//	Note : ±âÁ¸ ¾ÆÀÌÅÛÀÇ °ãÄ§À» º¯°æ. ( ²ËÂü )
+				//	Note : ê¸°ì¡´ ì•„ì´í…œì˜ ê²¹ì¹¨ì„ ë³€ê²½. ( ê½‰ì°¸ )
 				sITEMCUSTOM.wTurnNum = wPILENUM;
 
-				//	Note : Å¬¶óÀÌ¾ğÆ®¿¡ °¹¼ö º¯°æÀ» ¾Ë¸².
+				//	Note : í´ë¼ì´ì–¸íŠ¸ì— ê°¯ìˆ˜ ë³€ê²½ì„ ì•Œë¦¼.
 				GLMSG::SNETPC_INVEN_DRUG_UPDATE NetMsg;
 				NetMsg.bVietnamInven = TRUE;
 				NetMsg.wPosX = sINVENITEM.wPosX;
@@ -265,15 +265,15 @@ HRESULT GLChar::InsertToVNGainInven( PITEMDROP pItemDrop )
 				NetMsg.wTurnNum = sITEMCUSTOM.wTurnNum;
 				GLGaeaServer::GetInstance().SENDTOCLIENT(m_dwClientID,&NetMsg);
 
-				//	Note : ÀÜ¿© ¼ö·® °¨¼Ò.
+				//	Note : ì”ì—¬ ìˆ˜ëŸ‰ ê°ì†Œ.
 				wREQINSRTNUM -= wSURPLUSNUM;
 			}
 			else
 			{
-				//	Note : ±âÁ¸ ¾ÆÀÌÅÛ¿¡ °ãÄ¡´Â °Í ¸¸À¸·Îµµ »õ·Î ³ÖÀ» ¾ÆÀÌÅÛÀÌ ÃæºĞÈ÷ µé¾î°¨.
+				//	Note : ê¸°ì¡´ ì•„ì´í…œì— ê²¹ì¹˜ëŠ” ê²ƒ ë§Œìœ¼ë¡œë„ ìƒˆë¡œ ë„£ì„ ì•„ì´í…œì´ ì¶©ë¶„íˆ ë“¤ì–´ê°.
 				sITEMCUSTOM.wTurnNum += wREQINSRTNUM;
 
-				//	Note : Å¬¶óÀÌ¾ğÆ®¿¡ °¹¼ö º¯°æÀ» ¾Ë¸².
+				//	Note : í´ë¼ì´ì–¸íŠ¸ì— ê°¯ìˆ˜ ë³€ê²½ì„ ì•Œë¦¼.
 				GLMSG::SNETPC_INVEN_DRUG_UPDATE NetMsg;
 				NetMsg.bVietnamInven = TRUE;
 				NetMsg.wPosX = sINVENITEM.wPosX;
@@ -281,7 +281,7 @@ HRESULT GLChar::InsertToVNGainInven( PITEMDROP pItemDrop )
 				NetMsg.wTurnNum = sITEMCUSTOM.wTurnNum;
 				GLGaeaServer::GetInstance().SENDTOCLIENT(m_dwClientID,&NetMsg);
 
-				//	Note : ÆÄÆ¼¿øÀÏ °æ¿ì ´Ù¸¥ ÆÄÆ¼¿ø¿¡°Ô ¾ÆÀÌÅÛ ½Àµæ ¾Ë¸².
+				//	Note : íŒŒí‹°ì›ì¼ ê²½ìš° ë‹¤ë¥¸ íŒŒí‹°ì›ì—ê²Œ ì•„ì´í…œ ìŠµë“ ì•Œë¦¼.
 				//
 				GLPARTY_FIELD *pParty = GLGaeaServer::GetInstance().GetParty ( m_dwPartyID );
 				if ( pParty )
@@ -293,20 +293,20 @@ HRESULT GLChar::InsertToVNGainInven( PITEMDROP pItemDrop )
 					pParty->SENDMSG2NEAR ( this, &NetMsg );
 				}
 
-				//	Note : ¾ÆÀÌÅÆ Land¿¡¼­ »èÁ¦.
+				//	Note : ì•„ì´íƒ¬ Landì—ì„œ ì‚­ì œ.
 				m_pLandMan->DropOutItem ( pItemDrop->dwGlobID );
 
 				return S_OK;
 			}
 		}
 
-		//	Note : »õ·ÎÀÌ ÀÎº¥¿¡ µé¾î°¡¾ßÇÒ ¾ÆÀÌÅÛÀÇ °¹¼ö ÆÄ¾ÇÈÄ ÀÎº¥¿¡ µé¾î°¥ °ø°£ÀÌ ÀÖ´ÂÁö °Ë»ç.
+		//	Note : ìƒˆë¡œì´ ì¸ë²¤ì— ë“¤ì–´ê°€ì•¼í•  ì•„ì´í…œì˜ ê°¯ìˆ˜ íŒŒì•…í›„ ì¸ë²¤ì— ë“¤ì–´ê°ˆ ê³µê°„ì´ ìˆëŠ”ì§€ ê²€ì‚¬.
 
-		//	ÃÖ´ë°ãÄ§¾ÆÀÌÅÛ ¼ö·®.
+		//	ìµœëŒ€ê²¹ì¹¨ì•„ì´í…œ ìˆ˜ëŸ‰.
 		WORD wONENUM = wREQINSRTNUM / wPILENUM;
 		WORD wITEMNUM = wONENUM;
 
-		//	¿©ºĞ°ãÄ§¾ÆÀÌÅÛÀÇ °ãÄ§¼ö.
+		//	ì—¬ë¶„ê²¹ì¹¨ì•„ì´í…œì˜ ê²¹ì¹¨ìˆ˜.
 		WORD wSPLITNUM = wREQINSRTNUM % wPILENUM;
 		if ( wSPLITNUM > 0 )				wITEMNUM += 1;
 		if ( wSPLITNUM==0 && wITEMNUM>=1 )	wSPLITNUM = wPILENUM;
@@ -315,29 +315,29 @@ HRESULT GLChar::InsertToVNGainInven( PITEMDROP pItemDrop )
 		{
 			WORD wInsertPosX(0), wInsertPosY(0);
 			BOOL bSPACE = m_cVietnamInventory.FindInsrtable ( wINVENX, wINVENY, wInsertPosX, wInsertPosY );
-			GASSERT(bSPACE&&"³ÖÀ» °ø°£À» ¹Ì¸® Ã¼Å©¸¦ ÇÏ°í ¾ÆÀÌÅÛÀ» ³Ö¾úÀ¸³ª °ø°£ÀÌ ºÎÁ·ÇÔ.");
-			if ( !bSPACE )			return E_FAIL;	//	½ÇÁ¦·Î´Â Á¡°ËÀÌ ³¡³´±â ¶§¹®¿¡ ¿À·ù¹ß»ı °¡´É¼ºÀÌ ¾øÀ½.
+			GASSERT(bSPACE&&"ë„£ì„ ê³µê°„ì„ ë¯¸ë¦¬ ì²´í¬ë¥¼ í•˜ê³  ì•„ì´í…œì„ ë„£ì—ˆìœ¼ë‚˜ ê³µê°„ì´ ë¶€ì¡±í•¨.");
+			if ( !bSPACE )			return E_FAIL;	//	ì‹¤ì œë¡œëŠ” ì ê²€ì´ ëë‚«ê¸° ë•Œë¬¸ì— ì˜¤ë¥˜ë°œìƒ ê°€ëŠ¥ì„±ì´ ì—†ìŒ.
 
-			//	Note : »õ·Î¿î ¾ÆÀÌÅÛÀ» ³Ö¾îÁÜ.
+			//	Note : ìƒˆë¡œìš´ ì•„ì´í…œì„ ë„£ì–´ì¤Œ.
 			//
 			SITEMCUSTOM sITEMCUSTOM = pItemDrop->sItemCustom;
-			if ( wITEMNUM==(i+1) )	sITEMCUSTOM.wTurnNum = wSPLITNUM;	//	¸¶Áö¸· ¾ÆÀÌÅÛÀº ÀÜ¿©·®.
-			else					sITEMCUSTOM.wTurnNum = wPILENUM;	//	¾Æ´Ò °æ¿ì´Â ²ËÂù·®.
+			if ( wITEMNUM==(i+1) )	sITEMCUSTOM.wTurnNum = wSPLITNUM;	//	ë§ˆì§€ë§‰ ì•„ì´í…œì€ ì”ì—¬ëŸ‰.
+			else					sITEMCUSTOM.wTurnNum = wPILENUM;	//	ì•„ë‹ ê²½ìš°ëŠ” ê½‰ì°¬ëŸ‰.
 
-			//	ÀÎ¹êÅä¸®¿¡ ³Ö½À´Ï´Ù.
+			//	ì¸ë°´í† ë¦¬ì— ë„£ìŠµë‹ˆë‹¤.
 			sITEMCUSTOM.bVietnamGainItem = true;
 			m_cVietnamInventory.InsertItem ( sITEMCUSTOM, wInsertPosX, wInsertPosY );
 			SINVENITEM *pInvenItem = m_cVietnamInventory.GetItem ( wInsertPosX, wInsertPosY );
-			if ( !pInvenItem )		return E_FAIL;	//	½ÇÁ¦·Î´Â Á¡°ËÀÌ ³¡³´±â ¶§¹®¿¡ ¿À·ù¹ß»ı °¡´É¼ºÀÌ ¾øÀ½.
+			if ( !pInvenItem )		return E_FAIL;	//	ì‹¤ì œë¡œëŠ” ì ê²€ì´ ëë‚«ê¸° ë•Œë¬¸ì— ì˜¤ë¥˜ë°œìƒ ê°€ëŠ¥ì„±ì´ ì—†ìŒ.
 
-			//	ÀÎ¹ê¿¡ ¾ÆÀÌÅÆ ³Ö¾îÁÖ´Â ¸Ş½ÃÁö.
+			//	ì¸ë°´ì— ì•„ì´íƒ¬ ë„£ì–´ì£¼ëŠ” ë©”ì‹œì§€.
 			GLMSG::SNETPC_INVEN_INSERT NetMsgInven;
 			NetMsgInven.bVietnamInven = TRUE;
 			NetMsgInven.Data = *pInvenItem;
 			GLGaeaServer::GetInstance().SENDTOCLIENT(m_dwClientID,&NetMsgInven);
 		}
 
-		//	Note : ÆÄÆ¼¿øÀÏ °æ¿ì ´Ù¸¥ ÆÄÆ¼¿ø¿¡°Ô ¾ÆÀÌÅÛ ½Àµæ ¾Ë¸².
+		//	Note : íŒŒí‹°ì›ì¼ ê²½ìš° ë‹¤ë¥¸ íŒŒí‹°ì›ì—ê²Œ ì•„ì´í…œ ìŠµë“ ì•Œë¦¼.
 		//
 		GLPARTY_FIELD *pParty = GLGaeaServer::GetInstance().GetParty ( m_dwPartyID );
 		if ( pParty )
@@ -349,29 +349,29 @@ HRESULT GLChar::InsertToVNGainInven( PITEMDROP pItemDrop )
 			pParty->SENDMSG2NEAR ( this, &NetMsg );
 		}
 
-		//	Note : ¾ÆÀÌÅÛ ½Àµæ½Ã ÀÚµ¿ Äù½ºÆ® ½ÃÀÛ Á¡°Ë.
-		//  ³ªÁß¿¡ »ìÆìºÁ¾ß ÇÒ°÷ 
+		//	Note : ì•„ì´í…œ ìŠµë“ì‹œ ìë™ í€˜ìŠ¤íŠ¸ ì‹œì‘ ì ê²€.
+		//  ë‚˜ì¤‘ì— ì‚´í´ë´ì•¼ í• ê³³ 
 		//QuestStartFromGetITEM ( pItemDrop->sItemCustom.sNativeID );
 
-		//	Note : PILE °ãÄ§ ¾ÆÀÌÅÛÀÌ¹Ç·Î ·Î±× ÀÛ¼º ºÒ°¡´É.
+		//	Note : PILE ê²¹ì¹¨ ì•„ì´í…œì´ë¯€ë¡œ ë¡œê·¸ ì‘ì„± ë¶ˆê°€ëŠ¥.
 		//
 
-		//	Note : ¾ÆÀÌÅÆ Land¿¡¼­ »èÁ¦.
+		//	Note : ì•„ì´íƒ¬ Landì—ì„œ ì‚­ì œ.
 		m_pLandMan->DropOutItem ( pItemDrop->dwGlobID );
 	}
 	else
 	{
 		WORD wPosX, wPosY;
 		BOOL bOk = m_cVietnamInventory.FindInsrtable ( pItem->sBasicOp.wInvenSizeX, pItem->sBasicOp.wInvenSizeY, wPosX, wPosY );
-		if ( !bOk )			return E_FAIL;	//	½ÇÁ¦·Î´Â Á¡°ËÀÌ ³¡³´±â ¶§¹®¿¡ ¿À·ù¹ß»ı °¡´É¼ºÀÌ ¾øÀ½.
+		if ( !bOk )			return E_FAIL;	//	ì‹¤ì œë¡œëŠ” ì ê²€ì´ ëë‚«ê¸° ë•Œë¬¸ì— ì˜¤ë¥˜ë°œìƒ ê°€ëŠ¥ì„±ì´ ì—†ìŒ.
 
-		//	Note : ¾ÆÀÌÅÆ Áİ±â ¼º°ø.
+		//	Note : ì•„ì´íƒ¬ ì¤ê¸° ì„±ê³µ.
 		pItemDrop->sItemCustom.bVietnamGainItem = true;
 		m_cVietnamInventory.InsertItem ( pItemDrop->sItemCustom, wPosX, wPosY );
 		SINVENITEM *pInvenItem = m_cVietnamInventory.GetItem ( wPosX, wPosY );
-		if ( !pInvenItem )	return E_FAIL;	//	½ÇÁ¦·Î´Â Á¡°ËÀÌ ³¡³´±â ¶§¹®¿¡ ¿À·ù¹ß»ı °¡´É¼ºÀÌ ¾øÀ½.
+		if ( !pInvenItem )	return E_FAIL;	//	ì‹¤ì œë¡œëŠ” ì ê²€ì´ ëë‚«ê¸° ë•Œë¬¸ì— ì˜¤ë¥˜ë°œìƒ ê°€ëŠ¥ì„±ì´ ì—†ìŒ.
 
-		//	Note : ÆÄÆ¼¿øÀÏ °æ¿ì ´Ù¸¥ ÆÄÆ¼¿ø¿¡°Ô ¾ÆÀÌÅÛ ½Àµæ ¾Ë¸².
+		//	Note : íŒŒí‹°ì›ì¼ ê²½ìš° ë‹¤ë¥¸ íŒŒí‹°ì›ì—ê²Œ ì•„ì´í…œ ìŠµë“ ì•Œë¦¼.
 		//
 		GLPARTY_FIELD *pParty = GLGaeaServer::GetInstance().GetParty ( m_dwPartyID );
 		if ( pParty )
@@ -385,17 +385,17 @@ HRESULT GLChar::InsertToVNGainInven( PITEMDROP pItemDrop )
 
 
 
-		//	[ÀÚ½Å¿¡°Ô] ¸Ş½ÃÁö ¹ß»ı.
+		//	[ìì‹ ì—ê²Œ] ë©”ì‹œì§€ ë°œìƒ.
 		GLMSG::SNETPC_INVEN_INSERT NetMsg_Inven;
 		NetMsg_Inven.bVietnamInven = TRUE;
 		NetMsg_Inven.Data = *pInvenItem;
 		GLGaeaServer::GetInstance().SENDTOCLIENT(m_dwClientID,&NetMsg_Inven);
 
-		//	Note : ¾ÆÀÌÅÛ ½Àµæ½Ã ÀÚµ¿ Äù½ºÆ® ½ÃÀÛ Á¡°Ë.
-		//  ³ªÁß¿¡ »ìÆìºÁ¾ß ÇÒ°÷ 
+		//	Note : ì•„ì´í…œ ìŠµë“ì‹œ ìë™ í€˜ìŠ¤íŠ¸ ì‹œì‘ ì ê²€.
+		//  ë‚˜ì¤‘ì— ì‚´í´ë´ì•¼ í• ê³³ 
 		//QuestStartFromGetITEM ( pItemDrop->sItemCustom.sNativeID );
 
-		//	Note : ¾ÆÀÌÅÆ Land¿¡¼­ »èÁ¦.
+		//	Note : ì•„ì´íƒ¬ Landì—ì„œ ì‚­ì œ.
 		m_pLandMan->DropOutItem ( pItemDrop->dwGlobID );
 	}
 
@@ -416,7 +416,7 @@ HRESULT GLChar::InsertToInven ( PITEMDROP pItemDrop )
 	bool bITEM_SPACE = IsInsertToInven ( pItemDrop );
 	if ( !bITEM_SPACE )
 	{
-		//	ÀÎ¹êÀÌ °¡µæÂ÷¼­ ¾ÆÀÌÅÆÀ» ³ÖÀ»¼ö ¾ø½À´Ï´Ù.
+		//	ì¸ë°´ì´ ê°€ë“ì°¨ì„œ ì•„ì´íƒ¬ì„ ë„£ì„ìˆ˜ ì—†ìŠµë‹ˆë‹¤.
 		GLMSG::SNETPC_REQ_TAKE_FB NetMsg;
 		NetMsg.emCrow = CROW_ITEM;
 		NetMsg.emTakeFB = EMTAKE_FB_INVEN_ERROR;
@@ -430,19 +430,19 @@ HRESULT GLChar::InsertToInven ( PITEMDROP pItemDrop )
 		WORD wINVENX = pItem->sBasicOp.wInvenSizeX;
 		WORD wINVENY = pItem->sBasicOp.wInvenSizeY;
 
-		//	°ãÄ§ ¾ÆÀÌÅÛÀÏ °æ¿ì.
+		//	ê²¹ì¹¨ ì•„ì´í…œì¼ ê²½ìš°.
 		WORD wPILENUM = pItem->sDrugOp.wPileNum;
 		SNATIVEID sNID = pItem->sBasicOp.sNativeID;
 
-		//	³Ö±â ¿äÃ»µÈ ¾ÆÀÌÅÛ¼ö. ( ÀÜ¿©·®. )
+		//	ë„£ê¸° ìš”ì²­ëœ ì•„ì´í…œìˆ˜. ( ì”ì—¬ëŸ‰. )
 		WORD wREQINSRTNUM = ( pItemDrop->sItemCustom.wTurnNum );
 
-		//	Note :¾ÆÀÌÅÛÀÇ ¼ÒÀ¯ ÀÌÀü °æ·Î ±â·Ï.
+		//	Note :ì•„ì´í…œì˜ ì†Œìœ  ì´ì „ ê²½ë¡œ ê¸°ë¡.
 		//
 		GLITEMLMT::GetInstance().ReqItemRoute ( pItemDrop->sItemCustom, ID_CHAR, 0, ID_CHAR, m_dwCharID, EMITEM_ROUTE_CHAR, pItemDrop->sItemCustom.wTurnNum );
 
-		//	Note : ´õ °ãÃÄÁú¼ö ÀÖ´Â ¾ÆÀÌÅÛÀÌ ÀÖ´ÂÁö °Ë»çÇÏ¿© ÀÎº¥¿¡ µé¾î°¡¾ßÇÏ´Â
-		//		¾ÆÀÌÅÛ Á¡°Ë ¼ıÀÚ¸¦ °¨¼Ò½ÃÅ´.
+		//	Note : ë” ê²¹ì³ì§ˆìˆ˜ ìˆëŠ” ì•„ì´í…œì´ ìˆëŠ”ì§€ ê²€ì‚¬í•˜ì—¬ ì¸ë²¤ì— ë“¤ì–´ê°€ì•¼í•˜ëŠ”
+		//		ì•„ì´í…œ ì ê²€ ìˆ«ìë¥¼ ê°ì†Œì‹œí‚´.
 		GLInventory::CELL_MAP &ItemMap = *m_cInventory.GetItemList();
 		GLInventory::CELL_MAP_ITER iter = ItemMap.begin();
 		for ( ; iter!=ItemMap.end(); ++iter )
@@ -452,37 +452,37 @@ HRESULT GLChar::InsertToInven ( PITEMDROP pItemDrop )
 			if ( sITEMCUSTOM.sNativeID != sNID )		continue;
 			if ( sITEMCUSTOM.wTurnNum>=wPILENUM )		continue;
 		
-			//	±âÁ¸ ¾ÆÀÌÅÛ °ãÄ§ ¿©À¯ºĞ.
+			//	ê¸°ì¡´ ì•„ì´í…œ ê²¹ì¹¨ ì—¬ìœ ë¶„.
 			WORD wSURPLUSNUM = wPILENUM - sITEMCUSTOM.wTurnNum;
 
 			if ( wREQINSRTNUM > wSURPLUSNUM )
 			{
-				//	Note : ±âÁ¸ ¾ÆÀÌÅÛÀÇ °ãÄ§À» º¯°æ. ( ²ËÂü )
+				//	Note : ê¸°ì¡´ ì•„ì´í…œì˜ ê²¹ì¹¨ì„ ë³€ê²½. ( ê½‰ì°¸ )
 				sITEMCUSTOM.wTurnNum = wPILENUM;
 
-				//	Note : Å¬¶óÀÌ¾ğÆ®¿¡ °¹¼ö º¯°æÀ» ¾Ë¸².
+				//	Note : í´ë¼ì´ì–¸íŠ¸ì— ê°¯ìˆ˜ ë³€ê²½ì„ ì•Œë¦¼.
 				GLMSG::SNETPC_INVEN_DRUG_UPDATE NetMsg;
 				NetMsg.wPosX = sINVENITEM.wPosX;
 				NetMsg.wPosY = sINVENITEM.wPosY;
 				NetMsg.wTurnNum = sITEMCUSTOM.wTurnNum;
 				GLGaeaServer::GetInstance().SENDTOCLIENT(m_dwClientID,&NetMsg);
 
-				//	Note : ÀÜ¿© ¼ö·® °¨¼Ò.
+				//	Note : ì”ì—¬ ìˆ˜ëŸ‰ ê°ì†Œ.
 				wREQINSRTNUM -= wSURPLUSNUM;
 			}
 			else
 			{
-				//	Note : ±âÁ¸ ¾ÆÀÌÅÛ¿¡ °ãÄ¡´Â °Í ¸¸À¸·Îµµ »õ·Î ³ÖÀ» ¾ÆÀÌÅÛÀÌ ÃæºĞÈ÷ µé¾î°¨.
+				//	Note : ê¸°ì¡´ ì•„ì´í…œì— ê²¹ì¹˜ëŠ” ê²ƒ ë§Œìœ¼ë¡œë„ ìƒˆë¡œ ë„£ì„ ì•„ì´í…œì´ ì¶©ë¶„íˆ ë“¤ì–´ê°.
 				sITEMCUSTOM.wTurnNum += wREQINSRTNUM;
 
-				//	Note : Å¬¶óÀÌ¾ğÆ®¿¡ °¹¼ö º¯°æÀ» ¾Ë¸².
+				//	Note : í´ë¼ì´ì–¸íŠ¸ì— ê°¯ìˆ˜ ë³€ê²½ì„ ì•Œë¦¼.
 				GLMSG::SNETPC_INVEN_DRUG_UPDATE NetMsg;
 				NetMsg.wPosX = sINVENITEM.wPosX;
 				NetMsg.wPosY = sINVENITEM.wPosY;
 				NetMsg.wTurnNum = sITEMCUSTOM.wTurnNum;
 				GLGaeaServer::GetInstance().SENDTOCLIENT(m_dwClientID,&NetMsg);
 
-				//	Note : ÆÄÆ¼¿øÀÏ °æ¿ì ´Ù¸¥ ÆÄÆ¼¿ø¿¡°Ô ¾ÆÀÌÅÛ ½Àµæ ¾Ë¸².
+				//	Note : íŒŒí‹°ì›ì¼ ê²½ìš° ë‹¤ë¥¸ íŒŒí‹°ì›ì—ê²Œ ì•„ì´í…œ ìŠµë“ ì•Œë¦¼.
 				//
 				GLPARTY_FIELD *pParty = GLGaeaServer::GetInstance().GetParty ( m_dwPartyID );
 				if ( pParty )
@@ -524,20 +524,20 @@ HRESULT GLChar::InsertToInven ( PITEMDROP pItemDrop )
 					}
 				}
 
-				//	Note : ¾ÆÀÌÅÆ Land¿¡¼­ »èÁ¦.
+				//	Note : ì•„ì´íƒ¬ Landì—ì„œ ì‚­ì œ.
 				m_pLandMan->DropOutItem ( pItemDrop->dwGlobID );
 
 				return S_OK;
 			}
 		}
 
-		//	Note : »õ·ÎÀÌ ÀÎº¥¿¡ µé¾î°¡¾ßÇÒ ¾ÆÀÌÅÛÀÇ °¹¼ö ÆÄ¾ÇÈÄ ÀÎº¥¿¡ µé¾î°¥ °ø°£ÀÌ ÀÖ´ÂÁö °Ë»ç.
+		//	Note : ìƒˆë¡œì´ ì¸ë²¤ì— ë“¤ì–´ê°€ì•¼í•  ì•„ì´í…œì˜ ê°¯ìˆ˜ íŒŒì•…í›„ ì¸ë²¤ì— ë“¤ì–´ê°ˆ ê³µê°„ì´ ìˆëŠ”ì§€ ê²€ì‚¬.
 
-		//	ÃÖ´ë°ãÄ§¾ÆÀÌÅÛ ¼ö·®.
+		//	ìµœëŒ€ê²¹ì¹¨ì•„ì´í…œ ìˆ˜ëŸ‰.
 		WORD wONENUM = wREQINSRTNUM / wPILENUM;
 		WORD wITEMNUM = wONENUM;
 
-		//	¿©ºĞ°ãÄ§¾ÆÀÌÅÛÀÇ °ãÄ§¼ö.
+		//	ì—¬ë¶„ê²¹ì¹¨ì•„ì´í…œì˜ ê²¹ì¹¨ìˆ˜.
 		WORD wSPLITNUM = wREQINSRTNUM % wPILENUM;
 		if ( wSPLITNUM > 0 )				wITEMNUM += 1;
 		if ( wSPLITNUM==0 && wITEMNUM>=1 )	wSPLITNUM = wPILENUM;
@@ -546,27 +546,27 @@ HRESULT GLChar::InsertToInven ( PITEMDROP pItemDrop )
 		{
 			WORD wInsertPosX(0), wInsertPosY(0);
 			BOOL bSPACE = m_cInventory.FindInsrtable ( wINVENX, wINVENY, wInsertPosX, wInsertPosY );
-			GASSERT(bSPACE&&"³ÖÀ» °ø°£À» ¹Ì¸® Ã¼Å©¸¦ ÇÏ°í ¾ÆÀÌÅÛÀ» ³Ö¾úÀ¸³ª °ø°£ÀÌ ºÎÁ·ÇÔ.");
-			if ( !bSPACE )			return E_FAIL;	//	½ÇÁ¦·Î´Â Á¡°ËÀÌ ³¡³´±â ¶§¹®¿¡ ¿À·ù¹ß»ı °¡´É¼ºÀÌ ¾øÀ½.
+			GASSERT(bSPACE&&"ë„£ì„ ê³µê°„ì„ ë¯¸ë¦¬ ì²´í¬ë¥¼ í•˜ê³  ì•„ì´í…œì„ ë„£ì—ˆìœ¼ë‚˜ ê³µê°„ì´ ë¶€ì¡±í•¨.");
+			if ( !bSPACE )			return E_FAIL;	//	ì‹¤ì œë¡œëŠ” ì ê²€ì´ ëë‚«ê¸° ë•Œë¬¸ì— ì˜¤ë¥˜ë°œìƒ ê°€ëŠ¥ì„±ì´ ì—†ìŒ.
 
-			//	Note : »õ·Î¿î ¾ÆÀÌÅÛÀ» ³Ö¾îÁÜ.
+			//	Note : ìƒˆë¡œìš´ ì•„ì´í…œì„ ë„£ì–´ì¤Œ.
 			//
 			SITEMCUSTOM sITEMCUSTOM = pItemDrop->sItemCustom;
-			if ( wITEMNUM==(i+1) )	sITEMCUSTOM.wTurnNum = wSPLITNUM;	//	¸¶Áö¸· ¾ÆÀÌÅÛÀº ÀÜ¿©·®.
-			else					sITEMCUSTOM.wTurnNum = wPILENUM;	//	¾Æ´Ò °æ¿ì´Â ²ËÂù·®.
+			if ( wITEMNUM==(i+1) )	sITEMCUSTOM.wTurnNum = wSPLITNUM;	//	ë§ˆì§€ë§‰ ì•„ì´í…œì€ ì”ì—¬ëŸ‰.
+			else					sITEMCUSTOM.wTurnNum = wPILENUM;	//	ì•„ë‹ ê²½ìš°ëŠ” ê½‰ì°¬ëŸ‰.
 
-			//	ÀÎ¹êÅä¸®¿¡ ³Ö½À´Ï´Ù.
+			//	ì¸ë°´í† ë¦¬ì— ë„£ìŠµë‹ˆë‹¤.
 			m_cInventory.InsertItem ( sITEMCUSTOM, wInsertPosX, wInsertPosY );
 			SINVENITEM *pInvenItem = m_cInventory.GetItem ( wInsertPosX, wInsertPosY );
-			if ( !pInvenItem )		return E_FAIL;	//	½ÇÁ¦·Î´Â Á¡°ËÀÌ ³¡³´±â ¶§¹®¿¡ ¿À·ù¹ß»ı °¡´É¼ºÀÌ ¾øÀ½.
+			if ( !pInvenItem )		return E_FAIL;	//	ì‹¤ì œë¡œëŠ” ì ê²€ì´ ëë‚«ê¸° ë•Œë¬¸ì— ì˜¤ë¥˜ë°œìƒ ê°€ëŠ¥ì„±ì´ ì—†ìŒ.
 
-			//	ÀÎ¹ê¿¡ ¾ÆÀÌÅÆ ³Ö¾îÁÖ´Â ¸Ş½ÃÁö.
+			//	ì¸ë°´ì— ì•„ì´íƒ¬ ë„£ì–´ì£¼ëŠ” ë©”ì‹œì§€.
 			GLMSG::SNETPC_INVEN_INSERT NetMsgInven;
 			NetMsgInven.Data = *pInvenItem;
 			GLGaeaServer::GetInstance().SENDTOCLIENT(m_dwClientID,&NetMsgInven);
 		}
 
-		//	Note : ÆÄÆ¼¿øÀÏ °æ¿ì ´Ù¸¥ ÆÄÆ¼¿ø¿¡°Ô ¾ÆÀÌÅÛ ½Àµæ ¾Ë¸².
+		//	Note : íŒŒí‹°ì›ì¼ ê²½ìš° ë‹¤ë¥¸ íŒŒí‹°ì›ì—ê²Œ ì•„ì´í…œ ìŠµë“ ì•Œë¦¼.
 		//
 		GLPARTY_FIELD *pParty = GLGaeaServer::GetInstance().GetParty ( m_dwPartyID );
 		if ( pParty )
@@ -583,14 +583,14 @@ HRESULT GLChar::InsertToInven ( PITEMDROP pItemDrop )
 		NetMsgPickUp.sid_disguise = pItemDrop->sItemCustom.nidDISGUISE; /*item wrapper, Juver, 2018/01/12 */
 		GLGaeaServer::GetInstance().SENDTOCLIENT(m_dwClientID,&NetMsgPickUp);
 
-		//	Note : ¾ÆÀÌÅÛ ½Àµæ½Ã ÀÚµ¿ Äù½ºÆ® ½ÃÀÛ Á¡°Ë.
+		//	Note : ì•„ì´í…œ ìŠµë“ì‹œ ìë™ í€˜ìŠ¤íŠ¸ ì‹œì‘ ì ê²€.
 		//
 		QuestStartFromGetITEM ( pItemDrop->sItemCustom.sNativeID );
 
 		/*activity system, Juver, 2017/11/03 */
 		DoActivityTakeItem( pItemDrop->sItemCustom.sNativeID, pItemDrop->sItemCustom.wTurnNum );
 
-		//	Note : PILE °ãÄ§ ¾ÆÀÌÅÛÀÌ¹Ç·Î ·Î±× ÀÛ¼º ºÒ°¡´É.
+		//	Note : PILE ê²¹ì¹¨ ì•„ì´í…œì´ë¯€ë¡œ ë¡œê·¸ ì‘ì„± ë¶ˆê°€ëŠ¥.
 		//
 
 		{
@@ -614,21 +614,21 @@ HRESULT GLChar::InsertToInven ( PITEMDROP pItemDrop )
 			}
 		}
 
-		//	Note : ¾ÆÀÌÅÆ Land¿¡¼­ »èÁ¦.
+		//	Note : ì•„ì´íƒ¬ Landì—ì„œ ì‚­ì œ.
 		m_pLandMan->DropOutItem ( pItemDrop->dwGlobID );
 	}
 	else
 	{
 		WORD wPosX, wPosY;
 		BOOL bOk = m_cInventory.FindInsrtable ( pItem->sBasicOp.wInvenSizeX, pItem->sBasicOp.wInvenSizeY, wPosX, wPosY );
-		if ( !bOk )			return E_FAIL;	//	½ÇÁ¦·Î´Â Á¡°ËÀÌ ³¡³´±â ¶§¹®¿¡ ¿À·ù¹ß»ı °¡´É¼ºÀÌ ¾øÀ½.
+		if ( !bOk )			return E_FAIL;	//	ì‹¤ì œë¡œëŠ” ì ê²€ì´ ëë‚«ê¸° ë•Œë¬¸ì— ì˜¤ë¥˜ë°œìƒ ê°€ëŠ¥ì„±ì´ ì—†ìŒ.
 
-		//	Note : ¾ÆÀÌÅÆ Áİ±â ¼º°ø.
+		//	Note : ì•„ì´íƒ¬ ì¤ê¸° ì„±ê³µ.
 		m_cInventory.InsertItem ( pItemDrop->sItemCustom, wPosX, wPosY );
 		SINVENITEM *pInvenItem = m_cInventory.GetItem ( wPosX, wPosY );
-		if ( !pInvenItem )	return E_FAIL;	//	½ÇÁ¦·Î´Â Á¡°ËÀÌ ³¡³´±â ¶§¹®¿¡ ¿À·ù¹ß»ı °¡´É¼ºÀÌ ¾øÀ½.
+		if ( !pInvenItem )	return E_FAIL;	//	ì‹¤ì œë¡œëŠ” ì ê²€ì´ ëë‚«ê¸° ë•Œë¬¸ì— ì˜¤ë¥˜ë°œìƒ ê°€ëŠ¥ì„±ì´ ì—†ìŒ.
 
-		//	Note : ÆÄÆ¼¿øÀÏ °æ¿ì ´Ù¸¥ ÆÄÆ¼¿ø¿¡°Ô ¾ÆÀÌÅÛ ½Àµæ ¾Ë¸².
+		//	Note : íŒŒí‹°ì›ì¼ ê²½ìš° ë‹¤ë¥¸ íŒŒí‹°ì›ì—ê²Œ ì•„ì´í…œ ìŠµë“ ì•Œë¦¼.
 		//
 		GLPARTY_FIELD *pParty = GLGaeaServer::GetInstance().GetParty ( m_dwPartyID );
 		if ( pParty )
@@ -645,16 +645,16 @@ HRESULT GLChar::InsertToInven ( PITEMDROP pItemDrop )
 		NetMsgPickUp.sid_disguise = pItemDrop->sItemCustom.nidDISGUISE; /*item wrapper, Juver, 2018/01/12 */
 		GLGaeaServer::GetInstance().SENDTOCLIENT(m_dwClientID,&NetMsgPickUp);
 
-		//	Note :¾ÆÀÌÅÛÀÇ ¼ÒÀ¯ ÀÌÀü °æ·Î ±â·Ï.
+		//	Note :ì•„ì´í…œì˜ ì†Œìœ  ì´ì „ ê²½ë¡œ ê¸°ë¡.
 		//
 		GLITEMLMT::GetInstance().ReqItemRoute ( pInvenItem->sItemCustom, ID_CHAR, 0, ID_CHAR, m_dwCharID, EMITEM_ROUTE_CHAR, pInvenItem->sItemCustom.wTurnNum );
 
-		//	[ÀÚ½Å¿¡°Ô] ¸Ş½ÃÁö ¹ß»ı.
+		//	[ìì‹ ì—ê²Œ] ë©”ì‹œì§€ ë°œìƒ.
 		GLMSG::SNETPC_INVEN_INSERT NetMsg_Inven;
 		NetMsg_Inven.Data = *pInvenItem;
 		GLGaeaServer::GetInstance().SENDTOCLIENT(m_dwClientID,&NetMsg_Inven);
 
-		//	Note : ¾ÆÀÌÅÛ ½Àµæ½Ã ÀÚµ¿ Äù½ºÆ® ½ÃÀÛ Á¡°Ë.
+		//	Note : ì•„ì´í…œ ìŠµë“ì‹œ ìë™ í€˜ìŠ¤íŠ¸ ì‹œì‘ ì ê²€.
 		//
 		QuestStartFromGetITEM ( pItemDrop->sItemCustom.sNativeID );
 
@@ -682,7 +682,7 @@ HRESULT GLChar::InsertToInven ( PITEMDROP pItemDrop )
 			}
 		}
 
-		//	Note : ¾ÆÀÌÅÆ Land¿¡¼­ »èÁ¦.
+		//	Note : ì•„ì´íƒ¬ Landì—ì„œ ì‚­ì œ.
 		m_pLandMan->DropOutItem ( pItemDrop->dwGlobID );
 	}
 
@@ -701,7 +701,7 @@ HRESULT GLChar::InsertToInvenEx ( PITEMDROP pItemDrop )
 	bool bITEM_SPACE = IsInsertToInvenEx ( pItemDrop );
 	if ( !bITEM_SPACE )
 	{
-		//	ÀÎ¹êÀÌ °¡µæÂ÷¼­ ¾ÆÀÌÅÆÀ» ³ÖÀ»¼ö ¾ø½À´Ï´Ù.
+		//	ì¸ë°´ì´ ê°€ë“ì°¨ì„œ ì•„ì´íƒ¬ì„ ë„£ì„ìˆ˜ ì—†ìŠµë‹ˆë‹¤.
 		GLMSG::SNETPC_REQ_TAKE_FB NetMsg;
 		NetMsg.emCrow = CROW_ITEM;
 		NetMsg.emTakeFB = EMTAKE_FB_INVEN_ERROR;
@@ -715,19 +715,19 @@ HRESULT GLChar::InsertToInvenEx ( PITEMDROP pItemDrop )
 		WORD wINVENX = pItem->sBasicOp.wInvenSizeX;
 		WORD wINVENY = pItem->sBasicOp.wInvenSizeY;
 
-		//	°ãÄ§ ¾ÆÀÌÅÛÀÏ °æ¿ì.
+		//	ê²¹ì¹¨ ì•„ì´í…œì¼ ê²½ìš°.
 		WORD wPILENUM = pItem->sDrugOp.wPileNum;
 		SNATIVEID sNID = pItem->sBasicOp.sNativeID;
 
-		//	³Ö±â ¿äÃ»µÈ ¾ÆÀÌÅÛ¼ö. ( ÀÜ¿©·®. )
+		//	ë„£ê¸° ìš”ì²­ëœ ì•„ì´í…œìˆ˜. ( ì”ì—¬ëŸ‰. )
 		WORD wREQINSRTNUM = ( pItemDrop->sItemCustom.wTurnNum );
 
-		//	Note :¾ÆÀÌÅÛÀÇ ¼ÒÀ¯ ÀÌÀü °æ·Î ±â·Ï.
+		//	Note :ì•„ì´í…œì˜ ì†Œìœ  ì´ì „ ê²½ë¡œ ê¸°ë¡.
 		//
 		GLITEMLMT::GetInstance().ReqItemRoute ( pItemDrop->sItemCustom, ID_CHAR, 0, ID_CHAR, m_dwCharID, EMITEM_ROUTE_CHAR, pItemDrop->sItemCustom.wTurnNum );
 
-		//	Note : ´õ °ãÃÄÁú¼ö ÀÖ´Â ¾ÆÀÌÅÛÀÌ ÀÖ´ÂÁö °Ë»çÇÏ¿© ÀÎº¥¿¡ µé¾î°¡¾ßÇÏ´Â
-		//		¾ÆÀÌÅÛ Á¡°Ë ¼ıÀÚ¸¦ °¨¼Ò½ÃÅ´.
+		//	Note : ë” ê²¹ì³ì§ˆìˆ˜ ìˆëŠ” ì•„ì´í…œì´ ìˆëŠ”ì§€ ê²€ì‚¬í•˜ì—¬ ì¸ë²¤ì— ë“¤ì–´ê°€ì•¼í•˜ëŠ”
+		//		ì•„ì´í…œ ì ê²€ ìˆ«ìë¥¼ ê°ì†Œì‹œí‚´.
 		GLInventory::CELL_MAP &ItemMap = *m_cInventory.GetItemList();
 		GLInventory::CELL_MAP_ITER iter = ItemMap.begin();
 		for ( ; iter!=ItemMap.end(); ++iter )
@@ -737,37 +737,37 @@ HRESULT GLChar::InsertToInvenEx ( PITEMDROP pItemDrop )
 			if ( sITEMCUSTOM.sNativeID != sNID )		continue;
 			if ( sITEMCUSTOM.wTurnNum>=wPILENUM )		continue;
 		
-			//	±âÁ¸ ¾ÆÀÌÅÛ °ãÄ§ ¿©À¯ºĞ.
+			//	ê¸°ì¡´ ì•„ì´í…œ ê²¹ì¹¨ ì—¬ìœ ë¶„.
 			WORD wSURPLUSNUM = wPILENUM - sITEMCUSTOM.wTurnNum;
 
 			if ( wREQINSRTNUM > wSURPLUSNUM )
 			{
-				//	Note : ±âÁ¸ ¾ÆÀÌÅÛÀÇ °ãÄ§À» º¯°æ. ( ²ËÂü )
+				//	Note : ê¸°ì¡´ ì•„ì´í…œì˜ ê²¹ì¹¨ì„ ë³€ê²½. ( ê½‰ì°¸ )
 				sITEMCUSTOM.wTurnNum = wPILENUM;
 
-				//	Note : Å¬¶óÀÌ¾ğÆ®¿¡ °¹¼ö º¯°æÀ» ¾Ë¸².
+				//	Note : í´ë¼ì´ì–¸íŠ¸ì— ê°¯ìˆ˜ ë³€ê²½ì„ ì•Œë¦¼.
 				GLMSG::SNETPC_INVEN_DRUG_UPDATE NetMsg;
 				NetMsg.wPosX = sINVENITEM.wPosX;
 				NetMsg.wPosY = sINVENITEM.wPosY;
 				NetMsg.wTurnNum = sITEMCUSTOM.wTurnNum;
 				GLGaeaServer::GetInstance().SENDTOCLIENT(m_dwClientID,&NetMsg);
 
-				//	Note : ÀÜ¿© ¼ö·® °¨¼Ò.
+				//	Note : ì”ì—¬ ìˆ˜ëŸ‰ ê°ì†Œ.
 				wREQINSRTNUM -= wSURPLUSNUM;
 			}
 			else
 			{
-				//	Note : ±âÁ¸ ¾ÆÀÌÅÛ¿¡ °ãÄ¡´Â °Í ¸¸À¸·Îµµ »õ·Î ³ÖÀ» ¾ÆÀÌÅÛÀÌ ÃæºĞÈ÷ µé¾î°¨.
+				//	Note : ê¸°ì¡´ ì•„ì´í…œì— ê²¹ì¹˜ëŠ” ê²ƒ ë§Œìœ¼ë¡œë„ ìƒˆë¡œ ë„£ì„ ì•„ì´í…œì´ ì¶©ë¶„íˆ ë“¤ì–´ê°.
 				sITEMCUSTOM.wTurnNum += wREQINSRTNUM;
 
-				//	Note : Å¬¶óÀÌ¾ğÆ®¿¡ °¹¼ö º¯°æÀ» ¾Ë¸².
+				//	Note : í´ë¼ì´ì–¸íŠ¸ì— ê°¯ìˆ˜ ë³€ê²½ì„ ì•Œë¦¼.
 				GLMSG::SNETPC_INVEN_DRUG_UPDATE NetMsg;
 				NetMsg.wPosX = sINVENITEM.wPosX;
 				NetMsg.wPosY = sINVENITEM.wPosY;
 				NetMsg.wTurnNum = sITEMCUSTOM.wTurnNum;
 				GLGaeaServer::GetInstance().SENDTOCLIENT(m_dwClientID,&NetMsg);
 
-				//	Note : ÆÄÆ¼¿øÀÏ °æ¿ì ´Ù¸¥ ÆÄÆ¼¿ø¿¡°Ô ¾ÆÀÌÅÛ ½Àµæ ¾Ë¸².
+				//	Note : íŒŒí‹°ì›ì¼ ê²½ìš° ë‹¤ë¥¸ íŒŒí‹°ì›ì—ê²Œ ì•„ì´í…œ ìŠµë“ ì•Œë¦¼.
 				//
 				GLPARTY_FIELD *pParty = GLGaeaServer::GetInstance().GetParty ( m_dwPartyID );
 				if ( pParty )
@@ -787,20 +787,20 @@ HRESULT GLChar::InsertToInvenEx ( PITEMDROP pItemDrop )
 				/*activity system, Juver, 2017/11/03 */
 				DoActivityTakeItem( pItemDrop->sItemCustom.sNativeID, pItemDrop->sItemCustom.wTurnNum );
 
-				//	Note : ¾ÆÀÌÅÆ Land¿¡¼­ »èÁ¦.
+				//	Note : ì•„ì´íƒ¬ Landì—ì„œ ì‚­ì œ.
 				m_pLandMan->DropOutItem ( pItemDrop->dwGlobID );
 
 				return S_OK;
 			}
 		}
 
-		//	Note : »õ·ÎÀÌ ÀÎº¥¿¡ µé¾î°¡¾ßÇÒ ¾ÆÀÌÅÛÀÇ °¹¼ö ÆÄ¾ÇÈÄ ÀÎº¥¿¡ µé¾î°¥ °ø°£ÀÌ ÀÖ´ÂÁö °Ë»ç.
+		//	Note : ìƒˆë¡œì´ ì¸ë²¤ì— ë“¤ì–´ê°€ì•¼í•  ì•„ì´í…œì˜ ê°¯ìˆ˜ íŒŒì•…í›„ ì¸ë²¤ì— ë“¤ì–´ê°ˆ ê³µê°„ì´ ìˆëŠ”ì§€ ê²€ì‚¬.
 
-		//	ÃÖ´ë°ãÄ§¾ÆÀÌÅÛ ¼ö·®.
+		//	ìµœëŒ€ê²¹ì¹¨ì•„ì´í…œ ìˆ˜ëŸ‰.
 		WORD wONENUM = wREQINSRTNUM / wPILENUM;
 		WORD wITEMNUM = wONENUM;
 
-		//	¿©ºĞ°ãÄ§¾ÆÀÌÅÛÀÇ °ãÄ§¼ö.
+		//	ì—¬ë¶„ê²¹ì¹¨ì•„ì´í…œì˜ ê²¹ì¹¨ìˆ˜.
 		WORD wSPLITNUM = wREQINSRTNUM % wPILENUM;
 		if ( wSPLITNUM > 0 )				wITEMNUM += 1;
 		if ( wSPLITNUM==0 && wITEMNUM>=1 )	wSPLITNUM = wPILENUM;
@@ -809,35 +809,35 @@ HRESULT GLChar::InsertToInvenEx ( PITEMDROP pItemDrop )
 		{
 			WORD wInsertPosX(0), wInsertPosY(0);
 
-			// È°¼ºÈ­µÈ ÀÎº¥¿¡ ¿ì¼±Àû ¹èÄ¡...( ±âÁ¸ °Ë»ö¼ø¼­°¡ ¼¼·Î ¿ì¼±ÀÌ¶ó¼­ º¯°æ ÇÏ±â ¾Ö¸ÅÇÔ. ) 
+			// í™œì„±í™”ëœ ì¸ë²¤ì— ìš°ì„ ì  ë°°ì¹˜...( ê¸°ì¡´ ê²€ìƒ‰ìˆœì„œê°€ ì„¸ë¡œ ìš°ì„ ì´ë¼ì„œ ë³€ê²½ í•˜ê¸° ì• ë§¤í•¨. ) 
 			BOOL bSPACE = m_cInventory.FindInsrtable ( wINVENX, wINVENY, wInsertPosX, wInsertPosY );
 			if ( !bSPACE )
 			{
 				bSPACE = m_cInventory.FindInsrtable ( wINVENX, wINVENY, wInsertPosX, wInsertPosY, true );
 				
-				GASSERT(bSPACE&&"³ÖÀ» °ø°£À» ¹Ì¸® Ã¼Å©¸¦ ÇÏ°í ¾ÆÀÌÅÛÀ» ³Ö¾úÀ¸³ª °ø°£ÀÌ ºÎÁ·ÇÔ.");
-				if ( !bSPACE )			return E_FAIL;	//	½ÇÁ¦·Î´Â Á¡°ËÀÌ ³¡³´±â ¶§¹®¿¡ ¿À·ù¹ß»ı °¡´É¼ºÀÌ ¾øÀ½.
+				GASSERT(bSPACE&&"ë„£ì„ ê³µê°„ì„ ë¯¸ë¦¬ ì²´í¬ë¥¼ í•˜ê³  ì•„ì´í…œì„ ë„£ì—ˆìœ¼ë‚˜ ê³µê°„ì´ ë¶€ì¡±í•¨.");
+				if ( !bSPACE )			return E_FAIL;	//	ì‹¤ì œë¡œëŠ” ì ê²€ì´ ëë‚«ê¸° ë•Œë¬¸ì— ì˜¤ë¥˜ë°œìƒ ê°€ëŠ¥ì„±ì´ ì—†ìŒ.
 			}
 
-			//	Note : »õ·Î¿î ¾ÆÀÌÅÛÀ» ³Ö¾îÁÜ.
+			//	Note : ìƒˆë¡œìš´ ì•„ì´í…œì„ ë„£ì–´ì¤Œ.
 			//
 			SITEMCUSTOM sITEMCUSTOM = pItemDrop->sItemCustom;
-			if ( wITEMNUM==(i+1) )	sITEMCUSTOM.wTurnNum = wSPLITNUM;	//	¸¶Áö¸· ¾ÆÀÌÅÛÀº ÀÜ¿©·®.
-			else					sITEMCUSTOM.wTurnNum = wPILENUM;	//	¾Æ´Ò °æ¿ì´Â ²ËÂù·®.
+			if ( wITEMNUM==(i+1) )	sITEMCUSTOM.wTurnNum = wSPLITNUM;	//	ë§ˆì§€ë§‰ ì•„ì´í…œì€ ì”ì—¬ëŸ‰.
+			else					sITEMCUSTOM.wTurnNum = wPILENUM;	//	ì•„ë‹ ê²½ìš°ëŠ” ê½‰ì°¬ëŸ‰.
 
-			//	ÀÎ¹êÅä¸®¿¡ ³Ö½À´Ï´Ù.
+			//	ì¸ë°´í† ë¦¬ì— ë„£ìŠµë‹ˆë‹¤.
 			m_cInventory.InsertItem ( sITEMCUSTOM, wInsertPosX, wInsertPosY, true );
 			SINVENITEM *pInvenItem = m_cInventory.GetItem ( wInsertPosX, wInsertPosY );
-			if ( !pInvenItem )		return E_FAIL;	//	½ÇÁ¦·Î´Â Á¡°ËÀÌ ³¡³´±â ¶§¹®¿¡ ¿À·ù¹ß»ı °¡´É¼ºÀÌ ¾øÀ½.
+			if ( !pInvenItem )		return E_FAIL;	//	ì‹¤ì œë¡œëŠ” ì ê²€ì´ ëë‚«ê¸° ë•Œë¬¸ì— ì˜¤ë¥˜ë°œìƒ ê°€ëŠ¥ì„±ì´ ì—†ìŒ.
 
-			//	ÀÎ¹ê¿¡ ¾ÆÀÌÅÆ ³Ö¾îÁÖ´Â ¸Ş½ÃÁö.
+			//	ì¸ë°´ì— ì•„ì´íƒ¬ ë„£ì–´ì£¼ëŠ” ë©”ì‹œì§€.
 			GLMSG::SNETPC_INVEN_INSERT NetMsgInven;
 			NetMsgInven.Data = *pInvenItem;
 			NetMsgInven.bAllLine = true;
 			GLGaeaServer::GetInstance().SENDTOCLIENT(m_dwClientID,&NetMsgInven);
 		}
 
-		//	Note : ÆÄÆ¼¿øÀÏ °æ¿ì ´Ù¸¥ ÆÄÆ¼¿ø¿¡°Ô ¾ÆÀÌÅÛ ½Àµæ ¾Ë¸².
+		//	Note : íŒŒí‹°ì›ì¼ ê²½ìš° ë‹¤ë¥¸ íŒŒí‹°ì›ì—ê²Œ ì•„ì´í…œ ìŠµë“ ì•Œë¦¼.
 		//
 		GLPARTY_FIELD *pParty = GLGaeaServer::GetInstance().GetParty ( m_dwPartyID );
 		if ( pParty )
@@ -854,39 +854,39 @@ HRESULT GLChar::InsertToInvenEx ( PITEMDROP pItemDrop )
 		NetMsgPickUp.sid_disguise = pItemDrop->sItemCustom.nidDISGUISE; /*item wrapper, Juver, 2018/01/12 */
 		GLGaeaServer::GetInstance().SENDTOCLIENT(m_dwClientID,&NetMsgPickUp);
 
-		//	Note : ¾ÆÀÌÅÛ ½Àµæ½Ã ÀÚµ¿ Äù½ºÆ® ½ÃÀÛ Á¡°Ë.
+		//	Note : ì•„ì´í…œ ìŠµë“ì‹œ ìë™ í€˜ìŠ¤íŠ¸ ì‹œì‘ ì ê²€.
 		//
 		QuestStartFromGetITEM ( pItemDrop->sItemCustom.sNativeID );
 
 		/*activity system, Juver, 2017/11/03 */
 		DoActivityTakeItem( pItemDrop->sItemCustom.sNativeID, pItemDrop->sItemCustom.wTurnNum );
 
-		//	Note : PILE °ãÄ§ ¾ÆÀÌÅÛÀÌ¹Ç·Î ·Î±× ÀÛ¼º ºÒ°¡´É.
+		//	Note : PILE ê²¹ì¹¨ ì•„ì´í…œì´ë¯€ë¡œ ë¡œê·¸ ì‘ì„± ë¶ˆê°€ëŠ¥.
 		//
 
-		//	Note : ¾ÆÀÌÅÆ Land¿¡¼­ »èÁ¦.
+		//	Note : ì•„ì´íƒ¬ Landì—ì„œ ì‚­ì œ.
 		m_pLandMan->DropOutItem ( pItemDrop->dwGlobID );
 	}
 	else
 	{
 		WORD wPosX = 0, wPosY = 0;
 
-		// È°¼ºÈ­µÈ ÀÎº¥¿¡ ¿ì¼±Àû ¹èÄ¡...( ±âÁ¸ °Ë»ö¼ø¼­°¡ ¼¼·Î ¿ì¼±ÀÌ¶ó¼­ º¯°æ ÇÏ±â ¾Ö¸ÅÇÔ. ) 
+		// í™œì„±í™”ëœ ì¸ë²¤ì— ìš°ì„ ì  ë°°ì¹˜...( ê¸°ì¡´ ê²€ìƒ‰ìˆœì„œê°€ ì„¸ë¡œ ìš°ì„ ì´ë¼ì„œ ë³€ê²½ í•˜ê¸° ì• ë§¤í•¨. ) 
 		BOOL bOk = m_cInventory.FindInsrtable ( pItem->sBasicOp.wInvenSizeX, pItem->sBasicOp.wInvenSizeY, wPosX, wPosY );
 		if ( !bOk )
 		{
 				bOk = m_cInventory.FindInsrtable ( pItem->sBasicOp.wInvenSizeX, pItem->sBasicOp.wInvenSizeY, wPosX, wPosY, true );
 				
-				GASSERT(bOk&&"³ÖÀ» °ø°£À» ¹Ì¸® Ã¼Å©¸¦ ÇÏ°í ¾ÆÀÌÅÛÀ» ³Ö¾úÀ¸³ª °ø°£ÀÌ ºÎÁ·ÇÔ.");
-				if ( !bOk )			return E_FAIL;	//	½ÇÁ¦·Î´Â Á¡°ËÀÌ ³¡³´±â ¶§¹®¿¡ ¿À·ù¹ß»ı °¡´É¼ºÀÌ ¾øÀ½.
+				GASSERT(bOk&&"ë„£ì„ ê³µê°„ì„ ë¯¸ë¦¬ ì²´í¬ë¥¼ í•˜ê³  ì•„ì´í…œì„ ë„£ì—ˆìœ¼ë‚˜ ê³µê°„ì´ ë¶€ì¡±í•¨.");
+				if ( !bOk )			return E_FAIL;	//	ì‹¤ì œë¡œëŠ” ì ê²€ì´ ëë‚«ê¸° ë•Œë¬¸ì— ì˜¤ë¥˜ë°œìƒ ê°€ëŠ¥ì„±ì´ ì—†ìŒ.
 		}
 
-		//	Note : ¾ÆÀÌÅÆ Áİ±â ¼º°ø.
+		//	Note : ì•„ì´íƒ¬ ì¤ê¸° ì„±ê³µ.
 		m_cInventory.InsertItem ( pItemDrop->sItemCustom, wPosX, wPosY, true );
 		SINVENITEM *pInvenItem = m_cInventory.GetItem ( wPosX, wPosY );
-		if ( !pInvenItem )	return E_FAIL;	//	½ÇÁ¦·Î´Â Á¡°ËÀÌ ³¡³´±â ¶§¹®¿¡ ¿À·ù¹ß»ı °¡´É¼ºÀÌ ¾øÀ½.
+		if ( !pInvenItem )	return E_FAIL;	//	ì‹¤ì œë¡œëŠ” ì ê²€ì´ ëë‚«ê¸° ë•Œë¬¸ì— ì˜¤ë¥˜ë°œìƒ ê°€ëŠ¥ì„±ì´ ì—†ìŒ.
 
-		//	Note : ÆÄÆ¼¿øÀÏ °æ¿ì ´Ù¸¥ ÆÄÆ¼¿ø¿¡°Ô ¾ÆÀÌÅÛ ½Àµæ ¾Ë¸².
+		//	Note : íŒŒí‹°ì›ì¼ ê²½ìš° ë‹¤ë¥¸ íŒŒí‹°ì›ì—ê²Œ ì•„ì´í…œ ìŠµë“ ì•Œë¦¼.
 		//
 		GLPARTY_FIELD *pParty = GLGaeaServer::GetInstance().GetParty ( m_dwPartyID );
 		if ( pParty )
@@ -903,24 +903,24 @@ HRESULT GLChar::InsertToInvenEx ( PITEMDROP pItemDrop )
 		NetMsgPickUp.sid_disguise = pItemDrop->sItemCustom.nidDISGUISE; /*item wrapper, Juver, 2018/01/12 */
 		GLGaeaServer::GetInstance().SENDTOCLIENT(m_dwClientID,&NetMsgPickUp);
 
-		//	Note :¾ÆÀÌÅÛÀÇ ¼ÒÀ¯ ÀÌÀü °æ·Î ±â·Ï.
+		//	Note :ì•„ì´í…œì˜ ì†Œìœ  ì´ì „ ê²½ë¡œ ê¸°ë¡.
 		//
 		GLITEMLMT::GetInstance().ReqItemRoute ( pInvenItem->sItemCustom, ID_CHAR, 0, ID_CHAR, m_dwCharID, EMITEM_ROUTE_CHAR, pInvenItem->sItemCustom.wTurnNum );
 
-		//	[ÀÚ½Å¿¡°Ô] ¸Ş½ÃÁö ¹ß»ı.
+		//	[ìì‹ ì—ê²Œ] ë©”ì‹œì§€ ë°œìƒ.
 		GLMSG::SNETPC_INVEN_INSERT NetMsg_Inven;
 		NetMsg_Inven.Data = *pInvenItem;
 		NetMsg_Inven.bAllLine = true;
 		GLGaeaServer::GetInstance().SENDTOCLIENT(m_dwClientID,&NetMsg_Inven);
 
-		//	Note : ¾ÆÀÌÅÛ ½Àµæ½Ã ÀÚµ¿ Äù½ºÆ® ½ÃÀÛ Á¡°Ë.
+		//	Note : ì•„ì´í…œ ìŠµë“ì‹œ ìë™ í€˜ìŠ¤íŠ¸ ì‹œì‘ ì ê²€.
 		//
 		QuestStartFromGetITEM ( pItemDrop->sItemCustom.sNativeID );
 
 		/*activity system, Juver, 2017/11/03 */
 		DoActivityTakeItem( pItemDrop->sItemCustom.sNativeID, pItemDrop->sItemCustom.wTurnNum );
 
-		//	Note : ¾ÆÀÌÅÆ Land¿¡¼­ »èÁ¦.
+		//	Note : ì•„ì´íƒ¬ Landì—ì„œ ì‚­ì œ.
 		m_pLandMan->DropOutItem ( pItemDrop->dwGlobID );
 	}
 
@@ -960,16 +960,16 @@ void GLChar::DisableSkillFact()
         PGLSKILL pSkill = GLSkillMan::GetInstance().GetData ( m_sSKILLFACT[i].sNATIVEID );
 		if ( !pSkill ) continue;
 
-		// ½ºÅ³ ÀÚ½Å ¹öÇÁ
+		// ìŠ¤í‚¬ ìì‹  ë²„í”„
 		if ( pSkill->m_sBASIC.emIMPACT_TAR != TAR_SELF || pSkill->m_sBASIC.emIMPACT_REALM != REALM_SELF ) continue;
 				
 		const bool bExtremeWeapon	= pSkill->m_sLEARN.bHiddenWeapon;
 		GLSKILL_ATT emSKILL_RITEM = pSkill->m_sBASIC.emUSE_RITEM;
 
-		// ½ºÅ³ µµ±¸ Á¾¼Ó ¾øÀ½
+		// ìŠ¤í‚¬ ë„êµ¬ ì¢…ì† ì—†ìŒ
 		if ( emSKILL_RITEM == SKILLATT_NOCARE )	continue;
 
-		// ½ºÅ³ °ú ¹«±â°¡ ºÒÀÏÄ¡
+		// ìŠ¤í‚¬ ê³¼ ë¬´ê¸°ê°€ ë¶ˆì¼ì¹˜
 		if( !pRightItem || !CHECHSKILL_ITEM(emSKILL_RITEM,pRightItem->sSuitOp.emAttack,bExtremeWeapon) )
 		{
 			DISABLESKEFF( i );
@@ -984,11 +984,11 @@ void GLChar::DisableSkillFact()
 // Returns:   void
 // Qualifier:
 // Parameter: LONGLONG lnAmount
-// Explanation: ÇöÀç´Â ÆÄÆ¼¿¡¼­ ±İ¾× ºĞ¹è½Ã »ç¿ëµÇ´Â ÇÔ¼öÀÌ´Ù
+// Explanation: í˜„ì¬ëŠ” íŒŒí‹°ì—ì„œ ê¸ˆì•¡ ë¶„ë°°ì‹œ ì‚¬ìš©ë˜ëŠ” í•¨ìˆ˜ì´ë‹¤
 //************************************
 void GLChar::InsertMoney ( LONGLONG lnAmount )
 {
-	//	µ· ½Àµæ.
+	//	ëˆ ìŠµë“.
 
 	lnAmount = CalculateInsertmoney( lnAmount );
 
@@ -997,7 +997,7 @@ void GLChar::InsertMoney ( LONGLONG lnAmount )
 
 	m_lnMoney += lnAmount;
 
-	//	Note : ±İ¾× ·Î±×.
+	//	Note : ê¸ˆì•¡ ë¡œê·¸.
 	//
 	if ( lnAmount>EMMONEY_LOG )
 	{
@@ -1026,7 +1026,7 @@ void GLChar::InsertMoney ( LONGLONG lnAmount )
 	if( lnAmount != 0 )
 #endif
 	{
-		//	±İ¾× º¯È­ Å¬¶óÀÌ¾ğÆ®¿¡ ¾Ë·ÁÁÜ.
+		//	ê¸ˆì•¡ ë³€í™” í´ë¼ì´ì–¸íŠ¸ì— ì•Œë ¤ì¤Œ.
 		GLMSG::SNETPC_UPDATE_MONEY NetMsg;
 		NetMsg.lnMoney = m_lnMoney;
 		/*dmk14 ingame web*/
@@ -1045,7 +1045,7 @@ void GLChar::InsertMoney ( LONGLONG lnAmount )
 LONGLONG GLChar::CalculateInsertmoney( LONGLONG lnAmount )
 {
 	LONGLONG lnMoney = lnAmount;
-	//	µ· ½Àµæ.	
+	//	ëˆ ìŠµë“.	
 
 	//old code modify rate from event
 	//could be useful 
@@ -1073,13 +1073,13 @@ LONGLONG GLChar::CalculateInsertmoney( LONGLONG lnAmount )
 	lnMoney *= fSystemRate;
 
 #if defined(TH_PARAM) || defined(MYE_PARAM ) || defined(MY_PARAM)
-	if( m_dwThaiCCafeClass == 1 || m_nMyCCafeClass == 1 ) // Aµî±Ş
+	if( m_dwThaiCCafeClass == 1 || m_nMyCCafeClass == 1 ) // Aë“±ê¸‰
 	{
 		lnMoney *= 2;
-	}else if( m_dwThaiCCafeClass == 2 || m_nMyCCafeClass == 2 ) // Bµî±Ş
+	}else if( m_dwThaiCCafeClass == 2 || m_nMyCCafeClass == 2 ) // Bë“±ê¸‰
 	{
 		lnMoney *= 1.75f;
-	}else if( m_dwThaiCCafeClass == 3 || m_nMyCCafeClass == 3 ) // Cµî±Ş
+	}else if( m_dwThaiCCafeClass == 3 || m_nMyCCafeClass == 3 ) // Cë“±ê¸‰
 	{
 		lnMoney *= 1.5f;
 	}
@@ -1113,7 +1113,7 @@ LONGLONG GLChar::CalculateInsertmoney( LONGLONG lnAmount )
 
 HRESULT GLChar::InsertToInven ( PMONEYDROP pMoneyDrop )
 {
-	//	µ· ½Àµæ.	
+	//	ëˆ ìŠµë“.	
 	if( pMoneyDrop->bDropMonster )
 	{
 		pMoneyDrop->lnAmount = CalculateInsertmoney( pMoneyDrop->lnAmount );
@@ -1125,7 +1125,7 @@ HRESULT GLChar::InsertToInven ( PMONEYDROP pMoneyDrop )
 
 	m_lnMoney += pMoneyDrop->lnAmount;
 
-	//	Note : ±İ¾× ·Î±×.
+	//	Note : ê¸ˆì•¡ ë¡œê·¸.
 	//
 	if ( pMoneyDrop->lnAmount>EMMONEY_LOG )
 	{
@@ -1166,13 +1166,13 @@ HRESULT GLChar::InsertToInven ( PMONEYDROP pMoneyDrop )
 	GLGaeaServer::GetInstance().SENDTOCLIENT ( m_dwClientID, &NetMsg2 );
 #endif
 
-	//	µ·À» Land¿¡¼­ »èÁ¦.
+	//	ëˆì„ Landì—ì„œ ì‚­ì œ.
 	m_pLandMan->DropOutMoney ( pMoneyDrop->dwGlobID );
 
 	return S_OK;
 }
 
-//	Note : FieldÀÇ ¾ÆÀÌÅÆ,µ·À» Inventory ¿¡ ³Ö±â ½Ãµµ.
+//	Note : Fieldì˜ ì•„ì´íƒ¬,ëˆì„ Inventory ì— ë„£ê¸° ì‹œë„.
 //
 HRESULT GLChar::MsgReqFieldToInven ( NET_MSG_GENERIC* nmg )
 {
@@ -1188,7 +1188,7 @@ HRESULT GLChar::MsgReqFieldToInven ( NET_MSG_GENERIC* nmg )
 
 		if ( !pItemDrop )
 		{
-			//	¾ÆÀÌÅÆÀÌ »ç¶óÁ³½À´Ï´Ù.
+			//	ì•„ì´íƒ¬ì´ ì‚¬ë¼ì¡ŒìŠµë‹ˆë‹¤.
 			GLMSG::SNETPC_REQ_TAKE_FB NetMsg;
 			NetMsg.emCrow = CROW_ITEM;
 			NetMsg.emTakeFB = EMTAKE_FB_OFF;
@@ -1197,10 +1197,10 @@ HRESULT GLChar::MsgReqFieldToInven ( NET_MSG_GENERIC* nmg )
 			return E_FAIL;
 		}
 
-		// »ç¸ÁÈ®ÀÎ
+		// ì‚¬ë§í™•ì¸
 		if ( !IsValidBody() )	return E_FAIL;
 
-		//	°Å¸® Ã¼Å©
+		//	ê±°ë¦¬ ì²´í¬
 		D3DXVECTOR3 vPos;
 
 		if ( pNetMsg->bPet )	
@@ -1221,7 +1221,7 @@ HRESULT GLChar::MsgReqFieldToInven ( NET_MSG_GENERIC* nmg )
 
 		if ( fDistance>wTakeAbleDis )
 		{
-			//	°Å¸®°¡ ¸Ù´Ï´Ù.
+			//	ê±°ë¦¬ê°€ ë©‰ë‹ˆë‹¤.
 			GLMSG::SNETPC_REQ_TAKE_FB NetMsg;
 			NetMsg.emCrow = CROW_ITEM;
 			NetMsg.emTakeFB = EMTAKE_FB_DISTANCE;
@@ -1231,7 +1231,7 @@ HRESULT GLChar::MsgReqFieldToInven ( NET_MSG_GENERIC* nmg )
 			return E_FAIL;
 		}
 
-        // ÇÊµå¿¡¼­ ÁÖ¿î°æ¿ì ½ÃÈ¿¼º Ã¼Å©( Å¬·´¶ôÄ¿ ¹ö±× ´ëÃ³ )
+        // í•„ë“œì—ì„œ ì£¼ìš´ê²½ìš° ì‹œíš¨ì„± ì²´í¬( í´ëŸ½ë½ì»¤ ë²„ê·¸ ëŒ€ì²˜ )
 		{	
 			GLITEMLMT & glItemmt = GLITEMLMT::GetInstance();
 			GLItemMan & glItemMan = GLItemMan::GetInstance();
@@ -1252,17 +1252,17 @@ HRESULT GLChar::MsgReqFieldToInven ( NET_MSG_GENERIC* nmg )
 
 				if ( cTIME_CUR > cTIME_LMT )
 				{
-					//	½Ã°£ Á¦ÇÑÀ¸·Î ¾ÆÀÌÅÛ »èÁ¦ ·Î±× ³²±è.
+					//	ì‹œê°„ ì œí•œìœ¼ë¡œ ì•„ì´í…œ ì‚­ì œ ë¡œê·¸ ë‚¨ê¹€.
 					glItemmt.ReqItemRoute ( sCUSTOM, ID_CHAR, m_dwCharID, ID_CHAR, 0, EMITEM_ROUTE_DELETE, sCUSTOM.wTurnNum );
 
-					//	½Ã°£ Á¦ÇÑÀ¸·Î ¾ÆÀÌÅÛ »èÁ¦ ¾Ë¸².
+					//	ì‹œê°„ ì œí•œìœ¼ë¡œ ì•„ì´í…œ ì‚­ì œ ì•Œë¦¼.
 					GLMSG::SNET_INVEN_DEL_ITEM_TIMELMT NetMsgInvenDelTimeLmt;
 					NetMsgInvenDelTimeLmt.nidITEM = sCUSTOM.sNativeID;
 					m_pGLGaeaServer->SENDTOCLIENT(m_dwClientID,&NetMsgInvenDelTimeLmt);
 
 					bDELETE = true;				
 
-					//	Note : ÄÚ½ºÅù º¹±¸.
+					//	Note : ì½”ìŠ¤íˆ¼ ë³µêµ¬.
 					if ( sCUSTOM.nidDISGUISE!=SNATIVEID(false) )
 					{
 						SITEM *pONE = glItemMan.GetItem ( sCUSTOM.nidDISGUISE );
@@ -1279,7 +1279,7 @@ HRESULT GLChar::MsgReqFieldToInven ( NET_MSG_GENERIC* nmg )
 							cTIME -= tLMT;
 						}
 
-						//	Note : ¾ÆÀÌÅÛ »ı¼º.
+						//	Note : ì•„ì´í…œ ìƒì„±.
 						//
 						sITEM_NEW.tBORNTIME = cTIME.GetTime();
 						sITEM_NEW.wTurnNum = 1;
@@ -1292,12 +1292,12 @@ HRESULT GLChar::MsgReqFieldToInven ( NET_MSG_GENERIC* nmg )
 						sITEM_NEW.wColor1 = sCUSTOM.wColor1;
 						sITEM_NEW.wColor2 = sCUSTOM.wColor2;
 
-						// »ı¼ºµÈ ÄÚ½ºÅùÀº ¹Ù´Ú¿¡¼­ ´Ù½Ã ¶³±º´Ù.
+						// ìƒì„±ëœ ì½”ìŠ¤íˆ¼ì€ ë°”ë‹¥ì—ì„œ ë‹¤ì‹œ ë–¨êµ°ë‹¤.
 						CItemDrop cDropItem;
 						cDropItem.sItemCustom = sITEM_NEW;
 						m_pLandMan->DropItem ( m_vPos, &(cDropItem.sItemCustom), EMGROUP_ONE, m_dwGaeaID );
 
-						//	Note : ºĞ¸®µÈ ÄÚ½ºÅù ·Î±×.
+						//	Note : ë¶„ë¦¬ëœ ì½”ìŠ¤íˆ¼ ë¡œê·¸.
 						glItemmt.ReqItemRoute ( sITEM_NEW, ID_CHAR, m_dwCharID, ID_CHAR, 0, EMITEM_ROUTE_GROUND, sITEM_NEW.wTurnNum );												
 					}
 					
@@ -1316,12 +1316,12 @@ HRESULT GLChar::MsgReqFieldToInven ( NET_MSG_GENERIC* nmg )
 					{
 						if ( cTIME_CUR > cTIME_LMT )
 						{
-							//	½Ã°£ Á¦ÇÑÀ¸·Î ¾ÆÀÌÅÛ »èÁ¦ ¾Ë¸².
+							//	ì‹œê°„ ì œí•œìœ¼ë¡œ ì•„ì´í…œ ì‚­ì œ ì•Œë¦¼.
 							GLMSG::SNET_INVEN_DEL_ITEM_TIMELMT NetMsgInvenDelTimeLmt;
 							NetMsgInvenDelTimeLmt.nidITEM = sCUSTOM.nidDISGUISE;
 							m_pGLGaeaServer->SENDTOCLIENT(m_dwClientID,&NetMsgInvenDelTimeLmt);
 
-							//	Note : ÄÚ½ºÅù Á¤º¸ ¸®¼Â.
+							//	Note : ì½”ìŠ¤íˆ¼ ì •ë³´ ë¦¬ì…‹.
 							pItemDrop->sItemCustom.tDISGUISE = 0;
 							pItemDrop->sItemCustom.nidDISGUISE = SNATIVEID(false);
 
@@ -1342,12 +1342,12 @@ HRESULT GLChar::MsgReqFieldToInven ( NET_MSG_GENERIC* nmg )
 				}
 			}		
 		}
-		// ¾ÆÀÌÅÛÀÌ ÀÚ½Å°ú µ¿ÀÏÇÑ ¸Ê¿¡ ÀÖ´ÂÁö ( ¼±µµÀü Á¾·áÈÄ ºñÀÎÁõÅ¬·´¿øÀÌ ¼±µµ¹«±â È¹µæÇÏ´Â ¹ö±× ´ëÃ³ )
+		// ì•„ì´í…œì´ ìì‹ ê³¼ ë™ì¼í•œ ë§µì— ìˆëŠ”ì§€ ( ì„ ë„ì „ ì¢…ë£Œí›„ ë¹„ì¸ì¦í´ëŸ½ì›ì´ ì„ ë„ë¬´ê¸° íšë“í•˜ëŠ” ë²„ê·¸ ëŒ€ì²˜ )
 		if ( pItemDrop->sMapID != m_sMapID )	return E_FAIL;
 
 		if ( !pItemDrop->IsTakeItem(m_dwPartyID,m_dwGaeaID) )
 		{
-			//	¾ÆÀÌÅÆÀÌ ´Ù¸¥ »ç¶÷¿¡°Ô ¿¹¾àµÇ¾î ÀÖ½À´Ï´Ù.
+			//	ì•„ì´íƒ¬ì´ ë‹¤ë¥¸ ì‚¬ëŒì—ê²Œ ì˜ˆì•½ë˜ì–´ ìˆìŠµë‹ˆë‹¤.
 			GLMSG::SNETPC_REQ_TAKE_FB NetMsg;
 			NetMsg.emCrow = CROW_ITEM;
 			NetMsg.emTakeFB = EMTAKE_FB_RESERVED;
@@ -1365,7 +1365,7 @@ HRESULT GLChar::MsgReqFieldToInven ( NET_MSG_GENERIC* nmg )
 			return S_OK;
 		}
 
-		//	Note : ÆÄÆ¼¿øÀÌ°í ÀÌº¥Æ® ¾ÆÀÌÅÛÀÌ ¾Æ´Ò¶§ ÆÄÆ¼ ·çÆÃÀÎÁö °Ë»çÈÄ Ã³¸®.
+		//	Note : íŒŒí‹°ì›ì´ê³  ì´ë²¤íŠ¸ ì•„ì´í…œì´ ì•„ë‹ë•Œ íŒŒí‹° ë£¨íŒ…ì¸ì§€ ê²€ì‚¬í›„ ì²˜ë¦¬.
 		//
 		GLPARTY_FIELD* pParty = GLGaeaServer::GetInstance().GetParty(m_dwPartyID);
 		if ( pParty && !pItem->ISEVENTITEM() )
@@ -1374,11 +1374,11 @@ HRESULT GLChar::MsgReqFieldToInven ( NET_MSG_GENERIC* nmg )
 			if ( ballot )		return S_OK;
 		}
 
-		//	Note : ÀÌº¥Æ® ¾ÆÀÌÅÛ Áßº¹À¸·Î °¡Á®°¡±â ¹æÁö.
+		//	Note : ì´ë²¤íŠ¸ ì•„ì´í…œ ì¤‘ë³µìœ¼ë¡œ ê°€ì ¸ê°€ê¸° ë°©ì§€.
 		//
 		if ( pItem->ISEVENTITEM() && m_cInventory.HaveEventItem() )
 		{
-			//	ÀÌ¹Ì ÀÌº¥Æ® ¾ÆÀÌÅÛÀ» °¡Áö°í ÀÖ½À´Ï´Ù.
+			//	ì´ë¯¸ ì´ë²¤íŠ¸ ì•„ì´í…œì„ ê°€ì§€ê³  ìˆìŠµë‹ˆë‹¤.
 			GLMSG::SNETPC_REQ_TAKE_FB NetMsg;
 			NetMsg.emCrow = CROW_ITEM;
 			NetMsg.emTakeFB = EMTAKE_FB_TOO_EVENT_ITEM;
@@ -1388,7 +1388,7 @@ HRESULT GLChar::MsgReqFieldToInven ( NET_MSG_GENERIC* nmg )
 			return E_FAIL;
 		}
 
-		//	Note : ¾ÆÀÌÅÛ ÀÎº¥¿¡ ³ÖÀ½ ( ÀÎº¥ÀÌ °¡µæ Â÷ÀÖÀ» ¶§´Â ½Àµæ ºÒ°¡´É. ) º£Æ®³²ÀÏ °æ¿ì Å½´Ğ ÀÎº¥Åä¸®¿¡ ³ÖÀ» ¼öµµ ÀÖ´Ù.
+		//	Note : ì•„ì´í…œ ì¸ë²¤ì— ë„£ìŒ ( ì¸ë²¤ì´ ê°€ë“ ì°¨ìˆì„ ë•ŒëŠ” ìŠµë“ ë¶ˆê°€ëŠ¥. ) ë² íŠ¸ë‚¨ì¼ ê²½ìš° íƒë‹‰ ì¸ë²¤í† ë¦¬ì— ë„£ì„ ìˆ˜ë„ ìˆë‹¤.
 		//
 
 #if defined(VN_PARAM) //vietnamtest%%%
@@ -1404,8 +1404,8 @@ HRESULT GLChar::MsgReqFieldToInven ( NET_MSG_GENERIC* nmg )
 
 
 /*
-		// È¹µæÇÑ ¾ÆÀÌÅÛÀÌ ÆÖÄ«µå && »ı¼ºµÈ ÆÖÀÌ¶ó¸é ¼ÒÀ¯±ÇÀ» ÀÌÀüÇÑ´Ù.
-		// ÆÖ¾ÆÀÌµğ°¡ 0 ÀÌ ¾Æ´Ï¸é ÆÖÄ«µåÀÌ¸é¼­ DB¿¡ ÆÖÀÌ »ı¼ºµÈ °ÍÀÌ´Ù.
+		// íšë“í•œ ì•„ì´í…œì´ íŒ»ì¹´ë“œ && ìƒì„±ëœ íŒ»ì´ë¼ë©´ ì†Œìœ ê¶Œì„ ì´ì „í•œë‹¤.
+		// íŒ»ì•„ì´ë””ê°€ 0 ì´ ì•„ë‹ˆë©´ íŒ»ì¹´ë“œì´ë©´ì„œ DBì— íŒ»ì´ ìƒì„±ëœ ê²ƒì´ë‹¤.
 		if ( pItem->sBasicOp.emItemType == ITEM_PET_CARD && pItemDrop->sItemCustom.dwPetID != 0 )
 		{
 			CExchangePet* pDbAction = new CExchangePet ( m_dwCharID, pItemDrop->sItemCustom.dwPetID );
@@ -1422,7 +1422,7 @@ HRESULT GLChar::MsgReqFieldToInven ( NET_MSG_GENERIC* nmg )
 		  
 		if ( !pMoneyDrop )
 		{
-			//	µ·ÀÌ »ç¶óÁ³½À´Ï´Ù.
+			//	ëˆì´ ì‚¬ë¼ì¡ŒìŠµë‹ˆë‹¤.
 			GLMSG::SNETPC_REQ_TAKE_FB NetMsg;
 			NetMsg.emCrow = CROW_MONEY;
 			NetMsg.emTakeFB = EMTAKE_FB_OFF;
@@ -1431,10 +1431,10 @@ HRESULT GLChar::MsgReqFieldToInven ( NET_MSG_GENERIC* nmg )
 			return E_FAIL;
 		}
 
-		// »ç¸ÁÈ®ÀÎ
+		// ì‚¬ë§í™•ì¸
 		if ( !IsValidBody() )	return E_FAIL;
 
-		//	°Å¸® Ã¼Å©
+		//	ê±°ë¦¬ ì²´í¬
 		D3DXVECTOR3 vPos;
 
 		if ( pNetMsg->bPet )	
@@ -1455,7 +1455,7 @@ HRESULT GLChar::MsgReqFieldToInven ( NET_MSG_GENERIC* nmg )
 
 		if ( fDistance>wTakeAbleDis )
 		{
-			//	°Å¸®°¡ ¸Ù´Ï´Ù.
+			//	ê±°ë¦¬ê°€ ë©‰ë‹ˆë‹¤.
 			GLMSG::SNETPC_REQ_TAKE_FB NetMsg;
 			NetMsg.emCrow = CROW_ITEM;
 			NetMsg.emTakeFB = EMTAKE_FB_DISTANCE;
@@ -1467,7 +1467,7 @@ HRESULT GLChar::MsgReqFieldToInven ( NET_MSG_GENERIC* nmg )
 
 		if ( !pMoneyDrop->IsTakeItem(m_dwPartyID,m_dwGaeaID) )
 		{
-			//	µ·ÀÌ ´Ù¸¥ »ç¶÷¿¡°Ô ¿¹¾àµÇ¾î ÀÖ½À´Ï´Ù.
+			//	ëˆì´ ë‹¤ë¥¸ ì‚¬ëŒì—ê²Œ ì˜ˆì•½ë˜ì–´ ìˆìŠµë‹ˆë‹¤.
 			GLMSG::SNETPC_REQ_TAKE_FB NetMsg;
 			NetMsg.emCrow = CROW_MONEY;
 			NetMsg.emTakeFB = EMTAKE_FB_RESERVED;
@@ -1477,7 +1477,7 @@ HRESULT GLChar::MsgReqFieldToInven ( NET_MSG_GENERIC* nmg )
 		}
 
 
-		//	Note : ÆÄÆ¼¿øÀÌ°í ÀÌº¥Æ® ¾ÆÀÌÅÛÀÌ ¾Æ´Ò¶§ ÆÄÆ¼ ·çÆÃÀÎÁö °Ë»çÈÄ Ã³¸®.
+		//	Note : íŒŒí‹°ì›ì´ê³  ì´ë²¤íŠ¸ ì•„ì´í…œì´ ì•„ë‹ë•Œ íŒŒí‹° ë£¨íŒ…ì¸ì§€ ê²€ì‚¬í›„ ì²˜ë¦¬.
 		//
 		GLPARTY_FIELD* pParty = GLGaeaServer::GetInstance().GetParty(m_dwPartyID);
 		if ( pParty )
@@ -1489,14 +1489,14 @@ HRESULT GLChar::MsgReqFieldToInven ( NET_MSG_GENERIC* nmg )
 			}
 		}
 
-		//	µ· Áİ±â ¼º°ø.
+		//	ëˆ ì¤ê¸° ì„±ê³µ.
 		InsertToInven ( pMoneyDrop );
 	}
 
 	return S_OK;
 }
 
-//	Note : FieldÀÇ ¾ÆÀÌÅÆ,µ·À» ¼Õ¿¡ µé±â ½Ãµµ.	( ¼Õ¿¡ µç ¾ÆÀÌÅÆÀÌ ¾ø´Ù°í °¡Á¤ÇÔ. )
+//	Note : Fieldì˜ ì•„ì´íƒ¬,ëˆì„ ì†ì— ë“¤ê¸° ì‹œë„.	( ì†ì— ë“  ì•„ì´íƒ¬ì´ ì—†ë‹¤ê³  ê°€ì •í•¨. )
 //
 HRESULT GLChar::MsgReqFieldToHold ( NET_MSG_GENERIC* nmg )
 {
@@ -1504,15 +1504,15 @@ HRESULT GLChar::MsgReqFieldToHold ( NET_MSG_GENERIC* nmg )
 
 	PITEMDROP pItemDrop = m_pLandMan->GetItem ( pNetMsg->dwGlobID );
 
-	// ÇÊµå¿¡¼­ ¾ÆÀÌÅÛÀ» ¼Õ¿¡ µå´Â°æ¿ì´Â ÀÎº¥ÀÌ °¡µæ Ã¡À» °æ¿ì »ÓÀÌ´Ù.
-	// º£Æ®³²Å½´ĞÀÏ °æ¿ì ¼Õ¿¡ µå´Â°É ¹æÁöÇØ¾ß ÇÑ´Ù.
+	// í•„ë“œì—ì„œ ì•„ì´í…œì„ ì†ì— ë“œëŠ”ê²½ìš°ëŠ” ì¸ë²¤ì´ ê°€ë“ ì°¼ì„ ê²½ìš° ë¿ì´ë‹¤.
+	// ë² íŠ¸ë‚¨íƒë‹‰ì¼ ê²½ìš° ì†ì— ë“œëŠ”ê±¸ ë°©ì§€í•´ì•¼ í•œë‹¤.
 #if defined(VN_PARAM) //vietnamtest%%%
 	if( m_dwVietnamGainType == GAINTYPE_EMPTY )	return E_FAIL;
 #endif
 
 	if ( !pItemDrop )
 	{
-		//	¾ÆÀÌÅÆÀÌ »ç¶óÁ³½À´Ï´Ù.
+		//	ì•„ì´íƒ¬ì´ ì‚¬ë¼ì¡ŒìŠµë‹ˆë‹¤.
 		GLMSG::SNETPC_REQ_TAKE_FB NetMsg;
 		NetMsg.emCrow = CROW_ITEM;
 		NetMsg.emTakeFB = EMTAKE_FB_OFF;
@@ -1521,7 +1521,7 @@ HRESULT GLChar::MsgReqFieldToHold ( NET_MSG_GENERIC* nmg )
 		return S_FALSE;
 	}
 
-	// ¾ÆÀÌÅÛÀÌ ÀÚ½Å°ú µ¿ÀÏÇÑ ¸Ê¿¡ ÀÖ´ÂÁö ( ¼±µµÀü Á¾·áÈÄ ºñÀÎÁõÅ¬·´¿øÀÌ ¼±µµ¹«±â È¹µæÇÏ´Â ¹ö±× ´ëÃ³ )
+	// ì•„ì´í…œì´ ìì‹ ê³¼ ë™ì¼í•œ ë§µì— ìˆëŠ”ì§€ ( ì„ ë„ì „ ì¢…ë£Œí›„ ë¹„ì¸ì¦í´ëŸ½ì›ì´ ì„ ë„ë¬´ê¸° íšë“í•˜ëŠ” ë²„ê·¸ ëŒ€ì²˜ )
 	if ( pItemDrop->sMapID != m_sMapID )	return S_FALSE;
 
 	const SITEM *pItemData = GLItemMan::GetInstance().GetItem(pItemDrop->sItemCustom.sNativeID);
@@ -1529,7 +1529,7 @@ HRESULT GLChar::MsgReqFieldToHold ( NET_MSG_GENERIC* nmg )
 
 	if ( !pItemDrop->IsTakeItem(m_dwPartyID,m_dwGaeaID) )
 	{
-		//	¾ÆÀÌÅÆÀÌ ´Ù¸¥ »ç¶÷¿¡°Ô ¿¹¾àµÇ¾î ÀÖ½À´Ï´Ù.
+		//	ì•„ì´íƒ¬ì´ ë‹¤ë¥¸ ì‚¬ëŒì—ê²Œ ì˜ˆì•½ë˜ì–´ ìˆìŠµë‹ˆë‹¤.
 		GLMSG::SNETPC_REQ_TAKE_FB NetMsg;
 		NetMsg.emCrow = CROW_ITEM;
 		NetMsg.emTakeFB = EMTAKE_FB_RESERVED;
@@ -1544,7 +1544,7 @@ HRESULT GLChar::MsgReqFieldToHold ( NET_MSG_GENERIC* nmg )
 		return S_OK;
 	}
 
-	//	Note : ÆÄÆ¼¿øÀÌ°í ÀÌº¥Æ® ¾ÆÀÌÅÛÀÌ ¾Æ´Ò¶§ ÆÄÆ¼ ·çÆÃÀÎÁö °Ë»çÈÄ Ã³¸®.
+	//	Note : íŒŒí‹°ì›ì´ê³  ì´ë²¤íŠ¸ ì•„ì´í…œì´ ì•„ë‹ë•Œ íŒŒí‹° ë£¨íŒ…ì¸ì§€ ê²€ì‚¬í›„ ì²˜ë¦¬.
 	//
 	GLPARTY_FIELD* pParty = GLGaeaServer::GetInstance().GetParty(m_dwPartyID);
 	if ( pParty && !pItemData->ISEVENTITEM() )
@@ -1553,11 +1553,11 @@ HRESULT GLChar::MsgReqFieldToHold ( NET_MSG_GENERIC* nmg )
 		if ( ballot )		return S_OK;
 	}
 
-	//	Note : ÀÌº¥Æ® ¾ÆÀÌÅÛ Áßº¹À¸·Î °¡Á®°¡±â ¹æÁö.
+	//	Note : ì´ë²¤íŠ¸ ì•„ì´í…œ ì¤‘ë³µìœ¼ë¡œ ê°€ì ¸ê°€ê¸° ë°©ì§€.
 	//
 	if ( pItemData->ISEVENTITEM() && m_cInventory.HaveEventItem() )
 	{
-		//	ÀÌ¹Ì ÀÌº¥Æ® ¾ÆÀÌÅÛÀ» °¡Áö°í ÀÖ½À´Ï´Ù.
+		//	ì´ë¯¸ ì´ë²¤íŠ¸ ì•„ì´í…œì„ ê°€ì§€ê³  ìˆìŠµë‹ˆë‹¤.
 		GLMSG::SNETPC_REQ_TAKE_FB NetMsg;
 		NetMsg.emCrow = CROW_ITEM;
 		NetMsg.emTakeFB = EMTAKE_FB_TOO_EVENT_ITEM;
@@ -1567,26 +1567,26 @@ HRESULT GLChar::MsgReqFieldToHold ( NET_MSG_GENERIC* nmg )
 		return S_FALSE;
 	}
 
-	//	Field¿¡ ÀÖ¾ú´ø ¾ÆÀÌÅÆÀ» ¼Õ¿¡ µë.
+	//	Fieldì— ìˆì—ˆë˜ ì•„ì´íƒ¬ì„ ì†ì— ë“¬.
 	HOLD_ITEM ( pItemDrop->sItemCustom );
 
-	//	Note :¾ÆÀÌÅÛÀÇ ¼ÒÀ¯ ÀÌÀü °æ·Î ±â·Ï.
+	//	Note :ì•„ì´í…œì˜ ì†Œìœ  ì´ì „ ê²½ë¡œ ê¸°ë¡.
 	//
 	GLITEMLMT::GetInstance().ReqItemRoute ( pItemDrop->sItemCustom, ID_CHAR, 0, ID_CHAR, m_dwCharID, EMITEM_ROUTE_CHAR, pItemDrop->sItemCustom.wTurnNum );
 
-	//	[ÀÚ½Å¿¡°Ô] ¸Ş½ÃÁö ¹ß»ı.
+	//	[ìì‹ ì—ê²Œ] ë©”ì‹œì§€ ë°œìƒ.
 	GLMSG::SNETPC_PUTON_UPDATE NetMsg_PutOn;
 	NetMsg_PutOn.emSlot = SLOT_HOLD;
 	NetMsg_PutOn.sItemCustom = pItemDrop->sItemCustom;
 	GLGaeaServer::GetInstance().SENDTOCLIENT(m_dwClientID,&NetMsg_PutOn);
 
-	//	Note : ¾ÆÀÌÅÆ Land¿¡¼­ »èÁ¦.
+	//	Note : ì•„ì´íƒ¬ Landì—ì„œ ì‚­ì œ.
 	m_pLandMan->DropOutItem ( pItemDrop->dwGlobID );
 
 	return S_OK;
 }
 
-//	Note : InventoryÀÇ ¾ÆÀÌÅÆÀ» ¼Õ¿¡ µé±â ½Ãµµ.
+//	Note : Inventoryì˜ ì•„ì´íƒ¬ì„ ì†ì— ë“¤ê¸° ì‹œë„.
 //
 HRESULT GLChar::MsgReqInvenToHold ( NET_MSG_GENERIC* nmg )
 {
@@ -1594,7 +1594,7 @@ HRESULT GLChar::MsgReqInvenToHold ( NET_MSG_GENERIC* nmg )
 	
 	static GLMSG::SNETPC_REQ_HOLD_FB NetMsg_fb(NET_MSG_GCTRL_REQ_INVEN_TO_HOLD,EMHOLD_FB_OFF);
 
-	//	¿äÃ»ÇÑ ¾ÆÀÌÅÆ À¯È¿¼º °Ë»ç.
+	//	ìš”ì²­í•œ ì•„ì´íƒ¬ ìœ íš¨ì„± ê²€ì‚¬.
 	SINVENITEM *pInvenItem = m_cInventory.GetItem ( pNetMsg->wPosX, pNetMsg->wPosY );
 	if ( !pInvenItem )
 	{
@@ -1602,7 +1602,7 @@ HRESULT GLChar::MsgReqInvenToHold ( NET_MSG_GENERIC* nmg )
 		return S_FALSE;
 	}
 
-	//	¼Õ¿¡ µç ¾ÆÀÌÅÆÀÌ ÀÖÀ»¶§.
+	//	ì†ì— ë“  ì•„ì´íƒ¬ì´ ìˆì„ë•Œ.
 	if ( VALID_HOLD_ITEM() )
 	{
 		GLGaeaServer::GetInstance().SENDTOCLIENT(m_dwClientID,&NetMsg_fb);
@@ -1612,7 +1612,11 @@ HRESULT GLChar::MsgReqInvenToHold ( NET_MSG_GENERIC* nmg )
 	SITEM* pITEM = GLItemMan::GetInstance().GetItem( pInvenItem->sItemCustom.sNativeID );
 	if ( !pITEM ) return S_FALSE;
 
-		/*inventory lock, Juver, 2018/01/18 */
+	/*security hardening: block inventory hold during active trade or club storage to prevent item duplication*/
+	if ( m_sTrade.Valid() || m_bClubStorage )
+		return S_FALSE;
+
+	/*inventory lock, Juver, 2018/01/18 */
 	if ( m_bEnableInventoryLock && m_bInventoryLockStatus )
 		return S_FALSE;
 
@@ -1631,10 +1635,10 @@ HRESULT GLChar::MsgReqInvenToHold ( NET_MSG_GENERIC* nmg )
 		return S_FALSE;
 	}
 
-	//	ÀÎ¹ê¿¡ ÀÖ´ø ¾ÆÀÌÅÆ ¹é¾÷.
+	//	ì¸ë°´ì— ìˆë˜ ì•„ì´íƒ¬ ë°±ì—….
 	SINVENITEM sInven_BackUp = *pInvenItem;
 
-	//	ÀÎ¹ê¿¡¼­ »©³¾ ¾ÆÀÌÅÆÀ» »èÁ¦.
+	//	ì¸ë°´ì—ì„œ ë¹¼ë‚¼ ì•„ì´íƒ¬ì„ ì‚­ì œ.
 	m_cInventory.DeleteItem ( sInven_BackUp.wPosX, sInven_BackUp.wPosY );
 
 	{
@@ -1657,16 +1661,16 @@ HRESULT GLChar::MsgReqInvenToHold ( NET_MSG_GENERIC* nmg )
 		}
 	}
 
-	//	ÀÎ¹ê¿¡ ÀÖ¾ú´ø ¾ÆÀÌÅÆÀ» ¼Õ¿¡ µë.
+	//	ì¸ë°´ì— ìˆì—ˆë˜ ì•„ì´íƒ¬ì„ ì†ì— ë“¬.
 	HOLD_ITEM ( sInven_BackUp.sItemCustom );
 
-	//	[ÀÚ½Å¿¡°Ô] ¸Ş½ÃÁö ¹ß»ı.	- ÀÎ¹ê¿¡¼­ ¾ÆÀÌÅÆ »èÁ¦.
+	//	[ìì‹ ì—ê²Œ] ë©”ì‹œì§€ ë°œìƒ.	- ì¸ë°´ì—ì„œ ì•„ì´íƒ¬ ì‚­ì œ.
 	GLMSG::SNETPC_INVEN_DELETE NetMsg;
 	NetMsg.wPosX = sInven_BackUp.wPosX;
 	NetMsg.wPosY = sInven_BackUp.wPosY;
 	GLGaeaServer::GetInstance().SENDTOCLIENT(m_dwClientID,&NetMsg);
 
-	//	[ÀÚ½Å¿¡°Ô] ÀÎ¹ê¿¡ ÀÖ¾ú´ø ¾ÆÀÌÅÆÀ» ¼Õ¿¡ µë.
+	//	[ìì‹ ì—ê²Œ] ì¸ë°´ì— ìˆì—ˆë˜ ì•„ì´íƒ¬ì„ ì†ì— ë“¬.
 	GLMSG::SNETPC_PUTON_UPDATE NetMsg_PutOn;
 	NetMsg_PutOn.emSlot = SLOT_HOLD;
 	NetMsg_PutOn.sItemCustom = sInven_BackUp.sItemCustom;
@@ -2117,7 +2121,7 @@ HRESULT GLChar::MsgReqHoldArray ( NET_MSG_GENERIC* nmg )
 											WORD wONENUM = wREQINSRTNUM / wPILENUM;
 											WORD wITEMNUM = wONENUM;
 
-											//	¿©ºĞ°ãÄ§¾ÆÀÌÅÛÀÇ °ãÄ§¼ö.
+											//	ì—¬ë¶„ê²¹ì¹¨ì•„ì´í…œì˜ ê²¹ì¹¨ìˆ˜.
 											WORD wSPLITNUM = wREQINSRTNUM % wPILENUM;
 											if ( wSPLITNUM > 0 )				wITEMNUM += 1;
 											if ( wSPLITNUM==0 && wITEMNUM>=1 )	wSPLITNUM = wPILENUM;
@@ -2126,9 +2130,9 @@ HRESULT GLChar::MsgReqHoldArray ( NET_MSG_GENERIC* nmg )
 											{
 												WORD wInsertPosX(0), wInsertPosY(0);
 												BOOL bITEM_SPACE = m_cInventory.FindInsrtable ( wINVENX, wINVENY, wInsertPosX, wInsertPosY );
-												GASSERT(bITEM_SPACE&&"³ÖÀ» °ø°£À» ¹Ì¸® Ã¼Å©¸¦ ÇÏ°í ¾ÆÀÌÅÛÀ» ³Ö¾úÀ¸³ª °ø°£ÀÌ ºÎÁ·ÇÔ.");
+												GASSERT(bITEM_SPACE&&"ë„£ì„ ê³µê°„ì„ ë¯¸ë¦¬ ì²´í¬ë¥¼ í•˜ê³  ì•„ì´í…œì„ ë„£ì—ˆìœ¼ë‚˜ ê³µê°„ì´ ë¶€ì¡±í•¨.");
 
-												//	Note : »õ·Î¿î ¾ÆÀÌÅÛÀ» ³Ö¾îÁÜ.
+												//	Note : ìƒˆë¡œìš´ ì•„ì´í…œì„ ë„£ì–´ì¤Œ.
 												//
 												SITEMCUSTOM sITEMCUSTOM(sItemCustom.sNativeID);
 												sITEMCUSTOM.tBORNTIME = sItemCustom.tBORNTIME;
@@ -2137,12 +2141,12 @@ HRESULT GLChar::MsgReqHoldArray ( NET_MSG_GENERIC* nmg )
 												sITEMCUSTOM.cChnID = sItemCustom.cChnID;
 												sITEMCUSTOM.cFieldID = sItemCustom.cFieldID;
 
-												if ( wITEMNUM==(i+1) )	sITEMCUSTOM.wTurnNum = wSPLITNUM;	//	¸¶Áö¸· ¾ÆÀÌÅÛÀº ÀÜ¿©·®.
-												else					sITEMCUSTOM.wTurnNum = wPILENUM;	//	¾Æ´Ò °æ¿ì´Â ²ËÂù·®.
+												if ( wITEMNUM==(i+1) )	sITEMCUSTOM.wTurnNum = wSPLITNUM;	//	ë§ˆì§€ë§‰ ì•„ì´í…œì€ ì”ì—¬ëŸ‰.
+												else					sITEMCUSTOM.wTurnNum = wPILENUM;	//	ì•„ë‹ ê²½ìš°ëŠ” ê½‰ì°¬ëŸ‰.
 
-												m_cInventory.InsertItem ( sITEMCUSTOM, wInsertPosX, wInsertPosY );	//	ÀÎ¹êÅä¸®¿¡ ³Ö½À´Ï´Ù.
+												m_cInventory.InsertItem ( sITEMCUSTOM, wInsertPosX, wInsertPosY );	//	ì¸ë°´í† ë¦¬ì— ë„£ìŠµë‹ˆë‹¤.
 
-												//	ÀÎ¹ê¿¡ ¾ÆÀÌÅÆ ³Ö¾îÁÖ´Â ¸Ş½ÃÁö.
+												//	ì¸ë°´ì— ì•„ì´íƒ¬ ë„£ì–´ì£¼ëŠ” ë©”ì‹œì§€.
 												GLMSG::SNETPC_INVEN_INSERT NetMsgInven;
 												NetMsgInven.Data = *m_cInventory.GetItem ( wInsertPosX, wInsertPosY );
 												GLGaeaServer::GetInstance().SENDTOCLIENT(m_dwClientID,&NetMsgInven);
@@ -2314,12 +2318,12 @@ HRESULT GLChar::MsgReqInvenExHold ( NET_MSG_GENERIC* nmg )
 	if ( m_bEnableInventoryLock && m_bInventoryLockStatus )
 		return S_FALSE;
 
-	SINVENITEM sInven_BackUp = *pInvenItem;		//	ÀÎ¹ê¿¡ ÀÖ´ø ¾ÆÀÌÅÆ ¹é¾÷.
+	SINVENITEM sInven_BackUp = *pInvenItem;		//	ì¸ë°´ì— ìˆë˜ ì•„ì´íƒ¬ ë°±ì—….
 	
-	WORD wPosX = sInven_BackUp.wPosX;			//	¾ÆÀÌÅÆ À§Ä¡.
+	WORD wPosX = sInven_BackUp.wPosX;			//	ì•„ì´íƒ¬ ìœ„ì¹˜.
 	WORD wPosY = sInven_BackUp.wPosY;
 
-	SITEMCUSTOM sItemHold = GET_HOLD_ITEM();	//	¼Õ¿¡ µç ¾ÆÀÌÅÆ ¹é¾÷.
+	SITEMCUSTOM sItemHold = GET_HOLD_ITEM();	//	ì†ì— ë“  ì•„ì´íƒ¬ ë°±ì—….
 
 #if defined(VN_PARAM) //vietnamtest%%%
 		if ( sItemHold.bVietnamGainItem )	return S_FALSE;
@@ -2329,7 +2333,7 @@ HRESULT GLChar::MsgReqInvenExHold ( NET_MSG_GENERIC* nmg )
 	SITEM* pHoldData = GLItemMan::GetInstance().GetItem ( sItemHold.sNativeID );
 	if ( !pInvenData || !pHoldData )	return S_FALSE;
 
-	//	Note : º´ÇÕ ÇÒ¼ö ÀÖ´Â ¾ÆÀÌÅÛÀÎÁö Á¡°Ë.
+	//	Note : ë³‘í•© í• ìˆ˜ ìˆëŠ” ì•„ì´í…œì¸ì§€ ì ê²€.
 	bool bMERGE(false);
 	bMERGE = (pInvenData->sBasicOp.sNativeID==pHoldData->sBasicOp.sNativeID);
 	if (bMERGE)	bMERGE = ( pInvenData->ISPILE() );
@@ -2341,7 +2345,7 @@ HRESULT GLChar::MsgReqInvenExHold ( NET_MSG_GENERIC* nmg )
 		
 		if ( wTurnNum <= pInvenData->sDrugOp.wPileNum )
 		{
-			//	Note : °ãÄ§ ¼ö Á¶Á¤.
+			//	Note : ê²¹ì¹¨ ìˆ˜ ì¡°ì •.
 			pInvenItem->sItemCustom.wTurnNum = wTurnNum;
 			
 			{
@@ -2371,17 +2375,17 @@ HRESULT GLChar::MsgReqInvenExHold ( NET_MSG_GENERIC* nmg )
 				CDebugSet::ToFileWithTime ( strName.GetString(),str.c_str() );
 			}
 
-			//	¼Õ ÀÖ¾ú´ø ¾ÆÀÌÅÆ Á¦°Å.
+			//	ì† ìˆì—ˆë˜ ì•„ì´íƒ¬ ì œê±°.
 			RELEASE_HOLD_ITEM ();
 
-			//	Note : ÀÎº¥ÀÇ ¾ÆÀÌÅÛ ¾÷µ¥ÀÌÆ®.
+			//	Note : ì¸ë²¤ì˜ ì•„ì´í…œ ì—…ë°ì´íŠ¸.
 			GLMSG::SNET_INVEN_ITEM_UPDATE NetMsgInvenItem;
 			NetMsgInvenItem.wPosX = pNetMsg->wPosX;
 			NetMsgInvenItem.wPosY = pNetMsg->wPosY;
 			NetMsgInvenItem.sItemCustom = pInvenItem->sItemCustom;
 			GLGaeaServer::GetInstance().SENDTOCLIENT(m_dwClientID,&NetMsgInvenItem);
 
-			//	[ÀÚ½Å¿¡°Ô] ¼Õ ÀÖ¾ú´ø ¾ÆÀÌÅÆ Á¦°Å.
+			//	[ìì‹ ì—ê²Œ] ì† ìˆì—ˆë˜ ì•„ì´íƒ¬ ì œê±°.
 			GLMSG::SNETPC_PUTON_RELEASE NetMsg_ReleaseHold(SLOT_HOLD);
 			GLGaeaServer::GetInstance().SENDTOCLIENT(m_dwClientID,&NetMsg_ReleaseHold);
 		}
@@ -2389,10 +2393,10 @@ HRESULT GLChar::MsgReqInvenExHold ( NET_MSG_GENERIC* nmg )
 		{
 			WORD wSplit = wTurnNum - pInvenData->sDrugOp.wPileNum;
 			
-			//	±âÁ¸ ¾ÆÀÌÅÛ °¹¼ö º¯°æ.
+			//	ê¸°ì¡´ ì•„ì´í…œ ê°¯ìˆ˜ ë³€ê²½.
 			pInvenItem->sItemCustom.wTurnNum = pInvenData->sDrugOp.wPileNum;
 
-			//	¼Õ¿¡ µé°í ÀÖ´ø ¾ÆÀÌÅÛ º¯°æ.
+			//	ì†ì— ë“¤ê³  ìˆë˜ ì•„ì´í…œ ë³€ê²½.
 			sItemHold.wTurnNum = wSplit;
 
 			{
@@ -2424,13 +2428,13 @@ HRESULT GLChar::MsgReqInvenExHold ( NET_MSG_GENERIC* nmg )
 
 			HOLD_ITEM ( sItemHold );
 
-			//	Note : ¼Õ¿¡µç ¾ÆÀÌÅÛ º¯°æ.
+			//	Note : ì†ì—ë“  ì•„ì´í…œ ë³€ê²½.
 			GLMSG::SNETPC_PUTON_UPDATE NetMsgPutOn;
 			NetMsgPutOn.emSlot = SLOT_HOLD;
 			NetMsgPutOn.sItemCustom = sItemHold;
 			GLGaeaServer::GetInstance().SENDTOCLIENT(m_dwClientID,&NetMsgPutOn);
 
-			//	Note : ÀÎº¥ÀÇ ¾ÆÀÌÅÛ ¾÷µ¥ÀÌÆ®.
+			//	Note : ì¸ë²¤ì˜ ì•„ì´í…œ ì—…ë°ì´íŠ¸.
 			GLMSG::SNET_INVEN_ITEM_UPDATE NetMsgInvenItem;
 			NetMsgInvenItem.wPosX = pNetMsg->wPosX;
 			NetMsgInvenItem.wPosY = pNetMsg->wPosY;
@@ -2441,22 +2445,22 @@ HRESULT GLChar::MsgReqInvenExHold ( NET_MSG_GENERIC* nmg )
 		return S_OK;
 	}
 
-	//	ÀÎ¹ê¿¡ ÀÖ´ø ¾ÆÀÌÅÆ »èÁ¦.
+	//	ì¸ë°´ì— ìˆë˜ ì•„ì´íƒ¬ ì‚­ì œ.
 	BOOL bOk = m_cInventory.DeleteItem ( sInven_BackUp.wPosX, sInven_BackUp.wPosY );
 
-	//	Note : Á¾Àü ¼Õ¿¡µç ¾ÆÀÌÅÆ°ú µé·Á´Â ¾ÆÀÌÅÆÀÇ Å©±â°¡ Æ²¸± °æ¿ì.
-	//	µé°í ÀÖ´Â ¾ÆÀÌÅÆÀÌ µé¾î°¥ °ø°£À» Ã£´Â´Ù.
+	//	Note : ì¢…ì „ ì†ì—ë“  ì•„ì´íƒ¬ê³¼ ë“¤ë ¤ëŠ” ì•„ì´íƒ¬ì˜ í¬ê¸°ê°€ í‹€ë¦´ ê²½ìš°.
+	//	ë“¤ê³  ìˆëŠ” ì•„ì´íƒ¬ì´ ë“¤ì–´ê°ˆ ê³µê°„ì„ ì°¾ëŠ”ë‹¤.
 //	if ( !pInvenData->SAME_INVENSIZE ( *pHoldData ) )
 //	{
-		//	µ¿ÀÏÀ§Ä¡¿¡ ³ÖÀ»¼ö ÀÖ´ÂÁö °Ë»ç.
+		//	ë™ì¼ìœ„ì¹˜ì— ë„£ì„ìˆ˜ ìˆëŠ”ì§€ ê²€ì‚¬.
 		bOk = m_cInventory.IsInsertable ( pHoldData->sBasicOp.wInvenSizeX, pHoldData->sBasicOp.wInvenSizeY, wPosX, wPosY );
 		if ( !bOk )
 		{
-			//	µé°íÀÖ´ø ¾ÆÀÌÅÆ ÀÎ¹ê¿¡ ³ÖÀ» °ø°£ÀÌ ÀÖ´ÂÁö °Ë»ö.
+			//	ë“¤ê³ ìˆë˜ ì•„ì´íƒ¬ ì¸ë°´ì— ë„£ì„ ê³µê°„ì´ ìˆëŠ”ì§€ ê²€ìƒ‰.
 			bOk = m_cInventory.FindInsrtable ( pHoldData->sBasicOp.wInvenSizeX, pHoldData->sBasicOp.wInvenSizeY, wPosX, wPosY );
 			if ( !bOk )
 			{
-				//	roll-back : ÀÎ¹ê¿¡¼­ »èÁ¦Çß´ø ¾ÆÀÌÅÆÀ» ´Ù½Ã ³ÖÀ½.
+				//	roll-back : ì¸ë°´ì—ì„œ ì‚­ì œí–ˆë˜ ì•„ì´íƒ¬ì„ ë‹¤ì‹œ ë„£ìŒ.
 				m_cInventory.InsertItem ( sInven_BackUp.sItemCustom, sInven_BackUp.wPosX, sInven_BackUp.wPosY, true );
 
 				return S_FALSE;
@@ -2464,7 +2468,7 @@ HRESULT GLChar::MsgReqInvenExHold ( NET_MSG_GENERIC* nmg )
 		}
 //}
 
-	//	µé°íÀÖ´ø ¾ÆÀÌÅÆ ÀÎ¹ê¿¡ ³ÖÀ½.
+	//	ë“¤ê³ ìˆë˜ ì•„ì´íƒ¬ ì¸ë°´ì— ë„£ìŒ.
 	m_cInventory.InsertItem ( sItemHold, wPosX, wPosY );
 	SINVENITEM *pINSERT_ITEM = m_cInventory.GetItem(wPosX,wPosY);
 	if ( !pINSERT_ITEM )
@@ -2474,25 +2478,25 @@ HRESULT GLChar::MsgReqInvenExHold ( NET_MSG_GENERIC* nmg )
 		return S_FALSE;
 	}
 
-	//	ÀÎ¹ê¿¡ ÀÖ¾ú´ø ¾ÆÀÌÅÆÀ» ¼Õ¿¡ µë.
+	//	ì¸ë°´ì— ìˆì—ˆë˜ ì•„ì´íƒ¬ì„ ì†ì— ë“¬.
 	HOLD_ITEM ( sInven_BackUp.sItemCustom );
 
-	//	[ÀÚ½Å¿¡°Ô] ÀÎ¹ê¿¡ ÀÖ´ø ¾ÆÀÌÅÆ »èÁ¦, ¹× ¾ÆÀÌÅÆ »ğÀÔ.
+	//	[ìì‹ ì—ê²Œ] ì¸ë°´ì— ìˆë˜ ì•„ì´íƒ¬ ì‚­ì œ, ë° ì•„ì´íƒ¬ ì‚½ì….
 	GLMSG::SNETPC_INVEN_DEL_AND_INSERT NetMsg_Del_Insert;
-	NetMsg_Del_Insert.wDelX = sInven_BackUp.wPosX;					//	»èÁ¦µÉ ¾ÆÀÌÅÆ.
+	NetMsg_Del_Insert.wDelX = sInven_BackUp.wPosX;					//	ì‚­ì œë  ì•„ì´íƒ¬.
 	NetMsg_Del_Insert.wDelY = sInven_BackUp.wPosY;
-	if ( pINSERT_ITEM )	NetMsg_Del_Insert.sInsert = *pINSERT_ITEM;	//	»ğÀÔµÇ´Â ¾ÆÀÌÅÆ.
+	if ( pINSERT_ITEM )	NetMsg_Del_Insert.sInsert = *pINSERT_ITEM;	//	ì‚½ì…ë˜ëŠ” ì•„ì´íƒ¬.
 
 	GLGaeaServer::GetInstance().SENDTOCLIENT(m_dwClientID,&NetMsg_Del_Insert);
 
-	//	[ÀÚ½Å¿¡°Ô] ÀÎ¹ê¿¡ ÀÖ¾ú´ø ¾ÆÀÌÅÆÀ» ¼Õ¿¡ µë.
+	//	[ìì‹ ì—ê²Œ] ì¸ë°´ì— ìˆì—ˆë˜ ì•„ì´íƒ¬ì„ ì†ì— ë“¬.
 	GLMSG::SNETPC_PUTON_UPDATE NetMsg_PutOn;
 	NetMsg_PutOn.emSlot = SLOT_HOLD;
 	NetMsg_PutOn.sItemCustom = sInven_BackUp.sItemCustom;
 	GLGaeaServer::GetInstance().SENDTOCLIENT(m_dwClientID,&NetMsg_PutOn);
 
 
-	//	À¯È¿±â°£ ÃÊ°ú Á¡°Ë.	
+	//	ìœ íš¨ê¸°ê°„ ì´ˆê³¼ ì ê²€.	
 	const SINVENITEM& sINVENITEM = *pINSERT_ITEM;
 	SITEM *pITEM = GLItemMan::GetInstance().GetItem ( sINVENITEM.sItemCustom.sNativeID );
 	if ( pITEM && pITEM->IsTIMELMT() )
@@ -2511,7 +2515,7 @@ HRESULT GLChar::MsgReqInvenExHold ( NET_MSG_GENERIC* nmg )
 
 			if ( cTIME_CUR > cTIME_LMT )
 			{
-				// Å»°ÍÀÏ °æ¿ì
+				// íƒˆê²ƒì¼ ê²½ìš°
 				if ( pITEM->sBasicOp.emItemType == ITEM_VEHICLE && sINVENITEM.sItemCustom.dwVehicleID != 0 )
 				{
 					GLVEHICLE* pNewVehicle = new GLVEHICLE();
@@ -2524,21 +2528,21 @@ HRESULT GLChar::MsgReqInvenExHold ( NET_MSG_GENERIC* nmg )
 					if ( pDBMan ) pDBMan->AddJob ( pGetVehicle );
 				}
 
-				// ÆÖÄ«µåÀÏ °æ¿ì
+				// íŒ»ì¹´ë“œì¼ ê²½ìš°
 				if ( pITEM->sBasicOp.emItemType == ITEM_PET_CARD && sINVENITEM.sItemCustom.dwPetID != 0 )
 				{
 					CDeletePet* pDbAction = new CDeletePet ( m_dwCharID, sINVENITEM.sItemCustom.dwPetID );
 					GLDBMan* pDBMan = GLGaeaServer::GetInstance().GetDBMan ();
 					if ( pDBMan ) pDBMan->AddJob ( pDbAction );
 
-					// È°µ¿ÁßÀÌ¸é »ç¶óÁö°Ô ÇØÁØ´Ù.
+					// í™œë™ì¤‘ì´ë©´ ì‚¬ë¼ì§€ê²Œ í•´ì¤€ë‹¤.
 					PGLPETFIELD pMyPet = GLGaeaServer::GetInstance().GetPET ( m_dwPetGUID );
 					if ( pMyPet && sINVENITEM.sItemCustom.dwPetID == pMyPet->m_dwPetID )
 					{
-						// ÆÖÀÇ ¾Ç¼¼»ç¸®¸¦ °Ë»çÇÑ´Ù.
+						// íŒ»ì˜ ì•…ì„¸ì‚¬ë¦¬ë¥¼ ê²€ì‚¬í•œë‹¤.
 						pMyPet->UpdateTimeLmtItem ( this );
 
-						// ³Ö¾îÁÙ²¨ ³Ö¾îÁØ´Ù.
+						// ë„£ì–´ì¤„êº¼ ë„£ì–´ì¤€ë‹¤.
 						for ( WORD i = 0; i < PET_ACCETYPE_SIZE; ++i )
 						{
 							CItemDrop cDropItem;
@@ -2558,13 +2562,13 @@ HRESULT GLChar::MsgReqInvenExHold ( NET_MSG_GENERIC* nmg )
 
 						GLGaeaServer::GetInstance().ReserveDropOutPet ( SDROPOUTPETINFO(pMyPet->m_dwGUID,true,false) );
 
-						// ÆÖÀÌ »èÁ¦µÇ¸é ºÎÈ°Á¤º¸¸¦ Å¬¶óÀÌ¾ğÆ®¿¡ ¾Ë·ÁÁÜ.
+						// íŒ»ì´ ì‚­ì œë˜ë©´ ë¶€í™œì •ë³´ë¥¼ í´ë¼ì´ì–¸íŠ¸ì— ì•Œë ¤ì¤Œ.
 						CGetRestorePetList *pDbAction = new CGetRestorePetList ( m_dwCharID, m_dwClientID );
 						if ( pDBMan ) pDBMan->AddJob ( pDbAction );
 					}
 					else
 					{
-						// ¾Ç¼¼»ç¸®¸¦ Ã¼Å©ÈÄ ÆÖÀ» DB¿¡¼­ »èÁ¦ÇØÁØ´Ù.
+						// ì•…ì„¸ì‚¬ë¦¬ë¥¼ ì²´í¬í›„ íŒ»ì„ DBì—ì„œ ì‚­ì œí•´ì¤€ë‹¤.
 						GLPET* pNewPet = new GLPET ();
 						CGetPet* pGetPet = new CGetPet ( pNewPet, 
 														 sINVENITEM.sItemCustom.dwPetID, 
@@ -2578,22 +2582,22 @@ HRESULT GLChar::MsgReqInvenExHold ( NET_MSG_GENERIC* nmg )
 					}
 				}
 
-				//	[ÀÚ½Å¿¡°Ô] ÇØ´ç ¾ÆÀÌÅÆÀ» ÀÎ¹ê¿¡¼­ »èÁ¦.
+				//	[ìì‹ ì—ê²Œ] í•´ë‹¹ ì•„ì´íƒ¬ì„ ì¸ë°´ì—ì„œ ì‚­ì œ.
 				GLMSG::SNETPC_INVEN_DELETE NetMsgInvenDel;
 				NetMsgInvenDel.wPosX = sINVENITEM.wPosX;
 				NetMsgInvenDel.wPosY = sINVENITEM.wPosY;
 				GLGaeaServer::GetInstance().SENDTOCLIENT(m_dwClientID,&NetMsgInvenDel);
 
-				//	½Ã°£ Á¦ÇÑÀ¸·Î ¾ÆÀÌÅÛ »èÁ¦ ¾Ë¸².
+				//	ì‹œê°„ ì œí•œìœ¼ë¡œ ì•„ì´í…œ ì‚­ì œ ì•Œë¦¼.
 				GLMSG::SNET_INVEN_DEL_ITEM_TIMELMT NetMsgInvenDelTimeLmt;
 				NetMsgInvenDelTimeLmt.nidITEM = sINVENITEM.sItemCustom.sNativeID;
 				GLGaeaServer::GetInstance().SENDTOCLIENT(m_dwClientID,&NetMsgInvenDelTimeLmt);
 
-				//	Note : ¾ÆÀÌÅÛ »èÁ¦.
+				//	Note : ì•„ì´í…œ ì‚­ì œ.
 				//
 				m_cInventory.DeleteItem ( sINVENITEM.wPosX, sINVENITEM.wPosY );
 			
-				//	Note : ÄÚ½ºÅù º¹±¸.
+				//	Note : ì½”ìŠ¤íˆ¼ ë³µêµ¬.
 				if ( sINVENITEM.sItemCustom.nidDISGUISE!=SNATIVEID(false) )
 				{
 					SITEM *pONE = GLItemMan::GetInstance().GetItem ( sINVENITEM.sItemCustom.nidDISGUISE );
@@ -2610,7 +2614,7 @@ HRESULT GLChar::MsgReqInvenExHold ( NET_MSG_GENERIC* nmg )
 						cTIME -= tLMT;
 					}
 
-					//	Note : ¾ÆÀÌÅÛ »ı¼º.
+					//	Note : ì•„ì´í…œ ìƒì„±.
 					//
 					sITEM_NEW.tBORNTIME = cTIME.GetTime();
 					sITEM_NEW.wTurnNum = 1;
@@ -2623,11 +2627,11 @@ HRESULT GLChar::MsgReqInvenExHold ( NET_MSG_GENERIC* nmg )
 					sITEM_NEW.wColor1 = sINVENITEM.sItemCustom.wColor1;
 					sITEM_NEW.wColor2 = sINVENITEM.sItemCustom.wColor2;
 
-					//	Note : ÀÎº¥¿¡ µé¾î°¥ °ø°£ °Ë»ç.
+					//	Note : ì¸ë²¤ì— ë“¤ì–´ê°ˆ ê³µê°„ ê²€ì‚¬.
 					BOOL bOk = m_cInventory.IsInsertable ( pONE->sBasicOp.wInvenSizeX, pONE->sBasicOp.wInvenSizeY, wInsertPosX, wInsertPosY );
 					if ( !bOk )			return E_FAIL;
 
-					//	Note : ÀÎº¥¿¡ ³ÖÀ½.
+					//	Note : ì¸ë²¤ì— ë„£ìŒ.
 					m_cInventory.InsertItem ( sITEM_NEW, wInsertPosX, wInsertPosY );
 					SINVENITEM *pINSERT_ITEM = m_cInventory.GetItem ( wInsertPosX, wInsertPosY );
 
@@ -2635,7 +2639,7 @@ HRESULT GLChar::MsgReqInvenExHold ( NET_MSG_GENERIC* nmg )
 					NetItemInsert.Data = *pINSERT_ITEM;
 					GLGaeaServer::GetInstance().SENDTOCLIENT(m_dwClientID,&NetItemInsert);
 
-					//	Note : ºĞ¸®µÈ ÄÚ½ºÅù ·Î±×.
+					//	Note : ë¶„ë¦¬ëœ ì½”ìŠ¤íˆ¼ ë¡œê·¸.
 					GLITEMLMT::GetInstance().ReqItemRoute ( pINSERT_ITEM->sItemCustom, ID_CHAR, 0, ID_CHAR, m_dwCharID, EMITEM_ROUTE_CHAR, pINSERT_ITEM->sItemCustom.wTurnNum );
 				}
 			}
@@ -2663,38 +2667,38 @@ HRESULT GLChar::MsgReqInvenToSlot ( NET_MSG_GENERIC* nmg )
 
 	if( sItemCustom.nidDISGUISE!=SNATIVEID(false) )
 	{
-		//	ÄÚ½ºÆ¬À» ÀÔÈù ¾ÆÀÌÅÛÀÏ °æ¿ì
+		//	ì½”ìŠ¤íŠ¬ì„ ì…íŒ ì•„ì´í…œì¼ ê²½ìš°
 		bOk = ACCEPT_ITEM ( sItemCustom.sNativeID, sItemCustom.nidDISGUISE );
 		if ( !bOk )	return E_FAIL;
 	}
 	else
 	{
-		//	ÀÚ°İÁ¶°Ç¿¡ ºÎÇÕÇÏ´ÂÁö °Ë»ç.
+		//	ìê²©ì¡°ê±´ì— ë¶€í•©í•˜ëŠ”ì§€ ê²€ì‚¬.
 		bOk = ACCEPT_ITEM ( sItemCustom.sNativeID );
 		if ( !bOk )	return E_FAIL;
 	}
 
-	//	ÇØ´ç ½½·Ô¿¡ ÀåÂø °¡´ÉÇÑÁö °Ë»ç.
+	//	í•´ë‹¹ ìŠ¬ë¡¯ì— ì¥ì°© ê°€ëŠ¥í•œì§€ ê²€ì‚¬.
 	bOk = CHECKSLOT_ITEM ( sItemCustom.sNativeID, pNetMsg->emToSlot );
 	if ( !bOk )	return E_FAIL;
 
-	//	ÇØ´ç ½½·ÔÀÌ ºñ¿´´ÂÁö Á¡°Ë.
+	//	í•´ë‹¹ ìŠ¬ë¡¯ì´ ë¹„ì˜€ëŠ”ì§€ ì ê²€.
 	bOk = ISEMPTY_SLOT ( sItemCustom.sNativeID, pNetMsg->emToSlot );
 	if ( !bOk ) return E_FAIL;
 
-	//	½½·Ô¿¡ ¾ÆÀÌÅÆ »ğÀÔ.
+	//	ìŠ¬ë¡¯ì— ì•„ì´íƒ¬ ì‚½ì….
 	SLOT_ITEM ( sItemCustom, pNetMsg->emToSlot );
 
-	//	ÀÎ¹ê¿¡¼­ ¾ÆÀÌÅÆ »èÁ¦.
+	//	ì¸ë°´ì—ì„œ ì•„ì´íƒ¬ ì‚­ì œ.
 	m_cInventory.DeleteItem ( pNetMsg->wPosX, pNetMsg->wPosY );
 
-	//	[ÀÚ½Å¿¡°Ô] ÇØ´ç ¾ÆÀÌÅÆÀ» ÀÎ¹ê¿¡¼­ »èÁ¦.
+	//	[ìì‹ ì—ê²Œ] í•´ë‹¹ ì•„ì´íƒ¬ì„ ì¸ë°´ì—ì„œ ì‚­ì œ.
 	GLMSG::SNETPC_INVEN_DELETE NetMsgInvenDel;
 	NetMsgInvenDel.wPosX = pNetMsg->wPosX;
 	NetMsgInvenDel.wPosY = pNetMsg->wPosY;
 	GLGaeaServer::GetInstance().SENDTOCLIENT(m_dwClientID,&NetMsgInvenDel);
 
-	//	[ÀÚ½Å¿¡°Ô] ÇØ´ç ¾ÆÀÌÅÆÀ» ÀÎ¹ê¿¡ ³Ö¾îÁÜ.
+	//	[ìì‹ ì—ê²Œ] í•´ë‹¹ ì•„ì´íƒ¬ì„ ì¸ë°´ì— ë„£ì–´ì¤Œ.
 	GLMSG::SNETPC_PUTON_UPDATE NetMsg_PutOn;
 	NetMsg_PutOn.emSlot = pNetMsg->emToSlot;
 	NetMsg_PutOn.sItemCustom = GET_SLOT_ITEM(pNetMsg->emToSlot);
@@ -2709,7 +2713,7 @@ HRESULT GLChar::MsgReqVNGainToHold(NET_MSG_GENERIC* nmg)
 
 	static GLMSG::SNETPC_REQ_HOLD_FB NetMsg_fb(NET_MSG_GCTRL_REQ_VNGAIN_TO_HOLD,EMHOLD_FB_OFF);
 
-	//	¿äÃ»ÇÑ ¾ÆÀÌÅÆ À¯È¿¼º °Ë»ç.
+	//	ìš”ì²­í•œ ì•„ì´íƒ¬ ìœ íš¨ì„± ê²€ì‚¬.
 	SINVENITEM *pInvenItem = m_cVietnamInventory.GetItem ( pNetMsg->wPosX, pNetMsg->wPosY );
 	if ( !pInvenItem )
 	{
@@ -2717,30 +2721,30 @@ HRESULT GLChar::MsgReqVNGainToHold(NET_MSG_GENERIC* nmg)
 		return S_FALSE;
 	}
 
-	//	¼Õ¿¡ µç ¾ÆÀÌÅÆÀÌ ÀÖÀ»¶§.
+	//	ì†ì— ë“  ì•„ì´íƒ¬ì´ ìˆì„ë•Œ.
 	if ( VALID_HOLD_ITEM() )
 	{
 		GLGaeaServer::GetInstance().SENDTOCLIENT(m_dwClientID,&NetMsg_fb);
 		return S_FALSE;
 	}
 
-	//	ÀÎ¹ê¿¡ ÀÖ´ø ¾ÆÀÌÅÆ ¹é¾÷.
+	//	ì¸ë°´ì— ìˆë˜ ì•„ì´íƒ¬ ë°±ì—….
 	SINVENITEM sInven_BackUp = *pInvenItem;
 
-	//	ÀÎ¹ê¿¡¼­ »©³¾ ¾ÆÀÌÅÆÀ» »èÁ¦.
+	//	ì¸ë°´ì—ì„œ ë¹¼ë‚¼ ì•„ì´íƒ¬ì„ ì‚­ì œ.
 	m_cVietnamInventory.DeleteItem ( sInven_BackUp.wPosX, sInven_BackUp.wPosY );
 
-	//	ÀÎ¹ê¿¡ ÀÖ¾ú´ø ¾ÆÀÌÅÆÀ» ¼Õ¿¡ µë.
+	//	ì¸ë°´ì— ìˆì—ˆë˜ ì•„ì´íƒ¬ì„ ì†ì— ë“¬.
 	HOLD_ITEM ( sInven_BackUp.sItemCustom );
 
-	//	[ÀÚ½Å¿¡°Ô] ¸Ş½ÃÁö ¹ß»ı.	- ÀÎ¹ê¿¡¼­ ¾ÆÀÌÅÆ »èÁ¦.
+	//	[ìì‹ ì—ê²Œ] ë©”ì‹œì§€ ë°œìƒ.	- ì¸ë°´ì—ì„œ ì•„ì´íƒ¬ ì‚­ì œ.
 	GLMSG::SNETPC_INVEN_DELETE NetMsg;
 	NetMsg.wPosX = sInven_BackUp.wPosX;
 	NetMsg.wPosY = sInven_BackUp.wPosY;
 	NetMsg.bVietnamInven = TRUE;
 	GLGaeaServer::GetInstance().SENDTOCLIENT(m_dwClientID,&NetMsg);
 
-	//	[ÀÚ½Å¿¡°Ô] ÀÎ¹ê¿¡ ÀÖ¾ú´ø ¾ÆÀÌÅÆÀ» ¼Õ¿¡ µë.
+	//	[ìì‹ ì—ê²Œ] ì¸ë°´ì— ìˆì—ˆë˜ ì•„ì´íƒ¬ì„ ì†ì— ë“¬.
 	GLMSG::SNETPC_PUTON_UPDATE NetMsg_PutOn;
 	NetMsg_PutOn.emSlot = SLOT_HOLD;
 	NetMsg_PutOn.sItemCustom = sInven_BackUp.sItemCustom;
@@ -2764,18 +2768,18 @@ HRESULT GLChar::MsgReqVNGainExHold(NET_MSG_GENERIC* nmg)
 		return S_FALSE;
 	}
 
-	SINVENITEM sInven_BackUp = *pInvenItem;		//	ÀÎ¹ê¿¡ ÀÖ´ø ¾ÆÀÌÅÆ ¹é¾÷.
+	SINVENITEM sInven_BackUp = *pInvenItem;		//	ì¸ë°´ì— ìˆë˜ ì•„ì´íƒ¬ ë°±ì—….
 
-	WORD wPosX = sInven_BackUp.wPosX;			//	¾ÆÀÌÅÆ À§Ä¡.
+	WORD wPosX = sInven_BackUp.wPosX;			//	ì•„ì´íƒ¬ ìœ„ì¹˜.
 	WORD wPosY = sInven_BackUp.wPosY;
 
-	SITEMCUSTOM sItemHold = GET_HOLD_ITEM();	//	¼Õ¿¡ µç ¾ÆÀÌÅÆ ¹é¾÷.
+	SITEMCUSTOM sItemHold = GET_HOLD_ITEM();	//	ì†ì— ë“  ì•„ì´íƒ¬ ë°±ì—….
 
 	SITEM* pInvenData = GLItemMan::GetInstance().GetItem ( sInven_BackUp.sItemCustom.sNativeID );
 	SITEM* pHoldData = GLItemMan::GetInstance().GetItem ( sItemHold.sNativeID );
 	if ( !pInvenData || !pHoldData )	return S_FALSE;
 
-	//	Note : º´ÇÕ ÇÒ¼ö ÀÖ´Â ¾ÆÀÌÅÛÀÎÁö Á¡°Ë.
+	//	Note : ë³‘í•© í• ìˆ˜ ìˆëŠ” ì•„ì´í…œì¸ì§€ ì ê²€.
 	bool bMERGE(false);
 	bMERGE = (pInvenData->sBasicOp.sNativeID==pHoldData->sBasicOp.sNativeID);
 	if (bMERGE)	bMERGE = ( pInvenData->ISPILE() );
@@ -2787,13 +2791,13 @@ HRESULT GLChar::MsgReqVNGainExHold(NET_MSG_GENERIC* nmg)
 
 		if ( wTurnNum <= pInvenData->sDrugOp.wPileNum )
 		{
-			//	Note : °ãÄ§ ¼ö Á¶Á¤.
+			//	Note : ê²¹ì¹¨ ìˆ˜ ì¡°ì •.
 			pInvenItem->sItemCustom.wTurnNum = wTurnNum;
 
-			//	¼Õ ÀÖ¾ú´ø ¾ÆÀÌÅÆ Á¦°Å.
+			//	ì† ìˆì—ˆë˜ ì•„ì´íƒ¬ ì œê±°.
 			RELEASE_HOLD_ITEM ();
 
-			//	Note : ÀÎº¥ÀÇ ¾ÆÀÌÅÛ ¾÷µ¥ÀÌÆ®.
+			//	Note : ì¸ë²¤ì˜ ì•„ì´í…œ ì—…ë°ì´íŠ¸.
 			GLMSG::SNET_INVEN_ITEM_UPDATE NetMsgInvenItem;
 			NetMsgInvenItem.wPosX = pNetMsg->wPosX;
 			NetMsgInvenItem.wPosY = pNetMsg->wPosY;
@@ -2801,7 +2805,7 @@ HRESULT GLChar::MsgReqVNGainExHold(NET_MSG_GENERIC* nmg)
 			NetMsgInvenItem.bVietnamInven = TRUE;
 			GLGaeaServer::GetInstance().SENDTOCLIENT(m_dwClientID,&NetMsgInvenItem);
 
-			//	[ÀÚ½Å¿¡°Ô] ¼Õ ÀÖ¾ú´ø ¾ÆÀÌÅÆ Á¦°Å.
+			//	[ìì‹ ì—ê²Œ] ì† ìˆì—ˆë˜ ì•„ì´íƒ¬ ì œê±°.
 			GLMSG::SNETPC_PUTON_RELEASE NetMsg_ReleaseHold(SLOT_HOLD);
 			GLGaeaServer::GetInstance().SENDTOCLIENT(m_dwClientID,&NetMsg_ReleaseHold);
 		}
@@ -2809,20 +2813,20 @@ HRESULT GLChar::MsgReqVNGainExHold(NET_MSG_GENERIC* nmg)
 		{
 			WORD wSplit = wTurnNum - pInvenData->sDrugOp.wPileNum;
 
-			//	±âÁ¸ ¾ÆÀÌÅÛ °¹¼ö º¯°æ.
+			//	ê¸°ì¡´ ì•„ì´í…œ ê°¯ìˆ˜ ë³€ê²½.
 			pInvenItem->sItemCustom.wTurnNum = pInvenData->sDrugOp.wPileNum;
 
-			//	¼Õ¿¡ µé°í ÀÖ´ø ¾ÆÀÌÅÛ º¯°æ.
+			//	ì†ì— ë“¤ê³  ìˆë˜ ì•„ì´í…œ ë³€ê²½.
 			sItemHold.wTurnNum = wSplit;
 			HOLD_ITEM ( sItemHold );
 
-			//	Note : ¼Õ¿¡µç ¾ÆÀÌÅÛ º¯°æ.
+			//	Note : ì†ì—ë“  ì•„ì´í…œ ë³€ê²½.
 			GLMSG::SNETPC_PUTON_UPDATE NetMsgPutOn;
 			NetMsgPutOn.emSlot = SLOT_HOLD;
 			NetMsgPutOn.sItemCustom = sItemHold;
 			GLGaeaServer::GetInstance().SENDTOCLIENT(m_dwClientID,&NetMsgPutOn);
 
-			//	Note : ÀÎº¥ÀÇ ¾ÆÀÌÅÛ ¾÷µ¥ÀÌÆ®.
+			//	Note : ì¸ë²¤ì˜ ì•„ì´í…œ ì—…ë°ì´íŠ¸.
 			GLMSG::SNET_INVEN_ITEM_UPDATE NetMsgInvenItem;
 			NetMsgInvenItem.wPosX = pNetMsg->wPosX;
 			NetMsgInvenItem.wPosY = pNetMsg->wPosY;
@@ -2834,22 +2838,22 @@ HRESULT GLChar::MsgReqVNGainExHold(NET_MSG_GENERIC* nmg)
 		return S_OK;
 	}
 
-	//	ÀÎ¹ê¿¡ ÀÖ´ø ¾ÆÀÌÅÆ »èÁ¦.
+	//	ì¸ë°´ì— ìˆë˜ ì•„ì´íƒ¬ ì‚­ì œ.
 	BOOL bOk = m_cVietnamInventory.DeleteItem ( sInven_BackUp.wPosX, sInven_BackUp.wPosY );
 
-	//	Note : Á¾Àü ¼Õ¿¡µç ¾ÆÀÌÅÆ°ú µé·Á´Â ¾ÆÀÌÅÆÀÇ Å©±â°¡ Æ²¸± °æ¿ì.
-	//	µé°í ÀÖ´Â ¾ÆÀÌÅÆÀÌ µé¾î°¥ °ø°£À» Ã£´Â´Ù.
+	//	Note : ì¢…ì „ ì†ì—ë“  ì•„ì´íƒ¬ê³¼ ë“¤ë ¤ëŠ” ì•„ì´íƒ¬ì˜ í¬ê¸°ê°€ í‹€ë¦´ ê²½ìš°.
+	//	ë“¤ê³  ìˆëŠ” ì•„ì´íƒ¬ì´ ë“¤ì–´ê°ˆ ê³µê°„ì„ ì°¾ëŠ”ë‹¤.
 //	if ( !pInvenData->SAME_INVENSIZE ( *pHoldData ) )
 	{
-		//	µ¿ÀÏÀ§Ä¡¿¡ ³ÖÀ»¼ö ÀÖ´ÂÁö °Ë»ç.
+		//	ë™ì¼ìœ„ì¹˜ì— ë„£ì„ìˆ˜ ìˆëŠ”ì§€ ê²€ì‚¬.
 		BOOL bOk = m_cVietnamInventory.IsInsertable ( pHoldData->sBasicOp.wInvenSizeX, pHoldData->sBasicOp.wInvenSizeY, wPosX, wPosY );
 		if ( !bOk )
 		{
-			//	µé°íÀÖ´ø ¾ÆÀÌÅÆ ÀÎ¹ê¿¡ ³ÖÀ» °ø°£ÀÌ ÀÖ´ÂÁö °Ë»ö.
+			//	ë“¤ê³ ìˆë˜ ì•„ì´íƒ¬ ì¸ë°´ì— ë„£ì„ ê³µê°„ì´ ìˆëŠ”ì§€ ê²€ìƒ‰.
 			bOk = m_cVietnamInventory.FindInsrtable ( pHoldData->sBasicOp.wInvenSizeX, pHoldData->sBasicOp.wInvenSizeY, wPosX, wPosY );
 			if ( !bOk )
 			{
-				//	roll-back : ÀÎ¹ê¿¡¼­ »èÁ¦Çß´ø ¾ÆÀÌÅÆÀ» ´Ù½Ã ³ÖÀ½.
+				//	roll-back : ì¸ë°´ì—ì„œ ì‚­ì œí–ˆë˜ ì•„ì´íƒ¬ì„ ë‹¤ì‹œ ë„£ìŒ.
 				sInven_BackUp.sItemCustom.bVietnamGainItem = true;
 				m_cVietnamInventory.InsertItem ( sInven_BackUp.sItemCustom, sInven_BackUp.wPosX, sInven_BackUp.wPosY, true );
 
@@ -2858,7 +2862,7 @@ HRESULT GLChar::MsgReqVNGainExHold(NET_MSG_GENERIC* nmg)
 		}
 	}
 
-	//	µé°íÀÖ´ø ¾ÆÀÌÅÆ ÀÎ¹ê¿¡ ³ÖÀ½.
+	//	ë“¤ê³ ìˆë˜ ì•„ì´íƒ¬ ì¸ë°´ì— ë„£ìŒ.
 	sItemHold.bVietnamGainItem = true;
 	m_cVietnamInventory.InsertItem ( sItemHold, wPosX, wPosY );
 	SINVENITEM *pINSERT_ITEM = m_cVietnamInventory.GetItem(wPosX,wPosY);
@@ -2869,19 +2873,19 @@ HRESULT GLChar::MsgReqVNGainExHold(NET_MSG_GENERIC* nmg)
 		return S_FALSE;
 	}
 
-	//	ÀÎ¹ê¿¡ ÀÖ¾ú´ø ¾ÆÀÌÅÆÀ» ¼Õ¿¡ µë.
+	//	ì¸ë°´ì— ìˆì—ˆë˜ ì•„ì´íƒ¬ì„ ì†ì— ë“¬.
 	HOLD_ITEM ( sInven_BackUp.sItemCustom );
 
-	//	[ÀÚ½Å¿¡°Ô] ÀÎ¹ê¿¡ ÀÖ´ø ¾ÆÀÌÅÆ »èÁ¦, ¹× ¾ÆÀÌÅÆ »ğÀÔ.
+	//	[ìì‹ ì—ê²Œ] ì¸ë°´ì— ìˆë˜ ì•„ì´íƒ¬ ì‚­ì œ, ë° ì•„ì´íƒ¬ ì‚½ì….
 	GLMSG::SNETPC_INVEN_DEL_AND_INSERT NetMsg_Del_Insert;
-	NetMsg_Del_Insert.wDelX = sInven_BackUp.wPosX;					//	»èÁ¦µÉ ¾ÆÀÌÅÆ.
+	NetMsg_Del_Insert.wDelX = sInven_BackUp.wPosX;					//	ì‚­ì œë  ì•„ì´íƒ¬.
 	NetMsg_Del_Insert.wDelY = sInven_BackUp.wPosY;
 	NetMsg_Del_Insert.bVietnamInven = TRUE;
-	if ( pINSERT_ITEM )	NetMsg_Del_Insert.sInsert = *pINSERT_ITEM;	//	»ğÀÔµÇ´Â ¾ÆÀÌÅÆ.
+	if ( pINSERT_ITEM )	NetMsg_Del_Insert.sInsert = *pINSERT_ITEM;	//	ì‚½ì…ë˜ëŠ” ì•„ì´íƒ¬.
 
 	GLGaeaServer::GetInstance().SENDTOCLIENT(m_dwClientID,&NetMsg_Del_Insert);
 
-	//	[ÀÚ½Å¿¡°Ô] ÀÎ¹ê¿¡ ÀÖ¾ú´ø ¾ÆÀÌÅÆÀ» ¼Õ¿¡ µë.
+	//	[ìì‹ ì—ê²Œ] ì¸ë°´ì— ìˆì—ˆë˜ ì•„ì´íƒ¬ì„ ì†ì— ë“¬.
 	GLMSG::SNETPC_PUTON_UPDATE NetMsg_PutOn;
 	NetMsg_PutOn.emSlot = SLOT_HOLD;
 	NetMsg_PutOn.sItemCustom = sInven_BackUp.sItemCustom;
@@ -2905,20 +2909,20 @@ HRESULT GLChar::MsgReqHoldToVNGain(NET_MSG_GENERIC* nmg)
 		return E_FAIL;
 	}
 
-	//	ÀÎº¥ À§Ä¡.
+	//	ì¸ë²¤ ìœ„ì¹˜.
 	WORD wInsertPosX = pNetMsg->wPosX, wInsertPosY = pNetMsg->wPosY;
 
-	// ÇØÅ· ÀçÇö ( ¾ÆÀÌÅÛÀÇ »çÀÌÁî°¡ 0 ÀÏ¶§ )
+	// í•´í‚¹ ì¬í˜„ ( ì•„ì´í…œì˜ ì‚¬ì´ì¦ˆê°€ 0 ì¼ë•Œ )
 	//pHoldData->sBasicOp.wInvenSizeX = 0, pHoldData->sBasicOp.wInvenSizeY = 0;
 
 	BOOL bOk = m_cVietnamInventory.IsInsertable ( pHoldData->sBasicOp.wInvenSizeX, pHoldData->sBasicOp.wInvenSizeY, wInsertPosX, wInsertPosY );
 	if ( !bOk )
 	{
-		//	ÀÎ¹êÀÌ °¡µæÂşÀ½.
+		//	ì¸ë°´ì´ ê°€ë“ì°»ìŒ.
 		return E_FAIL;
 	}
 
-	//	µé°íÀÖ´ø ¾ÆÀÌÅÆ ÀÎ¹ê¿¡ ³ÖÀ½.
+	//	ë“¤ê³ ìˆë˜ ì•„ì´íƒ¬ ì¸ë°´ì— ë„£ìŒ.
 	SITEMCUSTOM& sITEM_NEW = m_PutOnItems[SLOT_HOLD];
 	sITEM_NEW.bVietnamGainItem = true;
 	bOk = m_cVietnamInventory.InsertItem ( sITEM_NEW, wInsertPosX, wInsertPosY );
@@ -2926,16 +2930,16 @@ HRESULT GLChar::MsgReqHoldToVNGain(NET_MSG_GENERIC* nmg)
 
 	SINVENITEM sINVENITEM = *m_cVietnamInventory.FindPosItem ( wInsertPosX, wInsertPosY );
 
-	//	¼º°ø½Ã ¾ÆÀÌÅÆ Á¦°Å.
+	//	ì„±ê³µì‹œ ì•„ì´íƒ¬ ì œê±°.
 	RELEASE_HOLD_ITEM ();
 
-	//	[ÀÚ½Å¿¡°Ô] ÀÎ¹ê¿¡ ¾ÆÀÌÅÆ »ğÀÔ.
+	//	[ìì‹ ì—ê²Œ] ì¸ë°´ì— ì•„ì´íƒ¬ ì‚½ì….
 	GLMSG::SNETPC_INVEN_INSERT NetMsg_Inven_Insert;
 	NetMsg_Inven_Insert.bVietnamInven = TRUE;
 	NetMsg_Inven_Insert.Data = sINVENITEM;
 	GLGaeaServer::GetInstance().SENDTOCLIENT(m_dwClientID,&NetMsg_Inven_Insert);
 
-	//	[ÀÚ½Å¿¡°Ô] ¼Õ ÀÖ¾ú´ø ¾ÆÀÌÅÆ Á¦°Å.
+	//	[ìì‹ ì—ê²Œ] ì† ìˆì—ˆë˜ ì•„ì´íƒ¬ ì œê±°.
 	GLMSG::SNETPC_PUTON_RELEASE NetMsg_ReleaseHold(SLOT_HOLD);
 	GLGaeaServer::GetInstance().SENDTOCLIENT(m_dwClientID,&NetMsg_ReleaseHold);	
 
@@ -2952,7 +2956,7 @@ HRESULT GLChar::MsgReqVNInvenToInven( NET_MSG_GENERIC* nmg )
 	SINVENITEM* pInvenItem(NULL);
 	pInvenItem = m_cVietnamInventory.GetItem ( pNetMsg->wPosX, pNetMsg->wPosY );
 
-	//	»ì·Á°í ÇÏ´Â ¾ÆÀÌÅÆÀÌ ¾ø½À´Ï´Ù.
+	//	ì‚´ë ¤ê³  í•˜ëŠ” ì•„ì´íƒ¬ì´ ì—†ìŠµë‹ˆë‹¤.
 	if ( !pInvenItem )											return E_FAIL;
 	SITEM* pItem = GLItemMan::GetInstance().GetItem ( pInvenItem->sItemCustom.sNativeID );
 	if ( !pItem )												return E_FAIL;
@@ -2964,7 +2968,7 @@ HRESULT GLChar::MsgReqVNInvenToInven( NET_MSG_GENERIC* nmg )
 	BOOL bITEM_SPACE(false);
 	bITEM_SPACE = m_cInventory.FindInsrtable ( wINVENX, wINVENY, wInsertPosX, wInsertPosY );
 
-	//	ÀÎº¥¿¡ ¿©À¯°ø°£ÀÌ ¾øÀ» °æ¿ì Ãë¼ÒµÊ.
+	//	ì¸ë²¤ì— ì—¬ìœ ê³µê°„ì´ ì—†ì„ ê²½ìš° ì·¨ì†Œë¨.
 	if ( !bITEM_SPACE )		return E_FAIL;
 
 	SITEMCUSTOM sITEM_NEW = pInvenItem->sItemCustom;
@@ -3005,22 +3009,22 @@ HRESULT GLChar::MsgReqVNInvenToInven( NET_MSG_GENERIC* nmg )
 
 			if ( cTIME_CUR > cTIME_LMT )
 			{
-				//	[ÀÚ½Å¿¡°Ô] ÇØ´ç ¾ÆÀÌÅÆÀ» ÀÎ¹ê¿¡¼­ »èÁ¦.
+				//	[ìì‹ ì—ê²Œ] í•´ë‹¹ ì•„ì´íƒ¬ì„ ì¸ë°´ì—ì„œ ì‚­ì œ.
 				GLMSG::SNETPC_INVEN_DELETE NetMsgInvenDel;
 				NetMsgInvenDel.wPosX = sINVENITEM.wPosX;
 				NetMsgInvenDel.wPosY = sINVENITEM.wPosY;
 				GLGaeaServer::GetInstance().SENDTOCLIENT(m_dwClientID,&NetMsgInvenDel);
 
-				//	½Ã°£ Á¦ÇÑÀ¸·Î ¾ÆÀÌÅÛ »èÁ¦ ¾Ë¸².
+				//	ì‹œê°„ ì œí•œìœ¼ë¡œ ì•„ì´í…œ ì‚­ì œ ì•Œë¦¼.
 				GLMSG::SNET_INVEN_DEL_ITEM_TIMELMT NetMsgInvenDelTimeLmt;
 				NetMsgInvenDelTimeLmt.nidITEM = sINVENITEM.sItemCustom.sNativeID;
 				GLGaeaServer::GetInstance().SENDTOCLIENT(m_dwClientID,&NetMsgInvenDelTimeLmt);
 
-				//	Note : ¾ÆÀÌÅÛ »èÁ¦.
+				//	Note : ì•„ì´í…œ ì‚­ì œ.
 				//
 				m_cInventory.DeleteItem ( sINVENITEM.wPosX, sINVENITEM.wPosY );
 			
-				//	Note : ÄÚ½ºÅù º¹±¸.
+				//	Note : ì½”ìŠ¤íˆ¼ ë³µêµ¬.
 				if ( sINVENITEM.sItemCustom.nidDISGUISE!=SNATIVEID(false) )
 				{
 					SITEM *pONE = GLItemMan::GetInstance().GetItem ( sINVENITEM.sItemCustom.nidDISGUISE );
@@ -3037,7 +3041,7 @@ HRESULT GLChar::MsgReqVNInvenToInven( NET_MSG_GENERIC* nmg )
 						cTIME -= tLMT;
 					}
 
-					//	Note : ¾ÆÀÌÅÛ »ı¼º.
+					//	Note : ì•„ì´í…œ ìƒì„±.
 					//
 					sITEM_NEW.tBORNTIME = cTIME.GetTime();
 					sITEM_NEW.wTurnNum = 1;
@@ -3050,11 +3054,11 @@ HRESULT GLChar::MsgReqVNInvenToInven( NET_MSG_GENERIC* nmg )
 					sITEM_NEW.wColor1 = sINVENITEM.sItemCustom.wColor1;
 					sITEM_NEW.wColor2 = sINVENITEM.sItemCustom.wColor2;
 
-					//	Note : ÀÎº¥¿¡ µé¾î°¥ °ø°£ °Ë»ç.
+					//	Note : ì¸ë²¤ì— ë“¤ì–´ê°ˆ ê³µê°„ ê²€ì‚¬.
 					BOOL bOk = m_cInventory.IsInsertable ( pONE->sBasicOp.wInvenSizeX, pONE->sBasicOp.wInvenSizeY, wInsertPosX, wInsertPosY );
 					if ( !bOk )			return E_FAIL;
 
-					//	Note : ÀÎº¥¿¡ ³ÖÀ½.
+					//	Note : ì¸ë²¤ì— ë„£ìŒ.
 					m_cInventory.InsertItem ( sITEM_NEW, wInsertPosX, wInsertPosY );
 					SINVENITEM *pINSERT_ITEM = m_cInventory.GetItem ( wInsertPosX, wInsertPosY );
 
@@ -3062,7 +3066,7 @@ HRESULT GLChar::MsgReqVNInvenToInven( NET_MSG_GENERIC* nmg )
 					NetItemInsert.Data = *pINSERT_ITEM;
 					GLGaeaServer::GetInstance().SENDTOCLIENT(m_dwClientID,&NetItemInsert);
 
-					//	Note : ºĞ¸®µÈ ÄÚ½ºÅù ·Î±×.
+					//	Note : ë¶„ë¦¬ëœ ì½”ìŠ¤íˆ¼ ë¡œê·¸.
 					GLITEMLMT::GetInstance().ReqItemRoute ( pINSERT_ITEM->sItemCustom, ID_CHAR, 0, ID_CHAR, m_dwCharID, EMITEM_ROUTE_CHAR, pINSERT_ITEM->sItemCustom.wTurnNum );
 				}
 			}
@@ -3086,19 +3090,23 @@ HRESULT GLChar::MsgReqInvenSplit ( NET_MSG_GENERIC* nmg )
 	
 	BOOL bOk(FALSE);
 
-	//	Note : ºĞ¸® ¿äÃ» ¾ÆÀÌÅÛ Ã£À½.
+	//	Note : ë¶„ë¦¬ ìš”ì²­ ì•„ì´í…œ ì°¾ìŒ.
 	SINVENITEM* pInvenItem = m_cInventory.FindPosItem ( pNetMsg->wPosX, pNetMsg->wPosY );
 	if ( !pInvenItem )									return E_FAIL;
 
-	//	Note : ¾ÆÀÌÅÛ Á¤º¸ °¡Á®¿À±â.
+	//	Note : ì•„ì´í…œ ì •ë³´ ê°€ì ¸ì˜¤ê¸°.
 	SITEM* pItem = GLItemMan::GetInstance().GetItem ( pInvenItem->sItemCustom.sNativeID );
 	if ( !pItem )													return E_FAIL;
 
-		/*inventory lock, Juver, 2018/01/18 */
+	/*security hardening: block inventory split during active trade or club storage to prevent item duplication*/
+	if ( m_sTrade.Valid() || m_bClubStorage )
+		return E_FAIL;
+
+	/*inventory lock, Juver, 2018/01/18 */
 	if ( m_bEnableInventoryLock && m_bInventoryLockStatus )
 		return E_FAIL;
 
-	//	Note : ºĞ¸® °¡´ÉÇÑ ¾ÆÀÌÅÛÀÎÁö Á¡°Ë.
+	//	Note : ë¶„ë¦¬ ê°€ëŠ¥í•œ ì•„ì´í…œì¸ì§€ ì ê²€.
 	bool bSPLIT(false);
 	bSPLIT = ( pItem->ISINSTANCE() );
 	if ( !bSPLIT )													return E_FAIL;
@@ -3106,23 +3114,23 @@ HRESULT GLChar::MsgReqInvenSplit ( NET_MSG_GENERIC* nmg )
 	if ( pInvenItem->sItemCustom.wTurnNum <= 1 )					return E_FAIL;
 	if ( pInvenItem->sItemCustom.wTurnNum <= pNetMsg->wSplit  )		return E_FAIL;
 
-	//	Note : ¿øº» ¾ÆÀÌÅÛÀÇ º¯È­µÈ °¹¼ö.
+	//	Note : ì›ë³¸ ì•„ì´í…œì˜ ë³€í™”ëœ ê°¯ìˆ˜.
 	WORD wORGIN_SPLIT = pInvenItem->sItemCustom.wTurnNum - pNetMsg->wSplit;
 
-	//	Note : ºĞ¸®µÇ¾î »õ·Î »ı±â´Â ¾ÆÀÌÅÛ.
+	//	Note : ë¶„ë¦¬ë˜ì–´ ìƒˆë¡œ ìƒê¸°ëŠ” ì•„ì´í…œ.
 	SITEMCUSTOM sNEW_ITEM = pInvenItem->sItemCustom;
 	sNEW_ITEM.wTurnNum = pNetMsg->wSplit;
 
-	//	Note : »õ·Î »ı±â´Â ¾ÆÀÌÅÛ À§Ä¡ Ã£±â.
+	//	Note : ìƒˆë¡œ ìƒê¸°ëŠ” ì•„ì´í…œ ìœ„ì¹˜ ì°¾ê¸°.
 	WORD wInvenPosX(0), wInvenPosY(0);
 	bOk = m_cInventory.FindInsrtable ( pItem->sBasicOp.wInvenSizeX, pItem->sBasicOp.wInvenSizeY, wInvenPosX, wInvenPosY );
 	if ( !bOk )	return E_FAIL;
 
-	//	Note : »õ·Î »ı±ä ¾ÆÀÌÅÛ ³Ö±â.
+	//	Note : ìƒˆë¡œ ìƒê¸´ ì•„ì´í…œ ë„£ê¸°.
 	bOk = m_cInventory.InsertItem ( sNEW_ITEM, wInvenPosX, wInvenPosY );
 	if ( !bOk )											return E_FAIL;
 
-	//	Note : »õ·Î »ı±ä ¾ÆÀÌÅÛ Á¤º¸ °¡Á®¿À±â.
+	//	Note : ìƒˆë¡œ ìƒê¸´ ì•„ì´í…œ ì •ë³´ ê°€ì ¸ì˜¤ê¸°.
 	SINVENITEM* pNewItem = m_cInventory.GetItem ( wInvenPosX, wInvenPosY );
 	if ( !bOk )											return E_FAIL;
 
@@ -3155,15 +3163,15 @@ HRESULT GLChar::MsgReqInvenSplit ( NET_MSG_GENERIC* nmg )
 		CDebugSet::ToFileWithTime ( strName.GetString(),str.c_str() );
 	}
 
-	//	Note : ¿øº» ¾ÆÀÌÅÛÀÇ °¹¼ö º¯°æ ½ÃÅ´.
+	//	Note : ì›ë³¸ ì•„ì´í…œì˜ ê°¯ìˆ˜ ë³€ê²½ ì‹œí‚´.
 	pInvenItem->sItemCustom.wTurnNum = wORGIN_SPLIT;
 
-	//	Note : ÀÎº¥¿¡ »õ·Î ºĞ¸®µÇ¾î µé¾î °¡´Â ¾ÆÀÌÅÛ.
+	//	Note : ì¸ë²¤ì— ìƒˆë¡œ ë¶„ë¦¬ë˜ì–´ ë“¤ì–´ ê°€ëŠ” ì•„ì´í…œ.
 	GLMSG::SNETPC_INVEN_INSERT NetMsgNew;
 	NetMsgNew.Data = *pNewItem;
 	GLGaeaServer::GetInstance().SENDTOCLIENT(m_dwClientID,&NetMsgNew);
 
-	//	Note : ¿øº» ¾ÆÀÌÅÛ °¹¼ö º¯°æ.
+	//	Note : ì›ë³¸ ì•„ì´í…œ ê°¯ìˆ˜ ë³€ê²½.
 	GLMSG::SNETPC_INVEN_DRUG_UPDATE NetMsgInven;
 	NetMsgInven.wPosX = pNetMsg->wPosX;
 	NetMsgInven.wPosY = pNetMsg->wPosY;
@@ -3196,20 +3204,20 @@ HRESULT GLChar::MsgReqHoldToInven ( NET_MSG_GENERIC* nmg )
 	if ( m_bEnableInventoryLock && m_bInventoryLockStatus )
 		return E_FAIL;
 
-	//	ÀÎº¥ À§Ä¡.
+	//	ì¸ë²¤ ìœ„ì¹˜.
 	WORD wInsertPosX = pNetMsg->wPosX, wInsertPosY = pNetMsg->wPosY;
 
-	// ÇØÅ· ÀçÇö ( ¾ÆÀÌÅÛÀÇ »çÀÌÁî°¡ 0 ÀÏ¶§ )
+	// í•´í‚¹ ì¬í˜„ ( ì•„ì´í…œì˜ ì‚¬ì´ì¦ˆê°€ 0 ì¼ë•Œ )
 	//pHoldData->sBasicOp.wInvenSizeX = 0, pHoldData->sBasicOp.wInvenSizeY = 0;
 
 	BOOL bOk = m_cInventory.IsInsertable ( pHoldData->sBasicOp.wInvenSizeX, pHoldData->sBasicOp.wInvenSizeY, wInsertPosX, wInsertPosY );
 	if ( !bOk )
 	{
-		//	ÀÎ¹êÀÌ °¡µæÂşÀ½.
+		//	ì¸ë°´ì´ ê°€ë“ì°»ìŒ.
 		return E_FAIL;
 	}
 
-	//	µé°íÀÖ´ø ¾ÆÀÌÅÆ ÀÎ¹ê¿¡ ³ÖÀ½.	
+	//	ë“¤ê³ ìˆë˜ ì•„ì´íƒ¬ ì¸ë°´ì— ë„£ìŒ.	
 #if defined(VN_PARAM) //vietnamtest%%%   
     SITEMCUSTOM& sCustom = m_PutOnItems[SLOT_HOLD];
 	if ( sCustom.bVietnamGainItem && m_dwVietnamInvenCount <= 0 ) return E_FAIL;
@@ -3243,7 +3251,7 @@ HRESULT GLChar::MsgReqHoldToInven ( NET_MSG_GENERIC* nmg )
 		}
 	}
 
-	//	¼º°ø½Ã ¾ÆÀÌÅÆ Á¦°Å.
+	//	ì„±ê³µì‹œ ì•„ì´íƒ¬ ì œê±°.
 	RELEASE_HOLD_ITEM ();
 
 #if defined(VN_PARAM) //vietnamtest%%%
@@ -3257,17 +3265,17 @@ HRESULT GLChar::MsgReqHoldToInven ( NET_MSG_GENERIC* nmg )
 	}
 #endif
 
-	//	[ÀÚ½Å¿¡°Ô] ÀÎ¹ê¿¡ ¾ÆÀÌÅÆ »ğÀÔ.
+	//	[ìì‹ ì—ê²Œ] ì¸ë°´ì— ì•„ì´íƒ¬ ì‚½ì….
 	GLMSG::SNETPC_INVEN_INSERT NetMsg_Inven_Insert;
 	NetMsg_Inven_Insert.Data = sINVENITEM;
 	GLGaeaServer::GetInstance().SENDTOCLIENT(m_dwClientID,&NetMsg_Inven_Insert);
 
-	//	[ÀÚ½Å¿¡°Ô] ¼Õ ÀÖ¾ú´ø ¾ÆÀÌÅÆ Á¦°Å.
+	//	[ìì‹ ì—ê²Œ] ì† ìˆì—ˆë˜ ì•„ì´íƒ¬ ì œê±°.
 	GLMSG::SNETPC_PUTON_RELEASE NetMsg_ReleaseHold(SLOT_HOLD);
 	GLGaeaServer::GetInstance().SENDTOCLIENT(m_dwClientID,&NetMsg_ReleaseHold);
 
 
-	//	À¯È¿±â°£ ÃÊ°ú Á¡°Ë.
+	//	ìœ íš¨ê¸°ê°„ ì´ˆê³¼ ì ê²€.
 	SITEM *pITEM = GLItemMan::GetInstance().GetItem ( sINVENITEM.sItemCustom.sNativeID );
 	if ( pITEM && pITEM->IsTIMELMT() )
 	{
@@ -3281,7 +3289,7 @@ HRESULT GLChar::MsgReqHoldToInven ( NET_MSG_GENERIC* nmg )
 
 			if ( cTIME_CUR > cTIME_LMT )
 			{
-				// Å»°ÍÀÏ °æ¿ì
+				// íƒˆê²ƒì¼ ê²½ìš°
 				if ( pITEM->sBasicOp.emItemType == ITEM_VEHICLE && sINVENITEM.sItemCustom.dwVehicleID != 0 )
 				{
 					GLVEHICLE* pNewVehicle = new GLVEHICLE();
@@ -3294,21 +3302,21 @@ HRESULT GLChar::MsgReqHoldToInven ( NET_MSG_GENERIC* nmg )
 					if ( pDBMan ) pDBMan->AddJob ( pGetVehicle );
 				}
 
-				// ÆÖÄ«µåÀÏ °æ¿ì
+				// íŒ»ì¹´ë“œì¼ ê²½ìš°
 				if ( pITEM->sBasicOp.emItemType == ITEM_PET_CARD && sINVENITEM.sItemCustom.dwPetID != 0 )
 				{
 					CDeletePet* pDbAction = new CDeletePet ( m_dwCharID, sINVENITEM.sItemCustom.dwPetID );
 					GLDBMan* pDBMan = GLGaeaServer::GetInstance().GetDBMan ();
 					if ( pDBMan ) pDBMan->AddJob ( pDbAction );
 
-					// È°µ¿ÁßÀÌ¸é »ç¶óÁö°Ô ÇØÁØ´Ù.
+					// í™œë™ì¤‘ì´ë©´ ì‚¬ë¼ì§€ê²Œ í•´ì¤€ë‹¤.
 					PGLPETFIELD pMyPet = GLGaeaServer::GetInstance().GetPET ( m_dwPetGUID );
 					if ( pMyPet && sINVENITEM.sItemCustom.dwPetID == pMyPet->m_dwPetID )
 					{
-						// ÆÖÀÇ ¾Ç¼¼»ç¸®¸¦ °Ë»çÇÑ´Ù.
+						// íŒ»ì˜ ì•…ì„¸ì‚¬ë¦¬ë¥¼ ê²€ì‚¬í•œë‹¤.
 						pMyPet->UpdateTimeLmtItem ( this );
 
-						// ³Ö¾îÁÙ²¨ ³Ö¾îÁØ´Ù.
+						// ë„£ì–´ì¤„êº¼ ë„£ì–´ì¤€ë‹¤.
 						for ( WORD i = 0; i < PET_ACCETYPE_SIZE; ++i )
 						{
 							CItemDrop cDropItem;
@@ -3328,13 +3336,13 @@ HRESULT GLChar::MsgReqHoldToInven ( NET_MSG_GENERIC* nmg )
 
 						GLGaeaServer::GetInstance().ReserveDropOutPet ( SDROPOUTPETINFO(pMyPet->m_dwGUID,true,false) );
 
-						// ÆÖÀÌ »èÁ¦µÇ¸é ºÎÈ°Á¤º¸¸¦ Å¬¶óÀÌ¾ğÆ®¿¡ ¾Ë·ÁÁÜ.
+						// íŒ»ì´ ì‚­ì œë˜ë©´ ë¶€í™œì •ë³´ë¥¼ í´ë¼ì´ì–¸íŠ¸ì— ì•Œë ¤ì¤Œ.
 						CGetRestorePetList *pDbAction = new CGetRestorePetList ( m_dwCharID, m_dwClientID );
 						if ( pDBMan ) pDBMan->AddJob ( pDbAction );
 					}
 					else
 					{
-						// ¾Ç¼¼»ç¸®¸¦ Ã¼Å©ÈÄ ÆÖÀ» DB¿¡¼­ »èÁ¦ÇØÁØ´Ù.
+						// ì•…ì„¸ì‚¬ë¦¬ë¥¼ ì²´í¬í›„ íŒ»ì„ DBì—ì„œ ì‚­ì œí•´ì¤€ë‹¤.
 						GLPET* pNewPet = new GLPET ();
 						CGetPet* pGetPet = new CGetPet ( pNewPet, 
 														 sINVENITEM.sItemCustom.dwPetID, 
@@ -3348,22 +3356,22 @@ HRESULT GLChar::MsgReqHoldToInven ( NET_MSG_GENERIC* nmg )
 					}
 				}
 
-				//	[ÀÚ½Å¿¡°Ô] ÇØ´ç ¾ÆÀÌÅÆÀ» ÀÎ¹ê¿¡¼­ »èÁ¦.
+				//	[ìì‹ ì—ê²Œ] í•´ë‹¹ ì•„ì´íƒ¬ì„ ì¸ë°´ì—ì„œ ì‚­ì œ.
 				GLMSG::SNETPC_INVEN_DELETE NetMsgInvenDel;
 				NetMsgInvenDel.wPosX = sINVENITEM.wPosX;
 				NetMsgInvenDel.wPosY = sINVENITEM.wPosY;
 				GLGaeaServer::GetInstance().SENDTOCLIENT(m_dwClientID,&NetMsgInvenDel);
 
-				//	½Ã°£ Á¦ÇÑÀ¸·Î ¾ÆÀÌÅÛ »èÁ¦ ¾Ë¸².
+				//	ì‹œê°„ ì œí•œìœ¼ë¡œ ì•„ì´í…œ ì‚­ì œ ì•Œë¦¼.
 				GLMSG::SNET_INVEN_DEL_ITEM_TIMELMT NetMsgInvenDelTimeLmt;
 				NetMsgInvenDelTimeLmt.nidITEM = sINVENITEM.sItemCustom.sNativeID;
 				GLGaeaServer::GetInstance().SENDTOCLIENT(m_dwClientID,&NetMsgInvenDelTimeLmt);
 
-				//	Note : ¾ÆÀÌÅÛ »èÁ¦.
+				//	Note : ì•„ì´í…œ ì‚­ì œ.
 				//
 				m_cInventory.DeleteItem ( sINVENITEM.wPosX, sINVENITEM.wPosY );
 			
-				//	Note : ÄÚ½ºÅù º¹±¸.
+				//	Note : ì½”ìŠ¤íˆ¼ ë³µêµ¬.
 				if ( sINVENITEM.sItemCustom.nidDISGUISE!=SNATIVEID(false) )
 				{
 					SITEM *pONE = GLItemMan::GetInstance().GetItem ( sINVENITEM.sItemCustom.nidDISGUISE );
@@ -3380,7 +3388,7 @@ HRESULT GLChar::MsgReqHoldToInven ( NET_MSG_GENERIC* nmg )
 						cTIME -= tLMT;
 					}
 
-					//	Note : ¾ÆÀÌÅÛ »ı¼º.
+					//	Note : ì•„ì´í…œ ìƒì„±.
 					//
 					sITEM_NEW.tBORNTIME = cTIME.GetTime();
 					sITEM_NEW.wTurnNum = 1;
@@ -3393,11 +3401,11 @@ HRESULT GLChar::MsgReqHoldToInven ( NET_MSG_GENERIC* nmg )
 					sITEM_NEW.wColor1 = sINVENITEM.sItemCustom.wColor1;
 					sITEM_NEW.wColor2 = sINVENITEM.sItemCustom.wColor2;
 
-					//	Note : ÀÎº¥¿¡ µé¾î°¥ °ø°£ °Ë»ç.
+					//	Note : ì¸ë²¤ì— ë“¤ì–´ê°ˆ ê³µê°„ ê²€ì‚¬.
 					BOOL bOk = m_cInventory.IsInsertable ( pONE->sBasicOp.wInvenSizeX, pONE->sBasicOp.wInvenSizeY, wInsertPosX, wInsertPosY );
 					if ( !bOk )			return E_FAIL;
 
-					//	Note : ÀÎº¥¿¡ ³ÖÀ½.
+					//	Note : ì¸ë²¤ì— ë„£ìŒ.
 					m_cInventory.InsertItem ( sITEM_NEW, wInsertPosX, wInsertPosY );
 					SINVENITEM *pINSERT_ITEM = m_cInventory.GetItem ( wInsertPosX, wInsertPosY );
 
@@ -3405,7 +3413,7 @@ HRESULT GLChar::MsgReqHoldToInven ( NET_MSG_GENERIC* nmg )
 					NetItemInsert.Data = *pINSERT_ITEM;
 					GLGaeaServer::GetInstance().SENDTOCLIENT(m_dwClientID,&NetItemInsert);
 
-					//	Note : ºĞ¸®µÈ ÄÚ½ºÅù ·Î±×.
+					//	Note : ë¶„ë¦¬ëœ ì½”ìŠ¤íˆ¼ ë¡œê·¸.
 					GLITEMLMT::GetInstance().ReqItemRoute ( pINSERT_ITEM->sItemCustom, ID_CHAR, 0, ID_CHAR, m_dwCharID, EMITEM_ROUTE_CHAR, pINSERT_ITEM->sItemCustom.wTurnNum );
 				}
 			}
@@ -3413,8 +3421,8 @@ HRESULT GLChar::MsgReqHoldToInven ( NET_MSG_GENERIC* nmg )
 	}
 
 /*
-	// È¹µæÇÑ ¾ÆÀÌÅÛÀÌ ÆÖÄ«µå && »ı¼ºµÈ ÆÖÀÌ¶ó¸é ¼ÒÀ¯±ÇÀ» ÀÌÀüÇÑ´Ù.
-	// ÆÖ¾ÆÀÌµğ°¡ 0 ÀÌ ¾Æ´Ï¸é ÆÖÄ«µåÀÌ¸é¼­ DB¿¡ ÆÖÀÌ »ı¼ºµÈ °ÍÀÌ´Ù.
+	// íšë“í•œ ì•„ì´í…œì´ íŒ»ì¹´ë“œ && ìƒì„±ëœ íŒ»ì´ë¼ë©´ ì†Œìœ ê¶Œì„ ì´ì „í•œë‹¤.
+	// íŒ»ì•„ì´ë””ê°€ 0 ì´ ì•„ë‹ˆë©´ íŒ»ì¹´ë“œì´ë©´ì„œ DBì— íŒ»ì´ ìƒì„±ëœ ê²ƒì´ë‹¤.
 	if ( pHoldData->sBasicOp.emItemType == ITEM_PET_CARD && sINVENITEM.sItemCustom.dwPetID != 0 )
 	{
 		CExchangePet* pDbAction = new CExchangePet ( m_dwCharID, sINVENITEM.sItemCustom.dwPetID );
@@ -3448,10 +3456,10 @@ HRESULT GLChar::MsgReqHoldToField ( NET_MSG_GENERIC* nmg )
 #if defined(VN_PARAM) //vietnamtest%%%
 	if ( sITEMCUSTOM.bVietnamGainItem )
 	{
-		//	¾ÆÀÌÅÆ Á¦°Å.
+		//	ì•„ì´íƒ¬ ì œê±°.
 		RELEASE_HOLD_ITEM ();
 
-		//	[ÀÚ½Å¿¡°Ô] ¼Õ ÀÖ¾ú´ø ¾ÆÀÌÅÆ Á¦°Å.
+		//	[ìì‹ ì—ê²Œ] ì† ìˆì—ˆë˜ ì•„ì´íƒ¬ ì œê±°.
 		GLMSG::SNETPC_PUTON_RELEASE NetMsg_ReleaseHold(SLOT_HOLD);
 		GLGaeaServer::GetInstance().SENDTOCLIENT(m_dwClientID,&NetMsg_ReleaseHold);
 
@@ -3464,7 +3472,7 @@ HRESULT GLChar::MsgReqHoldToField ( NET_MSG_GENERIC* nmg )
 	SITEM *pITEM = GLItemMan::GetInstance().GetItem ( sITEMCUSTOM.sNativeID );
 	if ( !pITEM )		return false;
 
-	// ¹ö¸®´Â ¾ÆÀÌÅÛÀÌ ÆÖÄ«µå && ÆÖÀÌ È°¼º»óÅÂÀÌ¸é ¹ö¸± ¼ö ¾ø´Ù
+	// ë²„ë¦¬ëŠ” ì•„ì´í…œì´ íŒ»ì¹´ë“œ && íŒ»ì´ í™œì„±ìƒíƒœì´ë©´ ë²„ë¦´ ìˆ˜ ì—†ë‹¤
 	if ( pITEM->sBasicOp.emItemType == ITEM_PET_CARD )
 	{
 		PGLPETFIELD pMyPet = GLGaeaServer::GetInstance().GetPET ( m_dwPetGUID );
@@ -3476,17 +3484,17 @@ HRESULT GLChar::MsgReqHoldToField ( NET_MSG_GENERIC* nmg )
 		if ( !m_pLandMan->IsQBoxEnabled() )	return FALSE;
 	}
 
-	//	°Å·¡¿É¼Ç
+	//	ê±°ë˜ì˜µì…˜
 	if ( !pITEM->sBasicOp.IsTHROW() )						return FALSE;
 
-	// GMCharEdit ·Î ³ÖÀº ¾ÆÀÌÅÛÀº ¹ö¸®±â ºÒ°¡´ÉÇÏ´Ù.
+	// GMCharEdit ë¡œ ë„£ì€ ì•„ì´í…œì€ ë²„ë¦¬ê¸° ë¶ˆê°€ëŠ¥í•˜ë‹¤.
 	if ( sITEMCUSTOM.IsGM_GENITEM() )						return FALSE;
 
-	//	Item Drop ½Ãµµ.
+	//	Item Drop ì‹œë„.
 	BOOL bDrop = m_pLandMan->DropItem ( vCollisionPos, const_cast<SITEMCUSTOM*> ( &sITEMCUSTOM ) );
 	if ( !bDrop )				return S_FALSE;
 
-	//	Note :¾ÆÀÌÅÛÀÇ ¼ÒÀ¯ ÀÌÀü °æ·Î ±â·Ï.
+	//	Note :ì•„ì´í…œì˜ ì†Œìœ  ì´ì „ ê²½ë¡œ ê¸°ë¡.
 	//
 	GLITEMLMT::GetInstance().ReqItemRoute ( sITEMCUSTOM, ID_CHAR, m_dwCharID, ID_CHAR, 0, EMITEM_ROUTE_GROUND, sITEMCUSTOM.wTurnNum );
 
@@ -3508,10 +3516,10 @@ HRESULT GLChar::MsgReqHoldToField ( NET_MSG_GENERIC* nmg )
 		CDebugSet::ToFileWithTime ( strName.GetString(),str.c_str() );
 	}
 
-	//	Drop ½Ã ¾ÆÀÌÅÆ Á¦°Å.
+	//	Drop ì‹œ ì•„ì´íƒ¬ ì œê±°.
 	RELEASE_HOLD_ITEM ();
 
-	//	[ÀÚ½Å¿¡°Ô] ¼Õ ÀÖ¾ú´ø ¾ÆÀÌÅÆ Á¦°Å.
+	//	[ìì‹ ì—ê²Œ] ì† ìˆì—ˆë˜ ì•„ì´íƒ¬ ì œê±°.
 	GLMSG::SNETPC_PUTON_RELEASE NetMsg_ReleaseHold(SLOT_HOLD);
 	GLGaeaServer::GetInstance().SENDTOCLIENT(m_dwClientID,&NetMsg_ReleaseHold);
 
@@ -3544,7 +3552,7 @@ HRESULT GLChar::MsgReqSlotToHold ( NET_MSG_GENERIC* nmg )
 	if ( VALID_SLOT_ITEM(emLHand) )	pITEM_LEFT = GLItemMan::GetInstance().GetItem(GET_SLOT_ITEM(emLHand).sNativeID);
 	if ( VALID_SLOT_ITEM(emRHand) )	pITEM_RIGHT = GLItemMan::GetInstance().GetItem(GET_SLOT_ITEM(emRHand).sNativeID);
 
-	//	¾ç¼Õ ¸ğµÎ Âø¿ë ¹«±â ÀÖÀ» °æ¿ì.	È°+È­»ì, Ã¢+ºÎÀû. ¼¼Æ®·Î µ¿ÀÛÇÏ´Â ¹«±â·ù°¡ ÀÖÀ½ ÀÌ¶§ ¸ğµÎ »©³»¾ßÇÔ.
+	//	ì–‘ì† ëª¨ë‘ ì°©ìš© ë¬´ê¸° ìˆì„ ê²½ìš°.	í™œ+í™”ì‚´, ì°½+ë¶€ì . ì„¸íŠ¸ë¡œ ë™ì‘í•˜ëŠ” ë¬´ê¸°ë¥˜ê°€ ìˆìŒ ì´ë•Œ ëª¨ë‘ ë¹¼ë‚´ì•¼í•¨.
 	//
 	if ( pNetMsg->emSlot==emRHand )
 	{
@@ -3556,7 +3564,7 @@ HRESULT GLChar::MsgReqSlotToHold ( NET_MSG_GENERIC* nmg )
 			(pITEM_RIGHT->sSuitOp.emAttack==ITEMATT_RAILGUN) ||
 			(pITEM_RIGHT->sSuitOp.emAttack==ITEMATT_PORTALGUN) )
 		{
-			if ( pITEM_LEFT )	//	È­»ì, ºÎÀû »©³»¾ß ÇÔ.
+			if ( pITEM_LEFT )	//	í™”ì‚´, ë¶€ì  ë¹¼ë‚´ì•¼ í•¨.
 			{
 				SITEMCUSTOM sITEM_LHAND = GET_SLOT_ITEM(emLHand);
 
@@ -3564,31 +3572,31 @@ HRESULT GLChar::MsgReqSlotToHold ( NET_MSG_GENERIC* nmg )
 				BOOL bOk = m_cInventory.FindInsrtable ( pITEM_LEFT->sBasicOp.wInvenSizeX, pITEM_LEFT->sBasicOp.wInvenSizeY, wInvenPosX, wInvenPosY );
 				if ( bOk )
 				{
-					//	Á¾Àü ¾ÆÀÌÅÆ ÀÎ¹ê¿¡ ³ÖÀ½.
+					//	ì¢…ì „ ì•„ì´íƒ¬ ì¸ë°´ì— ë„£ìŒ.
 					m_cInventory.InsertItem ( sITEM_LHAND, wInvenPosX, wInvenPosY );
 
-					//	[ÀÚ½Å¿¡°Ô] ÀÎ¹ê¿¡ ¾ÆÀÌÅÆ »ğÀÔ.
+					//	[ìì‹ ì—ê²Œ] ì¸ë°´ì— ì•„ì´íƒ¬ ì‚½ì….
 					GLMSG::SNETPC_INVEN_INSERT NetMsg_Inven_Insert;
 					NetMsg_Inven_Insert.Data = *m_cInventory.GetItem(wInvenPosX, wInvenPosY);
 					GLGaeaServer::GetInstance().SENDTOCLIENT(m_dwClientID,&NetMsg_Inven_Insert);
 
-					//	[¸ğµÎ¿¡°Ô] µğ½ºÇÃ·¹ÀÌ ¾ÆÀÌÅÛÀÌ ¾Æ´Ñ°É·Î °¡Á¤ÇÏ¿© ¹«½Ã.
+					//	[ëª¨ë‘ì—ê²Œ] ë””ìŠ¤í”Œë ˆì´ ì•„ì´í…œì´ ì•„ë‹Œê±¸ë¡œ ê°€ì •í•˜ì—¬ ë¬´ì‹œ.
 				}
-				//	Note : ÀÎº¥Åä¸® ³Ö±â¿¡ ½ÇÆĞÇÏ¿´À» °æ¿ì.
+				//	Note : ì¸ë²¤í† ë¦¬ ë„£ê¸°ì— ì‹¤íŒ¨í•˜ì˜€ì„ ê²½ìš°.
 				else
 				{
-					//	Item Drop ½Ãµµ.
+					//	Item Drop ì‹œë„.
 					BOOL bDrop = m_pLandMan->DropItem ( m_vPos, &sITEM_LHAND );
 
-					//	Note :¾ÆÀÌÅÛÀÇ ¼ÒÀ¯ ÀÌÀü °æ·Î ±â·Ï.
+					//	Note :ì•„ì´í…œì˜ ì†Œìœ  ì´ì „ ê²½ë¡œ ê¸°ë¡.
 					//
 					GLITEMLMT::GetInstance().ReqItemRoute ( sITEM_LHAND, ID_CHAR, m_dwCharID, ID_CHAR, 0, EMITEM_ROUTE_GROUND, sITEM_LHAND.wTurnNum );
 				}
 
-				//	¿ŞÂÊ ½½·Ô Áö¿öÁÜ.
+				//	ì™¼ìª½ ìŠ¬ë¡¯ ì§€ì›Œì¤Œ.
 				RELEASE_SLOT_ITEM(emLHand);
 
-				//	[ÀÚ½Å¿¡°Ô] SLOT¿¡ ÀÖ¾ú´ø ¾ÆÀÌÅÆ Á¦°Å.
+				//	[ìì‹ ì—ê²Œ] SLOTì— ìˆì—ˆë˜ ì•„ì´íƒ¬ ì œê±°.
 				GLMSG::SNETPC_PUTON_RELEASE NetMsg_PutOn_Release(emLHand);
 				GLGaeaServer::GetInstance().SENDTOCLIENT(m_dwClientID,&NetMsg_PutOn_Release);
 			}
@@ -3605,26 +3613,26 @@ HRESULT GLChar::MsgReqSlotToHold ( NET_MSG_GENERIC* nmg )
 	/*dmk14 vehicle disable release when active*/
 	if( pNetMsg->emSlot == SLOT_VEHICLE && ( m_bVehicle ) )	return S_FALSE;
 
-	//	¼Õ¿¡ µé°Ô ÇÔ.
+	//	ì†ì— ë“¤ê²Œ í•¨.
 	HOLD_ITEM ( GET_SLOT_ITEM(pNetMsg->emSlot) );
 
-	//	SLOT ¾ÆÀÌÅÆ Á¦°Å.
+	//	SLOT ì•„ì´íƒ¬ ì œê±°.
 	RELEASE_SLOT_ITEM ( pNetMsg->emSlot );
 
-	//	¾ÆÀÌÅÆ º¯°æ½Ã °ª Àç È¯»ê ÇÊ¿äÇÔ.
+	//	ì•„ì´íƒ¬ ë³€ê²½ì‹œ ê°’ ì¬ í™˜ì‚° í•„ìš”í•¨.
 	INIT_DATA ( FALSE, FALSE );
 
-	//	[ÀÚ½Å¿¡°Ô] SLOT¿¡ ÀÖ¾ú´ø ¾ÆÀÌÅÆ Á¦°Å.
+	//	[ìì‹ ì—ê²Œ] SLOTì— ìˆì—ˆë˜ ì•„ì´íƒ¬ ì œê±°.
 	GLMSG::SNETPC_PUTON_RELEASE NetMsg_PutOn_Release(pNetMsg->emSlot);
 	GLGaeaServer::GetInstance().SENDTOCLIENT(m_dwClientID,&NetMsg_PutOn_Release);
 
-	//	[¸ğµÎ¿¡°Ô] ÀÚ½ÅÀÇ Âø¿ë º¹ÀåÀÌ ¹Ù²ñÀ» ¾Ë¸².
+	//	[ëª¨ë‘ì—ê²Œ] ìì‹ ì˜ ì°©ìš© ë³µì¥ì´ ë°”ë€œì„ ì•Œë¦¼.
 	GLMSG::SNETPC_PUTON_RELEASE_BRD NetMsg_PutOn_Release_Brd;
 	NetMsg_PutOn_Release_Brd.dwGaeaID = m_dwGaeaID;
 	NetMsg_PutOn_Release_Brd.emSlot = pNetMsg->emSlot;
 	SendMsgViewAround ( reinterpret_cast<NET_MSG_GENERIC*>(&NetMsg_PutOn_Release_Brd) );
 
-	//	[ÀÚ½Å¿¡°Ô] ¼Õ¿¡ ¾ÆÀÌÅÆÀ» µé°Ô.
+	//	[ìì‹ ì—ê²Œ] ì†ì— ì•„ì´íƒ¬ì„ ë“¤ê²Œ.
 	GLMSG::SNETPC_PUTON_UPDATE NetMsg_PutOn;
 	NetMsg_PutOn.emSlot = SLOT_HOLD;
 	NetMsg_PutOn.sItemCustom = GET_HOLD_ITEM();
@@ -3636,7 +3644,7 @@ HRESULT GLChar::MsgReqSlotToHold ( NET_MSG_GENERIC* nmg )
 		GLGaeaServer::GetInstance().SaveVehicle( m_dwClientID, m_dwGaeaID, false );
 	}
 
-	// ¹«±â¿¡ µû¸¥ ¹öÇÁ¸¦ ÃÊ±âÈ­ ÇÑ´Ù.
+	// ë¬´ê¸°ì— ë”°ë¥¸ ë²„í”„ë¥¼ ì´ˆê¸°í™” í•œë‹¤.
 	DisableSkillFact();
 	
 
@@ -3663,18 +3671,18 @@ HRESULT GLChar::MsgReqSlotExHold ( NET_MSG_GENERIC* nmg )
 
 	if( GET_HOLD_ITEM().nidDISGUISE!=SNATIVEID(false) )
 	{
-		//	ÄÚ½ºÆ¬À» ÀÔÈù ¾ÆÀÌÅÛÀÏ °æ¿ì
+		//	ì½”ìŠ¤íŠ¬ì„ ì…íŒ ì•„ì´í…œì¼ ê²½ìš°
 		bOk = ACCEPT_ITEM ( GET_HOLD_ITEM().sNativeID, GET_HOLD_ITEM().nidDISGUISE );
 		if ( !bOk )	return E_FAIL;
 	}
 	else
 	{
-		//	ÀÚ°İÁ¶°Ç¿¡ ºÎÇÕÇÏ´ÂÁö °Ë»ç.
+		//	ìê²©ì¡°ê±´ì— ë¶€í•©í•˜ëŠ”ì§€ ê²€ì‚¬.
 		bOk = ACCEPT_ITEM ( GET_HOLD_ITEM().sNativeID );
 		if ( !bOk )	return E_FAIL;
 	}
 
-	//	ÇØ´ç ½½·Ô¿¡ ÀåÂø °¡´ÉÇÑÁö °Ë»ç.
+	//	í•´ë‹¹ ìŠ¬ë¡¯ì— ì¥ì°© ê°€ëŠ¥í•œì§€ ê²€ì‚¬.
 	bOk = CHECKSLOT_ITEM ( GET_HOLD_ITEM().sNativeID, pNetMsg->emSlot );
 	if ( !bOk )	return E_FAIL;
 	
@@ -3689,33 +3697,33 @@ HRESULT GLChar::MsgReqSlotExHold ( NET_MSG_GENERIC* nmg )
 	EMSLOT emRHand = GetCurRHand();
 	EMSLOT emLHand = GetCurLHand();
 
-	//	Note : ÀÏ¹İ ½½·ÔÀÏ °æ¿ì.
+	//	Note : ì¼ë°˜ ìŠ¬ë¡¯ì¼ ê²½ìš°.
 	//
 	if ( pITEM_TOSLOT->sSuitOp.emSuit!=SUIT_HANDHELD )
 	{
 		if ( !VALID_SLOT_ITEM(pNetMsg->emSlot) )	return S_FALSE;
 
-		//	Á¾Àü ¾ÆÀÌÅÆ ¼Õ¿¡ µé°í ÀÖ°Ô.	#1 ¹é¾÷
+		//	ì¢…ì „ ì•„ì´íƒ¬ ì†ì— ë“¤ê³  ìˆê²Œ.	#1 ë°±ì—…
 		sToHoldItem = GET_SLOT_ITEM ( pNetMsg->emSlot );
 
-		//	ÀåÂøÇÒ ¾ÆÀÌÅÛ ÁöÁ¤.
+		//	ì¥ì°©í•  ì•„ì´í…œ ì§€ì •.
 		sToSlotItem = GET_HOLD_ITEM();
 	}
-	//	¼Õ¿¡ µå´Â µµ±¸ÀÏ °æ¿ì.
+	//	ì†ì— ë“œëŠ” ë„êµ¬ì¼ ê²½ìš°.
 	else
 	{
 		SITEM *pITEM_LEFT=NULL, *pITEM_RIGHT=NULL;
 		if ( VALID_SLOT_ITEM(emLHand) )	pITEM_LEFT = GLItemMan::GetInstance().GetItem(GET_SLOT_ITEM(emLHand).sNativeID);
 		if ( VALID_SLOT_ITEM(emRHand) )	pITEM_RIGHT = GLItemMan::GetInstance().GetItem(GET_SLOT_ITEM(emRHand).sNativeID);
 
-		//	¾ç¼Õ µµ±¸¸¦ Âø¿ëÇÏ·Á ÇÏ´Â °æ¿ì.
+		//	ì–‘ì† ë„êµ¬ë¥¼ ì°©ìš©í•˜ë ¤ í•˜ëŠ” ê²½ìš°.
 		if ( ISBOTH_HANDHELD(pITEM_TOSLOT) )
 		{
 			if ( pITEM_LEFT && pITEM_RIGHT )
 			{
-				//	Memo :	³ÖÀ»·Á´Â ¾ÆÀÌÅÛÀÌ È°ÀÌ°í ¿ŞÂÊ¿¡ Âø¿ëÇÑ ¾ÆÀÌÅÛÀÌ È­»ìÀÌ ¾Æ´Ñ °æ¿ì.
+				//	Memo :	ë„£ì„ë ¤ëŠ” ì•„ì´í…œì´ í™œì´ê³  ì™¼ìª½ì— ì°©ìš©í•œ ì•„ì´í…œì´ í™”ì‚´ì´ ì•„ë‹Œ ê²½ìš°.
 				if( ( (pITEM_TOSLOT->sSuitOp.emAttack==ITEMATT_BOW) && (pITEM_LEFT->sBasicOp.emItemType!=ITEM_ARROW) ) ||
-				//	Memo :	³ÖÀ»·Á´Â ¾ÆÀÌÅÛÀÌ ºÀÀÌ°í ¿ŞÂÊ¿¡ Âø¿ëÇÑ ¾ÆÀÌÅÛÀÌ ºÎÀûÀÌ ¾Æ´Ñ °æ¿ì.
+				//	Memo :	ë„£ì„ë ¤ëŠ” ì•„ì´í…œì´ ë´‰ì´ê³  ì™¼ìª½ì— ì°©ìš©í•œ ì•„ì´í…œì´ ë¶€ì ì´ ì•„ë‹Œ ê²½ìš°.
 					( (pITEM_TOSLOT->sSuitOp.emAttack==ITEMATT_SPEAR) && (pITEM_LEFT->sBasicOp.emItemType!=ITEM_CHARM) ) ||
 
 					/*gun-bullet logic, Juver, 2017/05/27 */
@@ -3723,7 +3731,7 @@ HRESULT GLChar::MsgReqSlotExHold ( NET_MSG_GENERIC* nmg )
 					( (pITEM_TOSLOT->sSuitOp.emAttack==ITEMATT_RAILGUN) && (pITEM_LEFT->sBasicOp.emItemType!=ITEM_BULLET) ) ||
 					( (pITEM_TOSLOT->sSuitOp.emAttack==ITEMATT_PORTALGUN) && (pITEM_LEFT->sBasicOp.emItemType!=ITEM_BULLET) ) ||
 
-				//	Memo :	³ÖÀ»·Á´Â ¾ÆÀÌÅÆÀÌ È°ÀÌ³ª ÁöÆÎÀÌ°¡ ¾Æ´Ò °æ¿ì.
+				//	Memo :	ë„£ì„ë ¤ëŠ” ì•„ì´íƒ¬ì´ í™œì´ë‚˜ ì§€íŒ¡ì´ê°€ ì•„ë‹ ê²½ìš°.
 					( (pITEM_TOSLOT->sSuitOp.emAttack!=ITEMATT_BOW) && (pITEM_TOSLOT->sSuitOp.emAttack!=ITEMATT_SPEAR) &&
 
 					/*gun-bullet logic, Juver, 2017/05/27 */
@@ -3733,31 +3741,31 @@ HRESULT GLChar::MsgReqSlotExHold ( NET_MSG_GENERIC* nmg )
 					bOk = m_cInventory.FindInsrtable ( pITEM_LEFT->sBasicOp.wInvenSizeX, pITEM_LEFT->sBasicOp.wInvenSizeY, wInvenPosX, wInvenPosY );
 					if ( !bOk )	return E_FAIL;
 
-					//	Á¾Àü ¾ÆÀÌÅÆ ÀÎ¹ê¿¡ ³ÖÀ½.	#1 ¹é¾÷		//	¿ŞÂÊ ½½·Ô Áö¿öÁÜ.
+					//	ì¢…ì „ ì•„ì´íƒ¬ ì¸ë°´ì— ë„£ìŒ.	#1 ë°±ì—…		//	ì™¼ìª½ ìŠ¬ë¡¯ ì§€ì›Œì¤Œ.
 					sToInvenItem = GET_SLOT_ITEM(emLHand);
 				}
 
-				//	Á¾Àü ¾ÆÀÌÅÆ ¼Õ¿¡ µé°í ÀÖ°Ô.	#2 ¹é¾÷
+				//	ì¢…ì „ ì•„ì´íƒ¬ ì†ì— ë“¤ê³  ìˆê²Œ.	#2 ë°±ì—…
 				sToHoldItem = GET_SLOT_ITEM(emRHand);
 
-				//	ÀåÂøÇÒ ¾ÆÀÌÅÛ ÁöÁ¤.
+				//	ì¥ì°©í•  ì•„ì´í…œ ì§€ì •.
 				sToSlotItem = GET_HOLD_ITEM();
 			}
 			else
 			{
 				if ( !VALID_SLOT_ITEM(pNetMsg->emSlot) )	return S_FALSE;
 
-				//	¼Õ¿¡ µé°Ô.
+				//	ì†ì— ë“¤ê²Œ.
 				sToHoldItem = GET_SLOT_ITEM(pNetMsg->emSlot);
 
-				//	¾ÆÀÌÅÆ ÀåÂøÇÒ ¾ÆÀÌÅÛ ÁöÁ¤.
+				//	ì•„ì´íƒ¬ ì¥ì°©í•  ì•„ì´í…œ ì§€ì •.
 				sToSlotItem = GET_HOLD_ITEM();
 			}
 		}
-		//	ÇÑ¼Õ µµ±¸¸¦ Âø¿ëÇÏ·Á ÇÏ´Â °æ¿ì.
+		//	í•œì† ë„êµ¬ë¥¼ ì°©ìš©í•˜ë ¤ í•˜ëŠ” ê²½ìš°.
 		else
 		{
-			//	Note : Âø¿ëÇÒ·ÁÇÏ´Â µµ±¸°¡ È­»ìÀÌ³ª ºÎÀûÀÇ °æ¿ì.
+			//	Note : ì°©ìš©í• ë ¤í•˜ëŠ” ë„êµ¬ê°€ í™”ì‚´ì´ë‚˜ ë¶€ì ì˜ ê²½ìš°.
 			//
 			if ( (pITEM_TOSLOT->sBasicOp.emItemType==ITEM_ARROW) || 
 				(pITEM_TOSLOT->sBasicOp.emItemType==ITEM_CHARM) ||
@@ -3765,11 +3773,11 @@ HRESULT GLChar::MsgReqSlotExHold ( NET_MSG_GENERIC* nmg )
 				/*gun-bullet logic, Juver, 2017/05/27 */
 				(pITEM_TOSLOT->sBasicOp.emItemType==ITEM_BULLET) )
 			{
-				//	¿Ş¼Õ¿¡¸¸ ÀåÂø °¡´É.
+				//	ì™¼ì†ì—ë§Œ ì¥ì°© ê°€ëŠ¥.
 				if ( pNetMsg->emSlot != emLHand )
 					return E_FAIL;
 
-				//	Note : ¾ç¼Õ¹«±âÀÌ°í È°ÀÌ³ª È­»ìÀÏ °æ¿ì¸¸ Âø¿ë °¡´É.
+				//	Note : ì–‘ì†ë¬´ê¸°ì´ê³  í™œì´ë‚˜ í™”ì‚´ì¼ ê²½ìš°ë§Œ ì°©ìš© ê°€ëŠ¥.
 				//
 				if ( pITEM_RIGHT && ISBOTH_HANDHELD(pITEM_RIGHT) )
 				{
@@ -3785,78 +3793,78 @@ HRESULT GLChar::MsgReqSlotExHold ( NET_MSG_GENERIC* nmg )
 
 				if ( !VALID_SLOT_ITEM(pNetMsg->emSlot) )	return S_FALSE;
 
-				//	Á¾Àü ¾ÆÀÌÅÆ ¼Õ¿¡ µé°í ÀÖ°Ô.	#1 ¹é¾÷
+				//	ì¢…ì „ ì•„ì´íƒ¬ ì†ì— ë“¤ê³  ìˆê²Œ.	#1 ë°±ì—…
 				sToHoldItem = GET_SLOT_ITEM(pNetMsg->emSlot);
 
-				//	ÀåÂøÇÒ ¾ÆÀÌÅÛ ÁöÁ¤.
+				//	ì¥ì°©í•  ì•„ì´í…œ ì§€ì •.
 				sToSlotItem = GET_HOLD_ITEM();
 			}
 			else 
 			{
-				//	Á¾Àü ¾ÆÀÌÅÛÀÌ ¾ç¼Õ·ùÀÏ °æ¿ì.
+				//	ì¢…ì „ ì•„ì´í…œì´ ì–‘ì†ë¥˜ì¼ ê²½ìš°.
 				if ( pITEM_RIGHT && ISBOTH_HANDHELD(pITEM_RIGHT) )
 				{
-					//	¾ç¼Õ ¸ğµÎ Âø¿ë ¹«±â ÀÖÀ» °æ¿ì.	È°+È­»ì, Ã¢+ºÎÀû. ¼¼Æ®·Î µ¿ÀÛÇÏ´Â ¹«±â·ù°¡ ÀÖÀ½ ÀÌ¶§ ¸ğµÎ »©³»¾ßÇÔ.
+					//	ì–‘ì† ëª¨ë‘ ì°©ìš© ë¬´ê¸° ìˆì„ ê²½ìš°.	í™œ+í™”ì‚´, ì°½+ë¶€ì . ì„¸íŠ¸ë¡œ ë™ì‘í•˜ëŠ” ë¬´ê¸°ë¥˜ê°€ ìˆìŒ ì´ë•Œ ëª¨ë‘ ë¹¼ë‚´ì•¼í•¨.
 					//
 					if ( pITEM_LEFT )
 					{
 						bOk = m_cInventory.FindInsrtable ( pITEM_LEFT->sBasicOp.wInvenSizeX, pITEM_LEFT->sBasicOp.wInvenSizeY, wInvenPosX, wInvenPosY );
 						if ( !bOk )	return E_FAIL;
 
-						//	Á¾Àü ¾ÆÀÌÅÆ ÀÎ¹ê¿¡ ³ÖÀ½. #1 ¹é¾÷	//	¿ŞÂÊ ½½·Ô Áö¿öÁÜ.
+						//	ì¢…ì „ ì•„ì´íƒ¬ ì¸ë°´ì— ë„£ìŒ. #1 ë°±ì—…	//	ì™¼ìª½ ìŠ¬ë¡¯ ì§€ì›Œì¤Œ.
 						sToInvenItem = GET_SLOT_ITEM(emLHand);
 					}
 
-					//	Á¾Àü ¾ÆÀÌÅÆ ¼Õ¿¡ µé°í ÀÖ°Ô.	#2 ¹é¾÷
+					//	ì¢…ì „ ì•„ì´íƒ¬ ì†ì— ë“¤ê³  ìˆê²Œ.	#2 ë°±ì—…
 					sToHoldItem = GET_SLOT_ITEM(emRHand);
 
-					//	ÀåÂøÇÒ ¾ÆÀÌÅÛ ÁöÁ¤.
+					//	ì¥ì°©í•  ì•„ì´í…œ ì§€ì •.
 					sToSlotItem = GET_HOLD_ITEM();
 				}
-				//	ÀÏ¹İÀûÀÏ °æ¿ì.
+				//	ì¼ë°˜ì ì¼ ê²½ìš°.
 				else
 				{
 					if ( !VALID_SLOT_ITEM(pNetMsg->emSlot) )	return S_FALSE;
 
-					//	Á¾Àü ¾ÆÀÌÅÆ ¼Õ¿¡ µé°í ÀÖ°Ô.	#1 ¹é¾÷
+					//	ì¢…ì „ ì•„ì´íƒ¬ ì†ì— ë“¤ê³  ìˆê²Œ.	#1 ë°±ì—…
 					sToHoldItem = GET_SLOT_ITEM(pNetMsg->emSlot);
 
-					//	ÀåÂøÇÒ ¾ÆÀÌÅÛ ÁöÁ¤.
+					//	ì¥ì°©í•  ì•„ì´í…œ ì§€ì •.
 					sToSlotItem = GET_HOLD_ITEM();
 				}
 			}
 		}
 	}
 
-	//	Note : ½ÇÁ¦·Î ÀÌµ¿ ½ÃÅ´, ¸Ş½ÃÁö ¹ß»ı
+	//	Note : ì‹¤ì œë¡œ ì´ë™ ì‹œí‚´, ë©”ì‹œì§€ ë°œìƒ
 	//
 
-	//	Note : ÀÎº¥¿¡ º¸³»Áú ¾ÆÀÌÅÛ.
+	//	Note : ì¸ë²¤ì— ë³´ë‚´ì§ˆ ì•„ì´í…œ.
 	//
 	if ( sToInvenItem.sNativeID != NATIVEID_NULL() )
 	{
 		m_cInventory.InsertItem ( sToInvenItem, wInvenPosX, wInvenPosY );
 
-		//	[ÀÚ½Å¿¡°Ô] ÀÎ¹ê¿¡ ¾ÆÀÌÅÆ »ğÀÔ.
+		//	[ìì‹ ì—ê²Œ] ì¸ë°´ì— ì•„ì´íƒ¬ ì‚½ì….
 		GLMSG::SNETPC_INVEN_INSERT NetMsg_Inven_Insert;
 		NetMsg_Inven_Insert.Data = *m_cInventory.GetItem(wInvenPosX, wInvenPosY);
 		GLGaeaServer::GetInstance().SENDTOCLIENT(m_dwClientID,&NetMsg_Inven_Insert);		
 	}
 
-	//	Note : ¼Õ¿¡µé±â.
+	//	Note : ì†ì—ë“¤ê¸°.
 	//
 
 	if ( sToHoldItem.sNativeID != NATIVEID_NULL() )
 	{
 		HOLD_ITEM ( sToHoldItem );
 
-		//	[ÀÚ½Å¿¡°Ô] ¼Õ¿¡ ¾ÆÀÌÅÆÀ» µé°Ô.
+		//	[ìì‹ ì—ê²Œ] ì†ì— ì•„ì´íƒ¬ì„ ë“¤ê²Œ.
 		GLMSG::SNETPC_PUTON_UPDATE NetMsg_PutOn;
 		NetMsg_PutOn.emSlot = SLOT_HOLD;
 		NetMsg_PutOn.sItemCustom = sToHoldItem;
 		GLGaeaServer::GetInstance().SENDTOCLIENT(m_dwClientID,&NetMsg_PutOn);
 
-		// ¹«±â¿¡ µû¸¥ ¹öÇÁ¸¦ ÃÊ±âÈ­ ÇÑ´Ù.
+		// ë¬´ê¸°ì— ë”°ë¥¸ ë²„í”„ë¥¼ ì´ˆê¸°í™” í•œë‹¤.
 		DisableSkillFact();
 	}
 
@@ -3865,44 +3873,44 @@ HRESULT GLChar::MsgReqSlotExHold ( NET_MSG_GENERIC* nmg )
 		GLGaeaServer::GetInstance().SaveVehicle( m_dwClientID, m_dwGaeaID, false );		
 	}
 
-	//	Note : ½½·Ô¿¡ ³Ö±â. ½½·Ô¿¡¼­ »©³¾ ¾ÆÀÌÅÛ ÀÖÀ¸¸é Á¦°Å. (ÀÎº¥¿¡ º¸³»Áú ¾ÆÀÌÅÛ.)
+	//	Note : ìŠ¬ë¡¯ì— ë„£ê¸°. ìŠ¬ë¡¯ì—ì„œ ë¹¼ë‚¼ ì•„ì´í…œ ìˆìœ¼ë©´ ì œê±°. (ì¸ë²¤ì— ë³´ë‚´ì§ˆ ì•„ì´í…œ.)
 	//
 	if ( sToSlotItem.sNativeID != NATIVEID_NULL() )
 	{
-		//	Note : ½½·Ô¿¡¼­ Á¦°ÅÇÒ ¾ÆÀÌÅÛÀÌ ÀÖÀ» °æ¿ì.
+		//	Note : ìŠ¬ë¡¯ì—ì„œ ì œê±°í•  ì•„ì´í…œì´ ìˆì„ ê²½ìš°.
 		//
 		EMSLOT emSlotRelease(SLOT_TSIZE);
 		if ( sToInvenItem.sNativeID!=NATIVEID_NULL() )
 		{
 			emSlotRelease = emLHand;
-			RELEASE_SLOT_ITEM(emLHand);		//	¿ŞÂÊ ½½·Ô Áö¿öÁÜ.
+			RELEASE_SLOT_ITEM(emLHand);		//	ì™¼ìª½ ìŠ¬ë¡¯ ì§€ì›Œì¤Œ.
 		}
 
-		//	½½·Ô¿¡ ³ÖÀ½.
+		//	ìŠ¬ë¡¯ì— ë„£ìŒ.
 		SLOT_ITEM ( sToSlotItem, pNetMsg->emSlot );
 
-		//	[ÀÚ½Å¿¡°Ô] SLOT ¿¡ ¾ÆÀÌÅÆÀ» Âø¿ë.
+		//	[ìì‹ ì—ê²Œ] SLOT ì— ì•„ì´íƒ¬ì„ ì°©ìš©.
 		//
 		GLMSG::SNETPC_PUTON_UPDATE NetMsg_PutOn;
 		NetMsg_PutOn.emSlot = pNetMsg->emSlot;
 		NetMsg_PutOn.sItemCustom = sToSlotItem;
-		NetMsg_PutOn.emSlotRelease = emSlotRelease;					//	¾ÆÀÌÅÛ »èÁ¦ÇÒ ½½·Ô.
+		NetMsg_PutOn.emSlotRelease = emSlotRelease;					//	ì•„ì´í…œ ì‚­ì œí•  ìŠ¬ë¡¯.
 		GLGaeaServer::GetInstance().SENDTOCLIENT(m_dwClientID,&NetMsg_PutOn);
 
-		//	[¸ğµÎ¿¡°Ô] ÀÚ½ÅÀÇ Âø¿ë º¹ÀåÀÌ ¹Ù²ñÀ» ¾Ë¸².
+		//	[ëª¨ë‘ì—ê²Œ] ìì‹ ì˜ ì°©ìš© ë³µì¥ì´ ë°”ë€œì„ ì•Œë¦¼.
 		//
 		GLMSG::SNETPC_PUTON_UPDATE_BRD NetMsg_PutOn_Update_Brd;
 		NetMsg_PutOn_Update_Brd.dwGaeaID = m_dwGaeaID;
 		NetMsg_PutOn_Update_Brd.emSlot = pNetMsg->emSlot;
 		NetMsg_PutOn_Update_Brd.sItemClient.Assign ( sToSlotItem );
-		NetMsg_PutOn_Update_Brd.emSlotRelease = emSlotRelease;		//	¾ÆÀÌÅÛ »èÁ¦ÇÒ ½½·Ô.
+		NetMsg_PutOn_Update_Brd.emSlotRelease = emSlotRelease;		//	ì•„ì´í…œ ì‚­ì œí•  ìŠ¬ë¡¯.
 		SendMsgViewAround ( reinterpret_cast<NET_MSG_GENERIC*>(&NetMsg_PutOn_Update_Brd) );
 
-		// ¹«±â¿¡ µû¸¥ ¹öÇÁ¸¦ ÃÊ±âÈ­ ÇÑ´Ù.
+		// ë¬´ê¸°ì— ë”°ë¥¸ ë²„í”„ë¥¼ ì´ˆê¸°í™” í•œë‹¤.
 		DisableSkillFact();
 	}
 
-	//	Note : ¾ÆÀÌÅÆ º¯°æ½Ã °ª Àç È¯»ê ÇÊ¿äÇÔ.
+	//	Note : ì•„ì´íƒ¬ ë³€ê²½ì‹œ ê°’ ì¬ í™˜ì‚° í•„ìš”í•¨.
 	//
 	INIT_DATA ( FALSE, FALSE );
 
@@ -3938,55 +3946,55 @@ HRESULT GLChar::MsgReqHoldToSlot ( NET_MSG_GENERIC* nmg )
 	
 	if( sItemCustom.nidDISGUISE!=SNATIVEID(false) )
 	{
-		//	ÄÚ½ºÆ¬À» ÀÔÈù ¾ÆÀÌÅÛÀÏ °æ¿ì
+		//	ì½”ìŠ¤íŠ¬ì„ ì…íŒ ì•„ì´í…œì¼ ê²½ìš°
 		bOk = ACCEPT_ITEM ( sItemCustom.sNativeID, sItemCustom.nidDISGUISE );
 		if ( !bOk )	return E_FAIL;
 	}
 	else
 	{
-		//	ÀÚ°İÁ¶°Ç¿¡ ºÎÇÕÇÏ´ÂÁö °Ë»ç.
+		//	ìê²©ì¡°ê±´ì— ë¶€í•©í•˜ëŠ”ì§€ ê²€ì‚¬.
 		bOk = ACCEPT_ITEM ( sItemCustom.sNativeID );
 		if ( !bOk )	return E_FAIL;
 	}
 	
-	//	ÇØ´ç ½½·Ô¿¡ ÀåÂø °¡´ÉÇÑÁö °Ë»ç.
+	//	í•´ë‹¹ ìŠ¬ë¡¯ì— ì¥ì°© ê°€ëŠ¥í•œì§€ ê²€ì‚¬.
 	bOk = CHECKSLOT_ITEM ( sItemCustom.sNativeID, pNetMsg->emSlot );
 	if ( !bOk )	return E_FAIL;
 
-	//	ÇØ´ç ½½·ÔÀÌ ºñ¿´´ÂÁö Á¡°Ë.
+	//	í•´ë‹¹ ìŠ¬ë¡¯ì´ ë¹„ì˜€ëŠ”ì§€ ì ê²€.
 	bOk = ISEMPTY_SLOT ( sItemCustom.sNativeID, pNetMsg->emSlot );
 	if ( !bOk ) return E_FAIL;
 
-	//	¸¸¾à ¾ç¼Õ ¹«±âÀÏ °æ¿ì ½½·ÔÀ» "¿À¸¥¼Õ µé±â" ½½·ÔÀ¸·Î.
+	//	ë§Œì•½ ì–‘ì† ë¬´ê¸°ì¼ ê²½ìš° ìŠ¬ë¡¯ì„ "ì˜¤ë¥¸ì† ë“¤ê¸°" ìŠ¬ë¡¯ìœ¼ë¡œ.
 	if ( ISBOTH_HANDHELD(pItem) )	pNetMsg->emSlot = GetCurRHand();
 
-	//	ÇØ´ç ½½·Ô¿¡ ¾ÆÀÌÅÆ ÀåÂø.
+	//	í•´ë‹¹ ìŠ¬ë¡¯ì— ì•„ì´íƒ¬ ì¥ì°©.
 	SLOT_ITEM ( sItemCustom, pNetMsg->emSlot );
 
-	//	¼Õ¿¡ µç ¾ÆÀÌÅÛ Á¦°Å
+	//	ì†ì— ë“  ì•„ì´í…œ ì œê±°
 	RELEASE_HOLD_ITEM ();
 
-	//	¾ÆÀÌÅÆ º¯°æ½Ã °ª Àç È¯»ê ÇÊ¿äÇÔ.
+	//	ì•„ì´íƒ¬ ë³€ê²½ì‹œ ê°’ ì¬ í™˜ì‚° í•„ìš”í•¨.
 	INIT_DATA ( FALSE, FALSE );
 
-	//	[ÀÚ½Å¿¡°Ô] ¼Õ¿¡ ÀÖ¾ú´ø ¾ÆÀÌÅÆ Á¦°Å.
+	//	[ìì‹ ì—ê²Œ] ì†ì— ìˆì—ˆë˜ ì•„ì´íƒ¬ ì œê±°.
 	GLMSG::SNETPC_PUTON_RELEASE NetMsg_PutOn_Release(SLOT_HOLD);
 	GLGaeaServer::GetInstance().SENDTOCLIENT(m_dwClientID,&NetMsg_PutOn_Release);
 
-	//	[ÀÚ½Å¿¡°Ô] ¼Õ¿¡ ÀÖ¾ú´ø ¾ÆÀÌÅÆÀ» Slot¿¡ Âø¿ë.
+	//	[ìì‹ ì—ê²Œ] ì†ì— ìˆì—ˆë˜ ì•„ì´íƒ¬ì„ Slotì— ì°©ìš©.
 	GLMSG::SNETPC_PUTON_UPDATE NetMsg_PutOn;
 	NetMsg_PutOn.emSlot = pNetMsg->emSlot;
 	NetMsg_PutOn.sItemCustom = sItemCustom;
 	GLGaeaServer::GetInstance().SENDTOCLIENT(m_dwClientID,&NetMsg_PutOn);
 
-	//	[¸ğµÎ¿¡°Ô] º¹ÀåÀÌ ¹Ù²ñÀ» ¾Ë·ÁÁÜ.
+	//	[ëª¨ë‘ì—ê²Œ] ë³µì¥ì´ ë°”ë€œì„ ì•Œë ¤ì¤Œ.
 	GLMSG::SNETPC_PUTON_UPDATE_BRD NetMsg_PutOn_Brd;
 	NetMsg_PutOn_Brd.dwGaeaID = m_dwGaeaID;
 	NetMsg_PutOn_Brd.emSlot = pNetMsg->emSlot;
 	NetMsg_PutOn_Brd.sItemClient.Assign ( sItemCustom );
 	SendMsgViewAround ( reinterpret_cast<NET_MSG_GENERIC*>(&NetMsg_PutOn_Brd) );
 
-	// ¹«±â¿¡ µû¸¥ ¹öÇÁ¸¦ ÃÊ±âÈ­ ÇÑ´Ù.
+	// ë¬´ê¸°ì— ë”°ë¥¸ ë²„í”„ë¥¼ ì´ˆê¸°í™” í•œë‹¤.
 	DisableSkillFact();
 
 	return S_OK;
@@ -3997,19 +4005,19 @@ HRESULT GLChar::MsgReqSlotChange ( NET_MSG_GENERIC* nmg )
 {
 	GLMSG::SNETPC_REQ_SLOT_CHANGE *pNetMsg = reinterpret_cast<GLMSG::SNETPC_REQ_SLOT_CHANGE*> ( nmg );
 
-	if( IsUseArmSub() ) SetUseArmSub( FALSE ); // ÁÖ¹«±â
-	else				SetUseArmSub( TRUE );  // º¸Á¶¹«±â
+	if( IsUseArmSub() ) SetUseArmSub( FALSE ); // ì£¼ë¬´ê¸°
+	else				SetUseArmSub( TRUE );  // ë³´ì¡°ë¬´ê¸°
 
-	//	¾ÆÀÌÅÆ º¯°æ½Ã °ª Àç È¯»ê ÇÊ¿äÇÔ.
+	//	ì•„ì´íƒ¬ ë³€ê²½ì‹œ ê°’ ì¬ í™˜ì‚° í•„ìš”í•¨.
 	INIT_DATA ( FALSE, FALSE, m_sCONFTING.sOption.fHP_RATE );
 
-	//	[ÀÚ½Å¿¡°Ô] ¹«±â ½º¿Ò
+	//	[ìì‹ ì—ê²Œ] ë¬´ê¸° ìŠ¤ì™‘
 	GLMSG::SNETPC_PUTON_CHANGE NetMsg_PutOn;
 	NetMsg_PutOn.bUseArmSub = IsUseArmSub();
 	NetMsg_PutOn.fCONFT_HP_RATE = m_sCONFTING.sOption.fHP_RATE;
 	GLGaeaServer::GetInstance().SENDTOCLIENT(m_dwClientID,&NetMsg_PutOn);
 
-	//	[¸ğµÎ¿¡°Ô] ¹«±â ½º¿ÒÀ» ¾Ë¸².
+	//	[ëª¨ë‘ì—ê²Œ] ë¬´ê¸° ìŠ¤ì™‘ì„ ì•Œë¦¼.
 	GLMSG::SNETPC_PUTON_CHANGE_BRD NetMsg_PutOn_Brd;
 	NetMsg_PutOn_Brd.dwGaeaID = m_dwGaeaID;
 	NetMsg_PutOn_Brd.bUseArmSub = IsUseArmSub();
@@ -4020,7 +4028,7 @@ HRESULT GLChar::MsgReqSlotChange ( NET_MSG_GENERIC* nmg )
 	GLGaeaServer::GetInstance().SENDTOAGENT ( m_dwClientID, &NetMsg_PutOn_AG );
 
 
-	// ¹«±â¿¡ µû¸¥ ¹öÇÁ¸¦ ÃÊ±âÈ­ ÇÑ´Ù.
+	// ë¬´ê¸°ì— ë”°ë¥¸ ë²„í”„ë¥¼ ì´ˆê¸°í™” í•œë‹¤.
 	DisableSkillFact();
 	
 	return S_OK;
@@ -4036,8 +4044,8 @@ bool GLChar::InsertPileItem ( const SITEMCUSTOM& sItemCustom, WORD wREQINSRTNUM 
 	WORD wINVENX = pItem->sBasicOp.wInvenSizeX;
 	WORD wINVENY = pItem->sBasicOp.wInvenSizeY;
 
-	//	Note : ´õ °ãÃÄÁú¼ö ÀÖ´Â ¾ÆÀÌÅÛÀÌ ÀÖ´ÂÁö °Ë»çÇÏ¿© ÀÎº¥¿¡ µé¾î°¡¾ßÇÏ´Â
-	//		¾ÆÀÌÅÛ Á¡°Ë ¼ıÀÚ¸¦ °¨¼Ò½ÃÅ´.
+	//	Note : ë” ê²¹ì³ì§ˆìˆ˜ ìˆëŠ” ì•„ì´í…œì´ ìˆëŠ”ì§€ ê²€ì‚¬í•˜ì—¬ ì¸ë²¤ì— ë“¤ì–´ê°€ì•¼í•˜ëŠ”
+	//		ì•„ì´í…œ ì ê²€ ìˆ«ìë¥¼ ê°ì†Œì‹œí‚´.
 	GLInventory::CELL_MAP &ItemMap = *m_cInventory.GetItemList();
 	GLInventory::CELL_MAP_ITER iter = ItemMap.begin();
 	for ( ; iter!=ItemMap.end(); ++iter )
@@ -4047,37 +4055,37 @@ bool GLChar::InsertPileItem ( const SITEMCUSTOM& sItemCustom, WORD wREQINSRTNUM 
 		if ( sITEMCUSTOM.sNativeID != sItemCustom.sNativeID )	continue;
 		if ( sITEMCUSTOM.wTurnNum>=wPILENUM )		continue;
 	
-		//	±âÁ¸ ¾ÆÀÌÅÛ °ãÄ§ ¿©À¯ºĞ.
+		//	ê¸°ì¡´ ì•„ì´í…œ ê²¹ì¹¨ ì—¬ìœ ë¶„.
 		WORD wSURPLUSNUM = wPILENUM - sITEMCUSTOM.wTurnNum;
 
 		if ( wREQINSRTNUM > wSURPLUSNUM )
 		{
-			//	Note : ±âÁ¸ ¾ÆÀÌÅÛÀÇ °ãÄ§À» º¯°æ. ( ²ËÂü )
+			//	Note : ê¸°ì¡´ ì•„ì´í…œì˜ ê²¹ì¹¨ì„ ë³€ê²½. ( ê½‰ì°¸ )
 			sITEMCUSTOM.wTurnNum = wPILENUM;
 
-			//	Note : Å¬¶óÀÌ¾ğÆ®¿¡ °¹¼ö º¯°æÀ» ¾Ë¸².
+			//	Note : í´ë¼ì´ì–¸íŠ¸ì— ê°¯ìˆ˜ ë³€ê²½ì„ ì•Œë¦¼.
 			GLMSG::SNETPC_INVEN_DRUG_UPDATE NetMsg;
 			NetMsg.wPosX = sINVENITEM.wPosX;
 			NetMsg.wPosY = sINVENITEM.wPosY;
 			NetMsg.wTurnNum = sITEMCUSTOM.wTurnNum;
 			GLGaeaServer::GetInstance().SENDTOCLIENT(m_dwClientID,&NetMsg);
 
-			//	Note : ÀÜ¿© ¼ö·® °¨¼Ò.
+			//	Note : ì”ì—¬ ìˆ˜ëŸ‰ ê°ì†Œ.
 			wREQINSRTNUM -= wSURPLUSNUM;
 		}
 		else
 		{
-			//	Note : ±âÁ¸ ¾ÆÀÌÅÛ¿¡ °ãÄ¡´Â °Í ¸¸À¸·Îµµ »õ·Î ³ÖÀ» ¾ÆÀÌÅÛÀÌ ÃæºĞÈ÷ µé¾î°¨.
+			//	Note : ê¸°ì¡´ ì•„ì´í…œì— ê²¹ì¹˜ëŠ” ê²ƒ ë§Œìœ¼ë¡œë„ ìƒˆë¡œ ë„£ì„ ì•„ì´í…œì´ ì¶©ë¶„íˆ ë“¤ì–´ê°.
 			sITEMCUSTOM.wTurnNum += wREQINSRTNUM;
 
-			//	Note : Å¬¶óÀÌ¾ğÆ®¿¡ °¹¼ö º¯°æÀ» ¾Ë¸².
+			//	Note : í´ë¼ì´ì–¸íŠ¸ì— ê°¯ìˆ˜ ë³€ê²½ì„ ì•Œë¦¼.
 			GLMSG::SNETPC_INVEN_DRUG_UPDATE NetMsg;
 			NetMsg.wPosX = sINVENITEM.wPosX;
 			NetMsg.wPosY = sINVENITEM.wPosY;
 			NetMsg.wTurnNum = sITEMCUSTOM.wTurnNum;
 			GLGaeaServer::GetInstance().SENDTOCLIENT(m_dwClientID,&NetMsg);
 
-			//	±İ¾× º¯È­ ¸Ş½ÃÁö.
+			//	ê¸ˆì•¡ ë³€í™” ë©”ì‹œì§€.
 			GLMSG::SNETPC_UPDATE_MONEY NetMsgMoney;
 			NetMsgMoney.lnMoney = m_lnMoney;
 			/*dmk14 ingame web*/
@@ -4111,13 +4119,13 @@ bool GLChar::InsertPileItem ( const SITEMCUSTOM& sItemCustom, WORD wREQINSRTNUM 
 		}
 	}
 
-	//	Note : »õ·ÎÀÌ ÀÎº¥¿¡ µé¾î°¡¾ßÇÒ ¾ÆÀÌÅÛÀÇ °¹¼ö ÆÄ¾ÇÈÄ ÀÎº¥¿¡ µé¾î°¥ °ø°£ÀÌ ÀÖ´ÂÁö °Ë»ç.
+	//	Note : ìƒˆë¡œì´ ì¸ë²¤ì— ë“¤ì–´ê°€ì•¼í•  ì•„ì´í…œì˜ ê°¯ìˆ˜ íŒŒì•…í›„ ì¸ë²¤ì— ë“¤ì–´ê°ˆ ê³µê°„ì´ ìˆëŠ”ì§€ ê²€ì‚¬.
 
-	//	ÃÖ´ë°ãÄ§¾ÆÀÌÅÛ ¼ö·®.
+	//	ìµœëŒ€ê²¹ì¹¨ì•„ì´í…œ ìˆ˜ëŸ‰.
 	WORD wONENUM = wREQINSRTNUM / wPILENUM;
 	WORD wITEMNUM = wONENUM;
 
-	//	¿©ºĞ°ãÄ§¾ÆÀÌÅÛÀÇ °ãÄ§¼ö.
+	//	ì—¬ë¶„ê²¹ì¹¨ì•„ì´í…œì˜ ê²¹ì¹¨ìˆ˜.
 	WORD wSPLITNUM = wREQINSRTNUM % wPILENUM;
 	if ( wSPLITNUM > 0 )				wITEMNUM += 1;
 	if ( wSPLITNUM==0 && wITEMNUM>=1 )	wSPLITNUM = wPILENUM;
@@ -4126,9 +4134,9 @@ bool GLChar::InsertPileItem ( const SITEMCUSTOM& sItemCustom, WORD wREQINSRTNUM 
 	{
 		WORD wInsertPosX(0), wInsertPosY(0);
 		BOOL bITEM_SPACE = m_cInventory.FindInsrtable ( wINVENX, wINVENY, wInsertPosX, wInsertPosY );
-		GASSERT(bITEM_SPACE&&"³ÖÀ» °ø°£À» ¹Ì¸® Ã¼Å©¸¦ ÇÏ°í ¾ÆÀÌÅÛÀ» ³Ö¾úÀ¸³ª °ø°£ÀÌ ºÎÁ·ÇÔ.");
+		GASSERT(bITEM_SPACE&&"ë„£ì„ ê³µê°„ì„ ë¯¸ë¦¬ ì²´í¬ë¥¼ í•˜ê³  ì•„ì´í…œì„ ë„£ì—ˆìœ¼ë‚˜ ê³µê°„ì´ ë¶€ì¡±í•¨.");
 
-		//	Note : »õ·Î¿î ¾ÆÀÌÅÛÀ» ³Ö¾îÁÜ.
+		//	Note : ìƒˆë¡œìš´ ì•„ì´í…œì„ ë„£ì–´ì¤Œ.
 		//
 		SITEMCUSTOM sITEMCUSTOM(sItemCustom.sNativeID);
 		sITEMCUSTOM.tBORNTIME = sItemCustom.tBORNTIME;
@@ -4137,12 +4145,12 @@ bool GLChar::InsertPileItem ( const SITEMCUSTOM& sItemCustom, WORD wREQINSRTNUM 
 		sITEMCUSTOM.cChnID = sItemCustom.cChnID;
 		sITEMCUSTOM.cFieldID = sItemCustom.cFieldID;
 
-		if ( wITEMNUM==(i+1) )	sITEMCUSTOM.wTurnNum = wSPLITNUM;	//	¸¶Áö¸· ¾ÆÀÌÅÛÀº ÀÜ¿©·®.
-		else					sITEMCUSTOM.wTurnNum = wPILENUM;	//	¾Æ´Ò °æ¿ì´Â ²ËÂù·®.
+		if ( wITEMNUM==(i+1) )	sITEMCUSTOM.wTurnNum = wSPLITNUM;	//	ë§ˆì§€ë§‰ ì•„ì´í…œì€ ì”ì—¬ëŸ‰.
+		else					sITEMCUSTOM.wTurnNum = wPILENUM;	//	ì•„ë‹ ê²½ìš°ëŠ” ê½‰ì°¬ëŸ‰.
 
-		m_cInventory.InsertItem ( sITEMCUSTOM, wInsertPosX, wInsertPosY );	//	ÀÎ¹êÅä¸®¿¡ ³Ö½À´Ï´Ù.
+		m_cInventory.InsertItem ( sITEMCUSTOM, wInsertPosX, wInsertPosY );	//	ì¸ë°´í† ë¦¬ì— ë„£ìŠµë‹ˆë‹¤.
 
-		//	ÀÎ¹ê¿¡ ¾ÆÀÌÅÆ ³Ö¾îÁÖ´Â ¸Ş½ÃÁö.
+		//	ì¸ë°´ì— ì•„ì´íƒ¬ ë„£ì–´ì£¼ëŠ” ë©”ì‹œì§€.
 		GLMSG::SNETPC_INVEN_INSERT NetMsgInven;
 		NetMsgInven.Data = *m_cInventory.GetItem ( wInsertPosX, wInsertPosY );
 		GLGaeaServer::GetInstance().SENDTOCLIENT(m_dwClientID,&NetMsgInven);
@@ -4183,8 +4191,8 @@ bool GLChar::DeletePileItem ( SNATIVEID sNID, WORD wREQDELNUM )
 
 	std::vector<SNATIVEID>	vecDEL;
 
-	//	Note : ´õ °ãÃÄÁú¼ö ÀÖ´Â ¾ÆÀÌÅÛÀÌ ÀÖ´ÂÁö °Ë»çÇÏ¿© ÀÎº¥¿¡ µé¾î°¡¾ßÇÏ´Â
-	//		¾ÆÀÌÅÛ Á¡°Ë ¼ıÀÚ¸¦ °¨¼Ò½ÃÅ´.
+	//	Note : ë” ê²¹ì³ì§ˆìˆ˜ ìˆëŠ” ì•„ì´í…œì´ ìˆëŠ”ì§€ ê²€ì‚¬í•˜ì—¬ ì¸ë²¤ì— ë“¤ì–´ê°€ì•¼í•˜ëŠ”
+	//		ì•„ì´í…œ ì ê²€ ìˆ«ìë¥¼ ê°ì†Œì‹œí‚´.
 	GLInventory::CELL_MAP &ItemMap = *m_cInventory.GetItemList();
 	GLInventory::CELL_MAP_ITER iter = ItemMap.begin();
 	for ( ; iter!=ItemMap.end(); ++iter )
@@ -4200,7 +4208,7 @@ bool GLChar::DeletePileItem ( SNATIVEID sNID, WORD wREQDELNUM )
 			sITEMCUSTOM.wTurnNum -= wREQDELNUM;
 			wREQDELNUM = 0;
 
-			//	Note : °¹¼öº¯°æ ¸Ş½ÃÁö.
+			//	Note : ê°¯ìˆ˜ë³€ê²½ ë©”ì‹œì§€.
 			GLMSG::SNETPC_INVEN_DRUG_UPDATE	NetMsgUpdate;
 			NetMsgUpdate.wPosX = sINVENITEM.wPosX;
 			NetMsgUpdate.wPosY = sINVENITEM.wPosY;
@@ -4222,7 +4230,7 @@ bool GLChar::DeletePileItem ( SNATIVEID sNID, WORD wREQDELNUM )
 	{
 		m_cInventory.DeleteItem ( vecDEL[i].wMainID, vecDEL[i].wSubID );
 
-		//	Note : »èÁ¦ ¸Ş½ÃÁö.
+		//	Note : ì‚­ì œ ë©”ì‹œì§€.
 		GLMSG::SNETPC_INVEN_DELETE NetMsgDelete;
 		NetMsgDelete.wPosX = vecDEL[i].wMainID;
 		NetMsgDelete.wPosY = vecDEL[i].wSubID;
@@ -4233,7 +4241,7 @@ bool GLChar::DeletePileItem ( SNATIVEID sNID, WORD wREQDELNUM )
 }
 
 // *****************************************************
-// Desc: NPC ·ÎºÎÅÍ ¾ÆÀÌÅÛ ±¸ÀÔ
+// Desc: NPC ë¡œë¶€í„° ì•„ì´í…œ êµ¬ì…
 // *****************************************************
 HRESULT GLChar::MsgReqBuyFromNpc ( NET_MSG_GENERIC* nmg )
 {
@@ -4248,7 +4256,7 @@ HRESULT GLChar::MsgReqBuyFromNpc ( NET_MSG_GENERIC* nmg )
 		return E_FAIL;
 	}
 
-	// »óÁ¡ NPC À¯È¿¼º Ã¼Å©
+	// ìƒì  NPC ìœ íš¨ì„± ì²´í¬
 	PGLCROW pCrow = m_pLandMan->GetCrow ( pNetMsg->dwNPCID );
 	if ( !pCrow )					return E_FAIL;
 
@@ -4261,13 +4269,13 @@ HRESULT GLChar::MsgReqBuyFromNpc ( NET_MSG_GENERIC* nmg )
 
 	if ( !pCrowData )
 	{
-		//	»óÀÎ NPC°¡ Á¸Á¦ÇÏÁö ¾Ê½À´Ï´Ù.
+		//	ìƒì¸ NPCê°€ ì¡´ì œí•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.
 		return E_FAIL;
 	}
 
 	if ( !pCrowData->m_sNpcTalkDlg.IsMARKET() )
 	{
-		//	»óÀÎÀÌ ¾Æ´Õ´Ï´Ù.
+		//	ìƒì¸ì´ ì•„ë‹™ë‹ˆë‹¤.
 		return E_FAIL;
 	}
 
@@ -4279,7 +4287,7 @@ HRESULT GLChar::MsgReqBuyFromNpc ( NET_MSG_GENERIC* nmg )
 	SINVENITEM* pSaleItem(NULL);
 	pSaleItem = pInven->GetItem ( pNetMsg->wPosX, pNetMsg->wPosY );
 
-	//	»ì·Á°í ÇÏ´Â ¾ÆÀÌÅÆÀÌ ¾ø½À´Ï´Ù.
+	//	ì‚´ë ¤ê³  í•˜ëŠ” ì•„ì´íƒ¬ì´ ì—†ìŠµë‹ˆë‹¤.
 	if ( !pSaleItem )											return E_FAIL;
 
 	SITEM* pItem = GLItemMan::GetInstance().GetItem ( pSaleItem->sItemCustom.sNativeID );
@@ -4327,31 +4335,31 @@ HRESULT GLChar::MsgReqBuyFromNpc ( NET_MSG_GENERIC* nmg )
 
 	if ( m_lnMoney < llPRICE3 )
 	{
-		//	µ·ÀÌ ºÎÁ·ÇÕ´Ï´Ù.
+		//	ëˆì´ ë¶€ì¡±í•©ë‹ˆë‹¤.
 		return E_FAIL;
 	}
 
 	WORD wINVENX = pItem->sBasicOp.wInvenSizeX;
 	WORD wINVENY = pItem->sBasicOp.wInvenSizeY;
 
-	//	Note : ÀÎº¥¿¡ ¿©À¯ °ø°£ÀÌ ÀÖ´ÂÁö °Ë»ç.
+	//	Note : ì¸ë²¤ì— ì—¬ìœ  ê³µê°„ì´ ìˆëŠ”ì§€ ê²€ì‚¬.
 	//
 	BOOL bITEM_SPACE(FALSE);
 	if ( pItem->ISPILE() )
 	{
-		//	°ãÄ§ ¾ÆÀÌÅÛÀÏ °æ¿ì.
+		//	ê²¹ì¹¨ ì•„ì´í…œì¼ ê²½ìš°.
 		WORD wPILENUM = pItem->sDrugOp.wPileNum;
 		SNATIVEID sNID = pItem->sBasicOp.sNativeID;
 
-		//	³Ö±â ¿äÃ»µÈ ¾ÆÀÌÅÛ¼ö. ( ÀÜ¿©·®. )
+		//	ë„£ê¸° ìš”ì²­ëœ ì•„ì´í…œìˆ˜. ( ì”ì—¬ëŸ‰. )
 		WORD wREQINSRTNUM = ( pNetMsg->wBuyNum * pItem->GETAPPLYNUM() );
 
 		bITEM_SPACE = m_cInventory.ValidPileInsrt ( wREQINSRTNUM, sNID, wPILENUM, wINVENX, wINVENY );
 
-		//	ÀÎº¥¿¡ ¿©À¯°ø°£ÀÌ ¾øÀ» °æ¿ì Ãë¼ÒµÊ.
+		//	ì¸ë²¤ì— ì—¬ìœ ê³µê°„ì´ ì—†ì„ ê²½ìš° ì·¨ì†Œë¨.
 		if ( !bITEM_SPACE )		return E_FAIL;
 
-		//	Note :¾ÆÀÌÅÛÀÇ ¼ÒÀ¯ ÀÌÀü °æ·Î ±â·Ï.
+		//	Note :ì•„ì´í…œì˜ ì†Œìœ  ì´ì „ ê²½ë¡œ ê¸°ë¡.
 		//
 		SITEMCUSTOM sDB_ITEM(sNID);
 		sDB_ITEM.cGenType = EMGEN_SHOP;
@@ -4370,7 +4378,7 @@ HRESULT GLChar::MsgReqBuyFromNpc ( NET_MSG_GENERIC* nmg )
 
 		GLITEMLMT::GetInstance().ReqItemRoute ( sDB_ITEM, ID_CHAR, 0, ID_CHAR, m_dwCharID, EMITEM_ROUTE_CHAR, sDB_ITEM.wTurnNum );
 
-		//	Note : ±¸ÀÔÀ» ¼öÇàÇÕ´Ï´Ù.
+		//	Note : êµ¬ì…ì„ ìˆ˜í–‰í•©ë‹ˆë‹¤.
 		//	
 		
 
@@ -4389,10 +4397,10 @@ HRESULT GLChar::MsgReqBuyFromNpc ( NET_MSG_GENERIC* nmg )
 			CheckMoneyUpdate( m_lnMoney, llPRICE3, FALSE, "Buy From Npc." );
 			m_bMoneyUpdate = TRUE;
 
-			m_lnMoney -= llPRICE3;					//	µ·À» ÁöºÒ.
+			m_lnMoney -= llPRICE3;					//	ëˆì„ ì§€ë¶ˆ.
 		}
 
-		//	µ· ·Î±×.
+		//	ëˆ ë¡œê·¸.
 		if ( llPRICE3>EMMONEY_LOG )
 		{
 			GLITEMLMT::GetInstance().ReqMoneyExc ( ID_CHAR, m_dwCharID, ID_CHAR, 0, -LONGLONG(llPRICE3), EMITEM_ROUTE_DELETE );
@@ -4433,7 +4441,7 @@ HRESULT GLChar::MsgReqBuyFromNpc ( NET_MSG_GENERIC* nmg )
 			CDebugSet::ToFileWithTime ( strName.GetString(),str.c_str() );
 		}
 
-		//	Note : ¾ÆÀÌÅÛÀ» ÀÎº¥¿¡ ³Ö¾îÁØ´Ù.
+		//	Note : ì•„ì´í…œì„ ì¸ë²¤ì— ë„£ì–´ì¤€ë‹¤.
 		//
 		InsertPileItem ( sDB_ITEM, wREQINSRTNUM );
 
@@ -4442,14 +4450,14 @@ HRESULT GLChar::MsgReqBuyFromNpc ( NET_MSG_GENERIC* nmg )
 	}
 	else
 	{
-		//	ÀÏ¹İ ¾ÆÀÌÅÛÀÇ °æ¿ì.
+		//	ì¼ë°˜ ì•„ì´í…œì˜ ê²½ìš°.
 		WORD wInsertPosX(0), wInsertPosY(0);
 		bITEM_SPACE = m_cInventory.FindInsrtable ( wINVENX, wINVENY, wInsertPosX, wInsertPosY );
 
-		//	ÀÎº¥¿¡ ¿©À¯°ø°£ÀÌ ¾øÀ» °æ¿ì Ãë¼ÒµÊ.
+		//	ì¸ë²¤ì— ì—¬ìœ ê³µê°„ì´ ì—†ì„ ê²½ìš° ì·¨ì†Œë¨.
 		if ( !bITEM_SPACE )		return E_FAIL;
 
-		//	Note : »õ·Î¿î ¾ÆÀÌÅÛÀ» »ı¼ºÇÕ´Ï´Ù.
+		//	Note : ìƒˆë¡œìš´ ì•„ì´í…œì„ ìƒì„±í•©ë‹ˆë‹¤.
 		//
 		SNATIVEID sNID = pSaleItem->sItemCustom.sNativeID;
 		SITEMCUSTOM sITEM_NEW = pSaleItem->sItemCustom;
@@ -4470,7 +4478,7 @@ HRESULT GLChar::MsgReqBuyFromNpc ( NET_MSG_GENERIC* nmg )
 			sITEM_NEW.wColor2 = pitem_data_check->sBasicOp.wItemColor2;
 		}
 
-		//	·£´ı ¿É¼Ç ¹ß»ı.
+		//	ëœë¤ ì˜µì…˜ ë°œìƒ.
 		//
 		if ( pitem_data_check->sBasicOp.emLevel >= LEVEL_RARE )
 		if( sITEM_NEW.GENERATE_RANDOM_OPT ()  )
@@ -4478,7 +4486,7 @@ HRESULT GLChar::MsgReqBuyFromNpc ( NET_MSG_GENERIC* nmg )
 			GLITEMLMT::GetInstance().ReqRandomItem( sITEM_NEW );
 		}
 
-		//	Note : µ·À» ÁöºÒÇÕ´Ï´Ù.
+		//	Note : ëˆì„ ì§€ë¶ˆí•©ë‹ˆë‹¤.
 		//
 		if ( pItem->sBasicOp.dwReqContributionPoint != 0 ) 
 		{
@@ -4498,7 +4506,7 @@ HRESULT GLChar::MsgReqBuyFromNpc ( NET_MSG_GENERIC* nmg )
 			m_lnMoney -= llPRICE2;
 		}
 
-		//	µ· ·Î±×.
+		//	ëˆ ë¡œê·¸.
 		if ( llPRICE2>EMMONEY_LOG )
 		{
 			GLITEMLMT::GetInstance().ReqMoneyExc ( ID_CHAR, m_dwCharID, ID_CHAR, 0, -LONGLONG(llPRICE2), EMITEM_ROUTE_DELETE );
@@ -4539,16 +4547,16 @@ HRESULT GLChar::MsgReqBuyFromNpc ( NET_MSG_GENERIC* nmg )
 			CDebugSet::ToFileWithTime ( strName.GetString(),str.c_str() );
 		}
 
-		//	Note : ÀÎº¥Åä¸®¿¡ ³Ö¾îÁİ´Ï´Ù.
+		//	Note : ì¸ë²¤í† ë¦¬ì— ë„£ì–´ì¤ë‹ˆë‹¤.
 		//
 		BOOL bOK = m_cInventory.InsertItem ( sITEM_NEW, wInsertPosX, wInsertPosY );
 		if ( !bOK )		return S_OK;
 
-		//	Note :¾ÆÀÌÅÛÀÇ ¼ÒÀ¯ ÀÌÀü °æ·Î ±â·Ï.
+		//	Note :ì•„ì´í…œì˜ ì†Œìœ  ì´ì „ ê²½ë¡œ ê¸°ë¡.
 		//
 		GLITEMLMT::GetInstance().ReqItemRoute ( sITEM_NEW, ID_CHAR, 0, ID_CHAR, m_dwCharID, EMITEM_ROUTE_CHAR, sITEM_NEW.wTurnNum );
 
-		//	ÀÎ¹ê¿¡ ¾ÆÀÌÅÆ ³Ö¾îÁÖ´Â ¸Ş½ÃÁö.
+		//	ì¸ë°´ì— ì•„ì´íƒ¬ ë„£ì–´ì£¼ëŠ” ë©”ì‹œì§€.
 		GLMSG::SNETPC_INVEN_INSERT NetMsgInven;
 		NetMsgInven.Data = *m_cInventory.GetItem ( wInsertPosX, wInsertPosY );
 		GLGaeaServer::GetInstance().SENDTOCLIENT(m_dwClientID,&NetMsgInven);
@@ -4572,7 +4580,7 @@ HRESULT GLChar::MsgReqBuyFromNpc ( NET_MSG_GENERIC* nmg )
 		GLGuidance *pGuid = m_pLandMan->m_pGuidance;
 		if ( pGuid && !pGuid->m_bBattle )
 		{
-			//	Note : Å¬·´ÀÇ ¼öÀÍ ¹ß»ı.
+			//	Note : í´ëŸ½ì˜ ìˆ˜ìµ ë°œìƒ.
 			volatile float fSHOP_RATE_C = fSHOP_RATE * 0.01f;
 			volatile LONGLONG llPRICE1 = (LONGLONG)( dwPrice * fSHOP_RATE_C );
 			volatile LONGLONG llCommission = llPRICE2 - llPRICE1;
@@ -4583,7 +4591,7 @@ HRESULT GLChar::MsgReqBuyFromNpc ( NET_MSG_GENERIC* nmg )
 			{
 				pCLUB->m_lnIncomeMoney += llCommission;
 
-				// Å¬·´ ¼öÀÔÀÌ 1¾ï ÀÌ»óÀÏ °æ¿ì ·Î±×¸¦ ³²±ä´Ù.
+				// í´ëŸ½ ìˆ˜ì…ì´ 1ì–µ ì´ìƒì¼ ê²½ìš° ë¡œê·¸ë¥¼ ë‚¨ê¸´ë‹¤.
 				if( llCommission > 	EMCLUBINCOMEMONEY_LOG )
 					GLITEMLMT::GetInstance().ReqMoneyExc( ID_CHAR, 0, 
 														  ID_CLUB, pCLUB->m_dwID,
@@ -4601,7 +4609,7 @@ HRESULT GLChar::MsgReqBuyFromNpc ( NET_MSG_GENERIC* nmg )
 	netmsgclient.llPoint = m_llContributionPoint;
 	GLGaeaServer::GetInstance().SENDTOCLIENT( m_dwClientID, &netmsgclient );
 
-	//	±İ¾× º¯È­ ¸Ş½ÃÁö.
+	//	ê¸ˆì•¡ ë³€í™” ë©”ì‹œì§€.
 	GLMSG::SNETPC_UPDATE_MONEY NetMsgMoney;
 	NetMsgMoney.lnMoney = m_lnMoney;
 	/*dmk14 ingame web*/
@@ -4613,7 +4621,7 @@ HRESULT GLChar::MsgReqBuyFromNpc ( NET_MSG_GENERIC* nmg )
 }
 
 // *****************************************************
-// Desc: NPC ¿¡°Ô ¾ÆÀÌÅÛ ÆÇ¸Å
+// Desc: NPC ì—ê²Œ ì•„ì´í…œ íŒë§¤
 // *****************************************************
 HRESULT GLChar::MsgReqSaleToNpc ( NET_MSG_GENERIC* nmg )
 {
@@ -4623,7 +4631,7 @@ HRESULT GLChar::MsgReqSaleToNpc ( NET_MSG_GENERIC* nmg )
 
 	DxConsoleMsg* pConsoleMsg = GLGaeaServer::GetInstance().GetConsoleMsg();
 
-	// »óÁ¡ NPC À¯È¿¼º Ã¼Å©
+	// ìƒì  NPC ìœ íš¨ì„± ì²´í¬
 	PGLCROW pCrow = m_pLandMan->GetCrow ( pNetMsg->dwNPCID );
 	if ( !pCrow )						return E_FAIL;
 	
@@ -4637,19 +4645,19 @@ HRESULT GLChar::MsgReqSaleToNpc ( NET_MSG_GENERIC* nmg )
 
 	if ( !pCrowData )
 	{
-		//	»óÀÎ NPC°¡ Á¸Á¦ÇÏÁö ¾Ê½À´Ï´Ù.
+		//	ìƒì¸ NPCê°€ ì¡´ì œí•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.
 		return E_FAIL;
 	}
 
 	if ( !pCrowData->m_sNpcTalkDlg.IsMARKET() )
 	{
-		//	»óÀÎÀÌ ¾Æ´Õ´Ï´Ù.
+		//	ìƒì¸ì´ ì•„ë‹™ë‹ˆë‹¤.
 		return E_FAIL;
 	}
 
 	if ( !VALID_HOLD_ITEM() )
 	{
-		//	ÆÈ·Á°í ÇÏ´Â ¾ÆÀÌÅÆÀÌ ¾ø½À´Ï´Ù.
+		//	íŒ”ë ¤ê³  í•˜ëŠ” ì•„ì´íƒ¬ì´ ì—†ìŠµë‹ˆë‹¤.
 		return E_FAIL;
 	}
 
@@ -4657,18 +4665,18 @@ HRESULT GLChar::MsgReqSaleToNpc ( NET_MSG_GENERIC* nmg )
 	SITEM* pItem = GLItemMan::GetInstance().GetItem ( sHOLD_ITEM.sNativeID );
 	if ( pItem==NULL )						return E_FAIL;
 
-	// ÆÖ¾ÆÀÌµğ(DBÁ¢±Ù¿ë)
+	// íŒ»ì•„ì´ë””(DBì ‘ê·¼ìš©)
 	DWORD dwPetID = sHOLD_ITEM.dwPetID;
 	DWORD dwVehicleID = sHOLD_ITEM.dwVehicleID;
 
-	//	°Å·¡¿É¼Ç
+	//	ê±°ë˜ì˜µì…˜
 	if ( !pItem->sBasicOp.IsSALE() )
 	{
-		//	ÆÈ±â °¡´ÉÇÏÁö ¾ÊÀ½.
+		//	íŒ”ê¸° ê°€ëŠ¥í•˜ì§€ ì•ŠìŒ.
 		return E_FAIL;
 	}
 
-//  Å¬¶óÀÌ¾ğÆ®¿Í ¼­¹ö ¾ÆÀÌÅÛ °è»ê °ø½ÄÀÌ Æ²·Á¼­ ¼öÁ¤ÇÔ 
+//  í´ë¼ì´ì–¸íŠ¸ì™€ ì„œë²„ ì•„ì´í…œ ê³„ì‚° ê³µì‹ì´ í‹€ë ¤ì„œ ìˆ˜ì •í•¨ 
 /* 
 	volatile float fSHOP_SALE_RATE = GET_PK_SHOP2SALE();
 	if ( fSHOP_SALE_RATE==0.0f )			return E_FAIL;
@@ -4706,7 +4714,7 @@ HRESULT GLChar::MsgReqSaleToNpc ( NET_MSG_GENERIC* nmg )
 		GLGuidance *pGuid = m_pLandMan->m_pGuidance;
 		if ( pGuid && !pGuid->m_bBattle )
 		{
-			//	Note : Å¬·´ÀÇ ¼öÀÍ ¹ß»ı.
+			//	Note : í´ëŸ½ì˜ ìˆ˜ìµ ë°œìƒ.
 			volatile float fSHOP_RATE_C = fSHOP_SALE_RATE * 0.01f;
 			volatile LONGLONG llDisPRICE1 = LONGLONG ( dwPrice * fSHOP_RATE_C );
 			volatile LONGLONG llCommission = llDisPRICE1-llDisPRICE2;
@@ -4717,7 +4725,7 @@ HRESULT GLChar::MsgReqSaleToNpc ( NET_MSG_GENERIC* nmg )
 			{
 				pCLUB->m_lnIncomeMoney += llCommission;
 
-				// Å¬·´ ¼öÀÔÀÌ 1¾ï ÀÌ»óÀÏ °æ¿ì ·Î±×¸¦ ³²±ä´Ù.
+				// í´ëŸ½ ìˆ˜ì…ì´ 1ì–µ ì´ìƒì¼ ê²½ìš° ë¡œê·¸ë¥¼ ë‚¨ê¸´ë‹¤.
 				if( llCommission > 	EMCLUBINCOMEMONEY_LOG )
 					GLITEMLMT::GetInstance().ReqMoneyExc(	ID_CHAR, m_dwCharID, 
 															ID_CLUB, pCLUB->m_dwID,
@@ -4730,13 +4738,13 @@ HRESULT GLChar::MsgReqSaleToNpc ( NET_MSG_GENERIC* nmg )
 		}
 	}
 
-	//	±İ¾× º¯È­.
+	//	ê¸ˆì•¡ ë³€í™”.
 	CheckMoneyUpdate( m_lnMoney, llDisPRICE2, TRUE, "Sale To Npc." );
 	m_bMoneyUpdate = TRUE;
 
 	m_lnMoney += llDisPRICE2;
 
-	//	µ· ·Î±×.
+	//	ëˆ ë¡œê·¸.
 	if ( llDisPRICE2>EMMONEY_LOG )
 	{
 		GLITEMLMT::GetInstance().ReqMoneyExc ( ID_CHAR, 0, ID_CHAR, m_dwCharID, llDisPRICE2, EMITEM_ROUTE_CHAR );
@@ -4777,14 +4785,14 @@ HRESULT GLChar::MsgReqSaleToNpc ( NET_MSG_GENERIC* nmg )
 		CDebugSet::ToFileWithTime ( strName.GetString(),str.c_str() );
 	}
 
-	//	Note :¾ÆÀÌÅÛÀÇ ¼ÒÀ¯ ÀÌÀü °æ·Î ±â·Ï.
+	//	Note :ì•„ì´í…œì˜ ì†Œìœ  ì´ì „ ê²½ë¡œ ê¸°ë¡.
 	//
 	GLITEMLMT::GetInstance().ReqItemRoute ( sHOLD_ITEM, ID_CHAR, m_dwCharID, ID_CHAR, 0, EMITEM_ROUTE_SHOP, sHOLD_ITEM.wTurnNum );
 
-	//	¾ÆÀÌÅÆ »èÁ¦.
+	//	ì•„ì´íƒ¬ ì‚­ì œ.
 	RELEASE_HOLD_ITEM();
 
-	//	±İ¾× º¯È­ ¸Ş½ÃÁö.
+	//	ê¸ˆì•¡ ë³€í™” ë©”ì‹œì§€.
 	GLMSG::SNETPC_UPDATE_MONEY NetMsgMoney;
 	NetMsgMoney.lnMoney = m_lnMoney;
 	/*dmk14 ingame web*/
@@ -4792,21 +4800,21 @@ HRESULT GLChar::MsgReqSaleToNpc ( NET_MSG_GENERIC* nmg )
 	NetMsgMoney.dwCombat = m_dwCombatPoints;
 	GLGaeaServer::GetInstance().SENDTOCLIENT(m_dwClientID,&NetMsgMoney);
 
-	//	[ÀÚ½Å¿¡°Ô] ¼Õ¿¡ ÀÖ¾ú´ø ¾ÆÀÌÅÆ Á¦°Å.
+	//	[ìì‹ ì—ê²Œ] ì†ì— ìˆì—ˆë˜ ì•„ì´íƒ¬ ì œê±°.
 	GLMSG::SNETPC_PUTON_RELEASE NetMsg_PutOn_Release(SLOT_HOLD);
 	GLGaeaServer::GetInstance().SENDTOCLIENT(m_dwClientID,&NetMsg_PutOn_Release);
 
-	// ÆÖÄ«µåÀÏ °æ¿ì ¾ÆÀÌÅÛÀ» »óÁ¡¿¡ ÆÈ¸é ÆÖDB »èÁ¦
+	// íŒ»ì¹´ë“œì¼ ê²½ìš° ì•„ì´í…œì„ ìƒì ì— íŒ”ë©´ íŒ»DB ì‚­ì œ
 	if ( pItem->sBasicOp.emItemType == ITEM_PET_CARD && dwPetID != 0 )
 	{
-		// ÆÖÀ» »ç¶óÁö°Ô ÇØÁØ´Ù.
+		// íŒ»ì„ ì‚¬ë¼ì§€ê²Œ í•´ì¤€ë‹¤.
 		GLGaeaServer::GetInstance().ReserveDropOutPet ( SDROPOUTPETINFO(m_dwPetGUID,true,false) );
 
 		CDeletePet* pDbAction = new CDeletePet ( m_dwCharID, dwPetID );
 		GLDBMan* pDBMan = GLGaeaServer::GetInstance().GetDBMan ();
 		if ( pDBMan ) pDBMan->AddJob ( pDbAction );
 
-		// ÆÖÀÌ »èÁ¦µÇ¸é ºÎÈ°Á¤º¸¸¦ Å¬¶óÀÌ¾ğÆ®¿¡ ¾Ë·ÁÁÜ.
+		// íŒ»ì´ ì‚­ì œë˜ë©´ ë¶€í™œì •ë³´ë¥¼ í´ë¼ì´ì–¸íŠ¸ì— ì•Œë ¤ì¤Œ.
 		CGetRestorePetList *pDbAction1 = new CGetRestorePetList ( m_dwCharID, m_dwClientID );
 		if ( pDBMan ) pDBMan->AddJob ( pDbAction1 );
 	}
@@ -4875,7 +4883,7 @@ HRESULT GLChar::MsgReqFireCracker ( NET_MSG_GENERIC* nmg )
 		return E_FAIL;
 	}
 
-	//	Note : ÆøÁ× »ç¿ë.
+	//	Note : í­ì£½ ì‚¬ìš©.
 	//
 	GLMSG::SNETPC_REQ_FIRECRACKER_BRD NetMsgBrd;
 	NetMsgBrd.nidITEM = sCUSTOM.sNativeID;
@@ -4884,12 +4892,12 @@ HRESULT GLChar::MsgReqFireCracker ( NET_MSG_GENERIC* nmg )
 
 	GLGaeaServer::GetInstance().SENDTOCLIENT(m_dwClientID,&NetMsgBrd);
 
-	//	Note : ÆøÁ× »ç¿ëÀ» ¾Ë¸².
+	//	Note : í­ì£½ ì‚¬ìš©ì„ ì•Œë¦¼.
 	//
 	NetMsgFB.emFB = EMREQ_FIRECRACKER_FB_OK;
 	GLGaeaServer::GetInstance().SENDTOCLIENT(m_dwClientID,&NetMsgFB);
 
-	//	Note : ¾ÆÀÌÅÛ ¼Ò¸ğ.
+	//	Note : ì•„ì´í…œ ì†Œëª¨.
 	//
 	DoDrugSlotItem (SLOT_HOLD );
 
@@ -4915,7 +4923,7 @@ HRESULT GLChar::MsgInvenVietnamGet ( NET_MSG_GENERIC* nmg )
 
     if( pNetMsg->bGetExp )
 	{
-		// È®·ü 
+		// í™•ë¥  
 		if ( pItem->sDrugOp.bRatio ) 
 		{
 			LONGLONG lAddExp;
@@ -4961,7 +4969,7 @@ HRESULT GLChar::MsgInvenVietnamGet ( NET_MSG_GENERIC* nmg )
 		NetMsgFB.lnVnMoney = m_lVNGainSysMoney;
 		GLGaeaServer::GetInstance().SENDTOCLIENT(m_dwClientID,&NetMsgFB);
 
-		//	Note : Å¬¶óÀÌ¾ğÆ®¿¡ µ· ¾×¼ö º¯È­¸¦ ¾Ë·ÁÁÜ.
+		//	Note : í´ë¼ì´ì–¸íŠ¸ì— ëˆ ì•¡ìˆ˜ ë³€í™”ë¥¼ ì•Œë ¤ì¤Œ.
 		GLMSG::SNETPC_UPDATE_MONEY NetMsg;
 		NetMsg.lnMoney = m_lnMoney;
 		/*dmk14 ingame web*/
@@ -4969,7 +4977,7 @@ HRESULT GLChar::MsgInvenVietnamGet ( NET_MSG_GENERIC* nmg )
 		NetMsg.dwCombat = m_dwCombatPoints;
 		GLGaeaServer::GetInstance().SENDTOCLIENT(m_dwClientID,&NetMsg);
 
-		//	Note : ±İ¾× ·Î±×.
+		//	Note : ê¸ˆì•¡ ë¡œê·¸.
 		//
 		/*if ( lnAmount>EMMONEY_LOG )
 		{
@@ -4985,7 +4993,7 @@ HRESULT GLChar::MsgInvenVietnamGet ( NET_MSG_GENERIC* nmg )
 
 	}
 
-	//	[ÀÚ½Å¿¡°Ô] ÀÎ¹ê ¾ÆÀÌÅÆ ¼Ò¸ğ½ÃÅ´.
+	//	[ìì‹ ì—ê²Œ] ì¸ë°´ ì•„ì´íƒ¬ ì†Œëª¨ì‹œí‚´.
 
 
 	return S_OK;
@@ -5009,7 +5017,7 @@ HRESULT GLChar::MsgReqInvenDrug ( NET_MSG_GENERIC* nmg )
 	{
 		if ( !m_sCONFTING.IsRECOVE() )
 		{
-			//	Note : È¸º¹¾à »ç¿ë °¡´É °¹¼ö Å¬¶óÀÌ¾ğÆ®¿¡ ¾Ë¸².
+			//	Note : íšŒë³µì•½ ì‚¬ìš© ê°€ëŠ¥ ê°¯ìˆ˜ í´ë¼ì´ì–¸íŠ¸ì— ì•Œë¦¼.
 			//
 			GLMSG::SNETPC_CONFRONT_RECOVE NetMsg;
 			NetMsg.wRECOVER = m_sCONFTING.wRECOVER;
@@ -5022,7 +5030,7 @@ HRESULT GLChar::MsgReqInvenDrug ( NET_MSG_GENERIC* nmg )
 		{
 			m_sCONFTING.COUNTRECOVE();
 
-			//	Note : È¸º¹¾à »ç¿ë °¡´É °¹¼ö Å¬¶óÀÌ¾ğÆ®¿¡ ¾Ë¸².
+			//	Note : íšŒë³µì•½ ì‚¬ìš© ê°€ëŠ¥ ê°¯ìˆ˜ í´ë¼ì´ì–¸íŠ¸ì— ì•Œë¦¼.
 			//
 			GLMSG::SNETPC_CONFRONT_RECOVE NetMsg;
 			NetMsg.wRECOVER = m_sCONFTING.wRECOVER;
@@ -5030,7 +5038,7 @@ HRESULT GLChar::MsgReqInvenDrug ( NET_MSG_GENERIC* nmg )
 		}
 	}
 
-	//	Note : pk µî±ŞÀÌ »ìÀÎ¸¶ µî±Ş ÀÌ»óÀÏ °æ¿ì È¸º¹¾àÀÇ »ç¿ëÀ» ¸·´Â´Ù.
+	//	Note : pk ë“±ê¸‰ì´ ì‚´ì¸ë§ˆ ë“±ê¸‰ ì´ìƒì¼ ê²½ìš° íšŒë³µì•½ì˜ ì‚¬ìš©ì„ ë§‰ëŠ”ë‹¤.
 	//
 	DWORD dwPK_LEVEL = GET_PK_LEVEL();
 	if ( dwPK_LEVEL != UINT_MAX && dwPK_LEVEL>GLCONST_CHAR::dwPK_DRUG_ENABLE_LEVEL )
@@ -5152,28 +5160,28 @@ HRESULT GLChar::MsgReqInvenDrug ( NET_MSG_GENERIC* nmg )
 				EMDISORDER emDIS = STATE_TO_DISORDER(m_sSTATEBLOWS[i].emBLOW);
 				if ( !(pItem->sDrugOp.dwCureDISORDER&emDIS) )	continue;
 
-				//	»óÅÂÀÌ»ó Áö¼Ó½Ã°£À» Á¾·á½ÃÅ´.
+				//	ìƒíƒœì´ìƒ ì§€ì†ì‹œê°„ì„ ì¢…ë£Œì‹œí‚´.
 				m_sSTATEBLOWS[i].fAGE = 0.0f;
 			}
 
-			//	»óÅÂÀÌ»ó Ä¡·áµÊÀ» ÀÚ½Å¿¡°Ô ¾Ë¸².
+			//	ìƒíƒœì´ìƒ ì¹˜ë£Œë¨ì„ ìì‹ ì—ê²Œ ì•Œë¦¼.
 			NetMsgBrd.emCrow = CROW_PC;
 			NetMsgBrd.dwID = m_dwGaeaID;
 			NetMsgBrd.dwCUREFLAG = pItem->sDrugOp.dwCureDISORDER;
 			GLGaeaServer::GetInstance().SENDTOCLIENT(m_dwClientID,&NetMsgBrd);
 
-			//	»óÅÂÀÌ»ó Ä¡·áµÊÀ» ¸ğµÎ¿¡°Ô ¾Ë¸².
+			//	ìƒíƒœì´ìƒ ì¹˜ë£Œë¨ì„ ëª¨ë‘ì—ê²Œ ì•Œë¦¼.
 			SNDMSGAROUND ( (NET_MSG_GENERIC*)&NetMsgBrd );
 		}
 		break;
 	};
 
 
-	//	Note : ¾ÆÀÌÅÛ ¼Ò¸ğ.
+	//	Note : ì•„ì´í…œ ì†Œëª¨.
 	//
 	DoDrugInvenItem ( pNetMsg->wPosX, pNetMsg->wPosY );
 
-	//	Note : Ã¼·Â ¼öÄ¡ º¯È­¸¦ [ÀÚ½Å,ÆÄÆ¼¿ø,ÁÖÀ§]ÀÇ Å¬¶óÀÌ¾ğÆ®µé¿¡ ¾Ë¸².
+	//	Note : ì²´ë ¥ ìˆ˜ì¹˜ ë³€í™”ë¥¼ [ìì‹ ,íŒŒí‹°ì›,ì£¼ìœ„]ì˜ í´ë¼ì´ì–¸íŠ¸ë“¤ì— ì•Œë¦¼.
 	MsgSendUpdateState ();
 
 	return S_OK;
@@ -5186,7 +5194,7 @@ HRESULT GLChar::MsgReqInvenBoxInfo ( NET_MSG_GENERIC* nmg )
 	CString strUID = m_szUID;
     std::vector<SHOPPURCHASE> vItem;
 
-	// DB¿¡¼­ ºô¸µ¾ÆÀÌÅÛ Á¤º¸ °¡Á®¿À±â
+	// DBì—ì„œ ë¹Œë§ì•„ì´í…œ ì •ë³´ ê°€ì ¸ì˜¤ê¸°
 
 	if ( GLGaeaServer::GetInstance().GetDBMan() )
 	{
@@ -5280,7 +5288,7 @@ HRESULT GLChar::MsgReqInvenBoxOpen ( NET_MSG_GENERIC* nmg )
 		BOOL bOK = cInvenTemp.InsertItem ( sCUSTOM );
 		if ( !bOK )
 		{
-			//	Note : ÀÎº¥¿¡ °ø°£ÀÌ ¾ø´Â °ÍÀ¸·Î ÆÇ´ÜµÊ.
+			//	Note : ì¸ë²¤ì— ê³µê°„ì´ ì—†ëŠ” ê²ƒìœ¼ë¡œ íŒë‹¨ë¨.
 			//
 			NetMsgFB.emFB = EMREQ_BOXOPEN_FB_NOTINVEN;
 			GLGaeaServer::GetInstance().SENDTOCLIENT(m_dwClientID,&NetMsgFB);
@@ -5293,7 +5301,7 @@ HRESULT GLChar::MsgReqInvenBoxOpen ( NET_MSG_GENERIC* nmg )
 	strName.Format ( "%d.csv",GetUserID() );
 	CDebugSet::ToFileWithTime ( strName.GetString(),strTemp );
 
-	//	Note : »óÀÚ¾È¿¡ ÀÖ´Â ¾ÆÀÌÅÛÀ» ²¨³»¾î¼­ ³Ö´Â´Ù.
+	//	Note : ìƒìì•ˆì— ìˆëŠ” ì•„ì´í…œì„ êº¼ë‚´ì–´ì„œ ë„£ëŠ”ë‹¤.
 	//
 	for ( int i=0; i<ITEM::SBOX::ITEM_SIZE; ++i )
 	{
@@ -5307,7 +5315,7 @@ HRESULT GLChar::MsgReqInvenBoxOpen ( NET_MSG_GENERIC* nmg )
 
 		//Select Box
 		if( pItem->sBox.m_bSelect && !pNetMsg->bSelect[i] )			continue;
-		//	Note : ¾ÆÀÌÅÛ »ı¼º.
+		//	Note : ì•„ì´í…œ ìƒì„±.
 		//
 		CTime cTIME = CTime::GetCurrentTime();
 		sITEM_NEW.tBORNTIME = cTIME.GetTime();
@@ -5318,7 +5326,7 @@ HRESULT GLChar::MsgReqInvenBoxOpen ( NET_MSG_GENERIC* nmg )
 		sITEM_NEW.cFieldID = (BYTE)GLGaeaServer::GetInstance().GetFieldSvrID();
 		sITEM_NEW.lnGenNum = GLITEMLMT::GetInstance().RegItemGen ( sITEM_NEW.sNativeID, (EMITEMGEN)sITEM_NEW.cGenType );
 
-		// ¾ÆÀÌÅÛ ¿¡µğÆ®¿¡¼­ ÀÔ·ÂÇÑ °³Á¶ µî±Ş Àû¿ë ( ÁØÇõ )
+		// ì•„ì´í…œ ì—ë””íŠ¸ì—ì„œ ì…ë ¥í•œ ê°œì¡° ë“±ê¸‰ ì ìš© ( ì¤€í˜ )
 		sITEM_NEW.cDAMAGE = (BYTE)pITEM->sBasicOp.wGradeAttack;
 		sITEM_NEW.cDEFENSE = (BYTE)pITEM->sBasicOp.wGradeDefense;
 
@@ -5330,18 +5338,18 @@ HRESULT GLChar::MsgReqInvenBoxOpen ( NET_MSG_GENERIC* nmg )
 			sITEM_NEW.wColor2 = pitem_data_check->sBasicOp.wItemColor2;
 		}
 
-		//	·£´ı ¿É¼Ç »ı¼º.
+		//	ëœë¤ ì˜µì…˜ ìƒì„±.
 		if( sITEM_NEW.GENERATE_RANDOM_OPT() )
 		{
 			GLITEMLMT::GetInstance().ReqRandomItem( sITEM_NEW );
 		}
 
-		//	Note : ÀÎº¥¿¡ ³ÖÀ» À§Ä¡ Ã£À½.
+		//	Note : ì¸ë²¤ì— ë„£ì„ ìœ„ì¹˜ ì°¾ìŒ.
 		WORD wInsertPosX, wInsertPosY;
 		BOOL bOk = m_cInventory.FindInsrtable ( pITEM->sBasicOp.wInvenSizeX, pITEM->sBasicOp.wInvenSizeY, wInsertPosX, wInsertPosY );
-		if ( !bOk )		return S_OK;	//	ÀÎº¥ °ø°£ ºÎÁ·À¸·Î µÇµ¹¸² ½ÇÆĞ.
+		if ( !bOk )		return S_OK;	//	ì¸ë²¤ ê³µê°„ ë¶€ì¡±ìœ¼ë¡œ ë˜ëŒë¦¼ ì‹¤íŒ¨.
 
-		//	»ı¼ºÇÑ ¾ÆÀÌÅÆ ÀÎ¹ê¿¡ ³ÖÀ½.
+		//	ìƒì„±í•œ ì•„ì´íƒ¬ ì¸ë°´ì— ë„£ìŒ.
 		m_cInventory.InsertItem ( sITEM_NEW, wInsertPosX, wInsertPosY );
 		SINVENITEM *pInsertItem = m_cInventory.GetItem ( wInsertPosX, wInsertPosY );
 
@@ -5351,7 +5359,7 @@ HRESULT GLChar::MsgReqInvenBoxOpen ( NET_MSG_GENERIC* nmg )
 		strName.Format ( "%d.csv",GetUserID() );
 		CDebugSet::ToFileWithTime ( strName.GetString(),strTemp );
 
-		//	[ÀÚ½Å¿¡°Ô] ¸Ş½ÃÁö ¹ß»ı.
+		//	[ìì‹ ì—ê²Œ] ë©”ì‹œì§€ ë°œìƒ.
 		GLMSG::SNETPC_INVEN_INSERT NetMsg_Inven;
 		NetMsg_Inven.Data = *pInsertItem;
 		GLGaeaServer::GetInstance().SENDTOCLIENT(m_dwClientID,&NetMsg_Inven);
@@ -5360,20 +5368,20 @@ HRESULT GLChar::MsgReqInvenBoxOpen ( NET_MSG_GENERIC* nmg )
 		DoActivityTakeItem( sITEM_NEW.sNativeID, sITEM_NEW.wTurnNum );
 	}
 
-	//	»óÀÚ »èÁ¦ ·Î±×.
+	//	ìƒì ì‚­ì œ ë¡œê·¸.
 	GLITEMLMT::GetInstance().ReqItemRoute ( pInvenItem->sItemCustom, ID_CHAR, m_dwCharID, ID_CHAR, 0, EMITEM_ROUTE_DELETE, pInvenItem->sItemCustom.wTurnNum );
 
-	//	Note : »óÀÚ ¾ÆÀÌÅÛ »èÁ¦.
+	//	Note : ìƒì ì•„ì´í…œ ì‚­ì œ.
 	//
 	m_cInventory.DeleteItem ( wPosX, wPosY );
 
-	//	[ÀÚ½Å¿¡°Ô] ÀÎ¹ê¿¡ ¾ÆÀÌÅÆ Á¦°Å.
+	//	[ìì‹ ì—ê²Œ] ì¸ë°´ì— ì•„ì´íƒ¬ ì œê±°.
 	GLMSG::SNETPC_INVEN_DELETE NetMsg_Inven_Delete;
 	NetMsg_Inven_Delete.wPosX = wPosX;
 	NetMsg_Inven_Delete.wPosY = wPosY;
 	GLGaeaServer::GetInstance().SENDTOCLIENT(m_dwClientID,&NetMsg_Inven_Delete);
 
-	//	Note : »óÀÚ¸¦ ¼º°øÀûÀ¸·Î ¿­¾úÀ½.
+	//	Note : ìƒìë¥¼ ì„±ê³µì ìœ¼ë¡œ ì—´ì—ˆìŒ.
 	//
 	NetMsgFB.emFB = EMREQ_BOXOPEN_FB_OK;
 	GLGaeaServer::GetInstance().SENDTOCLIENT(m_dwClientID,&NetMsgFB);
@@ -5455,20 +5463,20 @@ HRESULT GLChar::MsgReqInvenRandomBoxOpen ( NET_MSG_GENERIC* nmg )
 
 	if ( sGENITEM.nidITEM == SNATIVEID(false) )
 	{
-		//	»óÀÚ ¾ÆÀÌÅÛ »èÁ¦ ·Î±× ³²±è.
+		//	ìƒì ì•„ì´í…œ ì‚­ì œ ë¡œê·¸ ë‚¨ê¹€.
 		GLITEMLMT::GetInstance().ReqItemRoute ( pInvenItem->sItemCustom, ID_CHAR, m_dwCharID, ID_CHAR, 0, EMITEM_ROUTE_DELETE, pInvenItem->sItemCustom.wTurnNum );
 
-		//	Note : »óÀÚ ¾ÆÀÌÅÛ »èÁ¦.
+		//	Note : ìƒì ì•„ì´í…œ ì‚­ì œ.
 		//
 		m_cInventory.DeleteItem ( wPosX, wPosY );
 
-		//	[ÀÚ½Å¿¡°Ô] ÀÎ¹ê¿¡ ¾ÆÀÌÅÆ Á¦°Å.
+		//	[ìì‹ ì—ê²Œ] ì¸ë°´ì— ì•„ì´íƒ¬ ì œê±°.
 		GLMSG::SNETPC_INVEN_DELETE NetMsg_Inven_Delete;
 		NetMsg_Inven_Delete.wPosX = wPosX;
 		NetMsg_Inven_Delete.wPosY = wPosY;
 		GLGaeaServer::GetInstance().SENDTOCLIENT(m_dwClientID,&NetMsg_Inven_Delete);
 
-		//	Note : Ã³¸® °á°ú Àü¼Û.
+		//	Note : ì²˜ë¦¬ ê²°ê³¼ ì „ì†¡.
 		NetMsgFB.emFB = EMINVEN_RANDOMBOXOPEN_FB_MISS;
 		GLGaeaServer::GetInstance().SENDTOCLIENT(m_dwClientID,&NetMsgFB);
 		return E_FAIL;
@@ -5482,7 +5490,7 @@ HRESULT GLChar::MsgReqInvenRandomBoxOpen ( NET_MSG_GENERIC* nmg )
 		return E_FAIL;
 	}
 
-	//	Note : ¾ÆÀÌÅÆ ¹ß»ı.
+	//	Note : ì•„ì´íƒ¬ ë°œìƒ.
 	//
 	WORD wINSERTX(0), wINSERTY(0);
 	BOOL bOK = m_cInventory.FindInsrtable ( pITEM_DATA->sBasicOp.wInvenSizeX, pITEM_DATA->sBasicOp.wInvenSizeY, wINSERTX, wINSERTY );
@@ -5493,7 +5501,7 @@ HRESULT GLChar::MsgReqInvenRandomBoxOpen ( NET_MSG_GENERIC* nmg )
 		return E_FAIL;
 	}
 
-	//	Note : ¾ÆÀÌÅÛ »ı¼º.
+	//	Note : ì•„ì´í…œ ìƒì„±.
 	//
 	SITEMCUSTOM sITEM_NEW;
 	sITEM_NEW.sNativeID = sGENITEM.nidITEM;
@@ -5507,7 +5515,7 @@ HRESULT GLChar::MsgReqInvenRandomBoxOpen ( NET_MSG_GENERIC* nmg )
 	sITEM_NEW.cFieldID = (BYTE)GLGaeaServer::GetInstance().GetFieldSvrID();
 	sITEM_NEW.lnGenNum = GLITEMLMT::GetInstance().RegItemGen ( sITEM_NEW.sNativeID, (EMITEMGEN)sITEM_NEW.cGenType );
 
-	// ¾ÆÀÌÅÛ ¿¡µğÆ®¿¡¼­ ÀÔ·ÂÇÑ °³Á¶ µî±Ş Àû¿ë ( ÁØÇõ )
+	// ì•„ì´í…œ ì—ë””íŠ¸ì—ì„œ ì…ë ¥í•œ ê°œì¡° ë“±ê¸‰ ì ìš© ( ì¤€í˜ )
 	sITEM_NEW.cDAMAGE = (BYTE)pITEM_DATA->sBasicOp.wGradeAttack;
 	sITEM_NEW.cDEFENSE = (BYTE)pITEM_DATA->sBasicOp.wGradeDefense;
 
@@ -5519,13 +5527,13 @@ HRESULT GLChar::MsgReqInvenRandomBoxOpen ( NET_MSG_GENERIC* nmg )
 		sITEM_NEW.wColor2 = pitem_data_check->sBasicOp.wItemColor2;
 	}
 
-	//	·£´ı ¿É¼Ç »ı¼º.
+	//	ëœë¤ ì˜µì…˜ ìƒì„±.
 	if( sITEM_NEW.GENERATE_RANDOM_OPT() )
 	{
 		GLITEMLMT::GetInstance().ReqRandomItem( sITEM_NEW );
 	}
 
-	//	»ı¼ºÇÑ ¾ÆÀÌÅÆ ÀÎ¹ê¿¡ ³ÖÀ½.
+	//	ìƒì„±í•œ ì•„ì´íƒ¬ ì¸ë°´ì— ë„£ìŒ.
 	m_cInventory.InsertItem ( sITEM_NEW, wINSERTX, wINSERTY );
 	SINVENITEM *pInsertItem = m_cInventory.GetItem ( wINSERTX, wINSERTY );
 
@@ -5542,28 +5550,28 @@ HRESULT GLChar::MsgReqInvenRandomBoxOpen ( NET_MSG_GENERIC* nmg )
 	CDebugSet::ToFileWithTime ( strName.GetString(),strTemp );
 
 
-	//	[ÀÚ½Å¿¡°Ô] ¸Ş½ÃÁö ¹ß»ı.
+	//	[ìì‹ ì—ê²Œ] ë©”ì‹œì§€ ë°œìƒ.
 	GLMSG::SNETPC_INVEN_INSERT NetMsg_Inven;
 	NetMsg_Inven.Data = *pInsertItem;
 	GLGaeaServer::GetInstance().SENDTOCLIENT(m_dwClientID,&NetMsg_Inven);
 
-	//	»óÀÚ ¾ÆÀÌÅÛ »èÁ¦ ·Î±× ³²±è.
+	//	ìƒì ì•„ì´í…œ ì‚­ì œ ë¡œê·¸ ë‚¨ê¹€.
 	GLITEMLMT::GetInstance().ReqItemRoute ( pInvenItem->sItemCustom, ID_CHAR, m_dwCharID, ID_CHAR, 0, EMITEM_ROUTE_DELETE, pInvenItem->sItemCustom.wTurnNum );
 
-	//	·£´ı ¾ÆÀÌÅÛ »ı¼º ·Î±× ³²±è.
+	//	ëœë¤ ì•„ì´í…œ ìƒì„± ë¡œê·¸ ë‚¨ê¹€.
 	GLITEMLMT::GetInstance().ReqItemRoute ( pInsertItem->sItemCustom, ID_CHAR, 0, ID_CHAR, m_dwCharID, EMITEM_ROUTE_CHAR, pInvenItem->sItemCustom.wTurnNum );
 
-	//	Note : »óÀÚ ¾ÆÀÌÅÛ »èÁ¦.
+	//	Note : ìƒì ì•„ì´í…œ ì‚­ì œ.
 	//
 	m_cInventory.DeleteItem ( wPosX, wPosY );
 
-	//	[ÀÚ½Å¿¡°Ô] ÀÎ¹ê¿¡ ¾ÆÀÌÅÆ Á¦°Å.
+	//	[ìì‹ ì—ê²Œ] ì¸ë°´ì— ì•„ì´íƒ¬ ì œê±°.
 	GLMSG::SNETPC_INVEN_DELETE NetMsg_Inven_Delete;
 	NetMsg_Inven_Delete.wPosX = wPosX;
 	NetMsg_Inven_Delete.wPosY = wPosY;
 	GLGaeaServer::GetInstance().SENDTOCLIENT(m_dwClientID,&NetMsg_Inven_Delete);
 
-	//	Note : »óÀÚ¸¦ ¼º°øÀûÀ¸·Î ¿­¾úÀ½.
+	//	Note : ìƒìë¥¼ ì„±ê³µì ìœ¼ë¡œ ì—´ì—ˆìŒ.
 	//
 	NetMsgFB.emFB = EMINVEN_RANDOMBOXOPEN_FB_OK;
 	GLGaeaServer::GetInstance().SENDTOCLIENT(m_dwClientID,&NetMsgFB);
@@ -5652,7 +5660,7 @@ HRESULT GLChar::MsgReqInvenDisJunction ( NET_MSG_GENERIC* nmg )
 		cTIME -= tLMT;
 	}
 
-	//	Note : ¾ÆÀÌÅÛ »ı¼º.
+	//	Note : ì•„ì´í…œ ìƒì„±.
 	//
 	sITEM_NEW.tBORNTIME = cTIME.GetTime();
 
@@ -5666,26 +5674,26 @@ HRESULT GLChar::MsgReqInvenDisJunction ( NET_MSG_GENERIC* nmg )
 	sITEM_NEW.wColor1 = pInvenItem->sItemCustom.wColor1;
 	sITEM_NEW.wColor2 = pInvenItem->sItemCustom.wColor2;
 
-	//	Note : hold ¾ÆÀÌÅÛ ÀÎº¥¿¡ µÇµ¹¸².
+	//	Note : hold ì•„ì´í…œ ì¸ë²¤ì— ë˜ëŒë¦¼.
 	WORD wInsertPosX, wInsertPosY;
 	BOOL bOk = m_cInventory.FindInsrtable ( pONE->sBasicOp.wInvenSizeX, pONE->sBasicOp.wInvenSizeY, wInsertPosX, wInsertPosY );
 	if ( !bOk )
 	{
 		NetMsgFB.emFB = EMINVEN_DISJUNCTION_FB_NOINVEN;
 		GLGaeaServer::GetInstance().SENDTOCLIENT(m_dwClientID,&NetMsgFB);
-		return E_FAIL;	//	ÀÎº¥ °ø°£ ºÎÁ·À¸·Î µÇµ¹¸² ½ÇÆĞ.
+		return E_FAIL;	//	ì¸ë²¤ ê³µê°„ ë¶€ì¡±ìœ¼ë¡œ ë˜ëŒë¦¼ ì‹¤íŒ¨.
 	}
 
-	//	µé°íÀÖ´ø ¾ÆÀÌÅÆ ÀÎ¹ê¿¡ ³ÖÀ½.
+	//	ë“¤ê³ ìˆë˜ ì•„ì´íƒ¬ ì¸ë°´ì— ë„£ìŒ.
 	m_cInventory.InsertItem ( sITEM_NEW, wInsertPosX, wInsertPosY );
 	SINVENITEM *pINSERT_ITEM = m_cInventory.GetItem ( wInsertPosX, wInsertPosY );
 
-	//	[ÀÚ½Å¿¡°Ô] ¸Ş½ÃÁö ¹ß»ı.
+	//	[ìì‹ ì—ê²Œ] ë©”ì‹œì§€ ë°œìƒ.
 	GLMSG::SNETPC_INVEN_INSERT NetMsg_Inven;
 	NetMsg_Inven.Data = *pINSERT_ITEM;
 	GLGaeaServer::GetInstance().SENDTOCLIENT(m_dwClientID,&NetMsg_Inven);
 
-	//	Note : ¸Á°¢ÀÇ ¼¼Å¹À» ÇÔ.
+	//	Note : ë§ê°ì˜ ì„¸íƒì„ í•¨.
 	//
 	pInvenItem->sItemCustom.tDISGUISE = 0;
 	pInvenItem->sItemCustom.nidDISGUISE = SNATIVEID(false);
@@ -5709,14 +5717,14 @@ HRESULT GLChar::MsgReqInvenDisJunction ( NET_MSG_GENERIC* nmg )
 	NetItemUpdate.sItemCustom = pInvenItem->sItemCustom;
 	GLGaeaServer::GetInstance().SENDTOCLIENT(m_dwClientID,&NetItemUpdate);
 
-	//	Note : ºĞ¸®µÈ ÄÚ½ºÅù ·Î±×.
+	//	Note : ë¶„ë¦¬ëœ ì½”ìŠ¤íˆ¼ ë¡œê·¸.
 	GLITEMLMT::GetInstance().ReqItemRoute ( pINSERT_ITEM->sItemCustom, ID_CHAR, 0, ID_CHAR, m_dwCharID, EMITEM_ROUTE_CHAR, pINSERT_ITEM->sItemCustom.wTurnNum );
 
-	//	Note : ÀÏ¹İ º¹Àå ¾ÆÀÌÅÛÀÌ ¼¼Å¹ÇÏ´Â °ÍÀ» ·Î±× ³²±è.
+	//	Note : ì¼ë°˜ ë³µì¥ ì•„ì´í…œì´ ì„¸íƒí•˜ëŠ” ê²ƒì„ ë¡œê·¸ ë‚¨ê¹€.
 	//
 	GLITEMLMT::GetInstance().ReqItemConversion ( pInvenItem->sItemCustom, ID_CHAR, m_dwCharID );
 
-	//	Note : ¾ÆÀÌÅÛ ¼Ò¸ğ.
+	//	Note : ì•„ì´í…œ ì†Œëª¨.
 	//
 	DoDrugSlotItem ( SLOT_HOLD );
 
@@ -5728,7 +5736,7 @@ HRESULT GLChar::MsgReqInvenDisJunction ( NET_MSG_GENERIC* nmg )
 
 
 // *****************************************************
-// Desc: ÄÚ½ºÆ¬ ÀÔÈû
+// Desc: ì½”ìŠ¤íŠ¬ ì…í˜
 // *****************************************************
 HRESULT GLChar::MsgReqInvenDisguise ( NET_MSG_GENERIC* nmg )
 {
@@ -5741,7 +5749,7 @@ HRESULT GLChar::MsgReqInvenDisguise ( NET_MSG_GENERIC* nmg )
 	WORD wPosX = pNetMsg->wPosX;
 	WORD wPosY = pNetMsg->wPosY;
 
-	// À¯È¿ÇÑ ÀÎº¥Åä¸® ÀÎÁö °Ë»ç
+	// ìœ íš¨í•œ ì¸ë²¤í† ë¦¬ ì¸ì§€ ê²€ì‚¬
 	SINVENITEM* pInvenItem = m_cInventory.FindPosItem ( wPosX, wPosY );
 	if ( !pInvenItem )
 	{
@@ -5753,7 +5761,7 @@ HRESULT GLChar::MsgReqInvenDisguise ( NET_MSG_GENERIC* nmg )
 	wPosX = pInvenItem->wPosX;
 	wPosY = pInvenItem->wPosY;
 
-	// À¯È¿ÇÑ ¾ÆÀÌÅÛÀÎÁö °Ë»ç
+	// ìœ íš¨í•œ ì•„ì´í…œì¸ì§€ ê²€ì‚¬
 	SITEM* pItem = GLItemMan::GetInstance().GetItem ( pInvenItem->sItemCustom.sNativeID );
 	if ( !pItem )
 	{
@@ -5762,7 +5770,7 @@ HRESULT GLChar::MsgReqInvenDisguise ( NET_MSG_GENERIC* nmg )
 		return E_FAIL;
 	}
 
-	// ¼Õ¿¡ µé°í ÀÖ´Â ¾ÆÀÌÅÛÀÌ À¯È¿ÇÑÁö °Ë»ç
+	// ì†ì— ë“¤ê³  ìˆëŠ” ì•„ì´í…œì´ ìœ íš¨í•œì§€ ê²€ì‚¬
 	const SITEMCUSTOM& sITEM_HOLD = GET_SLOT_ITEM(SLOT_HOLD);
 	if ( sITEM_HOLD.sNativeID==SNATIVEID(false) )
 	{
@@ -5771,7 +5779,7 @@ HRESULT GLChar::MsgReqInvenDisguise ( NET_MSG_GENERIC* nmg )
 		return S_FALSE;
 	}
 
-	// ¼Õ¿¡µç ¾ÆÀÌÅÛÀÇ Á¤º¸ °®°í ¿À±â
+	// ì†ì—ë“  ì•„ì´í…œì˜ ì •ë³´ ê°–ê³  ì˜¤ê¸°
 	SITEM* pHold = GET_SLOT_ITEMDATA ( SLOT_HOLD );
 	if ( !pHold )
 	{
@@ -5780,7 +5788,7 @@ HRESULT GLChar::MsgReqInvenDisguise ( NET_MSG_GENERIC* nmg )
 		return S_FALSE;
 	}
 
-	// ¼Õ¿¡µç ¾ÆÀÌÅÛÀÌ ÄÚ½ºÆ¬ÀÎÁö °Ë»ç
+	// ì†ì—ë“  ì•„ì´í…œì´ ì½”ìŠ¤íŠ¬ì¸ì§€ ê²€ì‚¬
 	if ( !pHold->sBasicOp.IsDISGUISE() )
 	{
 		NetMsgFB.emFB = EMREQ_DISGUISE_FB_NODISGUISE;
@@ -5788,7 +5796,7 @@ HRESULT GLChar::MsgReqInvenDisguise ( NET_MSG_GENERIC* nmg )
 		return S_FALSE;
 	}
 
-	// ÀÎº¥Åä¸® ¾ÆÀÌÅÛÀÌ ¿¬¸¶°¡´ÉÇÑÁö °Ë»ç
+	// ì¸ë²¤í† ë¦¬ ì•„ì´í…œì´ ì—°ë§ˆê°€ëŠ¥í•œì§€ ê²€ì‚¬
 	if ( pItem->sBasicOp.IsDISGUISE() )
 	{
 		NetMsgFB.emFB = EMREQ_DISGUISE_FB_FAIL;
@@ -5796,7 +5804,7 @@ HRESULT GLChar::MsgReqInvenDisguise ( NET_MSG_GENERIC* nmg )
 		return S_FALSE;
 	}
 
-	// °°Àº Å¬·¡½º ÀÎÁö °Ë»ç
+	// ê°™ì€ í´ë˜ìŠ¤ ì¸ì§€ ê²€ì‚¬
 	if ( ( pHold->sBasicOp.dwReqCharClass & pItem->sBasicOp.dwReqCharClass ) == NULL )
 	{
 		NetMsgFB.emFB = EMREQ_DISGUISE_FB_DEFSUIT;
@@ -5804,7 +5812,7 @@ HRESULT GLChar::MsgReqInvenDisguise ( NET_MSG_GENERIC* nmg )
 		return S_FALSE;
 	}
 
-	// º¹Àå·ùÀÎÁö °Ë»ç
+	// ë³µì¥ë¥˜ì¸ì§€ ê²€ì‚¬
 	if ( pHold->sBasicOp.emItemType != ITEM_SUIT )
 	{
 		NetMsgFB.emFB = EMREQ_DISGUISE_FB_NOTSUIT;
@@ -5819,7 +5827,7 @@ HRESULT GLChar::MsgReqInvenDisguise ( NET_MSG_GENERIC* nmg )
 		return S_FALSE;
 	}
 
-	// °°Àº Á¾·ùÀÇ º¹ÀåÀÎÁö °Ë»ç
+	// ê°™ì€ ì¢…ë¥˜ì˜ ë³µì¥ì¸ì§€ ê²€ì‚¬
 	if ( pHold->sSuitOp.emSuit != pItem->sSuitOp.emSuit )
 	{
 		NetMsgFB.emFB = EMREQ_DISGUISE_FB_DEFSUIT;
@@ -5827,7 +5835,7 @@ HRESULT GLChar::MsgReqInvenDisguise ( NET_MSG_GENERIC* nmg )
 		return S_FALSE;
 	}
 
-	// ÀÎº¥Åä¸®ÀÇ º¹ÀåÀÌ ÄÚ½ºÆ¬ÀÌ ÀÔÇôÁ® ÀÖ´ÂÁö °Ë»ç
+	// ì¸ë²¤í† ë¦¬ì˜ ë³µì¥ì´ ì½”ìŠ¤íŠ¬ì´ ì…í˜€ì ¸ ìˆëŠ”ì§€ ê²€ì‚¬
 	if ( pInvenItem->sItemCustom.nidDISGUISE!=SNATIVEID(false) )
 	{
 		NetMsgFB.emFB = EMREQ_DISGUISE_FB_ALREADY;
@@ -5835,7 +5843,7 @@ HRESULT GLChar::MsgReqInvenDisguise ( NET_MSG_GENERIC* nmg )
 		return S_FALSE;
 	}
 
-	//	Note : ½ÃÇÑ ÄÚ½ºÅùÀÏ °æ¿ì.
+	//	Note : ì‹œí•œ ì½”ìŠ¤íˆ¼ì¼ ê²½ìš°.
 	//
 	if ( pHold->sDrugOp.tTIME_LMT != 0 )
 	{
@@ -5846,13 +5854,13 @@ HRESULT GLChar::MsgReqInvenDisguise ( NET_MSG_GENERIC* nmg )
 		CTimeSpan tLMT (pHold->sDrugOp.tTIME_LMT);
 		tLMT += CTimeSpan(0,0,0,0);
 
-		//	Note : ½Ã°£ ÃæÀü.
+		//	Note : ì‹œê°„ ì¶©ì „.
 		tSeedTime = tCurTime + tLMT;
 
 		tTIME = tSeedTime.GetTime();
 	}
 
-	//	Note : ÄÚ½ºÅù ½ºÅ² ÁöÁ¤.
+	//	Note : ì½”ìŠ¤íˆ¼ ìŠ¤í‚¨ ì§€ì •.
 	//
 	pInvenItem->sItemCustom.nidDISGUISE = pHold->sBasicOp.sNativeID;
 
@@ -5866,23 +5874,23 @@ HRESULT GLChar::MsgReqInvenDisguise ( NET_MSG_GENERIC* nmg )
 	NetItemUpdate.sItemCustom = pInvenItem->sItemCustom;
 	GLGaeaServer::GetInstance().SENDTOCLIENT(m_dwClientID,&NetItemUpdate);
 
-	//	Note : ÀÏ¹İ º¹Àå ¾ÆÀÌÅÛÀÌ ÄÚ½ºÅù ½ºÅ²À¸·Î º¯È¯µÇ´Â °ª ·Î±× ³²±è.
+	//	Note : ì¼ë°˜ ë³µì¥ ì•„ì´í…œì´ ì½”ìŠ¤íˆ¼ ìŠ¤í‚¨ìœ¼ë¡œ ë³€í™˜ë˜ëŠ” ê°’ ë¡œê·¸ ë‚¨ê¹€.
 	//
 	GLITEMLMT::GetInstance().ReqItemConversion ( pInvenItem->sItemCustom, ID_CHAR, m_dwCharID );
 
-	//	Note :¾ÆÀÌÅÛÀÇ ¼ÒÀ¯ ÀÌÀü °æ·Î ±â·Ï.
+	//	Note :ì•„ì´í…œì˜ ì†Œìœ  ì´ì „ ê²½ë¡œ ê¸°ë¡.
 	//
 	GLITEMLMT::GetInstance().ReqItemRoute ( GET_HOLD_ITEM(), ID_CHAR, m_dwCharID, ID_CHAR, 0, EMITEM_ROUTE_DELETE, GET_HOLD_ITEM().wTurnNum );
 
-	//	Note : ¼Õ¿¡µç ¾ÆÀÌÅÛ »èÁ¦.
+	//	Note : ì†ì—ë“  ì•„ì´í…œ ì‚­ì œ.
 	//
 	RELEASE_SLOT_ITEM ( SLOT_HOLD );
 
-	//	[ÀÚ½Å¿¡°Ô] SLOT¿¡ ÀÖ¾ú´ø ¾ÆÀÌÅÆ Á¦°Å.
+	//	[ìì‹ ì—ê²Œ] SLOTì— ìˆì—ˆë˜ ì•„ì´íƒ¬ ì œê±°.
 	GLMSG::SNETPC_PUTON_RELEASE NetMsg_PutOn_Release(SLOT_HOLD);
 	GLGaeaServer::GetInstance().SENDTOCLIENT(m_dwClientID,&NetMsg_PutOn_Release);
 
-	//	Note : ÄÚ½ºÅù ½ºÅ²À¸·Î º¯È¯ ¼º°ø ¾Ë¸².
+	//	Note : ì½”ìŠ¤íˆ¼ ìŠ¤í‚¨ìœ¼ë¡œ ë³€í™˜ ì„±ê³µ ì•Œë¦¼.
 	//
 	NetMsgFB.emFB = EMREQ_DISGUISE_FB_OK;
 	GLGaeaServer::GetInstance().SENDTOCLIENT(m_dwClientID,&NetMsgFB);
@@ -5944,7 +5952,7 @@ HRESULT GLChar::MsgReqInvenCleanser ( NET_MSG_GENERIC* nmg )
 		return S_FALSE;	
 	}
 
-	//	Note : ¸Á°¢ÀÇ ¼¼Å¹À» ÇÔ.
+	//	Note : ë§ê°ì˜ ì„¸íƒì„ í•¨.
 	//
 	pInvenItem->sItemCustom.tDISGUISE = 0;
 	pInvenItem->sItemCustom.nidDISGUISE = SNATIVEID(false);
@@ -5968,15 +5976,15 @@ HRESULT GLChar::MsgReqInvenCleanser ( NET_MSG_GENERIC* nmg )
 	NetItemUpdate.sItemCustom = pInvenItem->sItemCustom;
 	GLGaeaServer::GetInstance().SENDTOCLIENT(m_dwClientID,&NetItemUpdate);
 
-	//	Note : ÀÏ¹İ º¹Àå ¾ÆÀÌÅÛÀÌ ¼¼Å¹ÇÏ´Â °ÍÀ» ·Î±× ³²±è.
+	//	Note : ì¼ë°˜ ë³µì¥ ì•„ì´í…œì´ ì„¸íƒí•˜ëŠ” ê²ƒì„ ë¡œê·¸ ë‚¨ê¹€.
 	//
 	GLITEMLMT::GetInstance().ReqItemConversion ( pInvenItem->sItemCustom, ID_CHAR, m_dwCharID );
 
-	//	Note : ¾ÆÀÌÅÛ ¼Ò¸ğ.
+	//	Note : ì•„ì´í…œ ì†Œëª¨.
 	//
 	DoDrugSlotItem ( SLOT_HOLD );
 
-	//	Note : ÄÚ½ºÅù ½ºÅ² ¸®¼Â º¯È¯ ¼º°ø ¾Ë¸².
+	//	Note : ì½”ìŠ¤íˆ¼ ìŠ¤í‚¨ ë¦¬ì…‹ ë³€í™˜ ì„±ê³µ ì•Œë¦¼.
 	//
 	NetMsgFB.emFB = EMREQ_CLEANSER_FB_OK;
 	GLGaeaServer::GetInstance().SENDTOCLIENT(m_dwClientID,&NetMsgFB);
@@ -6002,13 +6010,13 @@ HRESULT GLChar::MsgReqMoneyToField ( NET_MSG_GENERIC* nmg )
 
 	if ( !bCollision )			return S_FALSE;
 
-	//	Note : °¡Áö°í ÀÖ´Â µ·ÀÇ ¾×¼ö¸¦ Á¶Àı.
+	//	Note : ê°€ì§€ê³  ìˆëŠ” ëˆì˜ ì•¡ìˆ˜ë¥¼ ì¡°ì ˆ.
 	CheckMoneyUpdate( m_lnMoney, pNetMsg->lnMoney, FALSE, "Drop Money." );
 	m_bMoneyUpdate = TRUE;
 
 	m_lnMoney -= pNetMsg->lnMoney;
 
-	//	Note : ±İ¾× ·Î±×.
+	//	Note : ê¸ˆì•¡ ë¡œê·¸.
 	//
 	if ( pNetMsg->lnMoney > EMMONEY_LOG )
 	{
@@ -6033,10 +6041,10 @@ HRESULT GLChar::MsgReqMoneyToField ( NET_MSG_GENERIC* nmg )
 	}
 #endif
 
-	//	Note : ¹Ù´Ú¿¡ ¶³¾îÆ®¸°´Ù.
+	//	Note : ë°”ë‹¥ì— ë–¨ì–´íŠ¸ë¦°ë‹¤.
 	m_pLandMan->DropMoney ( vCollisionPos, pNetMsg->lnMoney, FALSE );
 
-	//	Note : Å¬¶óÀÌ¾ğÆ®¿¡ µ· ¾×¼ö º¯È­¸¦ ¾Ë·ÁÁÜ.
+	//	Note : í´ë¼ì´ì–¸íŠ¸ì— ëˆ ì•¡ìˆ˜ ë³€í™”ë¥¼ ì•Œë ¤ì¤Œ.
 	GLMSG::SNETPC_UPDATE_MONEY NetMsg;
 	NetMsg.lnMoney = m_lnMoney;
 	/*dmk14 ingame web*/
@@ -6048,7 +6056,7 @@ HRESULT GLChar::MsgReqMoneyToField ( NET_MSG_GENERIC* nmg )
 }
 
 // *****************************************************
-// Desc: ¾ÆÀÌÅÛ ÀÎÃ¾Æ® ¿äÃ» Ã³¸®
+// Desc: ì•„ì´í…œ ì¸ì²¸íŠ¸ ìš”ì²­ ì²˜ë¦¬
 // *****************************************************
 HRESULT GLChar::MsgReqInvenGrinding ( NET_MSG_GENERIC* nmg )
 {
@@ -6097,7 +6105,7 @@ HRESULT GLChar::MsgReqInvenGrinding ( NET_MSG_GENERIC* nmg )
 		}
 	}
 	
-	//	Note : ¿¬¸¶Á¦ µî±Ş, ³·Àº ¿¬¸¶Á¦·Î ³ôÀº ¿¬¸¶ ºÒ°¡´É
+	//	Note : ì—°ë§ˆì œ ë“±ê¸‰, ë‚®ì€ ì—°ë§ˆì œë¡œ ë†’ì€ ì—°ë§ˆ ë¶ˆê°€ëŠ¥
 	//
 	
 	BYTE cGrade = 0;
@@ -6113,14 +6121,14 @@ HRESULT GLChar::MsgReqInvenGrinding ( NET_MSG_GENERIC* nmg )
 		return E_FAIL;
 	}
 
-	// ÃÖ»óÀ§ µî±Ş±îÁö ÀÎÃ¦Æ® ÇÒ¼ö ÀÖ´Â ¾ÆÀÌÅÛÀÎÁö Á¡°Ë
+	// ìµœìƒìœ„ ë“±ê¸‰ê¹Œì§€ ì¸ì±ˆíŠ¸ í• ìˆ˜ ìˆëŠ” ì•„ì´í…œì¸ì§€ ì ê²€
 	if ( cGrade >= GRADE_HIGH && pItem->sGrindingOp.emLEVEL != EMGRINDING_LEVEL_TOP )
 	{
 		return S_FALSE;
 	}
 
 
-	//	Note : ¿¬¸¶Á¦ ¼ö·® È®ÀÎ
+	//	Note : ì—°ë§ˆì œ ìˆ˜ëŸ‰ í™•ì¸
 	WORD wGradeNum = 1;	
 	
 	if ( cGrade >= GRADE_HIGH )
@@ -6134,19 +6142,19 @@ HRESULT GLChar::MsgReqInvenGrinding ( NET_MSG_GENERIC* nmg )
 
 	}
 
-	//	Note : °í±Ş ¿¬¸¶Á¦ÀÏ °æ¿ì GRADE_NORMAL µî±Ş ¹Ì¸¸ ¿¬¸¶ ºÒ°¡´É.
+	//	Note : ê³ ê¸‰ ì—°ë§ˆì œì¼ ê²½ìš° GRADE_NORMAL ë“±ê¸‰ ë¯¸ë§Œ ì—°ë§ˆ ë¶ˆê°€ëŠ¥.
 	//
 	//if ( pInvenItem->sItemCustom.GETGRADE(pHold->sGrindingOp.emTYPE)<GRADE_NORMAL && pHold->sGrindingOp.bHIGH )
 	//{
 	//	return E_FAIL;
 	//}
 
-	//	Note : ¿¬¸¶ ¼öÇà.
+	//	Note : ì—°ë§ˆ ìˆ˜í–‰.
 	//
 	bool bRESET(false), bTERMINATE(false);
 	EMANTIDISAPPEAR emANTIDISAPPEAR(EMANTIDISAPPEAR_OFF);
 
-	// ¼Ò¹æÁÖ°¡ ÀÖ´Ù¸é bANTIDISAPPEAR¸¦ 1·Î ¼ÂÆÃÇØ¼­ ¾ÆÀÌÅÛÀÌ ¼Ò¸êµÇ´Â°ÍÀ» ¹æÁöÇÑ´Ù.
+	// ì†Œë°©ì£¼ê°€ ìˆë‹¤ë©´ bANTIDISAPPEARë¥¼ 1ë¡œ ì…‹íŒ…í•´ì„œ ì•„ì´í…œì´ ì†Œë©¸ë˜ëŠ”ê²ƒì„ ë°©ì§€í•œë‹¤.
 	SITEM* pITEM = GET_SLOT_ITEMDATA(SLOT_ORNAMENT);
 	if ( pITEM && pITEM->sBasicOp.emItemType == ITEM_ANTI_DISAPPEAR )
 	{
@@ -6173,22 +6181,22 @@ HRESULT GLChar::MsgReqInvenGrinding ( NET_MSG_GENERIC* nmg )
 	strName.Format ( "%d.csv",GetUserID() );
 	CDebugSet::ToFileWithTime ( strName.GetString(),strTemp );
 
-	//	Note : ¼Ò¸ğµÈ ¿¬¸¶Á¦ Ã³¸®.
+	//	Note : ì†Œëª¨ëœ ì—°ë§ˆì œ ì²˜ë¦¬.
 	//
 	DoDrugSlotItem(SLOT_HOLD, wGradeNum);
 
-	//	Note :	¼Ò¸ğµÈ ¼Ò¹æÁÖ Ã³¸®.
-	//			bANTIDISAPPEAR°¡ false¸é ¼Ò¹æÁÖ°¡ »ç¿ëµÇ¾ú´Ù.
+	//	Note :	ì†Œëª¨ëœ ì†Œë°©ì£¼ ì²˜ë¦¬.
+	//			bANTIDISAPPEARê°€ falseë©´ ì†Œë°©ì£¼ê°€ ì‚¬ìš©ë˜ì—ˆë‹¤.
 	if( emANTIDISAPPEAR == EMANTIDISAPPEAR_USE )
 	{
 		DoDrugSlotItem(SLOT_ORNAMENT);
 	}
 
-	//	Note : ·Î±× ±â·Ï.
+	//	Note : ë¡œê·¸ ê¸°ë¡.
 	//
 	GLITEMLMT::GetInstance().ReqItemConversion ( pInvenItem->sItemCustom, ID_CHAR, m_dwCharID );
 
-	//	Note : ¿¬¸¶ ¼º°ø ¿©ºÎ ¹İÈ¯.
+	//	Note : ì—°ë§ˆ ì„±ê³µ ì—¬ë¶€ ë°˜í™˜.
 	//
 	GLMSG::SNET_INVEN_GRINDING_FB NetMsgFB;
 	NetMsgFB.bRESET = bRESET;
@@ -6197,7 +6205,7 @@ HRESULT GLChar::MsgReqInvenGrinding ( NET_MSG_GENERIC* nmg )
 	NetMsgFB.emGrindFB = bSucceeded ? EMGRINDING_SUCCEED : EMGRINDING_FAIL;
 	GLGaeaServer::GetInstance().SENDTOCLIENT(m_dwClientID,&NetMsgFB);
 
-	//	Note : ¾ÆÀÌÅÛÀÇ ¼Ó¼º°ª Å¬¶óÀÌ¾ğÆ®¿¡ ¾Ë¸².
+	//	Note : ì•„ì´í…œì˜ ì†ì„±ê°’ í´ë¼ì´ì–¸íŠ¸ì— ì•Œë¦¼.
 	//
 	if ( !bTERMINATE )
 	{
@@ -6209,7 +6217,7 @@ HRESULT GLChar::MsgReqInvenGrinding ( NET_MSG_GENERIC* nmg )
 	}
 	else
 	{
-		// ¸¸¾à ÄÚ½ºÆ¬ÀÌ ¹ß¶óÁ® ÀÖÀ¸¸é ÄÚ½ºÆ¬À» ºĞ¸®ÇÏ°í »èÁ¦ÇÑ´Ù.
+		// ë§Œì•½ ì½”ìŠ¤íŠ¬ì´ ë°œë¼ì ¸ ìˆìœ¼ë©´ ì½”ìŠ¤íŠ¬ì„ ë¶„ë¦¬í•˜ê³  ì‚­ì œí•œë‹¤.
 		if ( pInvenItem->sItemCustom.nidDISGUISE!=SNATIVEID(false) )
 		{
 			GLITEMLMT & glItemmt = GLITEMLMT::GetInstance();			
@@ -6229,7 +6237,7 @@ HRESULT GLChar::MsgReqInvenGrinding ( NET_MSG_GENERIC* nmg )
 				cTIME -= tLMT;
 			}
 
-			//	Note : ¾ÆÀÌÅÛ »ı¼º.
+			//	Note : ì•„ì´í…œ ìƒì„±.
 			//
 			sITEM_NEW.tBORNTIME = cTIME.GetTime();
 			sITEM_NEW.wTurnNum = 1;
@@ -6242,24 +6250,24 @@ HRESULT GLChar::MsgReqInvenGrinding ( NET_MSG_GENERIC* nmg )
 			sITEM_NEW.wColor1 = pInvenItem->sItemCustom.wColor1;
 			sITEM_NEW.wColor2 = pInvenItem->sItemCustom.wColor2;
 
-			//	Note : hold ¾ÆÀÌÅÛ ÀÎº¥¿¡ µÇµ¹¸².
+			//	Note : hold ì•„ì´í…œ ì¸ë²¤ì— ë˜ëŒë¦¼.
 			WORD wInsertPosX, wInsertPosY;
 			BOOL bOk = m_cInventory.FindInsrtable ( pONE->sBasicOp.wInvenSizeX, pONE->sBasicOp.wInvenSizeY, wInsertPosX, wInsertPosY );
 			if ( !bOk )
 			{
-				// »ı¼ºµÈ ÄÚ½ºÅùÀº ¹Ù´Ú¿¡¼­ ´Ù½Ã ¶³±º´Ù.
+				// ìƒì„±ëœ ì½”ìŠ¤íˆ¼ì€ ë°”ë‹¥ì—ì„œ ë‹¤ì‹œ ë–¨êµ°ë‹¤.
 				CItemDrop cDropItem;
 				cDropItem.sItemCustom = sITEM_NEW;
 				m_pLandMan->DropItem ( m_vPos, &(cDropItem.sItemCustom), EMGROUP_ONE, m_dwGaeaID );
 
-				//	Note : ºĞ¸®µÈ ÄÚ½ºÅù ·Î±×.
+				//	Note : ë¶„ë¦¬ëœ ì½”ìŠ¤íˆ¼ ë¡œê·¸.
 				glItemmt.ReqItemRoute ( sITEM_NEW, ID_CHAR, m_dwCharID, ID_CHAR, 0, EMITEM_ROUTE_GROUND, sITEM_NEW.wTurnNum );
 			}else{
-				//	µé°íÀÖ´ø ¾ÆÀÌÅÆ ÀÎ¹ê¿¡ ³ÖÀ½.
+				//	ë“¤ê³ ìˆë˜ ì•„ì´íƒ¬ ì¸ë°´ì— ë„£ìŒ.
 				m_cInventory.InsertItem ( sITEM_NEW, wInsertPosX, wInsertPosY );
 				SINVENITEM *pINSERT_ITEM = m_cInventory.GetItem ( wInsertPosX, wInsertPosY );
 
-				//	[ÀÚ½Å¿¡°Ô] ¸Ş½ÃÁö ¹ß»ı.
+				//	[ìì‹ ì—ê²Œ] ë©”ì‹œì§€ ë°œìƒ.
 				GLMSG::SNETPC_INVEN_INSERT NetMsg_Inven;
 				NetMsg_Inven.Data = *pINSERT_ITEM;
 				GLGaeaServer::GetInstance().SENDTOCLIENT(m_dwClientID,&NetMsg_Inven);
@@ -6275,17 +6283,17 @@ HRESULT GLChar::MsgReqInvenGrinding ( NET_MSG_GENERIC* nmg )
 		CDebugSet::ToFileWithTime ( strName.GetString(),strTemp );
 
 
-		//	Note :¾ÆÀÌÅÛÀÇ ¼ÒÀ¯ ÀÌÀü °æ·Î ±â·Ï.
+		//	Note :ì•„ì´í…œì˜ ì†Œìœ  ì´ì „ ê²½ë¡œ ê¸°ë¡.
 		//
 		GLITEMLMT::GetInstance().ReqItemRoute ( pInvenItem->sItemCustom, ID_CHAR, m_dwCharID, ID_CHAR, 0, EMITEM_ROUTE_DELETE, pInvenItem->sItemCustom.wTurnNum );
 
-		//	[ÀÚ½Å¿¡°Ô] ÀÎ¹ê¿¡ ¾ÆÀÌÅÆ Á¦°Å.
+		//	[ìì‹ ì—ê²Œ] ì¸ë°´ì— ì•„ì´íƒ¬ ì œê±°.
 		GLMSG::SNETPC_INVEN_DELETE NetMsg_Inven_Delete;
 		NetMsg_Inven_Delete.wPosX = pNetMsg->wPosX;
 		NetMsg_Inven_Delete.wPosY = pNetMsg->wPosY;
 		GLGaeaServer::GetInstance().SENDTOCLIENT(m_dwClientID,&NetMsg_Inven_Delete);
 
-		//	¾ÆÀÌÅÆ Á¦°Å.
+		//	ì•„ì´íƒ¬ ì œê±°.
 		m_cInventory.DeleteItem ( pNetMsg->wPosX, pNetMsg->wPosY );
 	}
 
@@ -6318,7 +6326,7 @@ HRESULT GLChar::MsgReqInvenResetSkSt ( NET_MSG_GENERIC* nmg )
 		return E_FAIL;
 	}
 
-	// ·¹º§ Á¶°Ç È®ÀÎ
+	// ë ˆë²¨ ì¡°ê±´ í™•ì¸
 	if ( !SIMPLE_CHECK_ITEM( pITEM->sBasicOp.sNativeID ) )
 	{		
 		MsgFB.emFB = EMREQ_RESET_SKST_FB_FAIL;
@@ -6364,7 +6372,7 @@ HRESULT GLChar::MsgReqInvenResetSkSt ( NET_MSG_GENERIC* nmg )
 	//	SITEMCUSTOM sITEM_NEW;
 	//	sITEM_NEW.sNativeID = SNATIVEID(EMMARBLE_MID,i);
 
-	//	//	¾ÆÀÌÅÛÀÇ »ç¿ë È½¼ö Ç¥½Ã. ( ¼Ò¸ğÇ°ÀÏ °æ¿ì x °ª, ÀÏ¹İ ¹°Ç° 1 )
+	//	//	ì•„ì´í…œì˜ ì‚¬ìš© íšŸìˆ˜ í‘œì‹œ. ( ì†Œëª¨í’ˆì¼ ê²½ìš° x ê°’, ì¼ë°˜ ë¬¼í’ˆ 1 )
 	//	sITEM_NEW.wTurnNum = pITEM_SKILL->GETAPPLYNUM();
 
 	//	BOOL bOK = cInven.InsertItem ( sITEM_NEW );
@@ -6392,14 +6400,14 @@ HRESULT GLChar::MsgReqInvenResetSkSt ( NET_MSG_GENERIC* nmg )
 	//	SITEMCUSTOM sITEM_NEW;
 	//	CTime cTIME = CTime::GetCurrentTime();
 
-	//	//	¾ÆÀÌÅÛ ¹ß»ı.
+	//	//	ì•„ì´í…œ ë°œìƒ.
 	//	sITEM_NEW.sNativeID = SNATIVEID(EMMARBLE_MID,i);
 	//	sITEM_NEW.tBORNTIME = cTIME.GetTime();
 
-	//	//	¾ÆÀÌÅÛÀÇ »ç¿ë È½¼ö Ç¥½Ã. ( ¼Ò¸ğÇ°ÀÏ °æ¿ì x °ª, ÀÏ¹İ ¹°Ç° 1 )
+	//	//	ì•„ì´í…œì˜ ì‚¬ìš© íšŸìˆ˜ í‘œì‹œ. ( ì†Œëª¨í’ˆì¼ ê²½ìš° x ê°’, ì¼ë°˜ ë¬¼í’ˆ 1 )
 	//	sITEM_NEW.wTurnNum = pITEM_SKILL->GETAPPLYNUM();
 
-	//	//	¹ß»ıµÈ Á¤º¸ µî·Ï.
+	//	//	ë°œìƒëœ ì •ë³´ ë“±ë¡.
 	//	sITEM_NEW.cGenType = EMGEN_INIT;
 	//	sITEM_NEW.cChnID = (BYTE)GLGaeaServer::GetInstance().GetServerChannel();
 	//	sITEM_NEW.cFieldID = (BYTE)GLGaeaServer::GetInstance().GetFieldSvrID();
@@ -6416,24 +6424,24 @@ HRESULT GLChar::MsgReqInvenResetSkSt ( NET_MSG_GENERIC* nmg )
 	//	SINVENITEM *pInvenItem = m_cInventory.GetItem ( wPosX, wPosY );
 	//	if (!pInvenItem) continue;
 
-	//	//	¾ÆÀÌÅÛ È¹µæ ·Î±× ³²±è.
+	//	//	ì•„ì´í…œ íšë“ ë¡œê·¸ ë‚¨ê¹€.
 	//	GLITEMLMT::GetInstance().ReqItemRoute ( sITEM_NEW, ID_CHAR, 0, ID_CHAR, m_dwCharID, EMITEM_ROUTE_CHAR, sITEM_NEW.wTurnNum );
 
-	//	//	[ÀÚ½Å¿¡°Ô] ¸Ş½ÃÁö ¹ß»ı.
+	//	//	[ìì‹ ì—ê²Œ] ë©”ì‹œì§€ ë°œìƒ.
 	//	GLMSG::SNETPC_INVEN_INSERT NetMsg_Inven;
 	//	NetMsg_Inven.Data = *pInvenItem;
 	//	GLGaeaServer::GetInstance().SENDTOCLIENT(m_dwClientID,&NetMsg_Inven);
 
 	//}
 
-	//	Note : ½ºÅ³, ½ºÅİ ¸®¼Â.
+	//	Note : ìŠ¤í‚¬, ìŠ¤í…Ÿ ë¦¬ì…‹.
 	//
 	RESET_STATS_SKILL ( pITEM->sDrugOp.wCureVolume );
 
-	//	[ÀÚ½Å¿¡°Ô] ÀÎ¹ê ¾ÆÀÌÅÆ ¼Ò¸ğ½ÃÅ´.
+	//	[ìì‹ ì—ê²Œ] ì¸ë°´ ì•„ì´íƒ¬ ì†Œëª¨ì‹œí‚´.
 	DoDrugInvenItem ( pNetMsg->wPosX, pNetMsg->wPosY );
 
-	//	Note : ¸®¼Â ¸Ş½ÃÁö º¸³¿.
+	//	Note : ë¦¬ì…‹ ë©”ì‹œì§€ ë³´ëƒ„.
 	//
 	MsgFB.emFB = EMREQ_RESET_SKST_FB_OK;
 	MsgFB.wITEM_NUM = 0;//wNUM;
@@ -6468,7 +6476,7 @@ HRESULT GLChar::MsgReqCharCard ( NET_MSG_GENERIC* nmg )
 		return E_FAIL;
 	}
 
-	//	Note : ÄÉ¸¯ÅÍ »ı¼º ½½·Ô Áõ°¡.
+	//	Note : ì¼€ë¦­í„° ìƒì„± ìŠ¬ë¡¯ ì¦ê°€.
 	//
 	if ( GLGaeaServer::GetInstance().GetDBMan() )
 	{
@@ -6476,10 +6484,10 @@ HRESULT GLChar::MsgReqCharCard ( NET_MSG_GENERIC* nmg )
 		GLGaeaServer::GetInstance().GetDBMan()->AddJob ( pDbAction );
 	}
 
-	//	[ÀÚ½Å¿¡°Ô] ÀÎ¹ê ¾ÆÀÌÅÆ ¼Ò¸ğ½ÃÅ´.
+	//	[ìì‹ ì—ê²Œ] ì¸ë°´ ì•„ì´íƒ¬ ì†Œëª¨ì‹œí‚´.
 	DoDrugInvenItem ( pNetMsg->wPosX, pNetMsg->wPosY );
 
-	//	Note : Ã³¸® ¼º°ø ¾Ë¸².
+	//	Note : ì²˜ë¦¬ ì„±ê³µ ì•Œë¦¼.
 	MsgFB.emFB = EMREQ_CHARCARD_FB_OK;
 	GLGaeaServer::GetInstance().SENDTOCLIENT(m_dwClientID,&MsgFB);
 
@@ -6517,7 +6525,7 @@ HRESULT GLChar::MsgReqStorageCard ( NET_MSG_GENERIC* nmg )
 		return E_FAIL;
 	}
 
-	//	Note : Ã¢°í Á¦ÇÑ ½Ã°£ º¯°æ.
+	//	Note : ì°½ê³  ì œí•œ ì‹œê°„ ë³€ê²½.
 	//
 	int nINDEX = pNetMsg->wSTORAGE-EMSTORAGE_CHANNEL_SPAN;
 	__time64_t &tTIME = m_tSTORAGE[nINDEX];
@@ -6527,22 +6535,22 @@ HRESULT GLChar::MsgReqStorageCard ( NET_MSG_GENERIC* nmg )
 	CTimeSpan tLMT (pITEM->sDrugOp.tTIME_LMT);
 	CTimeSpan tADD(0,1,30,0);
 
-	//	Note : ¾ÆÁ÷ ÃÊ±âÈ­ µÇÁö ¾Ê¾Ò°Å³ª, ÃæÀü½Ã°£ ÃÊ°úµÇ¾úÀ» °æ¿ì.
+	//	Note : ì•„ì§ ì´ˆê¸°í™” ë˜ì§€ ì•Šì•˜ê±°ë‚˜, ì¶©ì „ì‹œê°„ ì´ˆê³¼ë˜ì—ˆì„ ê²½ìš°.
 	if ( tTIME == 0 || tSeedTime < tCurTime )
 	{
 		tSeedTime = tCurTime + tLMT + tADD;
 	}
-	//	Note : ÃæÀü½Ã°£¿¡ ¾ÆÁ÷ ¿©À¯°¡ ÀÖÀ»¶§.
+	//	Note : ì¶©ì „ì‹œê°„ì— ì•„ì§ ì—¬ìœ ê°€ ìˆì„ë•Œ.
 	else
 	{
 		tSeedTime = tSeedTime + tLMT + tADD;
 	}
 
-	//	Note : »ç¿ë½Ã°£ ÃæÀüµÊ, »ç¿ë °¡´ÉÀ¸·Î º¯°æ.
+	//	Note : ì‚¬ìš©ì‹œê°„ ì¶©ì „ë¨, ì‚¬ìš© ê°€ëŠ¥ìœ¼ë¡œ ë³€ê²½.
 	tTIME = tSeedTime.GetTime();	//	m_tSTORAGE[nINDEX] = time;
 	m_bSTORAGE[nINDEX] = true;
 
-	//	Note : DB¿¡ ½ºÅä¸®Áö ÃæÀü½Ã°£ ÀúÀå.
+	//	Note : DBì— ìŠ¤í† ë¦¬ì§€ ì¶©ì „ì‹œê°„ ì €ì¥.
 	//
 	if ( GLGaeaServer::GetInstance().GetDBMan() )
 	{
@@ -6550,10 +6558,10 @@ HRESULT GLChar::MsgReqStorageCard ( NET_MSG_GENERIC* nmg )
 		GLGaeaServer::GetInstance().GetDBMan()->AddJob ( pDbAction );
 	}
 
-	//	[ÀÚ½Å¿¡°Ô] ÀÎ¹ê ¾ÆÀÌÅÆ ¼Ò¸ğ½ÃÅ´.
+	//	[ìì‹ ì—ê²Œ] ì¸ë°´ ì•„ì´íƒ¬ ì†Œëª¨ì‹œí‚´.
 	DoDrugInvenItem ( pNetMsg->wPosX, pNetMsg->wPosY );
 
-	//	Note : Ã³¸® °á°ú ¾Ë¸².
+	//	Note : ì²˜ë¦¬ ê²°ê³¼ ì•Œë¦¼.
 	CTimeSpan tDX = tSeedTime - tCurTime;
 	MsgFB.emFB = EMREQ_STORAGECARD_FB_OK;
 	MsgFB.tSTORAGE_LIMIT = tSeedTime.GetTime();
@@ -6595,15 +6603,15 @@ HRESULT GLChar::MsgReqInvenLine ( NET_MSG_GENERIC* nmg )
 		return E_FAIL;
 	}
 
-	//	Note : ÀÎº¥ ¶óÀÎ Áõ°¡.
+	//	Note : ì¸ë²¤ ë¼ì¸ ì¦ê°€.
 	//
 	m_wINVENLINE += 1;
 
-	//	Note : ÇöÁ¦ È°¼ºÈ­µÈ ÀÎº¥ ¶óÀÎ ¼³Á¤.
+	//	Note : í˜„ì œ í™œì„±í™”ëœ ì¸ë²¤ ë¼ì¸ ì„¤ì •.
 	//
 	m_cInventory.SetAddLine ( GetOnINVENLINE(), true );
 
-	//	Note : DB¿¡ ÀúÀå.
+	//	Note : DBì— ì €ì¥.
 	//
 	if ( GLGaeaServer::GetInstance().GetDBMan() )
 	{
@@ -6611,10 +6619,10 @@ HRESULT GLChar::MsgReqInvenLine ( NET_MSG_GENERIC* nmg )
 		GLGaeaServer::GetInstance().GetDBMan()->AddJob ( pDbAction );
 	}
 
-	//	[ÀÚ½Å¿¡°Ô] ÀÎ¹ê ¾ÆÀÌÅÛ ¼Ò¸ğ½ÃÅ´.
+	//	[ìì‹ ì—ê²Œ] ì¸ë°´ ì•„ì´í…œ ì†Œëª¨ì‹œí‚´.
 	DoDrugInvenItem ( pNetMsg->wPosX, pNetMsg->wPosY );
 
-	//	Note : Ã³¸® °á°ú ¾Ë¸².
+	//	Note : ì²˜ë¦¬ ê²°ê³¼ ì•Œë¦¼.
 	MsgFB.emFB = EMREQ_INVENLINE_FB_OK;
 	MsgFB.wINVENLINE = m_wINVENLINE;
 	GLGaeaServer::GetInstance().SENDTOCLIENT(m_dwClientID,&MsgFB);
@@ -6623,7 +6631,7 @@ HRESULT GLChar::MsgReqInvenLine ( NET_MSG_GENERIC* nmg )
 }
 
 // *****************************************************
-// Desc: °³Á¶ ±â´É ÀÌ¿ëÄ«µå ¿äÃ» ( Ä«µå¸¸ ¼Ò¸ğ½ÃÅ´ )
+// Desc: ê°œì¡° ê¸°ëŠ¥ ì´ìš©ì¹´ë“œ ìš”ì²­ ( ì¹´ë“œë§Œ ì†Œëª¨ì‹œí‚´ )
 // *****************************************************
 HRESULT GLChar::MsgReqInvenRemodelOpen ( NET_MSG_GENERIC* nmg )
 {
@@ -6700,11 +6708,11 @@ HRESULT GLChar::MsgReqInvenGarbageOpen ( NET_MSG_GENERIC* nmg )
 }
 
 // *****************************************************
-// Desc: ±ä±Ş Ã¢°í ÀÌ¿ëÄ«µå ¿äÃ» ( Ä«µå¸¸ ¼Ò¸ğ½ÃÅ´ )
+// Desc: ê¸´ê¸‰ ì°½ê³  ì´ìš©ì¹´ë“œ ìš”ì²­ ( ì¹´ë“œë§Œ ì†Œëª¨ì‹œí‚´ )
 // *****************************************************
 HRESULT GLChar::MsgReqInvenStorageOpen ( NET_MSG_GENERIC* nmg )
 {
-	// Ã¢°í¿¬°áÄ«µå¸¦ »ç¿ëÁßÀÌ¸é
+	// ì°½ê³ ì—°ê²°ì¹´ë“œë¥¼ ì‚¬ìš©ì¤‘ì´ë©´
 	if ( m_bUsedStorageCard ) return E_FAIL;
 
 	GLMSG::SNET_INVEN_STORAGEOPEN *pNetMsg = (GLMSG::SNET_INVEN_STORAGEOPEN *)nmg;
@@ -6729,7 +6737,7 @@ HRESULT GLChar::MsgReqInvenStorageOpen ( NET_MSG_GENERIC* nmg )
 		return E_FAIL;
 	}
 
-	//	[ÀÚ½Å¿¡°Ô] ÀÎ¹ê ¾ÆÀÌÅÛ ¼Ò¸ğ½ÃÅ´.
+	//	[ìì‹ ì—ê²Œ] ì¸ë°´ ì•„ì´í…œ ì†Œëª¨ì‹œí‚´.
 	DoDrugInvenItem ( pNetMsg->wPosX, pNetMsg->wPosY );
 
 	MsgFB.emFB = EMREQ_STORAGEOPEN_FB_OK;
@@ -6738,18 +6746,18 @@ HRESULT GLChar::MsgReqInvenStorageOpen ( NET_MSG_GENERIC* nmg )
 
 	GLGaeaServer::GetInstance().SENDTOCLIENT(m_dwClientID,&MsgFB);
 
-	// Ã¢°í¿¬°áÄ«µå »ç¿ë¿©ºÎ
+	// ì°½ê³ ì—°ê²°ì¹´ë“œ ì‚¬ìš©ì—¬ë¶€
 	m_bUsedStorageCard = true;
 
 	return S_OK;
 }
 
 // *****************************************************
-// Desc: ±ä±Ş Ã¢°í »ç¿ë ¿Ï·á
+// Desc: ê¸´ê¸‰ ì°½ê³  ì‚¬ìš© ì™„ë£Œ
 // *****************************************************
 HRESULT GLChar::MsgReqInvenStorageClose ( NET_MSG_GENERIC* nmg )
 {
-	// Ã¢°í¿¬°áÄ«µå »ç¿ë¿©ºÎ
+	// ì°½ê³ ì—°ê²°ì¹´ë“œ ì‚¬ìš©ì—¬ë¶€
 	m_bUsedStorageCard = false;
 
 	return S_OK;
@@ -6779,7 +6787,7 @@ HRESULT GLChar::MsgReqInvenPremiumSet ( NET_MSG_GENERIC* nmg )
 		return E_FAIL;
 	}
 
-	//	Note : ÀÎº¥ÀÇ ¿©À¯ °ø°£ ÃøÁ¤.
+	//	Note : ì¸ë²¤ì˜ ì—¬ìœ  ê³µê°„ ì¸¡ì •.
 	//
 	GLInventory cInvenTemp;
 	cInvenTemp.SetAddLine ( m_cInventory.GETAddLine(), true );
@@ -6802,7 +6810,7 @@ HRESULT GLChar::MsgReqInvenPremiumSet ( NET_MSG_GENERIC* nmg )
 		BOOL bOK = cInvenTemp.InsertItem ( sCUSTOM );
 		if ( !bOK )
 		{
-			//	Note : ÀÎº¥¿¡ °ø°£ÀÌ ¾ø´Â °ÍÀ¸·Î ÆÇ´ÜµÊ.
+			//	Note : ì¸ë²¤ì— ê³µê°„ì´ ì—†ëŠ” ê²ƒìœ¼ë¡œ íŒë‹¨ë¨.
 			//
 			MsgFB.emFB = EMREQ_PREMIUMSET_FB_NOTINVEN;
 			GLGaeaServer::GetInstance().SENDTOCLIENT(m_dwClientID,&MsgFB);
@@ -6810,7 +6818,7 @@ HRESULT GLChar::MsgReqInvenPremiumSet ( NET_MSG_GENERIC* nmg )
 		}
 	}
 
-	//	Note : »óÀÚ¾È¿¡ ÀÖ´Â ¾ÆÀÌÅÛÀ» ²¨³»¾î¼­ ³Ö´Â´Ù.
+	//	Note : ìƒìì•ˆì— ìˆëŠ” ì•„ì´í…œì„ êº¼ë‚´ì–´ì„œ ë„£ëŠ”ë‹¤.
 	//
 	for ( int i=0; i<ITEM::SBOX::ITEM_SIZE; ++i )
 	{
@@ -6822,7 +6830,7 @@ HRESULT GLChar::MsgReqInvenPremiumSet ( NET_MSG_GENERIC* nmg )
 		SITEM *pONE = GLItemMan::GetInstance().GetItem ( sITEM_NEW.sNativeID );
 		if ( !pONE )											return E_FAIL;
 
-		//	Note : ¾ÆÀÌÅÛ »ı¼º.
+		//	Note : ì•„ì´í…œ ìƒì„±.
 		//
 		CTime cTIME = CTime::GetCurrentTime();
 		sITEM_NEW.tBORNTIME = cTIME.GetTime();
@@ -6833,7 +6841,7 @@ HRESULT GLChar::MsgReqInvenPremiumSet ( NET_MSG_GENERIC* nmg )
 		sITEM_NEW.cFieldID = (BYTE)GLGaeaServer::GetInstance().GetFieldSvrID();
 		sITEM_NEW.lnGenNum = GLITEMLMT::GetInstance().RegItemGen ( sITEM_NEW.sNativeID, (EMITEMGEN)sITEM_NEW.cGenType );
 
-		// ¾ÆÀÌÅÛ ¿¡µğÆ®¿¡¼­ ÀÔ·ÂÇÑ °³Á¶ µî±Ş Àû¿ë ( ÁØÇõ )
+		// ì•„ì´í…œ ì—ë””íŠ¸ì—ì„œ ì…ë ¥í•œ ê°œì¡° ë“±ê¸‰ ì ìš© ( ì¤€í˜ )
 		sITEM_NEW.cDAMAGE = (BYTE)pONE->sBasicOp.wGradeAttack;
 		sITEM_NEW.cDEFENSE = (BYTE)pONE->sBasicOp.wGradeDefense;
 
@@ -6845,7 +6853,7 @@ HRESULT GLChar::MsgReqInvenPremiumSet ( NET_MSG_GENERIC* nmg )
 			sITEM_NEW.wColor2 = pitem_data_check->sBasicOp.wItemColor2;
 		}
 
-		//	·£´ı ¿É¼Ç »ı¼º.
+		//	ëœë¤ ì˜µì…˜ ìƒì„±.
 		if( sITEM_NEW.GENERATE_RANDOM_OPT() )
 		{
 			GLITEMLMT::GetInstance().ReqRandomItem( sITEM_NEW );
@@ -6854,17 +6862,17 @@ HRESULT GLChar::MsgReqInvenPremiumSet ( NET_MSG_GENERIC* nmg )
 		//	Note :.
 		WORD wInsertPosX, wInsertPosY;
 		BOOL bOk = m_cInventory.FindInsrtable ( pONE->sBasicOp.wInvenSizeX, pONE->sBasicOp.wInvenSizeY, wInsertPosX, wInsertPosY );
-		if ( !bOk )		return S_OK;	//	ÀÎº¥ °ø°£ ºÎÁ·À¸·Î µÇµ¹¸² ½ÇÆĞ.
+		if ( !bOk )		return S_OK;	//	ì¸ë²¤ ê³µê°„ ë¶€ì¡±ìœ¼ë¡œ ë˜ëŒë¦¼ ì‹¤íŒ¨.
 
 		//	.
 		m_cInventory.InsertItem ( sITEM_NEW, wInsertPosX, wInsertPosY );
 		SINVENITEM *pInvenItem = m_cInventory.GetItem ( wInsertPosX, wInsertPosY );
 		if ( !pInvenItem )	return E_FAIL;
 
-		//	Note : ·Î±× ³²±è.
+		//	Note : ë¡œê·¸ ë‚¨ê¹€.
 		GLITEMLMT::GetInstance().ReqItemRoute ( pInvenItem->sItemCustom, ID_CHAR, 0, ID_CHAR, m_dwCharID, EMITEM_ROUTE_CHAR, pInvenItem->sItemCustom.wTurnNum );
 
-		//	[ÀÚ½Å¿¡°Ô] ¸Ş½ÃÁö ¹ß»ı.
+		//	[ìì‹ ì—ê²Œ] ë©”ì‹œì§€ ë°œìƒ.
 		GLMSG::SNETPC_INVEN_INSERT NetMsg_Inven;
 		NetMsg_Inven.Data = *pInvenItem;
 		GLGaeaServer::GetInstance().SENDTOCLIENT(m_dwClientID,&NetMsg_Inven);
@@ -6873,7 +6881,7 @@ HRESULT GLChar::MsgReqInvenPremiumSet ( NET_MSG_GENERIC* nmg )
 		DoActivityTakeItem( sITEM_NEW.sNativeID, sITEM_NEW.wTurnNum );
 	}
 
-	//	Note : ÇÁ¸®¹Ì¾ö ¼³Á¤.
+	//	Note : í”„ë¦¬ë¯¸ì—„ ì„¤ì •.
 	//
 	CTime tPREMIUM(m_tPREMIUM);
 	CTime tCurTime = CTime::GetCurrentTime();
@@ -6889,16 +6897,16 @@ HRESULT GLChar::MsgReqInvenPremiumSet ( NET_MSG_GENERIC* nmg )
 		tPREMIUM = tPREMIUM + tLMT + tADD;
 	}
 
-	//	Note : ÇÁ¸®¹Ì¾ö ¸ğµå ON.
+	//	Note : í”„ë¦¬ë¯¸ì—„ ëª¨ë“œ ON.
 	//
 	m_tPREMIUM = tPREMIUM.GetTime();
 	m_bPREMIUM = true;
 
-	//	Note : ÇöÁ¦ È°¼ºÈ­µÈ ÀÎº¥ ¶óÀÎ ¼³Á¤.
+	//	Note : í˜„ì œ í™œì„±í™”ëœ ì¸ë²¤ ë¼ì¸ ì„¤ì •.
 	//
 	m_cInventory.SetAddLine ( GetOnINVENLINE(), true );
 
-	//	Note : DB¿¡ ÀúÀå.
+	//	Note : DBì— ì €ì¥.
 	//
 	if ( GLGaeaServer::GetInstance().GetDBMan() )
 	{
@@ -6906,7 +6914,7 @@ HRESULT GLChar::MsgReqInvenPremiumSet ( NET_MSG_GENERIC* nmg )
 		GLGaeaServer::GetInstance().GetDBMan()->AddJob ( pDbAction );
 	}
 
-	// Note : CSetPremiumTime Å¬·¡½º¿¡¼­ ¸ğµç °æ¿ì¸¦ Ã³¸®ÇÏµµ·Ï º¯°æµÊ
+	// Note : CSetPremiumTime í´ë˜ìŠ¤ì—ì„œ ëª¨ë“  ê²½ìš°ë¥¼ ì²˜ë¦¬í•˜ë„ë¡ ë³€ê²½ë¨
 	/*
 	if ( GLGaeaServer::GetInstance().GetDBMan() )
 	{
@@ -6914,12 +6922,12 @@ HRESULT GLChar::MsgReqInvenPremiumSet ( NET_MSG_GENERIC* nmg )
 		GLGaeaServer::GetInstance().GetDBMan()->AddJob ( pDbAction );
 	}
 	*/
-	//	[ÀÚ½Å¿¡°Ô] ÀÎ¹ê ¾ÆÀÌÅÆ ¼Ò¸ğ½ÃÅ´.
+	//	[ìì‹ ì—ê²Œ] ì¸ë°´ ì•„ì´íƒ¬ ì†Œëª¨ì‹œí‚´.
 	DoDrugInvenItem ( pNetMsg->wPosX, pNetMsg->wPosY );
 
 
-	//	Note : ¿¡ÀÌÁ¯Æ®·Î °ÅÃÄ¼­ ¸Ş½ÃÁö Àü¼Û.
-	//		( ¿¡ÀÌÁ¯Æ®¿¡ ±â·ÏµÇ¾î ÀÖ´Â ÇÁ¸®¹Ì¾ö ±â°£À» °»½Å ½ÃÄÑÁà¾ß ÇÑ´Ù. )
+	//	Note : ì—ì´ì ¼íŠ¸ë¡œ ê±°ì³ì„œ ë©”ì‹œì§€ ì „ì†¡.
+	//		( ì—ì´ì ¼íŠ¸ì— ê¸°ë¡ë˜ì–´ ìˆëŠ” í”„ë¦¬ë¯¸ì—„ ê¸°ê°„ì„ ê°±ì‹  ì‹œì¼œì¤˜ì•¼ í•œë‹¤. )
 	//
 	CTimeSpan tDX = tPREMIUM - tCurTime;
 	MsgFB.emFB = EMREQ_PREMIUMSET_FB_OK;
@@ -6985,22 +6993,22 @@ HRESULT GLChar::MsgReqInvenHairChange ( NET_MSG_GENERIC* nmg )
 		return E_FAIL;
 	}
 
-	//	Note : Çì¾î¸¦ º¯È­ ½ÃÅ´.
+	//	Note : í—¤ì–´ë¥¼ ë³€í™” ì‹œí‚´.
 	//
 	m_wHair = wHAIR;
 
-	//	Note : Å¬¶óÀÌ¾ğÆ®¿¡ Ã³¸® °á°ú Àü¼Û.
+	//	Note : í´ë¼ì´ì–¸íŠ¸ì— ì²˜ë¦¬ ê²°ê³¼ ì „ì†¡.
 	MsgFB.dwID = m_wHair;
 	MsgFB.emFB = EMINVEN_HAIR_CHANGE_FB_OK;
 	GLGaeaServer::GetInstance().SENDTOCLIENT(m_dwClientID,&MsgFB);
 
-	//	Note : Çì¾î º¯°æÀ» ´Ù¸¥ »ç¶÷µé¿¡°Ô ¾Ë¸².
+	//	Note : í—¤ì–´ ë³€ê²½ì„ ë‹¤ë¥¸ ì‚¬ëŒë“¤ì—ê²Œ ì•Œë¦¼.
 	GLMSG::SNETPC_INVEN_HAIR_CHANGE_BRD NetMsgBrd;
 	NetMsgBrd.dwGaeaID = m_dwGaeaID;
 	NetMsgBrd.dwID = m_wHair;
 	SendMsgViewAround ( (NET_MSG_GENERIC*) &NetMsgBrd );
 
-	//	[ÀÚ½Å¿¡°Ô] ÀÎ¹ê ¾ÆÀÌÅÆ ¼Ò¸ğ½ÃÅ´.
+	//	[ìì‹ ì—ê²Œ] ì¸ë°´ ì•„ì´íƒ¬ ì†Œëª¨ì‹œí‚´.
 	DoDrugInvenItem ( pNetMsg->wPosX, pNetMsg->wPosY );
 
 	return S_OK;
@@ -7058,21 +7066,21 @@ HRESULT GLChar::MsgReqInvenHairStyleChange ( NET_MSG_GENERIC* nmg )
 
 	m_wHair = pNetMsg->wHairStyle;
 
-	//	Note : Å¬¶óÀÌ¾ğÆ®¿¡ Ã³¸® °á°ú Àü¼Û.
+	//	Note : í´ë¼ì´ì–¸íŠ¸ì— ì²˜ë¦¬ ê²°ê³¼ ì „ì†¡.
 	MsgFB.dwID = m_wHair;
 	MsgFB.emFB = EMINVEN_HAIR_CHANGE_FB_OK;
 	GLGaeaServer::GetInstance().SENDTOCLIENT(m_dwClientID,&MsgFB);
 
-	//	Note : Çì¾î º¯°æÀ» ´Ù¸¥ »ç¶÷µé¿¡°Ô ¾Ë¸².
+	//	Note : í—¤ì–´ ë³€ê²½ì„ ë‹¤ë¥¸ ì‚¬ëŒë“¤ì—ê²Œ ì•Œë¦¼.
 	GLMSG::SNETPC_INVEN_HAIR_CHANGE_BRD NetMsgBrd;
 	NetMsgBrd.dwGaeaID = m_dwGaeaID;
 	NetMsgBrd.dwID = m_wHair;
 	SendMsgViewAround ( (NET_MSG_GENERIC*) &NetMsgBrd );
 
-	//	[ÀÚ½Å¿¡°Ô] ÀÎ¹ê ¾ÆÀÌÅÆ ¼Ò¸ğ½ÃÅ´.
+	//	[ìì‹ ì—ê²Œ] ì¸ë°´ ì•„ì´íƒ¬ ì†Œëª¨ì‹œí‚´.
 	DoDrugInvenItem ( pNetMsg->wPosX, pNetMsg->wPosY );
 
-	// DB¿¡ ÀúÀå
+	// DBì— ì €ì¥
 	CSetChaHairStyle* pDBAction = new CSetChaHairStyle ( m_dwCharID, m_wHair );
 
 	if ( GLGaeaServer::GetInstance().GetDBMan() )
@@ -7114,25 +7122,25 @@ HRESULT GLChar::MsgReqInvenHairColorChange ( NET_MSG_GENERIC* nmg )
 		return E_FAIL;
 	}
 
-	//	Note : Çì¾î¸¦ º¯È­ ½ÃÅ´.
+	//	Note : í—¤ì–´ë¥¼ ë³€í™” ì‹œí‚´.
 	//
 	m_wHairColor = pNetMsg->wHairColor;
 
-	//	Note : Å¬¶óÀÌ¾ğÆ®¿¡ Ã³¸® °á°ú Àü¼Û.
+	//	Note : í´ë¼ì´ì–¸íŠ¸ì— ì²˜ë¦¬ ê²°ê³¼ ì „ì†¡.
 	MsgFB.wHairColor = m_wHairColor;
 	MsgFB.emFB = EMINVEN_HAIR_CHANGE_FB_OK;
 	GLGaeaServer::GetInstance().SENDTOCLIENT(m_dwClientID,&MsgFB);
 
-	//	Note : Çì¾î º¯°æÀ» ´Ù¸¥ »ç¶÷µé¿¡°Ô ¾Ë¸².
+	//	Note : í—¤ì–´ ë³€ê²½ì„ ë‹¤ë¥¸ ì‚¬ëŒë“¤ì—ê²Œ ì•Œë¦¼.
 	GLMSG::SNETPC_INVEN_HAIRCOLOR_CHANGE_BRD NetMsgBrd;
 	NetMsgBrd.dwGaeaID = m_dwGaeaID;
 	NetMsgBrd.wHairColor = m_wHairColor;
 	SendMsgViewAround ( (NET_MSG_GENERIC*) &NetMsgBrd );
 
-	//	[ÀÚ½Å¿¡°Ô] ÀÎ¹ê ¾ÆÀÌÅÆ ¼Ò¸ğ½ÃÅ´.
+	//	[ìì‹ ì—ê²Œ] ì¸ë°´ ì•„ì´íƒ¬ ì†Œëª¨ì‹œí‚´.
 	DoDrugInvenItem ( pNetMsg->wPosX, pNetMsg->wPosY );
 
-	// DB¿¡ ÀúÀå
+	// DBì— ì €ì¥
 	CSetChaHairColor* pDBAction = new CSetChaHairColor ( m_dwCharID, m_wHairColor );
 
 	if ( GLGaeaServer::GetInstance().GetDBMan() )
@@ -7198,22 +7206,22 @@ HRESULT GLChar::MsgReqInvenFaceChange ( NET_MSG_GENERIC* nmg )
 		return E_FAIL;
 	}
 
-	//	Note : ¾ó±¼À» º¯È­ ½ÃÅ´.
+	//	Note : ì–¼êµ´ì„ ë³€í™” ì‹œí‚´.
 	//
 	m_wFace = wFACE;
 
-	//	Note : Å¬¶óÀÌ¾ğÆ®¿¡ Ã³¸® °á°ú Àü¼Û.
+	//	Note : í´ë¼ì´ì–¸íŠ¸ì— ì²˜ë¦¬ ê²°ê³¼ ì „ì†¡.
 	MsgFB.dwID = m_wFace;
 	MsgFB.emFB = EMINVEN_FACE_CHANGE_FB_OK;
 	GLGaeaServer::GetInstance().SENDTOCLIENT(m_dwClientID,&MsgFB);
 
-	//	Note : ¾ó±¼ º¯°æÀ» ´Ù¸¥ »ç¶÷µé¿¡°Ô ¾Ë¸².
+	//	Note : ì–¼êµ´ ë³€ê²½ì„ ë‹¤ë¥¸ ì‚¬ëŒë“¤ì—ê²Œ ì•Œë¦¼.
 	GLMSG::SNETPC_INVEN_FACE_CHANGE_BRD NetMsgBrd;
 	NetMsgBrd.dwGaeaID = m_dwGaeaID;
 	NetMsgBrd.dwID = m_wFace;
 	SendMsgViewAround ( (NET_MSG_GENERIC*) &NetMsgBrd );
 
-	//	[ÀÚ½Å¿¡°Ô] ÀÎ¹ê ¾ÆÀÌÅÆ ¼Ò¸ğ½ÃÅ´.
+	//	[ìì‹ ì—ê²Œ] ì¸ë°´ ì•„ì´íƒ¬ ì†Œëª¨ì‹œí‚´.
 	DoDrugInvenItem ( pNetMsg->wPosX, pNetMsg->wPosY );
 
 	return S_OK;
@@ -7271,21 +7279,21 @@ HRESULT GLChar::MsgReqInvenFaceStyleChange ( NET_MSG_GENERIC* nmg )
 
 	m_wFace = pNetMsg->wFaceStyle;
 
-	//	Note : Å¬¶óÀÌ¾ğÆ®¿¡ Ã³¸® °á°ú Àü¼Û.
+	//	Note : í´ë¼ì´ì–¸íŠ¸ì— ì²˜ë¦¬ ê²°ê³¼ ì „ì†¡.
 	MsgFB.dwID = m_wFace;
 	MsgFB.emFB = EMINVEN_FACE_CHANGE_FB_OK;
 	GLGaeaServer::GetInstance().SENDTOCLIENT(m_dwClientID,&MsgFB);
 
-	//	Note : Çì¾î º¯°æÀ» ´Ù¸¥ »ç¶÷µé¿¡°Ô ¾Ë¸².
+	//	Note : í—¤ì–´ ë³€ê²½ì„ ë‹¤ë¥¸ ì‚¬ëŒë“¤ì—ê²Œ ì•Œë¦¼.
 	GLMSG::SNETPC_INVEN_FACE_CHANGE_BRD NetMsgBrd;
 	NetMsgBrd.dwGaeaID = m_dwGaeaID;
 	NetMsgBrd.dwID = m_wFace;
 	SendMsgViewAround ( (NET_MSG_GENERIC*) &NetMsgBrd );
 
-	//	[ÀÚ½Å¿¡°Ô] ÀÎ¹ê ¾ÆÀÌÅÆ ¼Ò¸ğ½ÃÅ´.
+	//	[ìì‹ ì—ê²Œ] ì¸ë°´ ì•„ì´íƒ¬ ì†Œëª¨ì‹œí‚´.
 	DoDrugInvenItem ( pNetMsg->wPosX, pNetMsg->wPosY );
 
-	// DB¿¡ ÀúÀå
+	// DBì— ì €ì¥
 	CSetChaFaceStyle* pDBAction = new CSetChaFaceStyle ( m_dwCharID, m_wFace );
 
 	if ( GLGaeaServer::GetInstance().GetDBMan() )
@@ -7382,7 +7390,7 @@ HRESULT GLChar::MsgReqInvenGenderChange( NET_MSG_GENERIC* nmg )
 	m_wSex = m_wSex ? 0 : 1;
 
 
-	//	Note : Å¬¶óÀÌ¾ğÆ®¿¡ Ã³¸® °á°ú Àü¼Û.
+	//	Note : í´ë¼ì´ì–¸íŠ¸ì— ì²˜ë¦¬ ê²°ê³¼ ì „ì†¡.
 	MsgFB.emClass	= m_emClass;
 	MsgFB.wSex		= m_wSex;
 	MsgFB.wFace = m_wFace;
@@ -7392,10 +7400,10 @@ HRESULT GLChar::MsgReqInvenGenderChange( NET_MSG_GENERIC* nmg )
 	MsgFB.emFB = EMINVEN_GENDER_CHANGE_FB_OK;
 	GLGaeaServer::GetInstance().SENDTOCLIENT(m_dwClientID,&MsgFB);
 
-	//	[ÀÚ½Å¿¡°Ô] ÀÎ¹ê ¾ÆÀÌÅÆ ¼Ò¸ğ½ÃÅ´.
+	//	[ìì‹ ì—ê²Œ] ì¸ë°´ ì•„ì´íƒ¬ ì†Œëª¨ì‹œí‚´.
 	//DoDrugInvenItem ( pNetMsg->wPosX, pNetMsg->wPosY );
 
-	// DB¿¡ ÀúÀå
+	// DBì— ì €ì¥
 	CSetChaGenderChange* pDBAction = new CSetChaGenderChange ( m_dwCharID, m_emClass, m_wSex, m_wFace, m_wHair, m_wHairColor );
 
 	if ( GLGaeaServer::GetInstance().GetDBMan() )
@@ -7443,7 +7451,7 @@ HRESULT GLChar::MsgReqInvenChargedItem ( NET_MSG_GENERIC* nmg )
 		return E_FAIL;
 	}
 
-	//	Note : ¾ÆÀÌÅÛ °¡Á®¿È. DB Action.
+	//	Note : ì•„ì´í…œ ê°€ì ¸ì˜´. DB Action.
 	//
 	CPurchaseItem_Get *pDbAction = new CPurchaseItem_Get(m_dwClientID,
 		                                                 m_dwUserID,
@@ -7458,7 +7466,7 @@ HRESULT GLChar::MsgReqInvenChargedItem ( NET_MSG_GENERIC* nmg )
 }
 
 // *****************************************************
-// Desc: ÀÌ¸§º¯°æ¿äÃ» Ã³¸®
+// Desc: ì´ë¦„ë³€ê²½ìš”ì²­ ì²˜ë¦¬
 // *****************************************************
 HRESULT GLChar::MsgReqInvenRename ( NET_MSG_GENERIC* nmg )
 {
@@ -7491,11 +7499,11 @@ HRESULT GLChar::MsgReqInvenRename ( NET_MSG_GENERIC* nmg )
 		return E_FAIL;
 	}
 	
-	// Ä³¸¯ÅÍ¸í
+	// ìºë¦­í„°ëª…
 	CString strChaName(pNetMsg->szName);
-	//strChaName.Trim(_T(" ")); // ¾ÕµÚ °ø¹éÁ¦°Å
+	//strChaName.Trim(_T(" ")); // ì•ë’¤ ê³µë°±ì œê±°
 
-	// ½ºÆäÀÌ½º Ã£±â, Ä³¸¯ÅÍÀÌ¸§ 4±ÛÀÚ ÀÌÇÏ ¿¡·¯, Ä³¸¯ÅÍ ¸¸µé ¼ö ¾øÀ½.
+	// ìŠ¤í˜ì´ìŠ¤ ì°¾ê¸°, ìºë¦­í„°ì´ë¦„ 4ê¸€ì ì´í•˜ ì—ëŸ¬, ìºë¦­í„° ë§Œë“¤ ìˆ˜ ì—†ìŒ.
 	if ((strChaName.FindOneOf(" ") != -1) || (strChaName.GetLength() < 4)) 
 	{
 		MsgFB.emFB = EMINVEN_RENAME_FB_LENGTH;
@@ -7513,7 +7521,7 @@ HRESULT GLChar::MsgReqInvenRename ( NET_MSG_GENERIC* nmg )
 	}
 
 #ifdef TH_PARAM	
-	// ÅÂ±¹¾î ¹®ÀÚ Á¶ÇÕ Ã¼Å© 
+	// íƒœêµ­ì–´ ë¬¸ì ì¡°í•© ì²´í¬ 
 	if ( !m_pCheckString ) return E_FAIL;
 
 	if ( !m_pCheckString(strChaName) )
@@ -7525,7 +7533,7 @@ HRESULT GLChar::MsgReqInvenRename ( NET_MSG_GENERIC* nmg )
 #endif
 
 #ifdef VN_PARAM
-	// º£Æ®³² ¹®ÀÚ Á¶ÇÕ Ã¼Å© 
+	// ë² íŠ¸ë‚¨ ë¬¸ì ì¡°í•© ì²´í¬ 
 	if( STRUTIL::CheckVietnamString( strChaName ) )
 	{
 		MsgFB.emFB = EMINVEN_RENAME_FB_VNCHAR_ERROR;
@@ -7537,7 +7545,7 @@ HRESULT GLChar::MsgReqInvenRename ( NET_MSG_GENERIC* nmg )
 
 	CDebugSet::ToFileWithTime( "_char_rename.txt", "[%d]%s -> %s", m_dwCharID, m_szName, strChaName.GetString() );
 
-	// DB¿¡ ÀúÀå¿äÃ»
+	// DBì— ì €ì¥ìš”ì²­
 	CRenameCharacter* pDBAction = new CRenameCharacter(m_dwClientID, 
 		                                               m_dwCharID,
 													   pNetMsg->szName,
@@ -7552,13 +7560,13 @@ HRESULT GLChar::MsgReqInvenRename ( NET_MSG_GENERIC* nmg )
 }
 
 // *****************************************************
-// Desc: ÀÌ¸§º¯°æ °á°ú Ã³¸®
+// Desc: ì´ë¦„ë³€ê²½ ê²°ê³¼ ì²˜ë¦¬
 // *****************************************************
 HRESULT GLChar::MsgInvenRename ( NET_MSG_GENERIC* nmg )
 {
 	GLMSG::SNETPC_INVEN_RENAME_FROM_DB *pNetMsg = (GLMSG::SNETPC_INVEN_RENAME_FROM_DB *)nmg;
 	
-	// Å¬¶óÀÌ¾ğÆ®¿¡ Ã³¸® °á°ú Àü¼Û.
+	// í´ë¼ì´ì–¸íŠ¸ì— ì²˜ë¦¬ ê²°ê³¼ ì „ì†¡.
 	GLMSG::SNETPC_INVEN_RENAME_FB MsgFB;
 
 	if( pNetMsg->emFB == EMINVEN_RENAME_FROM_DB_BAD )
@@ -7580,20 +7588,20 @@ HRESULT GLChar::MsgInvenRename ( NET_MSG_GENERIC* nmg )
 	MsgFB.emFB = EMINVEN_RENAME_FB_OK;
 	GLGaeaServer::GetInstance().SENDTOCLIENT(m_dwClientID,&MsgFB);
 
-	// ÁÖº¯¿¡ ÀÌ¸§º¯°æÀ» ¾Ë¸².
+	// ì£¼ë³€ì— ì´ë¦„ë³€ê²½ì„ ì•Œë¦¼.
 	GLMSG::SNETPC_INVEN_RENAME_BRD NetMsgBrd;
 	NetMsgBrd.dwGaeaID = m_dwGaeaID;
 	StringCchCopy ( NetMsgBrd.szName, CHAR_SZNAME, pNetMsg->szName );
 	SendMsgViewAround ( (NET_MSG_GENERIC*) &NetMsgBrd );
 
-	// GLLandMan ÀÌ¸§¸Ê º¯°æ.
+	// GLLandMan ì´ë¦„ë§µ ë³€ê²½.
 	GLMSG::SNETPC_CHANGE_NAMEMAP NetMsgNameMap;
 	NetMsgNameMap.dwGaeaID = m_dwGaeaID;
 	StringCchCopy ( NetMsgNameMap.szOldName, CHAR_SZNAME, m_szName );
 	StringCchCopy ( NetMsgNameMap.szNewName, CHAR_SZNAME, pNetMsg->szName );
 	SendMsgViewAround ( (NET_MSG_GENERIC*) &NetMsgNameMap );
 
-	// ÀÌ¸§º¯°æÀ» Ä£±¸¿Í Å¬·´ ¸É¹öµé¿¡°Ô ¾Ë¸²
+	// ì´ë¦„ë³€ê²½ì„ ì¹œêµ¬ì™€ í´ëŸ½ ë§´ë²„ë“¤ì—ê²Œ ì•Œë¦¼
 	GLMSG::SNETPC_INVEN_RENAME_AGTBRD NetMsgAgt;
 	NetMsgAgt.dwID = m_dwGaeaID;
 	StringCchCopy ( NetMsgAgt.szOldName, CHAR_SZNAME, m_szName );
@@ -7602,7 +7610,7 @@ HRESULT GLChar::MsgInvenRename ( NET_MSG_GENERIC* nmg )
 
 	GLGaeaServer::GetInstance().ChangeNameMap ( this, m_szName, pNetMsg->szName );
 
-	//	[ÀÚ½Å¿¡°Ô] ÀÎ¹ê¿¡ ¾ÆÀÌÅÆ Á¦°Å.
+	//	[ìì‹ ì—ê²Œ] ì¸ë°´ì— ì•„ì´íƒ¬ ì œê±°.
 	//DoDrugInvenItem ( pNetMsg->wPosX, pNetMsg->wPosY );
 	//rename fix
 	BOOL bdelete_item = DoDrugInvenItem ( pNetMsg->wPosX, pNetMsg->wPosY );
@@ -7653,7 +7661,7 @@ HRESULT GLChar::MsgReqSendSMS( NET_MSG_GENERIC* nmg )
 		return E_FAIL;
 	}
 
-	// DB¿¡ ÀúÀå¿äÃ»
+	// DBì— ì €ì¥ìš”ì²­
 	CSendSMS* pDBAction = new CSendSMS( m_dwClientID,
 										m_dwCharID,
 										pNetMsg->dwReceiveChaNum,
@@ -7672,13 +7680,13 @@ HRESULT GLChar::MsgReqSendSMS( NET_MSG_GENERIC* nmg )
 }
 
 // *****************************************************
-// Desc: SMS Àü¼Û °á°ú Ã³¸®
+// Desc: SMS ì „ì†¡ ê²°ê³¼ ì²˜ë¦¬
 // *****************************************************
 HRESULT GLChar::MsgSendSMS( NET_MSG_GENERIC* nmg )
 {
 	GLMSG::SNETPC_SEND_SMS_FROM_DB *pNetMsg = (GLMSG::SNETPC_SEND_SMS_FROM_DB *)nmg;
 
-	// Å¬¶óÀÌ¾ğÆ®¿¡ Ã³¸® °á°ú Àü¼Û.
+	// í´ë¼ì´ì–¸íŠ¸ì— ì²˜ë¦¬ ê²°ê³¼ ì „ì†¡.
 	GLMSG::SNETPC_SEND_SMS_FB MsgFB;
 
 	if ( pNetMsg->emFB == EMSMS_SEND_FROM_DB_FAIL )
@@ -7756,11 +7764,11 @@ HRESULT GLChar::MsgLoudSpeaker ( NET_MSG_GENERIC* nmg )
 			}
 		}
 
-		//	[ÀÚ½Å¿¡°Ô] ÀÎ¹ê ¾ÆÀÌÅÆ ¼Ò¸ğ½ÃÅ´.
+		//	[ìì‹ ì—ê²Œ] ì¸ë°´ ì•„ì´íƒ¬ ì†Œëª¨ì‹œí‚´.
 		DoDrugInvenItem ( pNetMsg->wPosX, pNetMsg->wPosY );
 	}
 
-	//	Note : È®¼º±â »ç¿ë.
+	//	Note : í™•ì„±ê¸° ì‚¬ìš©.
 	//
 	GLMSG::SNETPC_CHAT_LOUDSPEAKER_AGT NetMsgAgt;
 	StringCbCopy( NetMsgAgt.szMSG, CHAT_MSG_SIZE+1, pNetMsg->szMSG);
@@ -7870,7 +7878,7 @@ HRESULT GLChar::MsgReqRebuildResult( NET_MSG_GENERIC* nmg )	// ITEMREBUILD_MARK
 			float fDestroyRate = seqrandom::getpercent();
 			if( fDestroyRate < pRANDOM_SET->fD_point )
 			{
-				// ¾ÆÀÌÅÛ »èÁ¦ ·Î±× ³²±è
+				// ì•„ì´í…œ ì‚­ì œ ë¡œê·¸ ë‚¨ê¹€
 				//GLITEMLMT::GetInstance().ReqItemRoute( sRebuildItem, ID_CHAR, m_dwCharID, ID_CHAR, m_dwCharID, EMITEM_ROUTE_DELETE, sRebuildItem.wTurnNum );
 
 				m_cInventory.DeleteItem( m_sRebuildItem.wPosX, m_sRebuildItem.wPosY );
@@ -7895,17 +7903,17 @@ HRESULT GLChar::MsgReqRebuildResult( NET_MSG_GENERIC* nmg )	// ITEMREBUILD_MARK
 					else
 						pInvenItem->sItemCustom.GENERATE_RANDOM_OPT( false );
 
-					// º¯°æµÈ ·£´ı¿É¼ÇÀÇ ·Î±×¸¦ ÀúÀåÇÑ´Ù.
+					// ë³€ê²½ëœ ëœë¤ì˜µì…˜ì˜ ë¡œê·¸ë¥¼ ì €ì¥í•œë‹¤.
 					GLITEMLMT::GetInstance().ReqRandomItem( sRebuildItem );
 
-					// °³Á¶ µÇ¾úÀ¸¹Ç·Î ¾ÆÀÌÅÛ Á¤º¸¸¦ Àü¼ÛÇØ¾ßÇÑ´Ù
+					// ê°œì¡° ë˜ì—ˆìœ¼ë¯€ë¡œ ì•„ì´í…œ ì •ë³´ë¥¼ ì „ì†¡í•´ì•¼í•œë‹¤
 					GLMSG::SNET_INVEN_ITEM_UPDATE NetItemUpdate;
 					NetItemUpdate.wPosX = m_sRebuildItem.wPosX;
 					NetItemUpdate.wPosY = m_sRebuildItem.wPosY;
 					NetItemUpdate.sItemCustom = pInvenItem->sItemCustom;
 					GLGaeaServer::GetInstance().SENDTOCLIENT( m_dwClientID, &NetItemUpdate );
 
-					// °³Á¶ ¼º°øÇß´Ù
+					// ê°œì¡° ì„±ê³µí–ˆë‹¤
 					if( vecLockOpt.size() > 0 )
 						pNetMsg->emResult = EMREBUILD_RESULT_SUCCESS_WITH_STAMPCARD;
 					else 
@@ -8040,7 +8048,7 @@ HRESULT GLChar::MsgReqGarbageResult( NET_MSG_GENERIC* nmg )	// ITEMREBUILD_MARK
 			return E_FAIL;
 		}
 
-		// ÆÖÄ«µåÀÌ¸é¼­ ÆÖÀÌ È°¼ºÈ­ µÇ¾î ÀÖÀ¸¸é »èÁ¦ÇÒ¼ö ¾ø´Ù.
+		// íŒ»ì¹´ë“œì´ë©´ì„œ íŒ»ì´ í™œì„±í™” ë˜ì–´ ìˆìœ¼ë©´ ì‚­ì œí• ìˆ˜ ì—†ë‹¤.
 		if ( pItem->sBasicOp.emItemType == ITEM_PET_CARD )
 		{
 			PGLPETFIELD pMyPet = GLGaeaServer::GetInstance().GetPET ( m_dwPetGUID );
@@ -8076,7 +8084,7 @@ HRESULT GLChar::MsgReqGarbageResult( NET_MSG_GENERIC* nmg )	// ITEMREBUILD_MARK
 
         
 		{
-			// Æê Ä«µå ÀÏ°æ¿ì
+			// í« ì¹´ë“œ ì¼ê²½ìš°
 			if ( pItem->sBasicOp.emItemType == ITEM_PET_CARD && pINVENITEM_DEL->sItemCustom.dwPetID != 0 )
 			{
 				PGLPETFIELD pMyPet = m_pGLGaeaServer->GetPET ( m_dwPetGUID );
@@ -8085,10 +8093,10 @@ HRESULT GLChar::MsgReqGarbageResult( NET_MSG_GENERIC* nmg )	// ITEMREBUILD_MARK
 				{
 					m_pGLGaeaServer->ReserveDropOutPet ( SDROPOUTPETINFO(pMyPet->m_dwGUID,true,false) );
 
-						// ÆÖÀÇ ¾Ç¼¼»ç¸®¸¦ °Ë»çÇÑ´Ù.
+						// íŒ»ì˜ ì•…ì„¸ì‚¬ë¦¬ë¥¼ ê²€ì‚¬í•œë‹¤.
 					pMyPet->UpdateTimeLmtItem ( this );
 
-						// ³Ö¾îÁÙ²¨ ³Ö¾îÁØ´Ù.
+						// ë„£ì–´ì¤„êº¼ ë„£ì–´ì¤€ë‹¤.
 					for ( WORD i = 0; i < PET_ACCETYPE_SIZE; ++i )
 					{
 						CItemDrop cDropItem;
@@ -8110,13 +8118,13 @@ HRESULT GLChar::MsgReqGarbageResult( NET_MSG_GENERIC* nmg )	// ITEMREBUILD_MARK
 					GLDBMan* pDBMan = m_pGLGaeaServer->GetDBMan ();
 					if ( pDBMan ) pDBMan->AddJob ( pDeletePet );
 					
-					// ÆÖÀÌ »èÁ¦µÇ¸é ºÎÈ°Á¤º¸¸¦ Å¬¶óÀÌ¾ğÆ®¿¡ ¾Ë·ÁÁÜ.
+					// íŒ»ì´ ì‚­ì œë˜ë©´ ë¶€í™œì •ë³´ë¥¼ í´ë¼ì´ì–¸íŠ¸ì— ì•Œë ¤ì¤Œ.
 					CGetRestorePetList *pGetRestorePetList = new CGetRestorePetList ( m_dwCharID, m_dwClientID );
 					if ( pDBMan ) pDBMan->AddJob ( pGetRestorePetList );
 				}
 				else
 				{
-					// ¾Ç¼¼»ç¸®¸¦ Ã¼Å©ÈÄ ÆÖÀ» DB¿¡¼­ »èÁ¦ÇØÁØ´Ù.
+					// ì•…ì„¸ì‚¬ë¦¬ë¥¼ ì²´í¬í›„ íŒ»ì„ DBì—ì„œ ì‚­ì œí•´ì¤€ë‹¤.
 					GLPET* pNewPet = new GLPET ();
 					CGetPet* pGetPet = new CGetPet ( pNewPet, 
 														pINVENITEM_DEL->sItemCustom.dwPetID, 
@@ -8129,10 +8137,10 @@ HRESULT GLChar::MsgReqGarbageResult( NET_MSG_GENERIC* nmg )	// ITEMREBUILD_MARK
 					if ( pDBMan ) pDBMan->AddJob ( pGetPet );
 				}
 			}
-			// Å»°ÍÀÏ °æ¿ì
+			// íƒˆê²ƒì¼ ê²½ìš°
 			if ( pItem->sBasicOp.emItemType == ITEM_VEHICLE && pINVENITEM_DEL->sItemCustom.dwVehicleID != 0 )
 			{
-				// ¾Ç¼¼»ç¸®¸¦ Ã¼Å©ÈÄ Å»°ÍÀ» DB¿¡¼­ »èÁ¦ÇØÁØ´Ù.
+				// ì•…ì„¸ì‚¬ë¦¬ë¥¼ ì²´í¬í›„ íƒˆê²ƒì„ DBì—ì„œ ì‚­ì œí•´ì¤€ë‹¤.
 				GLVEHICLE* pNewVehicle = new GLVEHICLE();
 				CGetVehicle* pGetVehicle = new CGetVehicle ( pNewVehicle, 
 												pINVENITEM_DEL->sItemCustom.dwVehicleID, 
@@ -8161,13 +8169,13 @@ HRESULT GLChar::MsgReqGarbageResult( NET_MSG_GENERIC* nmg )	// ITEMREBUILD_MARK
 			CDebugSet::ToFileWithTime ( strName.GetString(),str.c_str() );
 		}
 
-		// ÀÎº¥Åä¸®¿¡¼­ ¾ÆÀÌÅÛ Á¦°Å
+		// ì¸ë²¤í† ë¦¬ì—ì„œ ì•„ì´í…œ ì œê±°
 		m_cInventory.DeleteItem( pNetMsg->wPosX, pNetMsg->wPosY );
 
 		MsgFB.emResult = EMGARBAGE_RESULT_FB_OK;
 		GLGaeaServer::GetInstance().SENDTOCLIENT(m_dwClientID,&MsgFB);
 
-		// »èÁ¦ÇÑ ¾ÆÀÌÅÛ Á¦°Å
+		// ì‚­ì œí•œ ì•„ì´í…œ ì œê±°
 		GLMSG::SNETPC_INVEN_DELETE NetMsg_Inven_Delete;
 		NetMsg_Inven_Delete.wPosX = pNetMsg->wPosX;
 		NetMsg_Inven_Delete.wPosY = pNetMsg->wPosY;
@@ -8193,11 +8201,11 @@ HRESULT GLChar::MsgReqRebuildMoveItem( NET_MSG_GENERIC* nmg )
 		SINVENITEM* pResistItem = m_cInventory.GetItem( pNetMsg->wPosX, pNetMsg->wPosY );
 		if( pResistItem )
 		{
-			// ÀåÂø ¾ÆÀÌÅÛÀÌ¾î¾ß ¹Ù²Ü ¼ö ÀÖ´Ù
+			// ì¥ì°© ì•„ì´í…œì´ì–´ì•¼ ë°”ê¿€ ìˆ˜ ìˆë‹¤
 			SITEM* pItem = GLItemMan::GetInstance().GetItem( pResistItem->sItemCustom.sNativeID );
 			if( pItem && pItem->sBasicOp.emItemType == ITEM_SUIT )
 			{
-				// ·£´ı¿É¼Ç ÆÄÀÏÀÌ ÁöÁ¤µÇ¾î ÀÖ¾î¾ß °¡´ÉÇÏ´Ù
+				// ëœë¤ì˜µì…˜ íŒŒì¼ì´ ì§€ì •ë˜ì–´ ìˆì–´ì•¼ ê°€ëŠ¥í•˜ë‹¤
 				if( strlen( pItem->sRandomOpt.szNAME ) > 3 )
 				{
 					NetMsg.wPosX = pNetMsg->wPosX;
@@ -8210,7 +8218,7 @@ HRESULT GLChar::MsgReqRebuildMoveItem( NET_MSG_GENERIC* nmg )
 	}
 	GLGaeaServer::GetInstance().SENDTOCLIENT( m_dwClientID, &NetMsg );
 
-	// °³Á¶ ºñ¿ë Àü¼Û
+	// ê°œì¡° ë¹„ìš© ì „ì†¡
 	MsgReqRebuildCostMoney();
 
 	/*dmk14 reform*/
@@ -8254,14 +8262,14 @@ HRESULT GLChar::MsgReqRebuildCostMoney()
 {
 	GLMSG::SNET_REBUILD_COST_MONEY NetMsg;
 
-	// °³Á¶ ¾ÆÀÌÅÛÀÌ ¾øÀ¸¹Ç·Î 0À» Àü¼ÛÇÑ´Ù
+	// ê°œì¡° ì•„ì´í…œì´ ì—†ìœ¼ë¯€ë¡œ 0ì„ ì „ì†¡í•œë‹¤
 	if( !m_sRebuildItem.VALID() )
 	{
 		GLGaeaServer::GetInstance().SENDTOCLIENT( m_dwClientID, &NetMsg );
 		return S_OK;
 	}
 
-	// °³Á¶Ã¢¿¡ ¾ÆÀÌÅÛ ¿Ã¸±¶§ Á¡°ËÇßÀ¸¹Ç·Î ÀÌ·± °æ¿ì´Â ¹ß»ıÇÏÁö ¸»¾Æ¾ßÇÑ´Ù
+	// ê°œì¡°ì°½ì— ì•„ì´í…œ ì˜¬ë¦´ë•Œ ì ê²€í–ˆìœ¼ë¯€ë¡œ ì´ëŸ° ê²½ìš°ëŠ” ë°œìƒí•˜ì§€ ë§ì•„ì•¼í•œë‹¤
 	SITEMCUSTOM sRebuildItem = GET_REBUILD_ITEM();
 	SITEM* pItem = GLItemMan::GetInstance().GetItem( sRebuildItem.sNativeID );
 	if( !pItem )
@@ -8270,7 +8278,7 @@ HRESULT GLChar::MsgReqRebuildCostMoney()
 		return S_OK;
 	}
 
-	// °³Á¶Ã¢¿¡ ¾ÆÀÌÅÛ ¿Ã¸±¶§ Á¡°ËÇßÀ¸¹Ç·Î ÀÌ·± °æ¿ì´Â ¹ß»ıÇÏÁö ¸»¾Æ¾ßÇÑ´Ù
+	// ê°œì¡°ì°½ì— ì•„ì´í…œ ì˜¬ë¦´ë•Œ ì ê²€í–ˆìœ¼ë¯€ë¡œ ì´ëŸ° ê²½ìš°ëŠ” ë°œìƒí•˜ì§€ ë§ì•„ì•¼í•œë‹¤
 	SRANDOM_GEN* pRANDOM_SET = GLItemMan::GetInstance().GetItemRandomOpt( sRebuildItem.sNativeID );
 	if( !pRANDOM_SET )
 	{
@@ -8322,7 +8330,7 @@ HRESULT	GLChar::MsgGiveFood ( NET_MSG_GENERIC* nmg )
 		return E_FAIL;
 	}
 
-	// ÆÖÄ«µå ¿©ºÎ Ã¼Å©
+	// íŒ»ì¹´ë“œ ì—¬ë¶€ ì²´í¬
 	if ( pItem->sBasicOp.emItemType != ITEM_PET_CARD )	
 	{
 		NetMsgFB.emFB = EMPET_REQ_GIVEFOOD_FB_INVALIDCARD;
@@ -8338,14 +8346,14 @@ HRESULT	GLChar::MsgGiveFood ( NET_MSG_GENERIC* nmg )
 
 	if ( CheckCoolTime( pHold->sBasicOp.sNativeID ) ) return E_FAIL;
 
-	// »ç·á ¿©ºÎ Ã¼Å©
+	// ì‚¬ë£Œ ì—¬ë¶€ ì²´í¬
 	if ( pHold->sBasicOp.emItemType != ITEM_PET_FOOD )	
 	{
 		NetMsgFB.emFB = EMPET_REQ_GIVEFOOD_FB_INVALIDFOOD;
 		return E_FAIL;
 	}
 
-	// ¾ÆÀÌÅÛ Á¤º¸°¡ ¼­·Î Æ²¸®¸é ½ÇÇàÇÏÁö ¾Ê´Â´Ù.
+	// ì•„ì´í…œ ì •ë³´ê°€ ì„œë¡œ í‹€ë¦¬ë©´ ì‹¤í–‰í•˜ì§€ ì•ŠëŠ”ë‹¤.
 	SITEM* pPutOnItem = GLItemMan::GetInstance().GetItem ( m_PutOnItems[SLOT_HOLD].sNativeID );
 	if( pHold != pPutOnItem )
 	{
@@ -8361,10 +8369,10 @@ HRESULT	GLChar::MsgGiveFood ( NET_MSG_GENERIC* nmg )
 		{
 			PGLPETFIELD pMyPet = GLGaeaServer::GetInstance().GetPET ( m_dwPetGUID );
 
-			// Logic ¿¡ ÆÖÀÌ ÀÖ´Ù¸é
+			// Logic ì— íŒ»ì´ ìˆë‹¤ë©´
 			if ( pMyPet && pMyPet->m_dwPetID == pInvenItem->sItemCustom.dwPetID )
 			{
-				// Æê »ç·á¸Ô±â ÀÌÀü ·Î±×
+				// í« ì‚¬ë£Œë¨¹ê¸° ì´ì „ ë¡œê·¸
 				GLITEMLMT::GetInstance().ReqPetAction(	pMyPet->m_dwPetID, 
 														pInvenItem->sItemCustom.sNativeID, 
 														EMPET_ACTION_FOOD_BEFORE, 
@@ -8377,23 +8385,23 @@ HRESULT	GLChar::MsgGiveFood ( NET_MSG_GENERIC* nmg )
 
 				DoDrugSlotItem ( SLOT_HOLD );
 
-				// Æê »ç·á¸Ô±â ÀÌÈÄ ·Î±×
+				// í« ì‚¬ë£Œë¨¹ê¸° ì´í›„ ë¡œê·¸
 				GLITEMLMT::GetInstance().ReqPetAction(	pMyPet->m_dwPetID, 
 														pInvenItem->sItemCustom.sNativeID, 
 														EMPET_ACTION_FOOD_AFTER, 
 														pMyPet->m_nFull );
 
-				// ÆÖ¿¡°Ô ¸ÔÀÌ¸¦ ÁØ´Ù.
+				// íŒ»ì—ê²Œ ë¨¹ì´ë¥¼ ì¤€ë‹¤.
 				NetMsgFB.emFB	   = EMPET_REQ_GIVEFOOD_FB_OK;
 				NetMsgFB.dwPetID   = pMyPet->m_dwPetID;
 				NetMsgFB.sNativeID = sNativeID;
 				NetMsgFB.nFull	   = pMyPet->m_nFull;
 				GLGaeaServer::GetInstance().SENDTOCLIENT ( m_dwClientID, &NetMsgFB );
 			}
-			// ¾ÆÁ÷ Logic ¿¡ ÆÖÀÌ ¾ø´Ù¸é
+			// ì•„ì§ Logic ì— íŒ»ì´ ì—†ë‹¤ë©´
 			else
 			{
-				// ÆÖ »ı¼º¿©ºÎ È®ÀÎ
+				// íŒ» ìƒì„±ì—¬ë¶€ í™•ì¸
 				if (pInvenItem->sItemCustom.dwPetID <= 0 )
 				{
 					GLGaeaServer::GetInstance().GetConsoleMsg()->Write ( LOG_TEXT_CONSOLE, "Invalid ID, PetID %d dwClientID %d", 
@@ -8401,7 +8409,7 @@ HRESULT	GLChar::MsgGiveFood ( NET_MSG_GENERIC* nmg )
 					return E_FAIL;
 				}
 
-				// ÆÖÀÇ Æ÷¸¸°¨À» °¡Á®¿Í¼­ °»½ÅÇÏ°í ´Ù½Ã DB¿¡ ÀúÀåÇÏ´Â ÄÚµå
+				// íŒ»ì˜ í¬ë§Œê°ì„ ê°€ì ¸ì™€ì„œ ê°±ì‹ í•˜ê³  ë‹¤ì‹œ DBì— ì €ì¥í•˜ëŠ” ì½”ë“œ
 				CGetPetFull* pDbAction = new CGetPetFull ( m_dwCharID, 
 														   pInvenItem->sItemCustom.dwPetID, 
 														   m_dwClientID,
@@ -8438,8 +8446,8 @@ HRESULT GLChar::MsgGetPetFullFromDB ( NET_MSG_GENERIC* nmg )
 
 	case EMPET_REQ_GETFULL_FROMDB_OK:
 		{
-			//	¼Õ¿¡ µç ¾ÆÀÌÅÛ È®ÀÎÇÑ´Ù.
-			//	¾ÆÀÌÅÛÀÌ ¹Ù²î´Â °æ¿ì°¡ ÀÖ´Ù.
+			//	ì†ì— ë“  ì•„ì´í…œ í™•ì¸í•œë‹¤.
+			//	ì•„ì´í…œì´ ë°”ë€ŒëŠ” ê²½ìš°ê°€ ìˆë‹¤.
 			SITEM* pHold = GET_SLOT_ITEMDATA ( SLOT_HOLD );
 			if ( !pHold ) 
 			{
@@ -8459,7 +8467,7 @@ HRESULT GLChar::MsgGetPetFullFromDB ( NET_MSG_GENERIC* nmg )
 
 			}
 
-			// Æê Æ÷¸¸°¨ ÀÌÀü ·Î±×
+			// í« í¬ë§Œê° ì´ì „ ë¡œê·¸
 			GLITEMLMT::GetInstance().ReqPetAction(	pIntMsg->dwPetID, 
 													pIntMsg->sNativeID,
 													EMPET_ACTION_FOOD_BEFORE, 
@@ -8485,7 +8493,7 @@ HRESULT GLChar::MsgGetPetFullFromDB ( NET_MSG_GENERIC* nmg )
 			if ( pDbMan ) pDbMan->AddJob ( pDbAction );
 			DoDrugSlotItem ( SLOT_HOLD );
 
-			// Æê Æ÷¸¸°¨ ÀÌÀü ·Î±×
+			// í« í¬ë§Œê° ì´ì „ ë¡œê·¸
 			GLITEMLMT::GetInstance().ReqPetAction(	pIntMsg->dwPetID,
 													pIntMsg->sNativeID,
 													EMPET_ACTION_FOOD_AFTER,
@@ -8508,7 +8516,7 @@ HRESULT GLChar::MsgReqMGameOddEvenEvent( NET_MSG_GENERIC* nmg )
 	GLMSG::SNETPC_MGAME_ODDEVEN* pNetMsg = ( GLMSG::SNETPC_MGAME_ODDEVEN* )nmg;
 	GLMSG::SNETPC_MGAME_ODDEVEN_FB NetMsgFB;
 
-	// È¦Â¦°ÔÀÓNPC À¯È¿¼º Ã¼Å©
+	// í™€ì§ê²Œì„NPC ìœ íš¨ì„± ì²´í¬
 	PGLCROW pCrow = m_pLandMan->GetCrow ( pNetMsg->dwNPCID );
 	if ( !pCrow )
 	{
@@ -8522,7 +8530,7 @@ HRESULT GLChar::MsgReqMGameOddEvenEvent( NET_MSG_GENERIC* nmg )
 	float fTalkRange = (float) (pCrow->GetBodyRadius() + GETBODYRADIUS() + 30);
 	float fTalkableDis = fTalkRange + 20;
 
-	// È¦Â¦°ÔÀÓNPC °Å¸® Ã¼Å©
+	// í™€ì§ê²Œì„NPC ê±°ë¦¬ ì²´í¬
 	if ( fDist>fTalkableDis )
 	{
 		NetMsgFB.emResult = EMMGAME_ODDEVEN_FB_FAIL;
@@ -8541,7 +8549,7 @@ HRESULT GLChar::MsgReqMGameOddEvenEvent( NET_MSG_GENERIC* nmg )
 	case EMMGAME_ODDEVEN_FINISH:	return MGOddEvenFinish(pNetMsg);
 	default:
 		{
-			// ÀûÀıÇÑ ÀÌº¥Æ®°¡ ¾Æ´Ï¶ó¼­ °ÔÀÓ Ãë¼Ò
+			// ì ì ˆí•œ ì´ë²¤íŠ¸ê°€ ì•„ë‹ˆë¼ì„œ ê²Œì„ ì·¨ì†Œ
 			NetMsgFB.emResult = EMMGAME_ODDEVEN_FB_FAIL;
 			GLGaeaServer::GetInstance().SENDTOCLIENT( m_dwClientID, &NetMsgFB );
 
@@ -8570,8 +8578,8 @@ HRESULT GLChar::MsgReqItemMix( NET_MSG_GENERIC* nmg )
 
 	SINVENITEM* pInvenItem[ITEMMIX_ITEMNUM];
 
-	//	NPCÈ®ÀÎ
-		// NPC Ã¼Å© 
+	//	NPCí™•ì¸
+		// NPC ì²´í¬ 
 	PGLCROW pCrow = m_pLandMan->GetCrow ( pNetMsg->dwNpcID );
 	if ( !pCrow )
 	{
@@ -8591,7 +8599,7 @@ HRESULT GLChar::MsgReqItemMix( NET_MSG_GENERIC* nmg )
 		return E_FAIL;
 	}
 
-	//	Á¶ÇÕ È®ÀÎ
+	//	ì¡°í•© í™•ì¸
 	const ITEM_MIX* pItemMix = GLItemMixMan::GetInstance().GetItemMix( pNetMsg->dwKey );
 	if ( !pItemMix ) 
 	{
@@ -8600,7 +8608,7 @@ HRESULT GLChar::MsgReqItemMix( NET_MSG_GENERIC* nmg )
 		return E_FAIL;
 	}
 
-	//	±İ¾× È®ÀÎ 
+	//	ê¸ˆì•¡ í™•ì¸ 
 	if( m_lnMoney < pItemMix->dwPrice )
 	{
 		NetMsgFB.emFB = EMITEM_MIX_FB_NOMONEY;
@@ -8608,7 +8616,7 @@ HRESULT GLChar::MsgReqItemMix( NET_MSG_GENERIC* nmg )
 		return E_FAIL;
 	}
 
-	//	ÀÎº¥ ¾ÆÀÌÅÛ È®ÀÎ
+	//	ì¸ë²¤ ì•„ì´í…œ í™•ì¸
 	for ( int i =0; i < ITEMMIX_ITEMNUM; ++i ) 
 	{
 		if( !pNetMsg->sInvenPos[i].VALID() ) continue;
@@ -8645,7 +8653,7 @@ HRESULT GLChar::MsgReqItemMix( NET_MSG_GENERIC* nmg )
 	}
 
 
-	//	°á°ú ¾ÆÀÌÅÛ Ã¼Å©
+	//	ê²°ê³¼ ì•„ì´í…œ ì²´í¬
 	SITEM* pItemResult = GLItemMan::GetInstance().GetItem( pItemMix->sResultItem.sNID );
 	if ( !pItemResult ) 
 	{
@@ -8659,15 +8667,15 @@ HRESULT GLChar::MsgReqItemMix( NET_MSG_GENERIC* nmg )
 	BOOL bOk = m_cInventory.FindInsrtable ( pItemResult->sBasicOp.wInvenSizeX, pItemResult->sBasicOp.wInvenSizeY, wInsertPosX, wInsertPosY );
 	if ( !bOk )
 	{
-		//	ºÒ°¡´ÉÇÑ °æ¿ì ÀÔ´Ï´Ù.
+		//	ë¶ˆê°€ëŠ¥í•œ ê²½ìš° ì…ë‹ˆë‹¤.
 		NetMsgFB.emFB = EMITEM_MIX_FB_NOINVEN;
 		GLGaeaServer::GetInstance().SENDTOCLIENT(m_dwClientID,&NetMsgFB);
-		return E_FAIL;	//	ÀÎº¥ °ø°£ ºÎÁ·À¸·Î µÇµ¹¸² ½ÇÆĞ.
+		return E_FAIL;	//	ì¸ë²¤ ê³µê°„ ë¶€ì¡±ìœ¼ë¡œ ë˜ëŒë¦¼ ì‹¤íŒ¨.
 	}
 
 	GLMSG::SNETPC_INVEN_DELETE NetMsg_Inven_Delete;
 
-	//	Á¶ÇÕ ¾ÆÀÌÅÛ »èÁ¦
+	//	ì¡°í•© ì•„ì´í…œ ì‚­ì œ
 	for ( int i =0; i < ITEMMIX_ITEMNUM; ++i )
 	{
 		if( !pNetMsg->sInvenPos[i].VALID() ) continue;
@@ -8682,7 +8690,7 @@ HRESULT GLChar::MsgReqItemMix( NET_MSG_GENERIC* nmg )
 		GLGaeaServer::GetInstance().SENDTOCLIENT( m_dwClientID, &NetMsg_Inven_Delete );	
 	}
 
-	//	¼ÒÁö±İ 
+	//	ì†Œì§€ê¸ˆ 
 	if ( pItemMix->dwPrice > 0 )
 	{
 		CheckMoneyUpdate( m_lnMoney, pItemMix->dwPrice, FALSE, "ITEM_MIX" );
@@ -8698,7 +8706,7 @@ HRESULT GLChar::MsgReqItemMix( NET_MSG_GENERIC* nmg )
 		GLGaeaServer::GetInstance().SENDTOCLIENT( m_dwClientID, &NetMsgMoney );
 	}
 
-	//	½ÇÆĞÇßÀ» °æ¿ì
+	//	ì‹¤íŒ¨í–ˆì„ ê²½ìš°
 	float fRate = (float)pItemMix->dwRate;
 	if ( !RANDOM_GEN( fRate ) )
 	{
@@ -8707,7 +8715,7 @@ HRESULT GLChar::MsgReqItemMix( NET_MSG_GENERIC* nmg )
 		return S_OK;	
 	}
 
-	//	°á°ú ¾ÆÀÌÅÛ »ı¼º
+	//	ê²°ê³¼ ì•„ì´í…œ ìƒì„±
 	SITEMCUSTOM sITEM_NEW;
 	sITEM_NEW.sNativeID = pItemMix->sResultItem.sNID;
 	sITEM_NEW.cDAMAGE = pItemMix->cDAMAGE;
@@ -8733,7 +8741,7 @@ HRESULT GLChar::MsgReqItemMix( NET_MSG_GENERIC* nmg )
 		sITEM_NEW.wColor2 = pitem_data_check->sBasicOp.wItemColor2;
 	}
 
-	//	·£´ı ¿É¼Ç »ı¼º.
+	//	ëœë¤ ì˜µì…˜ ìƒì„±.
 	if ( pItemMix->bGenerateRandomValue )
 	{
 		if( sITEM_NEW.GENERATE_RANDOM_OPT() )
@@ -8742,7 +8750,7 @@ HRESULT GLChar::MsgReqItemMix( NET_MSG_GENERIC* nmg )
 		}
 	}
 	
-	//	µé°íÀÖ´ø ¾ÆÀÌÅÆ ÀÎ¹ê¿¡ ³ÖÀ½.
+	//	ë“¤ê³ ìˆë˜ ì•„ì´íƒ¬ ì¸ë°´ì— ë„£ìŒ.
 	m_cInventory.InsertItem ( sITEM_NEW, wInsertPosX, wInsertPosY );
 	SINVENITEM *pINSERT_ITEM = m_cInventory.GetItem ( wInsertPosX, wInsertPosY );
 
@@ -8756,7 +8764,7 @@ HRESULT GLChar::MsgReqItemMix( NET_MSG_GENERIC* nmg )
 	GLITEMLMT::GetInstance().ReqItemRoute ( pINSERT_ITEM->sItemCustom, ID_CHAR, 0, ID_CHAR, m_dwCharID, 
 		EMITEM_ROUTE_ITEMMIX, pINSERT_ITEM->sItemCustom.wTurnNum );
 
-	//	[ÀÚ½Å¿¡°Ô] ¸Ş½ÃÁö ¹ß»ı.
+	//	[ìì‹ ì—ê²Œ] ë©”ì‹œì§€ ë°œìƒ.
 	GLMSG::SNETPC_INVEN_INSERT NetMsg_Inven;
 	NetMsg_Inven.Data = *pINSERT_ITEM;
 	GLGaeaServer::GetInstance().SENDTOCLIENT(m_dwClientID,&NetMsg_Inven);
@@ -9191,20 +9199,20 @@ HRESULT GLChar::MsgReqRegisterCodex ( NET_MSG_GENERIC* nmg )
 		return E_FAIL;
 	}*/
 
-	//	»óÀÚ »èÁ¦ ·Î±×.
+	//	ìƒì ì‚­ì œ ë¡œê·¸.
 	GLITEMLMT::GetInstance().ReqItemRoute ( pInvenItem->sItemCustom, ID_CHAR, m_dwCharID, ID_CHAR, 0, EMITEM_ROUTE_DELETE, pInvenItem->sItemCustom.wTurnNum );
 
-	//	Note : »óÀÚ ¾ÆÀÌÅÛ »èÁ¦.
+	//	Note : ìƒì ì•„ì´í…œ ì‚­ì œ.
 	//
 	m_cInventory.DeleteItem ( wPosX, wPosY );
 
-	//	[ÀÚ½Å¿¡°Ô] ÀÎ¹ê¿¡ ¾ÆÀÌÅÆ Á¦°Å.
+	//	[ìì‹ ì—ê²Œ] ì¸ë°´ì— ì•„ì´íƒ¬ ì œê±°.
 	GLMSG::SNETPC_INVEN_DELETE NetMsg_Inven_Delete;
 	NetMsg_Inven_Delete.wPosX = wPosX;
 	NetMsg_Inven_Delete.wPosY = wPosY;
 	GLGaeaServer::GetInstance().SENDTOCLIENT(m_dwClientID,&NetMsg_Inven_Delete);
 
-	//	Note : »óÀÚ¸¦ ¼º°øÀûÀ¸·Î ¿­¾úÀ½.
+	//	Note : ìƒìë¥¼ ì„±ê³µì ìœ¼ë¡œ ì—´ì—ˆìŒ.
 	//
 	NetMsgFB.emFB = EMREQ_REGISTER_CODEX_FB_OK;
 	GLGaeaServer::GetInstance().SENDTOCLIENT(m_dwClientID,&NetMsgFB);

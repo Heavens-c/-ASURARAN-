@@ -32,12 +32,12 @@ CClientManager::CClientManager(
 	//, m_pRecvIOCP(NULL)
 	, m_pSendIOCP(pSendIOCP)
 	, m_pRecvIOCP(pRecvIOCP)
-	, m_dwInPacketCount(0) //< ¼ö½ÅµÈ ÃÑ ÆÐÅ¶ °¹¼ö
-	, m_dwInPacketSize(0) //< ¼ö½ÅµÈ ÃÑ ÆÐÅ¶ »çÀÌÁî
-	, m_dwOutPacketCount(0) //< ¼Û½ÅÇÑ ÃÑ ÆÐÅ¶ °¹¼ö
-	, m_dwOutPacketSize(0) //< ¼Û½ÅÇÑ ÃÑ ÆÐÅ¶ »çÀÌÁî
-	, m_dwOutCompressCount(0) //< ¼Û½ÅÇÑ ÃÑ ¾ÐÃà ÆÐÅ¶ °¹¼ö
-	, m_dwOutCompressSize(0) //< ¼Û½ÅÇÑ ÃÑ ¾ÐÃà ÆÐÅ¶ Å©±â
+	, m_dwInPacketCount(0) //< ìˆ˜ì‹ ëœ ì´ íŒ¨í‚· ê°¯ìˆ˜
+	, m_dwInPacketSize(0) //< ìˆ˜ì‹ ëœ ì´ íŒ¨í‚· ì‚¬ì´ì¦ˆ
+	, m_dwOutPacketCount(0) //< ì†¡ì‹ í•œ ì´ íŒ¨í‚· ê°¯ìˆ˜
+	, m_dwOutPacketSize(0) //< ì†¡ì‹ í•œ ì´ íŒ¨í‚· ì‚¬ì´ì¦ˆ
+	, m_dwOutCompressCount(0) //< ì†¡ì‹ í•œ ì´ ì••ì¶• íŒ¨í‚· ê°¯ìˆ˜
+	, m_dwOutCompressSize(0) //< ì†¡ì‹ í•œ ì´ ì••ì¶• íŒ¨í‚· í¬ê¸°
 	, m_wClientIPMax(0) //iplimit
 	, m_llDenyNum(0) //iplimit
 
@@ -101,12 +101,12 @@ CRYPT_KEY CClientManager::GetNewCryptKey()
 	return ck;
 }
 
-bool CClientManager::IsAccountPass (DWORD dwClient) // °èÁ¤ ÀÎÁõ(login) Åë°úÇÏ¿´´ÂÁö Á¡°Ë.
+bool CClientManager::IsAccountPass (DWORD dwClient) // ê³„ì • ì¸ì¦(login) í†µê³¼í•˜ì˜€ëŠ”ì§€ ì ê²€.
 {
 	return m_pClient[dwClient].IsAccountPass();
 }
 
-void CClientManager::SetAccountPass (DWORD dwClient, bool bPASS) // °èÁ¤ ÀÎÁõ(login) Åë°ú ¼³Á¤.
+void CClientManager::SetAccountPass (DWORD dwClient, bool bPASS) // ê³„ì • ì¸ì¦(login) í†µê³¼ ì„¤ì •.
 {
 	m_pClient[dwClient].SetAccountPass(bPASS);
 }
@@ -151,7 +151,7 @@ int	CClientManager::GetFreeClientID(int nType)
 	if (m_deqSleepCID.empty())
 	{		
 		LockOff();
-		// Reached Max Client Error ¸Þ¼¼Áö¸¦ È£ÃâÇÏ±âÀü m_vecSleepCID queueÀÇ »óÅÂ¸¦ Ã¼Å©
+		// Reached Max Client Error ë©”ì„¸ì§€ë¥¼ í˜¸ì¶œí•˜ê¸°ì „ m_vecSleepCID queueì˜ ìƒíƒœë¥¼ ì²´í¬
 		ResetPreSleepCID();
 		return NET_ERROR;
 	}
@@ -168,7 +168,7 @@ int	CClientManager::GetFreeClientID(int nType)
 	}
 }
 
-//	Note : °°Àº ¾ÆÀÌÇÇÀÇ Á¢¼ÓÀ» Ã¼Å©ÇÑ´Ù.
+//	Note : ê°™ì€ ì•„ì´í”¼ì˜ ì ‘ì†ì„ ì²´í¬í•œë‹¤.
 //
 void CClientManager::ConnectIPCheck(char *pszIP)
 {
@@ -208,7 +208,7 @@ void CClientManager::ConnectIPCheck(char *pszIP)
 
 }
 
-//	Note : À¯ÈÞ Å¬¶óÀÌ¾ðÆ® ID¸¦ ¸ð¾Æ¼­ ÇÑ²¨¹ø¿¡ µî·Ï. ( Å¬¶óÀÌ¾ðÆ® IDÀÇ ±³Â÷ »ç¿ëÀ» ¹æÁö. )
+//	Note : ìœ íœ´ í´ë¼ì´ì–¸íŠ¸ IDë¥¼ ëª¨ì•„ì„œ í•œêº¼ë²ˆì— ë“±ë¡. ( í´ë¼ì´ì–¸íŠ¸ IDì˜ êµì°¨ ì‚¬ìš©ì„ ë°©ì§€. )
 //
 void CClientManager::ResetPreSleepCID()
 {
@@ -241,8 +241,8 @@ int CClientManager::GetMaxClient()
 	return m_nMaxClient;
 }
 
-// Å¬¶óÀÌ¾ðÆ®°¡ Ã³À½ Á¢¼ÓÇßÀ»¶§ È£ÃâµÊ
-// Å¬¶óÀÌ¾ðÆ®ÀÇ ip, port, Á¢¼Ó½Ã°£À» ±â·ÏÇÔ.
+// í´ë¼ì´ì–¸íŠ¸ê°€ ì²˜ìŒ ì ‘ì†í–ˆì„ë•Œ í˜¸ì¶œë¨
+// í´ë¼ì´ì–¸íŠ¸ì˜ ip, port, ì ‘ì†ì‹œê°„ì„ ê¸°ë¡í•¨.
 int CClientManager::SetAcceptedClient(DWORD dwClient, SOCKET sSocket)
 {
 	int nRetCode = 0;
@@ -321,10 +321,10 @@ int CClientManager::CloseClient(DWORD dwClient, bool bOnlineCheck)
 		//iplimit
 		IPRemoveClient( m_pClient[dwClient].GetIP(), dwClient );
 
-		// ¿¬°áÀ» ²÷´Â´Ù.
+		// ì—°ê²°ì„ ëŠëŠ”ë‹¤.
 		nResult = m_pClient[dwClient].CloseClient();
 
-		// Å¬¶óÀÌ¾ðÆ® ¹øÈ£¸¦ À¯ÈÞ½½·Ô¿¡ Áý¾î ³Ö´Â´Ù.
+		// í´ë¼ì´ì–¸íŠ¸ ë²ˆí˜¸ë¥¼ ìœ íœ´ìŠ¬ë¡¯ì— ì§‘ì–´ ë„£ëŠ”ë‹¤.
 		if ( dwClient >= NET_RESERVED_SLOT )
 		{
 			m_vecSleepCID.push_back( dwClient );
@@ -390,7 +390,7 @@ int	CClientManager::addRcvMsg(DWORD dwClient,
 				              DWORD dwSize)
 {
 	ASSERT(pMsg);
-	// ¼ö½Å¹ÞÀº Å©±â ¹× Ä«¿îÅÍ ±â·Ï
+	// ìˆ˜ì‹ ë°›ì€ í¬ê¸° ë° ì¹´ìš´í„° ê¸°ë¡
 	m_dwInPacketCount++;
 	m_dwInPacketSize += dwSize;
 	return m_pClient[dwClient].addRcvMsg(pMsg, dwSize);
@@ -402,7 +402,7 @@ void* CClientManager::getRcvMsg(DWORD dwClient,bool bClient)
 	return m_pClient[dwClient].getRcvMsg(bClient);
 }
 
-// ¸Þ½ÃÁö¿¡ »ç¿ëµÉ ¹öÆÛ¸¦ ¸®¼ÂÇÑ´Ù
+// ë©”ì‹œì§€ì— ì‚¬ìš©ë  ë²„í¼ë¥¼ ë¦¬ì…‹í•œë‹¤
 void CClientManager::ResetRcvBuffer(DWORD dwClient)
 {
 	m_pClient[dwClient].ResetRcvBuffer();
@@ -426,7 +426,7 @@ void CClientManager::SendClientFinal()
 		dwSendSize = m_pClient[dwClient].getSendSize();
 		if (dwSendSize > 0) 
 		{
-			// ¾ÐÃàµÈ µ¥ÀÌÅÍ Àü¼Û
+			// ì••ì¶•ëœ ë°ì´í„° ì „ì†¡
 			m_dwOutCompressCount++;
 			m_dwOutCompressSize += dwSendSize;
 			SendClient2(dwClient, m_pClient[dwClient].getSendBuffer());
@@ -459,7 +459,7 @@ int	CClientManager::SendClient(DWORD dwClient, LPVOID pBuffer)
 		dwSendSize = m_pClient[dwClient].getSendSize();
 		if (dwSendSize > 0) 
 		{
-			// ¾ÐÃàµÈ µ¥ÀÌÅÍ Àü¼Û
+			// ì••ì¶•ëœ ë°ì´í„° ì „ì†¡
 			m_dwOutCompressCount++;
 			m_dwOutCompressSize += dwSendSize;
 			SendClient2(dwClient, m_pClient[dwClient].getSendBuffer());			
@@ -470,7 +470,7 @@ int	CClientManager::SendClient(DWORD dwClient, LPVOID pBuffer)
 		dwSendSize = m_pClient[dwClient].getSendSize();		
 		if (dwSendSize > 0) 
 		{
-			// ¾ÐÃàµÈ µ¥ÀÌÅÍ Àü¼Û
+			// ì••ì¶•ëœ ë°ì´í„° ì „ì†¡
 			m_dwOutCompressCount++;
 			m_dwOutCompressSize += dwSendSize;
 			SendClient2(dwClient, m_pClient[dwClient].getSendBuffer());			
@@ -560,12 +560,12 @@ int CClientManager::SendClient2(
 	{
 		nRetCode = ::WSAGetLastError();
 		// WSA_IO_PENDING is not error.
-		// IOCP ÀÇ °æ¿ì ¼º°ø/½ÇÆÐ °á°ú°¡ ³ªÁß¿¡ Åëº¸µÇ±â ¶§¹®¿¡
-		// ¸®ÅÏÄÚµå°¡ WSA_IO_PENDING ÀÎ °æ¿ì ¿¡·¯°¡ ¾Æ´Ï´Ù.
-		// ÀÌ ¶æÀº ³ªÁß¿¡ °á°ú°¡ Åëº¸µÇ°í ÇöÀç´Â °á°ú¸¦ º¸·ùÇÏ°Ú´Ù´Â ¶æÀÌ´Ù.		
+		// IOCP ì˜ ê²½ìš° ì„±ê³µ/ì‹¤íŒ¨ ê²°ê³¼ê°€ ë‚˜ì¤‘ì— í†µë³´ë˜ê¸° ë•Œë¬¸ì—
+		// ë¦¬í„´ì½”ë“œê°€ WSA_IO_PENDING ì¸ ê²½ìš° ì—ëŸ¬ê°€ ì•„ë‹ˆë‹¤.
+		// ì´ ëœ»ì€ ë‚˜ì¤‘ì— ê²°ê³¼ê°€ í†µë³´ë˜ê³  í˜„ìž¬ëŠ” ê²°ê³¼ë¥¼ ë³´ë¥˜í•˜ê² ë‹¤ëŠ” ëœ»ì´ë‹¤.		
 		if (nRetCode != WSA_IO_PENDING) 
 		{
-			// ÇöÀç´Â WSA_IO_PENDING ÀÌ¿ÜÀÇ ¿¡·¯½Ã¿¡´Â ¿¬°áÀ» Á¾·á½ÃÄÑ¹ö¸°´Ù.
+			// í˜„ìž¬ëŠ” WSA_IO_PENDING ì´ì™¸ì˜ ì—ëŸ¬ì‹œì—ëŠ” ì—°ê²°ì„ ì¢…ë£Œì‹œì¼œë²„ë¦°ë‹¤.
 			::PostQueuedCompletionStatus(
 				m_hIOServer,
 				0,
@@ -584,49 +584,49 @@ int CClientManager::SendClient2(
 	return NET_OK;
 }
 
-// Agent ¼­¹ö¿¡¼­ÀÇ Client ¿ÍÀÇ Åë½Å ½½·Ô
+// Agent ì„œë²„ì—ì„œì˜ Client ì™€ì˜ í†µì‹  ìŠ¬ë¡¯
 DWORD CClientManager::GetSlotAgentClient(DWORD dwClient) 
 {
 	return m_pClient[dwClient].GetSlotAgentClient();
 }
 
-// Agent ¼­¹ö¿¡¼­ÀÇ Field ¼­¹ö¿ÍÀÇ Åë½Å ½½·Ô
+// Agent ì„œë²„ì—ì„œì˜ Field ì„œë²„ì™€ì˜ í†µì‹  ìŠ¬ë¡¯
 DWORD CClientManager::GetSlotAgentField (DWORD dwClient)
 {
 	return m_pClient[dwClient].GetSlotAgentField();
 }
 
-// Field ¼­¹ö¿¡¼­ÀÇ Agent ¼­¹ö¿ÍÀÇ Åë½Å ½½·Ô
+// Field ì„œë²„ì—ì„œì˜ Agent ì„œë²„ì™€ì˜ í†µì‹  ìŠ¬ë¡¯
 DWORD CClientManager::GetSlotFieldAgent (DWORD dwClient) 
 {
 	return m_pClient[dwClient].GetSlotFieldAgent();
 }
 
-// Field ¼­¹ö¿¡¼­ÀÇ Client ¿ÍÀÇ Åë½Å ½½·Ô
+// Field ì„œë²„ì—ì„œì˜ Client ì™€ì˜ í†µì‹  ìŠ¬ë¡¯
 DWORD CClientManager::GetSlotFieldClient(DWORD dwClient) 
 {
 	return m_pClient[dwClient].GetSlotFieldClient();
 }
 
-// Agent ¼­¹ö¿¡¼­ÀÇ Client ¿ÍÀÇ Åë½Å ½½·Ô
+// Agent ì„œë²„ì—ì„œì˜ Client ì™€ì˜ í†µì‹  ìŠ¬ë¡¯
 void CClientManager::SetSlotAgentClient(DWORD dwClient, DWORD dwSlot) 
 {
 	m_pClient[dwClient].SetSlotAgentClient(dwSlot);
 }
 
-// Agent ¼­¹ö¿¡¼­ÀÇ Field ¼­¹ö¿ÍÀÇ Åë½Å ½½·Ô
+// Agent ì„œë²„ì—ì„œì˜ Field ì„œë²„ì™€ì˜ í†µì‹  ìŠ¬ë¡¯
 void CClientManager::SetSlotAgentField (DWORD dwClient, DWORD dwSlot) 
 {
 	m_pClient[dwClient].SetSlotAgentField(dwSlot);
 }
 
-// Field ¼­¹ö¿¡¼­ÀÇ Agent ¼­¹ö¿ÍÀÇ Åë½Å ½½·Ô
+// Field ì„œë²„ì—ì„œì˜ Agent ì„œë²„ì™€ì˜ í†µì‹  ìŠ¬ë¡¯
 void CClientManager::SetSlotFieldAgent (DWORD dwClient, DWORD dwSlot) 
 {
 	m_pClient[dwClient].SetSlotFieldAgent(dwSlot);
 }
 
-// Field ¼­¹ö¿¡¼­ÀÇ Client ¿ÍÀÇ Åë½Å ½½·Ô
+// Field ì„œë²„ì—ì„œì˜ Client ì™€ì˜ í†µì‹  ìŠ¬ë¡¯
 void CClientManager::SetSlotFieldClient(DWORD dwClient, DWORD dwSlot) 
 {
 	m_pClient[dwClient].SetSlotFieldClient(dwSlot);
@@ -775,11 +775,11 @@ DWORD CClientManager::GetGaeaID(DWORD dwClient)
 
 
 
-// Á¢¼ÓÀÚ°¡ ÇÃ·¹ÀÌ ÁßÀÎÁö¸¦ ¾Ë·ÁÁØ´Ù.
+// ì ‘ì†ìžê°€ í”Œë ˆì´ ì¤‘ì¸ì§€ë¥¼ ì•Œë ¤ì¤€ë‹¤.
 bool CClientManager::IsGaming(DWORD dwClient)
 {
 
-	// ¿Â¶óÀÎ »óÅÂÀÌ°í °¡ÀÌ¾Æ ID °¡ ÀÖÀ¸¸é °ÔÀÓÁßÀÌ´Ù
+	// ì˜¨ë¼ì¸ ìƒíƒœì´ê³  ê°€ì´ì•„ ID ê°€ ìžˆìœ¼ë©´ ê²Œìž„ì¤‘ì´ë‹¤
 	if (m_pClient[dwClient].IsOnline() && m_pClient[dwClient].GetGaeaID() != GAEAID_NULL && m_pClient[dwClient].GetSlotType() == NET_SLOT_CLIENT)
 		return true;
 /*
@@ -891,37 +891,37 @@ int CClientManager::GetChannel(DWORD dwClient)
 	return m_pClient[dwClient].GetChannel();
 }
 
-//! nProtect GameGuard ÀÎÁõ¿ë Äõ¸®¸¦ °¡Á®¿À±â Àü¿¡ È£Ãâ
+//! nProtect GameGuard ì¸ì¦ìš© ì¿¼ë¦¬ë¥¼ ê°€ì ¸ì˜¤ê¸° ì „ì— í˜¸ì¶œ
 bool CClientManager::nProtectSetAuthQuery(DWORD dwClient)
 {
 	return m_pClient[dwClient].nProtectSetAuthQuery();
 }
     	
-//! nProtect GameGuard ÀÎÁõ¿ë Äõ¸® °¡Á®¿À±â
+//! nProtect GameGuard ì¸ì¦ìš© ì¿¼ë¦¬ ê°€ì ¸ì˜¤ê¸°
 GG_AUTH_DATA CClientManager::nProtectGetAuthQuery(DWORD dwClient)
 {
 	return m_pClient[dwClient].nProtectGetAuthQuery();
 }
 
-//! nProtect GameGuard ÀÎÁõ ÀÀ´ä °¡Á®¿À±â
+//! nProtect GameGuard ì¸ì¦ ì‘ë‹µ ê°€ì ¸ì˜¤ê¸°
 GG_AUTH_DATA CClientManager::nProtectGetAuthAnswer( DWORD dwClient )
 {
 	return m_pClient[dwClient].nProtectGetAuthAnswer();
 }
 
-//! nProtect GameGuard ÀÎÁõ ÀÀ´ä ¼³Á¤
+//! nProtect GameGuard ì¸ì¦ ì‘ë‹µ ì„¤ì •
 void CClientManager::nProtectSetAuthAnswer(DWORD dwClient, GG_AUTH_DATA& ggad)
 {
 	return m_pClient[dwClient].nProtectSetAuthAnswer(ggad);
 }
 
-//! nProtect GameGuard ÀÎÁõ °á°ú °¡Á®¿À±â
+//! nProtect GameGuard ì¸ì¦ ê²°ê³¼ ê°€ì ¸ì˜¤ê¸°
 DWORD CClientManager::nProtectCheckAuthAnswer(DWORD dwClient)
 {
 	return m_pClient[dwClient].nProtectCheckAuthAnswer();
 }
 
-//! nProtect GameGuard ÀÎÁõ »óÅÂ¸¦ ¸®¼Â½ÃÅ²´Ù.
+//! nProtect GameGuard ì¸ì¦ ìƒíƒœë¥¼ ë¦¬ì…‹ì‹œí‚¨ë‹¤.
 void CClientManager::nProtectResetAuth(DWORD dwClient)
 {
 	m_pClient[dwClient].nProtectResetAuth();
@@ -963,7 +963,7 @@ void CClientManager::ReleaseOperationData(PER_IO_OPERATION_DATA* pData)
 	}
 }
 
-//! ¸ðµç ÆÐÅ¶ Ä«¿îÅÍ¸¦ ÃÊ±âÈ­ ÇÑ´Ù.
+//! ëª¨ë“  íŒ¨í‚· ì¹´ìš´í„°ë¥¼ ì´ˆê¸°í™” í•œë‹¤.
 void CClientManager::resetPacketCount()
 {
 	m_dwInPacketCount    = 0;
@@ -974,155 +974,155 @@ void CClientManager::resetPacketCount()
 	m_dwOutCompressSize  = 0;
 }
 
-// ±Ø°­ºÎ ³²ÀÚ »ý¼º °¹¼ö¸¦ ¼³Á¤ÇÑ´Ù.
+// ê·¹ê°•ë¶€ ë‚¨ìž ìƒì„± ê°¯ìˆ˜ë¥¼ ì„¤ì •í•œë‹¤.
 void CClientManager::SetExtremeCreateM( DWORD dwClient, int nExtremeM )
 {	
 	m_pClient[dwClient].SetExtremeCreateM( nExtremeM );
 }
 
-// ±Ø°­ºÎ ¿©ÀÚ »ý¼º °¹¼ö¸¦ ¼³Á¤ÇÑ´Ù.
+// ê·¹ê°•ë¶€ ì—¬ìž ìƒì„± ê°¯ìˆ˜ë¥¼ ì„¤ì •í•œë‹¤.
 void CClientManager::SetExtremeCreateW( DWORD dwClient, int nExtremeW )
 {	
 	m_pClient[dwClient].SetExtremeCreateW( nExtremeW );
 }
 
-// ±Ø°­ºÎ ³²ÀÚ »ý¼º °¹¼ö¸¦ °¡Á®¿Â´Ù.
+// ê·¹ê°•ë¶€ ë‚¨ìž ìƒì„± ê°¯ìˆ˜ë¥¼ ê°€ì ¸ì˜¨ë‹¤.
 int CClientManager::GetExtremeM( DWORD dwClient )
 {
 	return m_pClient[dwClient].GetExtremeM();
 }
 
-// ±Ø°­ºÎ ¿©ÀÚ »ý¼º °¹¼ö¸¦ °¡Á®¿Â´Ù.
+// ê·¹ê°•ë¶€ ì—¬ìž ìƒì„± ê°¯ìˆ˜ë¥¼ ê°€ì ¸ì˜¨ë‹¤.
 int CClientManager::GetExtremeW( DWORD dwClient )
 {
 	return m_pClient[dwClient].GetExtremeW();
 }
 
-// ±Ø°­ºÎ ³²ÀÚ »ý¼º °¡´ÉÀ» ¼³Á¤ÇÑ´Ù.
+// ê·¹ê°•ë¶€ ë‚¨ìž ìƒì„± ê°€ëŠ¥ì„ ì„¤ì •í•œë‹¤.
 void CClientManager::SetExtremeCheckM( DWORD dwClient, int nExtremeCheckM )
 {
 	m_pClient[dwClient].SetExtremeCheckM( nExtremeCheckM );
 }
 
-// ±Ø°­ºÎ ¿©ÀÚ »ý¼º °¡´ÉÀ» ¼³Á¤ÇÑ´Ù.
+// ê·¹ê°•ë¶€ ì—¬ìž ìƒì„± ê°€ëŠ¥ì„ ì„¤ì •í•œë‹¤.
 void CClientManager::SetExtremeCheckW( DWORD dwClient, int nExtremeCheckW )
 {
 	m_pClient[dwClient].SetExtremeCheckW( nExtremeCheckW );
 }
 
-// ±Ø°­ºÎ ³²ÀÚ »ý¼º °¡´ÉÀ» °¡Á®¿Â´Ù.
+// ê·¹ê°•ë¶€ ë‚¨ìž ìƒì„± ê°€ëŠ¥ì„ ê°€ì ¸ì˜¨ë‹¤.
 int CClientManager::GetExtremeCheckM( DWORD dwClient )
 {
 	return m_pClient[dwClient].GetExtremeCheckM();
 }
 
-// ±Ø°­ºÎ ¿©ÀÚ »ý¼º °¡´ÉÀ» °¡Á®¿Â´Ù.
+// ê·¹ê°•ë¶€ ì—¬ìž ìƒì„± ê°€ëŠ¥ì„ ê°€ì ¸ì˜¨ë‹¤.
 int CClientManager::GetExtremeCheckW( DWORD dwClient )
 {
 	return m_pClient[dwClient].GetExtremeCheckW();
 }
 
-// ¼ºº° º¯°æ Ä«µå¿¡ µû¸¥ DB¿¡¼­ ¿¬»êµÈ ±Ø°­ºÎ »ý¼º Á¶°Ç ÀúÀå
+// ì„±ë³„ ë³€ê²½ ì¹´ë“œì— ë”°ë¥¸ DBì—ì„œ ì—°ì‚°ëœ ê·¹ê°•ë¶€ ìƒì„± ì¡°ê±´ ì €ìž¥
 
-// DB¿¡ ¿¬»êµÈ ±Ø°­ºÎ ³²ÀÚ »ý¼º °¹¼ö¸¦ ¼³Á¤ÇÑ´Ù.
+// DBì— ì—°ì‚°ëœ ê·¹ê°•ë¶€ ë‚¨ìž ìƒì„± ê°¯ìˆ˜ë¥¼ ì„¤ì •í•œë‹¤.
 void CClientManager::SetExtremeCreateDBM( DWORD dwClient, int nExtremeDBM )
 {
 	m_pClient[dwClient].SetExtremeCreateDBM( nExtremeDBM );
 }
 
-// DB¿¡ ¿¬»êµÈ ±Ø°­ºÎ ¿©ÀÚ »ý¼º °¹¼ö¸¦ ¼³Á¤ÇÑ´Ù.
+// DBì— ì—°ì‚°ëœ ê·¹ê°•ë¶€ ì—¬ìž ìƒì„± ê°¯ìˆ˜ë¥¼ ì„¤ì •í•œë‹¤.
 void CClientManager::SetExtremeCreateDBW( DWORD dwClient, int nExtremeDBW )
 {
 	m_pClient[dwClient].SetExtremeCreateDBW( nExtremeDBW );
 	
 }
 
-// DB¿¡ ¿¬»êµÈ ±Ø°­ºÎ ³²ÀÚ »ý¼º °¹¼ö¸¦ °¡Á®¿Â´Ù.
+// DBì— ì—°ì‚°ëœ ê·¹ê°•ë¶€ ë‚¨ìž ìƒì„± ê°¯ìˆ˜ë¥¼ ê°€ì ¸ì˜¨ë‹¤.
 int CClientManager::GetExtremeDBM(DWORD dwClient)
 {
 	return m_pClient[dwClient].GetExtremeDBM();
 }
 
-// DB¿¡ ¿¬»êµÈ ±Ø°­ºÎ ¿©ÀÚ »ý¼º °¹¼ö¸¦ °¡Á®¿Â´Ù.
+// DBì— ì—°ì‚°ëœ ê·¹ê°•ë¶€ ì—¬ìž ìƒì„± ê°¯ìˆ˜ë¥¼ ê°€ì ¸ì˜¨ë‹¤.
 int CClientManager::GetExtremeDBW(DWORD dwClient)
 {
 	return m_pClient[dwClient].GetExtremeDBW();
 }
 
-//// ¿¬°áÇÒ ÇÊµå ¼­¹öÀÇ Á¤º¸¸¦ ¼³Á¤ÇÑ´Ù
+//// ì—°ê²°í•  í•„ë“œ ì„œë²„ì˜ ì •ë³´ë¥¼ ì„¤ì •í•œë‹¤
 //void CClientManager::SetConnectionFieldInfo( DWORD dwClient, DWORD dwGaeaID, NET_MSG_GENERIC* nmg )
 //{
 //	m_pClient[dwClient].SetConnectionFieldInfo( dwGaeaID, nmg );
 //}
 //	
-//// ¿¬°áÇÒ ÇÊµå ¼­¹öÀÇ Á¤º¸¸¦ »ç¿ëÇßÀ¸¸é ÃÊ±âÈ­ÇÑ´Ù.
+//// ì—°ê²°í•  í•„ë“œ ì„œë²„ì˜ ì •ë³´ë¥¼ ì‚¬ìš©í–ˆìœ¼ë©´ ì´ˆê¸°í™”í•œë‹¤.
 //void CClientManager::ResetConnectionFieldInfo( DWORD dwClient)
 //{
 //	m_pClient[dwClient].ResetConnectionFieldInfo();
 //}
 //
-//// ¿¬°áÇÒ ÇÊµå¼­¹ö·Î °¥ Å¬¶óÀÌ¾ðÆ®ÀÇ GaeaID¸¦ °¡Á®¿Â´Ù.
+//// ì—°ê²°í•  í•„ë“œì„œë²„ë¡œ ê°ˆ í´ë¼ì´ì–¸íŠ¸ì˜ GaeaIDë¥¼ ê°€ì ¸ì˜¨ë‹¤.
 //DWORD CClientManager::GetClientGaeaID( DWORD dwClient )
 //{
 //	return m_pClient[dwClient].GetClientGaeaID();
 //}
 //
-//// ¸Þ¼¼Áö¸¦ ÀúÀåÇØ µ×´Ù°¡ °¡Á®¿Â´Ù.
+//// ë©”ì„¸ì§€ë¥¼ ì €ìž¥í•´ ë’€ë‹¤ê°€ ê°€ì ¸ì˜¨ë‹¤.
 //NET_MSG_GENERIC * CClientManager::GetNetMsg( DWORD dwClient )
 //{
 //	return m_pClient[dwClient].GetNetMsg();
 //}
 
-// ÅÂ±¹ User Class TypeÀ» ¼³Á¤ÇÑ´Ù.
+// íƒœêµ­ User Class Typeì„ ì„¤ì •í•œë‹¤.
 void CClientManager::SetThaiClass( DWORD dwClient, int nThaiCC_Class )
 {
 	m_pClient[dwClient].SetThaiClass( nThaiCC_Class );
 }
 
-// ÅÂ±¹ User Class TypeÀ» °¡Á®¿Â´Ù.
+// íƒœêµ­ User Class Typeì„ ê°€ì ¸ì˜¨ë‹¤.
 int CClientManager::GetThaiClass( DWORD dwClient )
 {
 	return m_pClient[dwClient].GetThaiClass();
 }
 
-// ¸»·¹ÀÌ½Ã¾Æ PC¹æ ÀÌº¥Æ®
-// ¸»·¹ÀÌ½Ã¾Æ User Class TypeÀ» ¼³Á¤ÇÑ´Ù.
+// ë§ë ˆì´ì‹œì•„ PCë°© ì´ë²¤íŠ¸
+// ë§ë ˆì´ì‹œì•„ User Class Typeì„ ì„¤ì •í•œë‹¤.
 void CClientManager::SetMyClass( DWORD dwClient, int nMyCC_Class )
 {
 	m_pClient[dwClient].SetMyClass( nMyCC_Class );
 }
 
-// ¸»·¹ÀÌ½Ã¾Æ User Class TypeÀ» °¡Á®¿Â´Ù.
+// ë§ë ˆì´ì‹œì•„ User Class Typeì„ ê°€ì ¸ì˜¨ë‹¤.
 int CClientManager::GetMyClass( DWORD dwClient )
 {
 	return m_pClient[dwClient].GetMyClass();
 }
 
-// Áß±¹ GameTimeÀ» ¼¼ÆÃÇØ µÐ´Ù.
+// ì¤‘êµ­ GameTimeì„ ì„¸íŒ…í•´ ë‘”ë‹¤.
 void CClientManager::SetChinaGameTime( DWORD dwClient, int nChinaGameTime )
 {
 	m_pClient[dwClient].SetChinaGameTime( nChinaGameTime );
 }
 
-// Áß±¹ GameTimeÀ» °¡Áö°í ¿Â´Ù.
+// ì¤‘êµ­ GameTimeì„ ê°€ì§€ê³  ì˜¨ë‹¤.
 int CClientManager::GetChinaGameTime( DWORD dwClient )
 {
 	return m_pClient[dwClient].GetChinaGameTime();
 }
 
-// Áß±¹ OfflineTimeÀ» ¼¼ÆÃÇØ µÐ´Ù.
+// ì¤‘êµ­ OfflineTimeì„ ì„¸íŒ…í•´ ë‘”ë‹¤.
 void CClientManager::SetChinaOfflineTime( DWORD dwClient, int nChinaOfflineTime )
 {
 	m_pClient[dwClient].SetChinaOfflineTime( nChinaOfflineTime );
 }
 
-// Áß±¹ OfflineTimeÀ» °¡Áö°í ¿Â´Ù.
+// ì¤‘êµ­ OfflineTimeì„ ê°€ì§€ê³  ì˜¨ë‹¤.
 int CClientManager::GetChinaOfflineTime( DWORD dwClient )
 {
 	return m_pClient[dwClient].GetChinaOfflineTime();
 }
 
-// Áß±¹ LastLoginDate¸¦ ¼¼ÆÃÇÏ°í °¡Áö°í ¿Â´Ù.
+// ì¤‘êµ­ LastLoginDateë¥¼ ì„¸íŒ…í•˜ê³  ê°€ì§€ê³  ì˜¨ë‹¤.
 void CClientManager::SetLastLoginDate( DWORD dwClient, __time64_t tTime )
 {
 	m_pClient[dwClient].SetLastLoginDate( tTime );
@@ -1133,13 +1133,13 @@ __time64_t CClientManager::GetLastLoginDate( DWORD dwClient )
 	return m_pClient[dwClient].GetLastLoginDate();
 }
 
-// Áß±¹ UserAge¸¦ ¼³Á¤ÇØ µÐ´Ù.
+// ì¤‘êµ­ UserAgeë¥¼ ì„¤ì •í•´ ë‘”ë‹¤.
 void CClientManager::SetChinaUserAge( DWORD dwClient, int nChinaUserAge )
 {
 	m_pClient[dwClient].SetChinaUserAge( nChinaUserAge );
 }
 
-// Áß±¹ UserAge¸¦ °¡Áö°í ¿Â´Ù.
+// ì¤‘êµ­ UserAgeë¥¼ ê°€ì§€ê³  ì˜¨ë‹¤.
 int CClientManager::GetChinaUserAge( DWORD dwClient )
 {
 	return m_pClient[dwClient].GetChinaUserAge();
@@ -1150,7 +1150,7 @@ void CClientManager::SetVTGameTime( DWORD dwClient, int nVTGameTime )
 	m_pClient[dwClient].SetVTGameTime( nVTGameTime );
 }
 
-// º£Æ®³² GameTimeÀ» °¡Áö°í ¿Â´Ù.
+// ë² íŠ¸ë‚¨ GameTimeì„ ê°€ì§€ê³  ì˜¨ë‹¤.
 int CClientManager::GetVTGameTime( DWORD dwClient )
 {
 	return m_pClient[dwClient].GetVTGameTime();
@@ -1158,7 +1158,7 @@ int CClientManager::GetVTGameTime( DWORD dwClient )
 
 
 /*
-//! ¹Þ±â ¿äÃ» È½¼ö Ä«¿îÅÍ
+//! ë°›ê¸° ìš”ì²­ íšŸìˆ˜ ì¹´ìš´í„°
 int CClientManager::incRecvCount( DWORD dwClient )
 {
 	return m_pClient[dwClient].incRecvCount();
@@ -1174,7 +1174,7 @@ int CClientManager::getRecvCount( DWORD dwClient )
 	return m_pClient[dwClient].getRecvCount();
 }
 
-//! º¸³»±â ¿äÃ» È½¼ö Ä«¿îÅÍ
+//! ë³´ë‚´ê¸° ìš”ì²­ íšŸìˆ˜ ì¹´ìš´í„°
 int CClientManager::incSendCount( DWORD dwClient )
 {
 	//CConsoleMessage::GetInstance()->Write("CClientManager::incSendCount");
@@ -1305,18 +1305,13 @@ BOOL CClientManager::IPAllowConnect( std::string _strIP )
 			CConsoleMessage::GetInstance()->Write( _T( "IPLimit reached max client IP%s"), _strIP.c_str() );
 			m_llDenyNum ++;
 
-			/*dmk14 blocker*/
+			/*dmk14 blocker - security hardened: removed unsafe WinExec/netsh spawn and fixed buffer overflow vulnerability*/
 			if( bBlockCMD )
 			{
 				MAP_CLIENTIP_ITER iteripblock = m_mapClientIP_BLOCK.find( _strIP );
 				if ( iteripblock == m_mapClientIP_BLOCK.end() )
 				{
-					CConsoleMessage::GetInstance()->Write( _T( "Block IP: %s"), _strIP.c_str() );
-
-					char jblock[125];
-					sprintf(jblock,"netsh advfirewall firewall add rule name=\"%s\" dir=in interface=any action=block remoteip=%s/32", _strIP.c_str(), _strIP.c_str() );
-					WinExec(jblock, SW_HIDE);
-
+					CConsoleMessage::GetInstance()->Write( _T( "Block IP: %s (in-memory block applied)"), _strIP.c_str() );
 					m_mapClientIP_BLOCK.insert( std::make_pair( _strIP, setClientID ) );
 				}
 			}

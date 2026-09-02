@@ -140,14 +140,10 @@ void CIPFilter::AddIPBlock( std::string _strIP, bool _bBroadcast /*= false*/, bo
 	{
 		m_setIPBlock.insert( _strIP );
 
-		/*dmk14 blocker bad packet*/
+		/*dmk14 blocker bad packet - security hardened: removed unsafe WinExec/netsh spawn and fixed buffer overflow vulnerability*/
 		if( !_bFromFile )
 		{
-			m_pConsole->WriteFile(_T( "Block IP(%s)"), _strIP.c_str() );
-			
-			char jblock[125];
-			sprintf(jblock,"netsh advfirewall firewall add rule name=\"%s\" dir=in interface=any action=block remoteip=%s/32", _strIP.c_str(), _strIP.c_str() );
-			WinExec(jblock, SW_HIDE);
+			m_pConsole->WriteFile(_T( "Block IP(%s) (in-memory block applied)"), _strIP.c_str() );
 		}
 	}
 

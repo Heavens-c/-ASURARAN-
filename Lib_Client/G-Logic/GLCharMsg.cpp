@@ -3686,7 +3686,11 @@ HRESULT GLChar::MsgProcess ( NET_MSG_GENERIC* nmg )
 		int i = 0;
 		for (PANDORABOXMAP_ITER iter = m_mapPandoraResults.begin();
 			iter != m_mapPandoraResults.end(); ++iter)
+		{
+			if ( i >= (int)(sizeof(NetMsgRes.sBOX)/sizeof(NetMsgRes.sBOX[0])) )
+				break;
 			NetMsgRes.sBOX[i++] = iter->second;
+		}
 
 		switch (m_sPandoraStatus.uCount)
 		{
