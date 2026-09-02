@@ -1612,8 +1612,8 @@ HRESULT GLChar::MsgReqInvenToHold ( NET_MSG_GENERIC* nmg )
 	SITEM* pITEM = GLItemMan::GetInstance().GetItem( pInvenItem->sItemCustom.sNativeID );
 	if ( !pITEM ) return S_FALSE;
 
-	/*security hardening: block inventory hold during active trade or club storage to prevent item duplication*/
-	if ( m_sTrade.Valid() || m_bClubStorage )
+	/*security hardening: block inventory hold during active trade to prevent item duplication*/
+	if ( m_sTrade.Valid() )
 		return S_FALSE;
 
 	/*inventory lock, Juver, 2018/01/18 */
@@ -3098,8 +3098,8 @@ HRESULT GLChar::MsgReqInvenSplit ( NET_MSG_GENERIC* nmg )
 	SITEM* pItem = GLItemMan::GetInstance().GetItem ( pInvenItem->sItemCustom.sNativeID );
 	if ( !pItem )													return E_FAIL;
 
-	/*security hardening: block inventory split during active trade or club storage to prevent item duplication*/
-	if ( m_sTrade.Valid() || m_bClubStorage )
+	/*security hardening: block inventory split during active trade to prevent item duplication*/
+	if ( m_sTrade.Valid() )
 		return E_FAIL;
 
 	/*inventory lock, Juver, 2018/01/18 */
