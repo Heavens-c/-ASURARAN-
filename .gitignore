@@ -1,0 +1,11 @@
+_Build/
+_Bin/
+*.obj
+*.lib
+*.pdb
+*.tlog
+*.idb
+*.pch
+*.ipch
+*.log
+.vs/
