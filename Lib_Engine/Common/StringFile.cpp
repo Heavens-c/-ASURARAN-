@@ -94,7 +94,15 @@ BOOL CStringFile::Open ( LPCSTR szFile, BOOL bDecode )
 		else
 		{
 			fseek ( m_fFile, 0, SEEK_SET );
-			return FALSE;
+			if ( bPastLoad || stricmp( ext, ".ini" ) == 0 || stricmp( ext, ".txt" ) == 0 || stricmp( ext, ".cfg" ) == 0 )
+			{
+				m_bDecode = FALSE;
+				m_nVersion = -1;
+			}
+			else
+			{
+				return FALSE;
+			}
 		}
 	}
 

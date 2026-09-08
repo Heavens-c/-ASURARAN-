@@ -20,8 +20,8 @@ namespace CDebugSet
 	#define MAX_CHANNEL		(8)
 	#define MAX_STRLENGTH	(256)
 	#define	LIST_CHANNEL	(8)
-	#define	MAX_LISTPAGE	(20)	//	ÆäÀÌÁö ¼ö, 1ÆäÀÌÁö´Â MAX_INFO ¶óÀÎÀ» Ãâ·ÂÇÏ¸ç,
-									//	1364ÆäÀÌÁö°¡ ´ë·«... 10MÁ¤µµ ¸Ô´Â´Ù.
+	#define	MAX_LISTPAGE	(20)	//	í˜ì´ì§€ ìˆ˜, 1í˜ì´ì§€ëŠ” MAX_INFO ë¼ì¸ì„ ì¶œë ¥í•˜ë©°,
+									//	1364í˜ì´ì§€ê°€ ëŒ€ëµ... 10Mì •ë„ ë¨¹ëŠ”ë‹¤.
 
 	enum	EDEBUGSTATE
 	{
@@ -91,13 +91,13 @@ namespace CDebugSet
 
 	LISTPOSTEXT m_listPosText;
 
-	//	Note	:	È­¸é¿¡ »Ñ¸®´Â ½Ã°£ ( ÃÊ´ÜÀ§ )
+	//	Note	:	í™”ë©´ì— ë¿Œë¦¬ëŠ” ì‹œê°„ ( ì´ˆë‹¨ìœ„ )
 	//
 	float DELAY_TIME = 30.0f;
 
 	void FrameMove ( float fTime, float fETime )
 	{
-		//	Å°º¸µå ÀÔ·Â Ã¤³Î ¼³Á¤
+		//	í‚¤ë³´ë“œ ì…ë ¥ ì±„ë„ ì„¤ì •
 		DxInputDevice &IDev = DxInputDevice::GetInstance();
 		if ( IDev.GetKeyState(DIK_LCONTROL)&DXKEY_PRESSED )
 		{
@@ -107,7 +107,7 @@ namespace CDebugSet
 			}
 		}
 		
-		if ( m_nChannel == LIST_CHANNEL )	//	¸®½ºÆ® ¸®Æ÷ÆÃ ÄÁÆ®·Ñ
+		if ( m_nChannel == LIST_CHANNEL )	//	ë¦¬ìŠ¤íŠ¸ ë¦¬í¬íŒ… ì»¨íŠ¸ë¡¤
 		{
 			if ( IDev.GetKeyState(DIK_LCONTROL)&DXKEY_PRESSED )
 			{
@@ -145,7 +145,7 @@ namespace CDebugSet
 				}
 			}
 		}
-		else								//	ÁøÇà ½Ã°£
+		else								//	ì§„í–‰ ì‹œê°„
 		{
 			for ( int i=0; i<MAX_INFO; ++i )
 			{
@@ -162,7 +162,7 @@ namespace CDebugSet
 	{	
 		if ( !m_pFont )	return;
 
-		//	Æ¯Á¤À§Ä¡¿¡ ¸Å ÇÁ·¡ÀÓ ¸¶´Ù »Ñ·ÁÁö´Â ÅØ½ºÆ® °ü¸®.
+		//	íŠ¹ì •ìœ„ì¹˜ì— ë§¤ í”„ë˜ì„ ë§ˆë‹¤ ë¿Œë ¤ì§€ëŠ” í…ìŠ¤íŠ¸ ê´€ë¦¬.
 		{
 			LISTPOSTEXT_ITER iter = m_listPosText.begin();
 			LISTPOSTEXT_ITER iter_end = m_listPosText.end();
@@ -176,7 +176,7 @@ namespace CDebugSet
 		D3DCOLOR fontColor;
 		float	XPos = 2.f;
 
-		if ( m_nChannel == LIST_CHANNEL )	//	¸®½ºÆ® ¸®Æ÷ÆÃ ·»´õ
+		if ( m_nChannel == LIST_CHANNEL )	//	ë¦¬ìŠ¤íŠ¸ ë¦¬í¬íŒ… ë Œë”
 		{
 			char szChannel[128] = "";
 			StringCchPrintf( szChannel, 128, "List Reporting...  [%04d/%04d]", m_CurNode, m_ListInfo.GetAmount () );
@@ -192,7 +192,7 @@ namespace CDebugSet
 					m_pFont->DrawText ( XPos, pInfo->YPos[i], fontColor, pInfo->szInfo[i] );
 			}
 		}
-		else								//	ÀÏ¹İ Ã¤³Î ·»´õ
+		else								//	ì¼ë°˜ ì±„ë„ ë Œë”
 		{
 			char szChannel[128] = "";
 			StringCchPrintf( szChannel, 128, "Channel :\t%d", m_nChannel );
@@ -202,17 +202,17 @@ namespace CDebugSet
 			{
 				INFO &info = m_Info[m_nChannel];
 
-				//	Note	:	µğ¹ö±× Á¤º¸°¡ ÀÖ´Ù¸é... EMPTY°¡ ¾Æ´Ò¶§...
-				//				EMPTY´Â 0ÀÓ
+				//	Note	:	ë””ë²„ê·¸ ì •ë³´ê°€ ìˆë‹¤ë©´... EMPTYê°€ ì•„ë‹ë•Œ...
+				//				EMPTYëŠ” 0ì„
 				if ( info.State[i] )
 				{
-					//	Note	:	¶óÀÎÀÌ ÁöÁ¤µÈ ³ğ
+					//	Note	:	ë¼ì¸ì´ ì§€ì •ëœ ë†ˆ
 					if ( info.State[i] == FIXLINE )
 					{
 						fontColor = D3DCOLOR_ARGB(255,165,235,255);
 					}
 					
-					//	Note	:	°¡Àå ´Ê°Ô µé¾î¿Â µğ¹ö±× Á¤º¸
+					//	Note	:	ê°€ì¥ ëŠ¦ê²Œ ë“¤ì–´ì˜¨ ë””ë²„ê·¸ ì •ë³´
 					//				
 					else if ( info.nCur == i )
 					{
@@ -220,7 +220,7 @@ namespace CDebugSet
 						fontColor = D3DCOLOR_ARGB(Alpha,255,199,172);
 					}
 					
-					//	Note	:	ÀÏ¹İ µğ¹ö±× Á¤º¸
+					//	Note	:	ì¼ë°˜ ë””ë²„ê·¸ ì •ë³´
 					//
 					else
 					{
@@ -244,20 +244,20 @@ namespace CDebugSet
 		StringCbVPrintf ( szBuffer, MAX_STRLENGTH, szFormat, argList );
 		va_end(argList);
 
-		//	Note	:	´ÙÀ½ ¶óÀÎÀ¸·Î ÁøÇà
+		//	Note	:	ë‹¤ìŒ ë¼ì¸ìœ¼ë¡œ ì§„í–‰
 		m_Info[0].nCur = ( m_Info[0].nCur + 1 ) % MAX_INFO;
 
-		//	Note	:	FullCount´Â µğ¹ö±× ¹è¿­ÀÌ ¸ğµÎ ´Ù Ã¡À»¶§,
-		//				Á¦ÀÏ ¿À·¡Àü¿¡ µé¾î¿Â ³ğÀ» Áö¿î´Ù.
+		//	Note	:	FullCountëŠ” ë””ë²„ê·¸ ë°°ì—´ì´ ëª¨ë‘ ë‹¤ ì°¼ì„ë•Œ,
+		//				ì œì¼ ì˜¤ë˜ì „ì— ë“¤ì–´ì˜¨ ë†ˆì„ ì§€ìš´ë‹¤.
 		for ( int	FullCount = 0; m_Info[0].State[m_Info[0].nCur] != EMPTY; FullCount++ )
 		{	
-			//	Note	:	ÇÑ ¹ÙÄû¸¦ ´Ù µ¹°íµµ ¸øÃ£Àº °æ¿ì´Â
-			//				µğ¹ö±× Á¤º¸°¡ ²ËÃ¡´Ù´Â ÀÌ¾ß±â
+			//	Note	:	í•œ ë°”í€´ë¥¼ ë‹¤ ëŒê³ ë„ ëª»ì°¾ì€ ê²½ìš°ëŠ”
+			//				ë””ë²„ê·¸ ì •ë³´ê°€ ê½‰ì°¼ë‹¤ëŠ” ì´ì•¼ê¸°
 			if ( FullCount == MAX_INFO )
 			{
-				//	Note	:	´Ù½Ã Á¦ÀÚ¸®·Î µ¹¾Æ¿ÔÀ½¿¡µµ ºÒ±¸ÇÏ°í,
-				//				±× ÀÚ¸®°¡ ¶óÀÎÁöÁ¤ µğ¹ö±× Á¤º¸ÀÌ¸é
-				//				´ÙÀ½ ¶óÀÎÀ¸·Î Á¡ÇÁ
+				//	Note	:	ë‹¤ì‹œ ì œìë¦¬ë¡œ ëŒì•„ì™”ìŒì—ë„ ë¶ˆêµ¬í•˜ê³ ,
+				//				ê·¸ ìë¦¬ê°€ ë¼ì¸ì§€ì • ë””ë²„ê·¸ ì •ë³´ì´ë©´
+				//				ë‹¤ìŒ ë¼ì¸ìœ¼ë¡œ ì í”„
 				for ( ; m_Info[0].State[m_Info[0].nCur] == FIXLINE; )
 				{
 					m_Info[0].nCur = ( m_Info[0].nCur + 1 ) % MAX_INFO;                                
@@ -267,7 +267,7 @@ namespace CDebugSet
 			m_Info[0].nCur = ( m_Info[0].nCur + 1 ) % MAX_INFO;
 		}	
 		
-		//	Note	:	¶óÀÎ ºÙÀÌ±â
+		//	Note	:	ë¼ì¸ ë¶™ì´ê¸°
 		char	szLine[12] = "";
 		StringCchPrintf( szLine, 12, "[%02d]  ", m_Info[0].nCur );
 
@@ -337,10 +337,10 @@ namespace CDebugSet
 
 		if ( pInfo )
 		{
-			//	Note	:	´ÙÀ½ ¶óÀÎÀ¸·Î ÁøÇà
+			//	Note	:	ë‹¤ìŒ ë¼ì¸ìœ¼ë¡œ ì§„í–‰
 			pInfo->nCur = pInfo->nCur + 1;			
 			
-			if ( pInfo->nCur == MAX_INFO )	//	³ëµå°¡ ²Ë Âù°æ¿ì
+			if ( pInfo->nCur == MAX_INFO )	//	ë…¸ë“œê°€ ê½‰ ì°¬ê²½ìš°
 			{
 				BOOL	bTail = FALSE;
 				if ( m_CurNode == m_ListInfo.GetAmount () )
@@ -348,14 +348,14 @@ namespace CDebugSet
 					bTail = TRUE;
 				}
 
-				//	ÆäÀÌÁö°¡ ÃÖ´ë MAX_LISTPAGE¸¸Å­ ÀâÈ÷µµ·Ï ÇÑ´Ù.
-				//	¸¹À» °æ¿ì, ¿¹Àü °ÍºÎÅÍ »èÁ¦ÇÔ
+				//	í˜ì´ì§€ê°€ ìµœëŒ€ MAX_LISTPAGEë§Œí¼ ì¡íˆë„ë¡ í•œë‹¤.
+				//	ë§ì„ ê²½ìš°, ì˜ˆì „ ê²ƒë¶€í„° ì‚­ì œí•¨
 				if ( MAX_LISTPAGE == m_ListInfo.GetAmount () )
 				{
-					//	ÇöÀç Æ÷Áö¼Ç ÀÌµ¿
+					//	í˜„ì¬ í¬ì§€ì…˜ ì´ë™
 					m_ListInfo.GoNext ();
 
-					//	¸Ó¸® »èÁ¦
+					//	ë¨¸ë¦¬ ì‚­ì œ
 					INFO* pHeadInfo = NULL;
 					m_ListInfo.GetHead ( pHeadInfo );
 					SAFE_DELETE ( pHeadInfo );					
@@ -363,9 +363,9 @@ namespace CDebugSet
 
 					if ( !m_ListInfo.GetAmount () )
 					{
-						//	ÁÖÀÇ : m_CurNode°¡ 0ÀÎ°æ¿ì´Â ¾ø´Ù.
-						//		   ¿©±â¼­´Â ¿¹¿ÜÀûÀ¸·Î »ç¿ë, ¸ğµç ³ëµå°¡ »èÁ¦µÈ °ÍÀ»
-						//		   ÀÇ¹ÌÇÑ´Ù.
+						//	ì£¼ì˜ : m_CurNodeê°€ 0ì¸ê²½ìš°ëŠ” ì—†ë‹¤.
+						//		   ì—¬ê¸°ì„œëŠ” ì˜ˆì™¸ì ìœ¼ë¡œ ì‚¬ìš©, ëª¨ë“  ë…¸ë“œê°€ ì‚­ì œëœ ê²ƒì„
+						//		   ì˜ë¯¸í•œë‹¤.
 						m_CurNode = 0;
 					}
 				}
@@ -376,7 +376,7 @@ namespace CDebugSet
 				m_ListInfo.AddTail ( pNewInfo );
 				m_ListInfo.GetTail ( pInfo );
 
-				//	ÇöÀç°¡ ¸¶Áö¸· ÆäÀÌÁö ÀÎ°¡?
+				//	í˜„ì¬ê°€ ë§ˆì§€ë§‰ í˜ì´ì§€ ì¸ê°€?
 				if ( bTail )
 				{
 					m_ListInfo.SetTail ();
@@ -386,7 +386,7 @@ namespace CDebugSet
 				pInfo->nCur = 0;				
 			}
 			
-			//	Note	:	¶óÀÎ ºÙÀÌ±â		
+			//	Note	:	ë¼ì¸ ë¶™ì´ê¸°		
 			char	szLine[16] = "";
 			static	int nLine = 0;
 			StringCchPrintf( szLine, 16, "[%05d]  ", nLine++ );
@@ -433,7 +433,7 @@ namespace CDebugSet
 		va_end(argList);
 
 
-		//	Note	:	Àı´ë °æ·Î ºÙÀÌ±â
+		//	Note	:	ì ˆëŒ€ ê²½ë¡œ ë¶™ì´ê¸°
 		//
 		char	szFullPathFileName[256] = "";
 
@@ -469,7 +469,7 @@ namespace CDebugSet
 		sprintf( szBuffer, "[%s], %s", GetCurTime().c_str(), szTempBuf );
 
 
-		//	Note	:	Àı´ë °æ·Î ºÙÀÌ±â
+		//	Note	:	ì ˆëŒ€ ê²½ë¡œ ë¶™ì´ê¸°
 		//
 		char	szFullPathFileName[256] = "";
 		sprintf( szFileName, "%s_Tracing_Log.csv", szAccountName );
@@ -507,7 +507,7 @@ namespace CDebugSet
 		va_end(argList);
 
 
-		//	Note	:	Àı´ë °æ·Î ºÙÀÌ±â
+		//	Note	:	ì ˆëŒ€ ê²½ë¡œ ë¶™ì´ê¸°
 		//
 		char	szFullPathFileName[256] = "";
 
@@ -625,7 +625,7 @@ namespace CDebugSet
 
 	void ClearFile ( const char *szFileName )
 	{
-		//	Note	:	Àı´ë °æ·Î ºÙÀÌ±â
+		//	Note	:	ì ˆëŒ€ ê²½ë¡œ ë¶™ì´ê¸°
 		//
 		char	szFullPathFileName[256] = "";
 
@@ -656,7 +656,7 @@ namespace CDebugSet
 
 		m_pFont = NULL;
 		
-		//	¸®½ºÆ® Ã¤³Î ±âº» 1°³ ÀÛ¼º
+		//	ë¦¬ìŠ¤íŠ¸ ì±„ë„ ê¸°ë³¸ 1ê°œ ì‘ì„±
 		INFO* pNewInfo = new INFO;
 		pNewInfo->Init ();
 		m_ListInfo.AddTail ( pNewInfo );
@@ -697,7 +697,7 @@ namespace CDebugSet
 	{
 		if ( !pFont )		return E_FAIL;
 		
-		//	Note	:	ÆùÆ® ¼¼ÆÃ
+		//	Note	:	í°íŠ¸ ì„¸íŒ…
 		//	
 		m_pFont = pFont;
 
@@ -738,7 +738,7 @@ namespace CDebugSet
 		return S_OK;
 	}
 
-	// ÀÓ½Ã Å×½ºÆ®¿ë ( ÁØÇõ )
+	// ì„ì‹œ í…ŒìŠ¤íŠ¸ìš© ( ì¤€í˜ )
 	bool s_bOn = false;
 	FILE* s_fp = NULL;
 
@@ -852,15 +852,15 @@ namespace CDebugSet
 	std::string strErrorFile_LogFileName	= "DebugSetErrorFile.txt";		//error file log filename
 	std::string strErrorCode_LogFileName	= "DebugSetErrorCode.txt";	//error code log filename
 
-	BOOL	m_bErrorVersion_MessageBox	= TRUE;	//display message box for version error
+	BOOL	m_bErrorVersion_MessageBox	= FALSE;	//display message box for version error
 	BOOL	m_bErrorVersion_WriteLog	= TRUE;	//write log file for version error
 
-	BOOL	m_bErrorFile_MessageBox		= TRUE;	//display message box for file read Error
+	BOOL	m_bErrorFile_MessageBox		= FALSE;	//display message box for file read Error
 	BOOL	m_bErrorFile_WriteLog		= TRUE;	//write log file for file read error
 	BOOL	m_bErrorFile_Remember		= TRUE;	//remember the error filename to avoid repeat
-	BOOL	m_bErrorFile_ClipBoard		= TRUE;	//copy the error filename to clipboard for easy search
+	BOOL	m_bErrorFile_ClipBoard		= FALSE;	//copy the error filename to clipboard for easy search
 
-	BOOL	m_bErrorCode_MessageBox		= TRUE;	//display message box for code error
+	BOOL	m_bErrorCode_MessageBox		= FALSE;	//display message box for code error
 	BOOL	m_bErrorCode_WriteLog		= TRUE;	//write log file for code error
 
 	std::vector<std::string>	m_vecErrorFile; //container for error filename 
@@ -1013,7 +1013,7 @@ namespace CDebugSet
 
 namespace CLOCKCHECK
 {
-	//	Note : cpu Å¬·° ÃøÁ¤À» À§ÇÑ º¯¼ö °ø°£.
+	//	Note : cpu í´ëŸ­ ì¸¡ì •ì„ ìœ„í•œ ë³€ìˆ˜ ê³µê°„.
 	//
 	DWORD dwShi, dwSlo, dwEhi, dwElo;
 };

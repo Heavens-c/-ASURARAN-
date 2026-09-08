@@ -12,7 +12,7 @@
 
 void GETSEEDGAMETIME ( const DWORD dwTIMESCALE, SPRERIODTIME &_cPRERIODTIME )
 {
-	//	Note : ±âÁØ ½Ã°£ ¼³Á¤.
+	//	Note : ê¸°ì¤€ ì‹œê°„ ì„¤ì •.
 	//
 	SYSTEMTIME _seedtime;
 	memset(&_seedtime,0,sizeof(SYSTEMTIME));
@@ -31,7 +31,7 @@ void GETSEEDGAMETIME ( const DWORD dwTIMESCALE, SPRERIODTIME &_cPRERIODTIME )
 		MessageBox ( NULL, "system time too old. \ncheck system time.", "ERROR", MB_OK );
 	}
 
-	//	Note : ±âÁ¡ ½Ã°£°úÀÇ ½ÇÁ¦ °æ°ú ½Ã°£ »êÃâ.
+	//	Note : ê¸°ì  ì‹œê°„ê³¼ì˜ ì‹¤ì œ ê²½ê³¼ ì‹œê°„ ì‚°ì¶œ.
 	//
 	CTimeSpan cDXTIME = cCURTIME-cSEEDTIME;
 
@@ -48,7 +48,7 @@ void GETSEEDGAMETIME ( const DWORD dwTIMESCALE, SPRERIODTIME &_cPRERIODTIME )
 	LONGLONG lnGAMEDAY  = ( lnGRESECOND/(3600*24) + lnREDXDAY ) % 365;
 	LONGLONG lnGAMEYEAR = ( lnGRESECOND/(3600*24) + lnREDXDAY ) / 365;
 
-	//	Note : °ÔÀÓ ½Ã°£ ¹İÈ¯.
+	//	Note : ê²Œì„ ì‹œê°„ ë°˜í™˜.
 	//
 	_cPRERIODTIME.dwYear = (DWORD) lnGAMEYEAR;
 	_cPRERIODTIME.dwYearToday = (DWORD) lnGAMEDAY;
@@ -230,7 +230,7 @@ DWORD GLPeriod::SetThisMonth ()
 	MTHARRAY_ITER iter = m_MTH_LMT.upper_bound ( m_dwYear_Today );
 	if ( iter==m_MTH_LMT.end() )
 	{
-		GASSERT(0&&"³¯Â¥¿¡¼­ ¸î¿ùÀÎÁö Ã£±â¿¡ ½ÇÆĞÇÏ¿´½À´Ï´Ù.");
+		GASSERT(0&&"ë‚ ì§œì—ì„œ ëª‡ì›”ì¸ì§€ ì°¾ê¸°ì— ì‹¤íŒ¨í•˜ì˜€ìŠµë‹ˆë‹¤.");
 		m_dwThisMonth = 6;	// default;
 	}
 	else
@@ -246,7 +246,7 @@ DWORD GLPeriod::SetToday ()
 	MTHARRAY_ITER iter = m_MTH_LMT.upper_bound ( m_dwYear_Today );
 	if ( iter==m_MTH_LMT.end() )
 	{
-		GASSERT(0&&"³¯Â¥¿¡¼­ ¸î¿ùÀÎÁö Ã£±â¿¡ ½ÇÆĞÇÏ¿´½À´Ï´Ù.");
+		GASSERT(0&&"ë‚ ì§œì—ì„œ ëª‡ì›”ì¸ì§€ ì°¾ê¸°ì— ì‹¤íŒ¨í•˜ì˜€ìŠµë‹ˆë‹¤.");
 		m_dwMonth_Today = 15;	// default;
 	}
 	else
@@ -275,7 +275,7 @@ void GLPeriod::TestToNoon ( float _fvbr )
 
 void GLPeriod::SetOneMapActiveWeather( SONEMAPWEATHER oneMapWeather, bool bServer )
 {
-	// »èÁ¦ 	
+	// ì‚­ì œ 	
 	DWORD i;
 	if( oneMapWeather.dwWeather == NULL )
 	{		
@@ -288,7 +288,7 @@ void GLPeriod::SetOneMapActiveWeather( SONEMAPWEATHER oneMapWeather, bool bServe
 				break;
 			}
 		}
-	} // Ãß°¡
+	} // ì¶”ê°€
 	else{
 		if( bServer )
 		{
@@ -345,12 +345,12 @@ HRESULT GLPeriod::UpdateWeather ( float fElapsedTime )
 {
 	if ( !m_bActiveWeather )	return S_OK;
 
-	//	Note : ³¯¾¾ º¯È­.
+	//	Note : ë‚ ì”¨ ë³€í™”.
 	//
 	m_fWeatherTimer -= fElapsedTime*m_fTIMETOVBR;
 	
 
-	//	Note : ÀÏ½ÃÀû ÀÚ¿¬È¿°ú - ¹ø°³ ¹ß»ıÈ®À² Á¶Àı.
+	//	Note : ì¼ì‹œì  ìì—°íš¨ê³¼ - ë²ˆê°œ ë°œìƒí™•ìœ¨ ì¡°ì ˆ.
 	//
 	m_dwWhimsicalWeather &= ~FGW_WHIMSICAL;
 
@@ -367,25 +367,25 @@ HRESULT GLPeriod::UpdateWeather ( float fElapsedTime )
 	}
 
 
-	//	Note : ³¯¾¾ º¯È­ Å¸ÀÌ¹ÖÀÌ µÇ¾úÀ»¶§.
+	//	Note : ë‚ ì”¨ ë³€í™” íƒ€ì´ë°ì´ ë˜ì—ˆì„ë•Œ.
 	//
 	if ( m_fWeatherTimer < 0.0f )
 	{
 		m_fWeatherTimer = WEATHER_TIMESET*TIME_SEC;
 
-		//	Á¾Àü ³¯¾¾µéÀ» Áö¿öÁÜ.
+		//	ì¢…ì „ ë‚ ì”¨ë“¤ì„ ì§€ì›Œì¤Œ.
 		if ( m_dwWeather&FGW_ALL )
 		{
 			m_dwWeather &= ~FGW_ALL;
-			return S_OK;						// ³Ñ¾î°£´Ù. 
+			return S_OK;						// ë„˜ì–´ê°„ë‹¤. 
 		}
 
-		//  ³¯¾¾ ºñÀ²Áß °¡Àå Å« °ªÀ» ±¸ÇÑ´Ù.
+		//  ë‚ ì”¨ ë¹„ìœ¨ì¤‘ ê°€ì¥ í° ê°’ì„ êµ¬í•œë‹¤.
 		DWORD dwHigh = (m_dwRainRate>=m_dwSnowRate) ? m_dwRainRate : m_dwSnowRate;
 		dwHigh = (dwHigh>=m_dwSporeRate) ? dwHigh : m_dwSporeRate;
 		dwHigh = (dwHigh>=m_dwLeavesRate) ? dwHigh : m_dwLeavesRate;
 
-		//  ÇöÀç ¾²¿©¾ß ÇÏ´Â ³¯¾¾·Î ¼ÂÆÃÇÑ´Ù.
+		//  í˜„ì¬ ì“°ì—¬ì•¼ í•˜ëŠ” ë‚ ì”¨ë¡œ ì…‹íŒ…í•œë‹¤.
 		if ( RANDOM_POS*100.0f<=dwHigh )
 		{
 			DWORD dwSum		= m_dwRainRate+m_dwSnowRate+m_dwSporeRate+m_dwLeavesRate;
@@ -410,7 +410,7 @@ HRESULT GLPeriod::UpdateWeather ( float fElapsedTime )
 		}
 	}
 
-	// °¢ ¸Ê¿¡ µû·Î Àû¿ëµÇ´Â ³¯¾¾ È¿°ú ¾÷µ¥ÀÌÆ®
+	// ê° ë§µì— ë”°ë¡œ ì ìš©ë˜ëŠ” ë‚ ì”¨ íš¨ê³¼ ì—…ë°ì´íŠ¸
 	if( m_vecOneMapWeather.size() != 0 )
 	{
 		DWORD i;
@@ -420,7 +420,7 @@ HRESULT GLPeriod::UpdateWeather ( float fElapsedTime )
 			CTimeSpan timeSpan = currentTime - m_vecOneMapWeather[i].startTime;
 
 			if( timeSpan.GetTotalMinutes() >= m_vecOneMapWeather[i].dwApplyTime )
-//			if( timeSpan.GetTotalSeconds() >= (LONG)m_vecOneMapWeather[i].dwApplyTime ) // Å×½ºÆ®¿ë
+//			if( timeSpan.GetTotalSeconds() >= (LONG)m_vecOneMapWeather[i].dwApplyTime ) // í…ŒìŠ¤íŠ¸ìš©
 			{
 				m_vecOneMapWeather.erase( m_vecOneMapWeather.begin() + i );
 				i--;
@@ -439,12 +439,12 @@ HRESULT GLPeriod::UpdateWeather ( float fElapsedTime )
 					}
 				}
 
-				////  ³¯¾¾ ºñÀ²Áß °¡Àå Å« °ªÀ» ±¸ÇÑ´Ù.
+				////  ë‚ ì”¨ ë¹„ìœ¨ì¤‘ ê°€ì¥ í° ê°’ì„ êµ¬í•œë‹¤.
 				//DWORD dwHigh = (m_dwRainRate>=m_dwSnowRate) ? m_dwRainRate : m_dwSnowRate;
 				//dwHigh = (dwHigh>=m_dwSporeRate) ? dwHigh : m_dwSporeRate;
 				//dwHigh = (dwHigh>=m_dwLeavesRate) ? dwHigh : m_dwLeavesRate;
 
-				////  ÇöÀç ¾²¿©¾ß ÇÏ´Â ³¯¾¾·Î ¼ÂÆÃÇÑ´Ù.
+				////  í˜„ì¬ ì“°ì—¬ì•¼ í•˜ëŠ” ë‚ ì”¨ë¡œ ì…‹íŒ…í•œë‹¤.
 				//if ( RANDOM_POS*100.0f<=dwHigh )
 				//{
 				//	DWORD dwSum		= m_dwRainRate+m_dwSnowRate+m_dwSporeRate+m_dwLeavesRate;
@@ -478,7 +478,7 @@ float GLPeriod::GetDirectionFact ()
 {
 	float	fFact;
 	float	fFullTime;
-	float	fCurTime = m_dwHour*TIME_SEC + m_fSecond;		// ÇöÀçÀÇ ½Ã°£ ³ªÅ¸³¿
+	float	fCurTime = m_dwHour*TIME_SEC + m_fSecond;		// í˜„ì¬ì˜ ì‹œê°„ ë‚˜íƒ€ëƒ„
 
 	if ( m_bSummerSeason )
 	{
@@ -498,11 +498,11 @@ float GLPeriod::GetDirectionFact ()
 	return fFact;
 }
 
-D3DXVECTOR2 GLPeriod::GetDirectFact_XY ()		// ÅÂ¾ç, ´Ş ÀÇ ÁÂÇ¥¸¦ X,Y °ªÀ¸·Î ¾Ë¾Æ³¾¶§ ¾²ÀÓ
+D3DXVECTOR2 GLPeriod::GetDirectFact_XY ()		// íƒœì–‘, ë‹¬ ì˜ ì¢Œí‘œë¥¼ X,Y ê°’ìœ¼ë¡œ ì•Œì•„ë‚¼ë•Œ ì“°ì„
 {
 	D3DXVECTOR2	vFact;
 	float		fRate;
-	float		fCurTime = m_dwHour*TIME_SEC + m_fSecond;		// ÇöÀçÀÇ ½Ã°£ ³ªÅ¸³¿
+	float		fCurTime = m_dwHour*TIME_SEC + m_fSecond;		// í˜„ì¬ì˜ ì‹œê°„ ë‚˜íƒ€ëƒ„
 
 	float fSunTime_Left;
 	float fSunTime_Up;
@@ -534,7 +534,7 @@ D3DXVECTOR2 GLPeriod::GetDirectFact_XY ()		// ÅÂ¾ç, ´Ş ÀÇ ÁÂÇ¥¸¦ X,Y °ªÀ¸·Î ¾Ë¾Æ
 	fSunTime_Down_L	*= TIME_SEC;
 
 
-	if ( (fCurTime>=fSunTime_Down_S) && (fCurTime<fSunTime_Left) )			// ¹ã->»õº®
+	if ( (fCurTime>=fSunTime_Down_S) && (fCurTime<fSunTime_Left) )			// ë°¤->ìƒˆë²½
 	{
 		fRate = (fCurTime-fSunTime_Down_S) / (fSunTime_Left-fSunTime_Down_S);
 
@@ -545,7 +545,7 @@ D3DXVECTOR2 GLPeriod::GetDirectFact_XY ()		// ÅÂ¾ç, ´Ş ÀÇ ÁÂÇ¥¸¦ X,Y °ªÀ¸·Î ¾Ë¾Æ
 			return vFact;
 		}
 	}
-	if ( (fCurTime>=fSunTime_Left) && (fCurTime<fSunTime_Up) )				// »õº®->Á¤¿À
+	if ( (fCurTime>=fSunTime_Left) && (fCurTime<fSunTime_Up) )				// ìƒˆë²½->ì •ì˜¤
 	{
 		fRate = (fCurTime-fSunTime_Left) / (fSunTime_Up-fSunTime_Left);
 		vFact.x = 1.f - fRate;
@@ -553,7 +553,7 @@ D3DXVECTOR2 GLPeriod::GetDirectFact_XY ()		// ÅÂ¾ç, ´Ş ÀÇ ÁÂÇ¥¸¦ X,Y °ªÀ¸·Î ¾Ë¾Æ
 
 		return vFact;
 	}
-	if ( (fCurTime>=fSunTime_Up) && (fCurTime<fSunTime_Right) )				// Á¤¿À->Àú³á¹«·Æ
+	if ( (fCurTime>=fSunTime_Up) && (fCurTime<fSunTime_Right) )				// ì •ì˜¤->ì €ë…ë¬´ë µ
 	{
 		fRate = (fCurTime-fSunTime_Up) / (fSunTime_Right-fSunTime_Up);
 		vFact.x = -fRate;
@@ -561,7 +561,7 @@ D3DXVECTOR2 GLPeriod::GetDirectFact_XY ()		// ÅÂ¾ç, ´Ş ÀÇ ÁÂÇ¥¸¦ X,Y °ªÀ¸·Î ¾Ë¾Æ
 
 		return vFact;
 	}
-	if ( (fCurTime>=fSunTime_Right) && (fCurTime<fSunTime_Down_L) )			// Àú³á¹«·Æ->¹ã
+	if ( (fCurTime>=fSunTime_Right) && (fCurTime<fSunTime_Down_L) )			// ì €ë…ë¬´ë µ->ë°¤
 	{
 		fRate = (fCurTime-fSunTime_Right) / (fSunTime_Down_L-fSunTime_Right);
 
@@ -573,7 +573,7 @@ D3DXVECTOR2 GLPeriod::GetDirectFact_XY ()		// ÅÂ¾ç, ´Ş ÀÇ ÁÂÇ¥¸¦ X,Y °ªÀ¸·Î ¾Ë¾Æ
 		}
 	}
 
-	if ( fCurTime >= (12.f*TIME_SEC) )										// °ªÀÌ Å©°í "¹ã->»õº®"
+	if ( fCurTime >= (12.f*TIME_SEC) )										// ê°’ì´ í¬ê³  "ë°¤->ìƒˆë²½"
 	{
 		fCurTime = fCurTime - (24.f*TIME_SEC);
 
@@ -582,7 +582,7 @@ D3DXVECTOR2 GLPeriod::GetDirectFact_XY ()		// ÅÂ¾ç, ´Ş ÀÇ ÁÂÇ¥¸¦ X,Y °ªÀ¸·Î ¾Ë¾Æ
 		vFact.y = -1.f + fRate;
 		return vFact;
 	}
-	else																	// °ªÀÌ ÀÛ°í "Àú³á¹«·Æ->¹ã"
+	else																	// ê°’ì´ ì‘ê³  "ì €ë…ë¬´ë µ->ë°¤"
 	{
 		fCurTime = fCurTime + (24.f*TIME_SEC);
 
@@ -599,14 +599,14 @@ HRESULT GLPeriod::FrameMove ( float fTime, float fElapsedTime )
 {
 	m_fSecond += fElapsedTime*m_fTIMETOVBR;
 
-	//	ÃÊ °æ°ú. ( ½Ã°£°æ°ú Ã¼Å© )
+	//	ì´ˆ ê²½ê³¼. ( ì‹œê°„ê²½ê³¼ ì²´í¬ )
 	if ( m_fSecond >= TIME_SEC )
 	{
 		m_fSecond = 0;
 		m_dwHour += 1;
 	}
 
-	//	³¯ °æ°ú Ã¼Å©
+	//	ë‚  ê²½ê³¼ ì²´í¬
 	if ( m_dwHour >= DAY_HOUR )
 	{
 		m_dwMonth_Today += 1;
@@ -614,7 +614,7 @@ HRESULT GLPeriod::FrameMove ( float fTime, float fElapsedTime )
 		m_dwHour = 0;
 	}
 
-	//	³â °æ°ú Ã¼Å©.
+	//	ë…„ ê²½ê³¼ ì²´í¬.
 	if ( m_dwYear_Today >= YEAR_DAY )
 	{
 		m_dwThisMonth = 1;
@@ -624,7 +624,7 @@ HRESULT GLPeriod::FrameMove ( float fTime, float fElapsedTime )
 	}
 
 
-	//	´Ş °æ°ú Ã¼Å©
+	//	ë‹¬ ê²½ê³¼ ì²´í¬
 	DWORD dwNewThisMonth = SetThisMonth();
 	DWORD dwToday = SetToday();
 
@@ -632,12 +632,12 @@ HRESULT GLPeriod::FrameMove ( float fTime, float fElapsedTime )
 
 	if ( m_bNight )
 	{
-		//	¹ã->³· ÀüÈ¯.
+		//	ë°¤->ë‚® ì „í™˜.
 		if ( IsNoon() )		m_bNight = !m_bNight;
 	}
 	else
 	{
-		//	¹ã->³· ÀüÈ¯.
+		//	ë°¤->ë‚® ì „í™˜.
 		if ( !IsNoon() )	m_bNight = !m_bNight;
 	}
 
@@ -647,15 +647,15 @@ HRESULT GLPeriod::FrameMove ( float fTime, float fElapsedTime )
 	if( IsNoon() )
 	{
 		m_sFGTime = FGT_DAYTIME;
-		m_fBaseFact = 1.0f;//	1.0f ÀÏ¶§ ³·.
+		m_fBaseFact = 1.0f;//	1.0f ì¼ë•Œ ë‚®.
 	}
 	else
 	{
 		m_sFGTime = FGT_NIGHT;
-		m_fBaseFact = 0.0f;//	0.0f ÀÏ¶§ ¹ã.
+		m_fBaseFact = 0.0f;//	0.0f ì¼ë•Œ ë°¤.
 	}
 
-	//	¹à¾ÆÁö´Â ½Ã°£.
+	//	ë°ì•„ì§€ëŠ” ì‹œê°„.
 	if ( IsFadeInTime() )
 	{
 		m_fBaseFact = m_fSecond/float(TIME_SEC);
@@ -668,7 +668,7 @@ HRESULT GLPeriod::FrameMove ( float fTime, float fElapsedTime )
 		else	m_fBlueFact = 0.f;
 	}
 
-	//	¾îµÎ¿öÁö´Â ½Ã°£.
+	//	ì–´ë‘ì›Œì§€ëŠ” ì‹œê°„.
 	if ( IsFadeOutTime() )
 	{
 		m_fBaseFact = 1.0f - (m_fSecond/float(TIME_SEC));
@@ -681,14 +681,14 @@ HRESULT GLPeriod::FrameMove ( float fTime, float fElapsedTime )
 		else	m_fRedFact = 0.f;
 	}
 
-	//	»õº®½Ã°£´ë.
+	//	ìƒˆë²½ì‹œê°„ëŒ€.
 	if( IsBlueTime() )
 	{
 		m_sFGTime = FGT_DAWN;
 		m_fBlueFact = 1.f - (m_fSecond/float(TIME_SEC));
 	}
 
-	//	³ëÀ»ÀÌ Áö´Â ½Ã°£´ë.
+	//	ë…¸ì„ì´ ì§€ëŠ” ì‹œê°„ëŒ€.
 	if( IsRedTime() )
 	{
 		m_sFGTime = FGT_SUNSET;
@@ -696,25 +696,25 @@ HRESULT GLPeriod::FrameMove ( float fTime, float fElapsedTime )
 	}
 
 	
-	//	³·ÀÏ¶§. Èå¸° ³¯¾¾ÀÏ¶§ Á¶¸íÀ» Á¶±İ ¾îµÓ°Ô ¸¸µë.
+	//	ë‚®ì¼ë•Œ. íë¦° ë‚ ì”¨ì¼ë•Œ ì¡°ëª…ì„ ì¡°ê¸ˆ ì–´ë‘¡ê²Œ ë§Œë“¬.
 	float fRainRate = DxWeatherMan::GetInstance()->GetRain()->GetApplyRate();
 	float fSnowRate = DxWeatherMan::GetInstance()->GetSnow()->GetApplyRate();
 	if ( ( (fRainRate>0.f) || (fSnowRate>0.f) ) && m_fBaseFact>fCLOUDY_BLENDFACT )
 	{
 		float fWeatherRate = (fRainRate>fSnowRate) ? fRainRate : fSnowRate;
 
-		//				±âº» °ª	   | ±âº»°ª¿¡ ´ëÀÀÇÏ±â À§ÇØ | »©¾ßÇÏ´Â °ªÀ» ¾ò±â À§ÇØ | ¾ó¸¶³ª »óÅÂ°¡ ½ÉÇÑ°¡?
+		//				ê¸°ë³¸ ê°’	   | ê¸°ë³¸ê°’ì— ëŒ€ì‘í•˜ê¸° ìœ„í•´ | ë¹¼ì•¼í•˜ëŠ” ê°’ì„ ì–»ê¸° ìœ„í•´ | ì–¼ë§ˆë‚˜ ìƒíƒœê°€ ì‹¬í•œê°€?
 		m_fBlendFact = m_fBaseFact - (m_fBaseFact * ( 1.f - fCLOUDY_BLENDFACT ) * fWeatherRate);
 
-		// Àú³á Å¸ÀÓ.. 
+		// ì €ë… íƒ€ì„.. 
 		m_fNightFact = 1.f - m_fBaseFact;
 		m_fNightFact = m_fNightFact - (m_fNightFact * ( 1.f - fCLOUDY_BLENDFACT ) * fWeatherRate);
 
 	}
 	else
 	{
-		m_fBlendFact = m_fBaseFact;			// ¿ø·¡ Á¶¸íÀ» »ç¿ëÇÔ.
-		m_fNightFact = 1.f - m_fBaseFact;	// Àú³á Å¸ÀÓ.
+		m_fBlendFact = m_fBaseFact;			// ì›ë˜ ì¡°ëª…ì„ ì‚¬ìš©í•¨.
+		m_fNightFact = 1.f - m_fBaseFact;	// ì €ë… íƒ€ì„.
 	}
 
 	//CDebugSet::ToView ( 16, "BF: %1.3f", m_fBlueFact );

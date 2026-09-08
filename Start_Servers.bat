@@ -44,7 +44,7 @@ echo    [SUCCESS] RanOnline Server Daemons Launched!
 echo.
 echo    - ServerSession : Port 5001 (IPC Coordinator)
 echo    - ServerLogin   : Port 5101 (Client Authentication)
-echo    - ServerAgent   : Port 5201 (Lobby & Social Router)
+echo    - ServerAgent   : Port 5201 (Lobby ^& Social Router)
 echo    - ServerField   : Port 5301 (World / Zone Engine)
 echo =======================================================
 echo.

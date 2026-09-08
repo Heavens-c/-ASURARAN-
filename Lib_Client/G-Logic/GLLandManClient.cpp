@@ -64,7 +64,7 @@ BOOL GLLandManClient::LoadFile ( const char *szFile )
 	GASSERT(m_pd3dDevice);
 	HRESULT	hr = S_OK;
 
-	//	Note : Map µ¥ÀÌÅÍ ¸®¼Â.
+	//	Note : Map ë°ì´í„° ë¦¬ì…‹.
 	CleanUp ();
 
 	BOOL bOk(FALSE);
@@ -80,7 +80,7 @@ BOOL GLLandManClient::LoadFile ( const char *szFile )
 		m_LandMan.SetMapID( m_sMapID );
 	}
 
-	//	Note : Map ´ëÀÌÅÍ ÃÊ±âÈ­.
+	//	Note : Map ëŒ€ì´í„° ì´ˆê¸°í™”.
 	m_vMax = D3DXVECTOR3(+10000,0,+10000);
 	m_vMin = D3DXVECTOR3(-10000,0,-10000);
 
@@ -104,16 +104,16 @@ HRESULT GLLandManClient::Create ( const char* szSetFileName, LPDIRECT3DDEVICEQ p
 
 	m_pd3dDevice = pd3dDevice;
 
-	//	ÀÌÀü ´ëÀÌÅÍ »èÁ¦.
+	//	ì´ì „ ëŒ€ì´í„° ì‚­ì œ.
 	CleanUp ();
 
 	m_strFileName = szSetFileName;
 
-	//	Note : ÆÄÀÏ¿¡¼­ ÀĞÀº MAP ID °¡ ¾Æ´Ï¶ó ÀÎ¼ö·Î ³Ñ¾î¿Â ID¸¦ »ç¿ë.
+	//	Note : íŒŒì¼ì—ì„œ ì½ì€ MAP ID ê°€ ì•„ë‹ˆë¼ ì¸ìˆ˜ë¡œ ë„˜ì–´ì˜¨ IDë¥¼ ì‚¬ìš©.
 	//
 	if ( pMapID )	SetMapID ( *pMapID, bPeaceZone!=FALSE );
 
-	//	Note : ¸ãÀ» ÀĞ¾î¿È.
+	//	Note : ë©¥ì„ ì½ì–´ì˜´.
 	//
 	hr = LoadFile ( szSetFileName );
 	if ( FAILED(hr) )	return hr;
@@ -125,7 +125,7 @@ HRESULT GLLandManClient::Create ( const char* szSetFileName, LPDIRECT3DDEVICEQ p
 		SetClubBattleZone( pMapNode->bClubBattleZone );
 	}
 
-	//	Note : ¸ãÀÇ ÃÊ±â À§Ä¡ ÁÖº¯À» ¹Ì¸® ÀĞ¾îµĞ´Ù.
+	//	Note : ë©¥ì˜ ì´ˆê¸° ìœ„ì¹˜ ì£¼ë³€ì„ ë¯¸ë¦¬ ì½ì–´ë‘”ë‹¤.
 	////
 	//D3DXVECTOR3 vMax = vBasicPos + D3DXVECTOR3(1000,60,1000);
 	//D3DXVECTOR3 vMin = vBasicPos + D3DXVECTOR3(-1000,-60,-1000);
@@ -133,7 +133,7 @@ HRESULT GLLandManClient::Create ( const char* szSetFileName, LPDIRECT3DDEVICEQ p
 
 	m_bPeaceZone = bPeaceZone;
 
-	//	Note : Mob/Npc ÀÇ Çü»ó ÆÄÀÏµéÀ» ¹Ì¸® ÀĞ¾î µÓ´Ï´Ù.
+	//	Note : Mob/Npc ì˜ í˜•ìƒ íŒŒì¼ë“¤ì„ ë¯¸ë¦¬ ì½ì–´ ë‘¡ë‹ˆë‹¤.
 	//
 	GLMobScheduleMan::MOBDESC& setMobDesc = m_MobSchMan.GetMobDesc();
 	GLMobScheduleMan::MOBDESC_ITER iter = setMobDesc.begin();
@@ -143,11 +143,11 @@ HRESULT GLLandManClient::Create ( const char* szSetFileName, LPDIRECT3DDEVICEQ p
 	{
 		sMobID.dwID = (*iter);
 
-		//	Note : ¸÷ÀÇ ¼³Á¤ Á¤º¸¸¦ °¡Á®¿È.
+		//	Note : ëª¹ì˜ ì„¤ì • ì •ë³´ë¥¼ ê°€ì ¸ì˜´.
 		PCROWDATA pCrowData = GLCrowDataMan::GetInstance().GetCrowData ( sMobID );
 		if( !pCrowData )
 		{
-			CDebugSet::ToLogFile ( "GLLandManClient::Create()-GLCrowDataMan::GetCrowData() [%d/%d] °¡Á®¿À±â ½ÇÆĞ.", sMobID.wMainID, sMobID.wSubID );
+			CDebugSet::ToLogFile ( "GLLandManClient::Create()-GLCrowDataMan::GetCrowData() [%d/%d] ê°€ì ¸ì˜¤ê¸° ì‹¤íŒ¨.", sMobID.wMainID, sMobID.wSubID );
 		}
 
 		if ( pCrowData )
@@ -157,7 +157,7 @@ HRESULT GLLandManClient::Create ( const char* szSetFileName, LPDIRECT3DDEVICEQ p
 			{
 				if( strlen( pCrowData->GetSkinObjFile() ) )
 				{
-					CDebugSet::ToLogFile ( "GLLandManClient::Create()-DxSkinCharDataContainer::LoadData() [%s] °¡Á®¿À±â ½ÇÆĞ.", pCrowData->GetSkinObjFile() );
+					CDebugSet::ToLogFile ( "GLLandManClient::Create()-DxSkinCharDataContainer::LoadData() [%s] ê°€ì ¸ì˜¤ê¸° ì‹¤íŒ¨.", pCrowData->GetSkinObjFile() );
 				}
 			}
 		}
@@ -389,7 +389,7 @@ HRESULT GLLandManClient::FrameMove ( float fTime, float fElapsedTime )
 	PROFILE_END("m_GlobPCList::FrameMove");
 
 	// PET
-	// ¿©±â¼­ ´Ù¸¥ ÆÖµéÀÇ FrameMove Ã³¸®
+	// ì—¬ê¸°ì„œ ë‹¤ë¥¸ íŒ»ë“¤ì˜ FrameMove ì²˜ë¦¬
 	PROFILE_BEGIN("m_GlobAnyPetList::FrameMove");
 	GLANYPETNODE *pPetCur = m_GlobAnyPetList.m_pHead;
 	for ( ; pPetCur; pPetCur = pPetCur->pNext )
@@ -402,7 +402,7 @@ HRESULT GLLandManClient::FrameMove ( float fTime, float fElapsedTime )
 	PROFILE_END("m_GlobAnyPetList::FrameMove");
 
 	// SUMMON
-	// ¿©±â¼­ ´Ù¸¥ ÆÖµéÀÇ FrameMove Ã³¸®
+	// ì—¬ê¸°ì„œ ë‹¤ë¥¸ íŒ»ë“¤ì˜ FrameMove ì²˜ë¦¬
 	PROFILE_BEGIN("m_GlobAnySummonList::FrameMove");
 	GLANYSUMMONNODE *pSummonCur = m_GlobAnySummonList.m_pHead;
 	for ( ; pSummonCur; pSummonCur = pSummonCur->pNext )
@@ -498,7 +498,7 @@ HRESULT GLLandManClient::Render_MobItem ( CLIPVOLUME &CV )
 	CNameDisplayMan *pDISP_NAME_MAN = CInnerInterface::GetInstance().GetDispName();
 	if ( pDISP_NAME_MAN )	pDISP_NAME_MAN->SET_COUNT ( m_dwCOUNT );
 
-	//	Note : ÀÌ¸§ ¸ñ·Ï¿¡ ÀÚ±â ÀÚ½Å Ãß°¡.
+	//	Note : ì´ë¦„ ëª©ë¡ì— ìê¸° ìì‹  ì¶”ê°€.
 	{
 		CROWREN sDISP_NAME;
 		sDISP_NAME.INIT ( &cMYCHAR );
@@ -512,7 +512,7 @@ HRESULT GLLandManClient::Render_MobItem ( CLIPVOLUME &CV )
 		}
 	}
 
-	// ÀÌ¸§¸ñ·Ï¿¡ ÀÚ½ÅÀÇ ÆÖÀÌ¸§ Ãß°¡
+	// ì´ë¦„ëª©ë¡ì— ìì‹ ì˜ íŒ»ì´ë¦„ ì¶”ê°€
 	GLPetClient* pMYPET = GLGaeaClient::GetInstance().GetPetClient ();
 	if ( pMYPET->IsVALID () )
 	{
@@ -531,7 +531,7 @@ HRESULT GLLandManClient::Render_MobItem ( CLIPVOLUME &CV )
 		}
 	}
 
-	// ÀÌ¸§¸ñ·Ï¿¡ ÀÚ½ÅÀÇ ¼ÒÈ¯¼ö ÀÌ¸§ Ãß°¡
+	// ì´ë¦„ëª©ë¡ì— ìì‹ ì˜ ì†Œí™˜ìˆ˜ ì´ë¦„ ì¶”ê°€
 	/*skill summon, Juver, 2017/10/08 */
 	for( int i=0; i<SKILL_SUMMON_MAX_CLIENT_NUM; ++i )
 	{
@@ -675,13 +675,13 @@ HRESULT GLLandManClient::Render_MobItem ( CLIPVOLUME &CV )
 	}
 
 	// PET
-	// ¿©±â¼­ ´Ù¸¥ ÆÖµéÀÇ Render Ã³¸®
+	// ì—¬ê¸°ì„œ ë‹¤ë¥¸ íŒ»ë“¤ì˜ Render ì²˜ë¦¬
 	GLANYPETNODE *pPetCur = m_GlobAnyPetList.m_pHead;
 	for ( ; pPetCur; pPetCur = pPetCur->pNext )
 	{
 		PGLANYPET pPet = pPetCur->Data;
 
-		// ÆÖÀÌ¸§ Ç¥½Ã
+		// íŒ»ì´ë¦„ í‘œì‹œ
 		if ( COLLISION::IsCollisionVolume( CV,pPet->m_vMax,pPet->m_vMin ) )
 		{
 			vPOS = pPet->GetPosition ();
@@ -708,7 +708,7 @@ HRESULT GLLandManClient::Render_MobItem ( CLIPVOLUME &CV )
 	}
 
 	// SUMMON
-	// ¿©±â¼­ ´Ù¸¥ ÆÖµéÀÇ Render Ã³¸®
+	// ì—¬ê¸°ì„œ ë‹¤ë¥¸ íŒ»ë“¤ì˜ Render ì²˜ë¦¬
 	GLANYSUMMONNODE *pSummonCur = m_GlobAnySummonList.m_pHead;
 	for ( ; pSummonCur; pSummonCur = pSummonCur->pNext )
 	{
@@ -717,7 +717,7 @@ HRESULT GLLandManClient::Render_MobItem ( CLIPVOLUME &CV )
 		/*skill summon, Juver, 2017/10/08 */
 		if ( !pSummon->IsSTATE( EM_SUMMONACT_WAITING ) )
 		{
-			// ¼ÒÈ¯¼öÀÌ¸§ Ç¥½Ã
+			// ì†Œí™˜ìˆ˜ì´ë¦„ í‘œì‹œ
 			if ( COLLISION::IsCollisionVolume( CV,pSummon->m_vMax,pSummon->m_vMin ) )
 			{
 				vPOS = pSummon->GetPosition ();
@@ -853,7 +853,7 @@ HRESULT GLLandManClient::Render_MobItem ( CLIPVOLUME &CV )
 	m_pd3dDevice->SetRenderState ( D3DRS_LIGHTING, dwOldLighting );
 	m_pd3dDevice->SetTextureStageState( 0, D3DTSS_COLOROP, dwOldColorOp );
 
-	//	Note : Å¸°ÙÀº Ã¤·Â Ç¥½Ã¿ëÀ¸·Î Display µÇ¹Ç·Î ÀÌ¸§ Ãâ·Â ¸®½ºÆ®¿¡¼­ »èÁ¦.
+	//	Note : íƒ€ê²Ÿì€ ì±„ë ¥ í‘œì‹œìš©ìœ¼ë¡œ Display ë˜ë¯€ë¡œ ì´ë¦„ ì¶œë ¥ ë¦¬ìŠ¤íŠ¸ì—ì„œ ì‚­ì œ.
 	//	
 	//SACTIONTAR& sACTAR = GLGaeaClient::GetInstance().GetCharacter()->GetActTarget();
 	//EMCROW emCROW = sACTAR.sTARID.emCrow;
@@ -882,7 +882,7 @@ void GLLandManClient::RenderPickAlpha()
 
 BOOL GLLandManClient::DropItem ( SDROP_CLIENT_ITEM *pItemDrop )
 {
-	//	Note : ¶³¾îÁú À§Ä¡ ³ëµå¸¦ Ã£´Â´Ù.
+	//	Note : ë–¨ì–´ì§ˆ ìœ„ì¹˜ ë…¸ë“œë¥¼ ì°¾ëŠ”ë‹¤.
 	//
 	CLIENTQUADNODE* pLandNode = m_LandTree.FindNode ( (int)pItemDrop->vPos.x, (int)pItemDrop->vPos.z );
 	if ( !pLandNode )	return	FALSE;
@@ -890,13 +890,13 @@ BOOL GLLandManClient::DropItem ( SDROP_CLIENT_ITEM *pItemDrop )
 	SITEM* pITEM = GLItemMan::GetInstance().GetItem( pItemDrop->sItemClient.sNativeID );
 	if ( !pITEM )		return FALSE;
 
-	//	Note : ¸Ş¸ğ¸®¸¦ ÇÒ´ç.
+	//	Note : ë©”ëª¨ë¦¬ë¥¼ í• ë‹¹.
 	//
 	CItemClientDrop *pNewItem = new CItemClientDrop;
 
 
-	//	Note : ÁöÇüÀÇ ³ôÀÌ¶û ¸ÂÃß¾î¼­ ¶³¾îÁö´Â ÁöÁ¡À» ¼±ÅÃÇÑ´Ù.
-	//		( ³»ºñ°ÔÀÌ¼ÇÀÌ¶û ¿ÀÂ÷°¡ ¾à°£ ÀÖ´Â°É °¨¾È. )
+	//	Note : ì§€í˜•ì˜ ë†’ì´ë‘ ë§ì¶”ì–´ì„œ ë–¨ì–´ì§€ëŠ” ì§€ì ì„ ì„ íƒí•œë‹¤.
+	//		( ë‚´ë¹„ê²Œì´ì…˜ì´ë‘ ì˜¤ì°¨ê°€ ì•½ê°„ ìˆëŠ”ê±¸ ê°ì•ˆ. )
 	D3DXVECTOR3 vPoint1 = pItemDrop->vPos + D3DXVECTOR3(0,8,0);
 	D3DXVECTOR3 vPoint2 = pItemDrop->vPos + D3DXVECTOR3(0,-5,0);
 	
@@ -909,25 +909,25 @@ BOOL GLLandManClient::DropItem ( SDROP_CLIENT_ITEM *pItemDrop )
 	if ( bCollision )	vDropPos = vCollision;
 	vDropPos.y += 1.0f;
 
-	//	Note : ¾ÆÀÌÅÛ Á¤º¸ ( Á¾·ù, À§Ä¡ ).
+	//	Note : ì•„ì´í…œ ì •ë³´ ( ì¢…ë¥˜, ìœ„ì¹˜ ).
 	//
 	pNewItem->sItemClient = pItemDrop->sItemClient;
 	pNewItem->vPos = vDropPos;
 	D3DXMatrixTranslation ( &pNewItem->matWld, pNewItem->vPos.x, pNewItem->vPos.y, pNewItem->vPos.z );
 
-	//	Note : °ü¸® ID ºÎ¿©.
+	//	Note : ê´€ë¦¬ ID ë¶€ì—¬.
 	//
 	pNewItem->sMapID = m_sMapID;
 	pNewItem->dwGlobID = pItemDrop->dwGlobID;
 	pNewItem->dwCeID = pLandNode->dwCID;
 
-	//	Note : °ü¸® ³ëµå Æ÷ÀÎÅÍ.
+	//	Note : ê´€ë¦¬ ë…¸ë“œ í¬ì¸í„°.
 	//
-	m_ItemArray[pNewItem->dwGlobID] = pNewItem;										// - Àü¿ª.
-	pNewItem->pGlobList = m_GlobItemList.ADDHEAD ( pNewItem );						// - Àü¿ª.
+	m_ItemArray[pNewItem->dwGlobID] = pNewItem;										// - ì „ì—­.
+	pNewItem->pGlobList = m_GlobItemList.ADDHEAD ( pNewItem );						// - ì „ì—­.
 
-	pNewItem->pQuadNode = pLandNode;												// - Æ®¸® ³ëµå.
-	pNewItem->pCellList = pLandNode->pData->m_ItemList.ADDHEAD ( pNewItem );		// - Æ®¸® ³ëµå.
+	pNewItem->pQuadNode = pLandNode;												// - íŠ¸ë¦¬ ë…¸ë“œ.
+	pNewItem->pCellList = pLandNode->pData->m_ItemList.ADDHEAD ( pNewItem );		// - íŠ¸ë¦¬ ë…¸ë“œ.
 
 	std::string strFieldFile = pITEM->sBasicOp.strFieldFile;
 	std::transform ( strFieldFile.begin(), strFieldFile.end(), strFieldFile.begin(), tolower );
@@ -1064,17 +1064,17 @@ BOOL GLLandManClient::DropItem ( SDROP_CLIENT_ITEM *pItemDrop )
 
 BOOL GLLandManClient::DropMoney ( LONGLONG lnAmount, D3DXVECTOR3 vPos, DWORD dwGlobID, float fAge )
 {
-	//	Note : ¶³¾îÁú À§Ä¡ ³ëµå¸¦ Ã£´Â´Ù.
+	//	Note : ë–¨ì–´ì§ˆ ìœ„ì¹˜ ë…¸ë“œë¥¼ ì°¾ëŠ”ë‹¤.
 	//
 	CLIENTQUADNODE* pLandNode = m_LandTree.FindNode ( (int)vPos.x, (int)vPos.z );
 	if ( !pLandNode )	return	FALSE;
 
-	//	Note : ¸Ş¸ğ¸®¸¦ ÇÒ´ç.
+	//	Note : ë©”ëª¨ë¦¬ë¥¼ í• ë‹¹.
 	//
 	CMoneyClientDrop *pNewMoney = new CMoneyClientDrop;
 
-	//	Note : ÁöÇüÀÇ ³ôÀÌ¶û ¸ÂÃß¾î¼­ ¶³¾îÁö´Â ÁöÁ¡À» ¼±ÅÃÇÑ´Ù.
-	//		( ³»ºñ°ÔÀÌ¼ÇÀÌ¶û ¿ÀÂ÷°¡ ¾à°£ ÀÖ´Â°É °¨¾È. )
+	//	Note : ì§€í˜•ì˜ ë†’ì´ë‘ ë§ì¶”ì–´ì„œ ë–¨ì–´ì§€ëŠ” ì§€ì ì„ ì„ íƒí•œë‹¤.
+	//		( ë‚´ë¹„ê²Œì´ì…˜ì´ë‘ ì˜¤ì°¨ê°€ ì•½ê°„ ìˆëŠ”ê±¸ ê°ì•ˆ. )
 	D3DXVECTOR3 vPoint1 = vPos + D3DXVECTOR3(0,8,0);
 	D3DXVECTOR3 vPoint2 = vPos + D3DXVECTOR3(0,-5,0);
 	
@@ -1087,7 +1087,7 @@ BOOL GLLandManClient::DropMoney ( LONGLONG lnAmount, D3DXVECTOR3 vPos, DWORD dwG
 	if ( bCollision )	vDropPos = vCollision;
 	vDropPos.y += 1.0f;
 
-	//	Note : ¾ÆÀÌÅÛ Á¤º¸ ( Á¾·ù, À§Ä¡ ).
+	//	Note : ì•„ì´í…œ ì •ë³´ ( ì¢…ë¥˜, ìœ„ì¹˜ ).
 	//
 	pNewMoney->fAge = fAge;
 	pNewMoney->lnAmount = lnAmount;
@@ -1095,19 +1095,19 @@ BOOL GLLandManClient::DropMoney ( LONGLONG lnAmount, D3DXVECTOR3 vPos, DWORD dwG
 	D3DXMatrixTranslation ( &pNewMoney->matWld, pNewMoney->vPos.x, pNewMoney->vPos.y, pNewMoney->vPos.z );
 
 
-	//	Note : °ü¸® ID ºÎ¿©.
+	//	Note : ê´€ë¦¬ ID ë¶€ì—¬.
 	//
 	pNewMoney->sMapID = m_sMapID;
 	pNewMoney->dwGlobID = dwGlobID;
 	pNewMoney->dwCeID = pLandNode->dwCID;
 
-	//	Note : °ü¸® ³ëµå Æ÷ÀÎÅÍ.
+	//	Note : ê´€ë¦¬ ë…¸ë“œ í¬ì¸í„°.
 	//
-	m_MoneyArray[dwGlobID] = pNewMoney;												// - Àü¿ª.
-	pNewMoney->pGlobList = m_GlobMoneyList.ADDHEAD ( pNewMoney );					// - Àü¿ª.
+	m_MoneyArray[dwGlobID] = pNewMoney;												// - ì „ì—­.
+	pNewMoney->pGlobList = m_GlobMoneyList.ADDHEAD ( pNewMoney );					// - ì „ì—­.
 
-	pNewMoney->pQuadNode = pLandNode;												// - Æ®¸® ³ëµå.
-	pNewMoney->pCellList = pLandNode->pData->m_MoneyList.ADDHEAD ( pNewMoney );		// - Æ®¸® ³ëµå.
+	pNewMoney->pQuadNode = pLandNode;												// - íŠ¸ë¦¬ ë…¸ë“œ.
+	pNewMoney->pCellList = pLandNode->pData->m_MoneyList.ADDHEAD ( pNewMoney );		// - íŠ¸ë¦¬ ë…¸ë“œ.
 
 	DxSimMesh* pMoneyMesh = NULL;
 	if ( lnAmount>200 )			pMoneyMesh = GLItemMan::GetInstance().GetMoneyMesh ( 2 );
@@ -1131,7 +1131,7 @@ BOOL GLLandManClient::DropMoney ( LONGLONG lnAmount, D3DXVECTOR3 vPos, DWORD dwG
 
 BOOL GLLandManClient::CreateAnyPet ( PSDROPPET pDropPet )
 {
-	// Áßº¹µÇ¸é ÀÌÀü°ÍÀ» Áö¿ì´Ù.
+	// ì¤‘ë³µë˜ë©´ ì´ì „ê²ƒì„ ì§€ìš°ë‹¤.
 	if  ( GetPet ( pDropPet->m_dwGUID ) ) DropOutPet ( pDropPet->m_dwGUID );
 
 	if ( pDropPet->m_sMapID != m_sMapID )	return FALSE;
@@ -1146,10 +1146,10 @@ BOOL GLLandManClient::CreateAnyPet ( PSDROPPET pDropPet )
 	m_PETArray.insert ( std::make_pair(pDropPet->m_dwGUID,pNewPet) );
 	pNewPet->m_pGlobNode = m_GlobAnyPetList.ADDHEAD ( pNewPet );
 
-	pNewPet->m_pQuadNode = pLandNode;											// - Æ®¸® ³ëµå.
-	pNewPet->m_pCellNode = pLandNode->pData->m_PETList.ADDHEAD ( pNewPet );		// - Æ®¸® ³ëµå.
+	pNewPet->m_pQuadNode = pLandNode;											// - íŠ¸ë¦¬ ë…¸ë“œ.
+	pNewPet->m_pCellNode = pLandNode->pData->m_PETList.ADDHEAD ( pNewPet );		// - íŠ¸ë¦¬ ë…¸ë“œ.
 
-	// »ı¼º È¿°ú
+	// ìƒì„± íš¨ê³¼
 	D3DXMATRIX matEffect;
 	D3DXMatrixTranslation ( &matEffect, pDropPet->m_vPos.x, pDropPet->m_vPos.y, pDropPet->m_vPos.z );
 
@@ -1167,7 +1167,7 @@ BOOL GLLandManClient::CreateAnyPet ( PSDROPPET pDropPet )
 
 BOOL GLLandManClient::DropPet ( PSDROPPET pDropPet )
 {
-	// Áßº¹µÇ¸é ÀÌÀü°ÍÀ» Áö¿ì´Ù.
+	// ì¤‘ë³µë˜ë©´ ì´ì „ê²ƒì„ ì§€ìš°ë‹¤.
 	if  ( GetPet ( pDropPet->m_dwGUID ) ) DropOutPet ( pDropPet->m_dwGUID );
 
 	if ( pDropPet->m_sMapID != m_sMapID )	return FALSE;
@@ -1182,8 +1182,8 @@ BOOL GLLandManClient::DropPet ( PSDROPPET pDropPet )
 	m_PETArray.insert ( std::make_pair(pDropPet->m_dwGUID,pNewPet) );
 	pNewPet->m_pGlobNode = m_GlobAnyPetList.ADDHEAD ( pNewPet );
 
-	pNewPet->m_pQuadNode = pLandNode;											// - Æ®¸® ³ëµå.
-	pNewPet->m_pCellNode = pLandNode->pData->m_PETList.ADDHEAD ( pNewPet );		// - Æ®¸® ³ëµå.
+	pNewPet->m_pQuadNode = pLandNode;											// - íŠ¸ë¦¬ ë…¸ë“œ.
+	pNewPet->m_pCellNode = pLandNode->pData->m_PETList.ADDHEAD ( pNewPet );		// - íŠ¸ë¦¬ ë…¸ë“œ.
 
 	return TRUE;
 }
@@ -1197,19 +1197,19 @@ BOOL GLLandManClient::DropOutPet ( DWORD dwGUID )
 	PETMAPID_ITER iter = m_PETArray.find(dwGUID);
 	if ( m_PETArray.end() != iter ) m_PETArray.erase( iter );
 
-	//	Note : Global-List ÇØÁö.
+	//	Note : Global-List í•´ì§€.
 	//
 	if ( pPet->m_pGlobNode )
 		m_GlobAnyPetList.DELNODE ( pPet->m_pGlobNode );
 
-	//	Note : QuadNode-List ÇØÁö.
+	//	Note : QuadNode-List í•´ì§€.
 	//
 	CLIENTQUADNODE* pLandNode = pPet->m_pQuadNode;
 
 	if ( pPet->m_pCellNode )
 		pLandNode->pData->m_PETList.DELNODE ( pPet->m_pCellNode );
 
-	//	Note : ¸Ş¸ğ¸® ÇØÁö.
+	//	Note : ë©”ëª¨ë¦¬ í•´ì§€.
 	//
 	SAFE_DELETE(pPet);
 
@@ -1218,7 +1218,7 @@ BOOL GLLandManClient::DropOutPet ( DWORD dwGUID )
 
 BOOL GLLandManClient::CreateAnySummon ( PSDROPSUMMON pDropSummon )
 {
-	// Áßº¹µÇ¸é ÀÌÀü°ÍÀ» Áö¿ì´Ù.
+	// ì¤‘ë³µë˜ë©´ ì´ì „ê²ƒì„ ì§€ìš°ë‹¤.
 	if  ( GetSummon ( pDropSummon->m_dwGUID ) ) DropOutSummon ( pDropSummon->m_dwGUID );
 
 	if ( pDropSummon->m_sMapID != m_sMapID )	return FALSE;
@@ -1233,15 +1233,15 @@ BOOL GLLandManClient::CreateAnySummon ( PSDROPSUMMON pDropSummon )
 	m_SummonArray.insert ( std::make_pair(pDropSummon->m_dwGUID,pNewSummon) );
 	pNewSummon->m_pGlobNode = m_GlobAnySummonList.ADDHEAD ( pNewSummon );
 
-	pNewSummon->m_pQuadNode = pLandNode;											// - Æ®¸® ³ëµå.
-	pNewSummon->m_pCellNode = pLandNode->pData->m_SummonList.ADDHEAD ( pNewSummon );		// - Æ®¸® ³ëµå.
+	pNewSummon->m_pQuadNode = pLandNode;											// - íŠ¸ë¦¬ ë…¸ë“œ.
+	pNewSummon->m_pCellNode = pLandNode->pData->m_SummonList.ADDHEAD ( pNewSummon );		// - íŠ¸ë¦¬ ë…¸ë“œ.
 
 	return TRUE;
 }
 
 BOOL GLLandManClient::DropSummon ( PSDROPSUMMON pDropSummon )
 {
-	// Áßº¹µÇ¸é ÀÌÀü°ÍÀ» Áö¿ì´Ù.
+	// ì¤‘ë³µë˜ë©´ ì´ì „ê²ƒì„ ì§€ìš°ë‹¤.
 	if  ( GetSummon ( pDropSummon->m_dwGUID ) ) DropOutSummon ( pDropSummon->m_dwGUID );
 
 	if ( pDropSummon->m_sMapID != m_sMapID )	return FALSE;
@@ -1256,8 +1256,8 @@ BOOL GLLandManClient::DropSummon ( PSDROPSUMMON pDropSummon )
 	m_SummonArray.insert ( std::make_pair(pDropSummon->m_dwGUID,pNewSummon) );
 	pNewSummon->m_pGlobNode = m_GlobAnySummonList.ADDHEAD ( pNewSummon );
 
-	pNewSummon->m_pQuadNode = pLandNode;											// - Æ®¸® ³ëµå.
-	pNewSummon->m_pCellNode = pLandNode->pData->m_SummonList.ADDHEAD ( pNewSummon );		// - Æ®¸® ³ëµå.
+	pNewSummon->m_pQuadNode = pLandNode;											// - íŠ¸ë¦¬ ë…¸ë“œ.
+	pNewSummon->m_pCellNode = pLandNode->pData->m_SummonList.ADDHEAD ( pNewSummon );		// - íŠ¸ë¦¬ ë…¸ë“œ.
 
 	return TRUE;
 }
@@ -1271,19 +1271,19 @@ BOOL GLLandManClient::DropOutSummon ( DWORD dwGUID )
 	SUMMONMAPID_ITER iter = m_SummonArray.find(dwGUID);
 	if ( m_SummonArray.end() != iter ) m_SummonArray.erase( iter );
 
-	//	Note : Global-List ÇØÁö.
+	//	Note : Global-List í•´ì§€.
 	//
 	if ( pSummon->m_pGlobNode )
 		m_GlobAnySummonList.DELNODE ( pSummon->m_pGlobNode );
 
-	//	Note : QuadNode-List ÇØÁö.
+	//	Note : QuadNode-List í•´ì§€.
 	//
 	CLIENTQUADNODE* pLandNode = pSummon->m_pQuadNode;
 
 	if ( pSummon->m_pCellNode )
 		pLandNode->pData->m_SummonList.DELNODE ( pSummon->m_pCellNode );
 
-	//	Note : ¸Ş¸ğ¸® ÇØÁö.
+	//	Note : ë©”ëª¨ë¦¬ í•´ì§€.
 	//
 	SAFE_DELETE(pSummon);
 
@@ -1298,29 +1298,33 @@ BOOL GLLandManClient::DropCrow ( SDROP_CROW *pCrowDrop )
 
 	if ( pCrowDrop->sMapID != m_sMapID )	return E_FAIL;
 
-	//	Note : ¶³¾îÁú À§Ä¡ ³ëµå¸¦ Ã£´Â´Ù.
+	//	Note : ë–¨ì–´ì§ˆ ìœ„ì¹˜ ë…¸ë“œë¥¼ ì°¾ëŠ”ë‹¤.
 	//
 	CLIENTQUADNODE* pLandNode = m_LandTree.GetNode ( pCrowDrop->dwCeID );
 	if ( !pLandNode )	return	FALSE;
 
-	//	Note : ¸Ş¸ğ¸®¸¦ ÇÒ´ç.
+	//	Note : ë©”ëª¨ë¦¬ë¥¼ í• ë‹¹.
 	//
 	GLCrowClient *pNewCrow = new GLCrowClient;
 	hr = pNewCrow->CreateCrow ( this, pCrowDrop, m_pd3dDevice );
-	if ( FAILED(hr) )	return FALSE;
+	if ( FAILED(hr) )
+	{
+		SAFE_DELETE(pNewCrow);
+		return FALSE;
+	}
 
-	//	Note : °ü¸® ID ºÎ¿©.
+	//	Note : ê´€ë¦¬ ID ë¶€ì—¬.
 	//
 	pNewCrow->m_dwGlobID = pCrowDrop->dwGlobID;
 	pNewCrow->m_dwCeID = pLandNode->dwCID;
 
-	//	Note : °ü¸® ³ëµå Æ÷ÀÎÅÍ.
+	//	Note : ê´€ë¦¬ ë…¸ë“œ í¬ì¸í„°.
 	//
-	m_CROWArray[pCrowDrop->dwGlobID] = pNewCrow;								// - Àü¿ª.
-	pNewCrow->m_pGlobNode = m_GlobCROWList.ADDHEAD ( pNewCrow );				// - Àü¿ª.
+	m_CROWArray[pCrowDrop->dwGlobID] = pNewCrow;								// - ì „ì—­.
+	pNewCrow->m_pGlobNode = m_GlobCROWList.ADDHEAD ( pNewCrow );				// - ì „ì—­.
 
-	pNewCrow->m_pQuadNode = pLandNode;											// - Æ®¸® ³ëµå.
-	pNewCrow->m_pCellNode = pLandNode->pData->m_CROWList.ADDHEAD ( pNewCrow );	// - Æ®¸® ³ëµå.
+	pNewCrow->m_pQuadNode = pLandNode;											// - íŠ¸ë¦¬ ë…¸ë“œ.
+	pNewCrow->m_pCellNode = pLandNode->pData->m_CROWList.ADDHEAD ( pNewCrow );	// - íŠ¸ë¦¬ ë…¸ë“œ.
 
 
 	if ( pNewCrow->m_pCrowData->m_emCrow == CROW_NPC )
@@ -1351,29 +1355,33 @@ BOOL GLLandManClient::DropMaterial ( SDROP_MATERIAL *pCrowDrop )
 
 	if ( pCrowDrop->sMapID != m_sMapID )	return E_FAIL;
 
-	//	Note : ¶³¾îÁú À§Ä¡ ³ëµå¸¦ Ã£´Â´Ù.
+	//	Note : ë–¨ì–´ì§ˆ ìœ„ì¹˜ ë…¸ë“œë¥¼ ì°¾ëŠ”ë‹¤.
 	//
 	CLIENTQUADNODE* pLandNode = m_LandTree.GetNode ( pCrowDrop->dwCeID );
 	if ( !pLandNode )	return	FALSE;
 
-	//	Note : ¸Ş¸ğ¸®¸¦ ÇÒ´ç.
+	//	Note : ë©”ëª¨ë¦¬ë¥¼ í• ë‹¹.
 	//
 	GLMaterialClient *pNewMaterial = new GLMaterialClient;
 	hr = pNewMaterial->CreateMaterial ( this, pCrowDrop, m_pd3dDevice );
-	if ( FAILED(hr) )	return FALSE;
+	if ( FAILED(hr) )
+	{
+		SAFE_DELETE(pNewMaterial);
+		return FALSE;
+	}
 
-	//	Note : °ü¸® ID ºÎ¿©.
+	//	Note : ê´€ë¦¬ ID ë¶€ì—¬.
 	//
 	pNewMaterial->m_dwGlobID = pCrowDrop->dwGlobID;
 	pNewMaterial->m_dwCeID = pLandNode->dwCID;
 
-	//	Note : °ü¸® ³ëµå Æ÷ÀÎÅÍ.
+	//	Note : ê´€ë¦¬ ë…¸ë“œ í¬ì¸í„°.
 	//
-	m_MaterialArray[pCrowDrop->dwGlobID] = pNewMaterial;								// - Àü¿ª.
-	pNewMaterial->m_pGlobNode = m_GlobMaterialList.ADDHEAD ( pNewMaterial );				// - Àü¿ª.
+	m_MaterialArray[pCrowDrop->dwGlobID] = pNewMaterial;								// - ì „ì—­.
+	pNewMaterial->m_pGlobNode = m_GlobMaterialList.ADDHEAD ( pNewMaterial );				// - ì „ì—­.
 
-	pNewMaterial->m_pQuadNode = pLandNode;											// - Æ®¸® ³ëµå.
-	pNewMaterial->m_pCellNode = pLandNode->pData->m_MaterailList.ADDHEAD ( pNewMaterial );	// - Æ®¸® ³ëµå.
+	pNewMaterial->m_pQuadNode = pLandNode;											// - íŠ¸ë¦¬ ë…¸ë“œ.
+	pNewMaterial->m_pCellNode = pLandNode->pData->m_MaterailList.ADDHEAD ( pNewMaterial );	// - íŠ¸ë¦¬ ë…¸ë“œ.
 
 	return TRUE;
 }
@@ -1386,43 +1394,47 @@ BOOL GLLandManClient::DropChar ( SDROP_CHAR *pCharDrop )
 
 	if ( pCharDrop->sMapID != m_sMapID )	return E_FAIL;
 
-	//	Note : °°Àº ID°¡ ÀÌ¹Ì Á¸ÀçÇÏ´ÂÁö °Ë»ç.
+	//	Note : ê°™ì€ IDê°€ ì´ë¯¸ ì¡´ì¬í•˜ëŠ”ì§€ ê²€ì‚¬.
 	//
 	if ( FindChar(pCharDrop->dwGaeaID) )
 	{
-		//	Note : ÀÌÀü¿¡ Á¸ÀçÇÏ´Â °ÍÀ» Á¦°ÅÇÔ.
+		//	Note : ì´ì „ì— ì¡´ì¬í•˜ëŠ” ê²ƒì„ ì œê±°í•¨.
 		//
 		DropOutChar ( pCharDrop->dwGaeaID );
 	}
 
-	//	Note : ¶³¾îÁú À§Ä¡ ³ëµå¸¦ Ã£´Â´Ù.
+	//	Note : ë–¨ì–´ì§ˆ ìœ„ì¹˜ ë…¸ë“œë¥¼ ì°¾ëŠ”ë‹¤.
 	//
 	CLIENTQUADNODE* pLandNode = m_LandTree.GetNode ( pCharDrop->dwCeID );
 	if ( !pLandNode )	return	FALSE;
 
-	//	Note : ¸Ş¸ğ¸®¸¦ ÇÒ´ç.
+	//	Note : ë©”ëª¨ë¦¬ë¥¼ í• ë‹¹.
 	//
 	GLCharClient *pNewChar = new GLCharClient;
 	hr = pNewChar->Create ( this, pCharDrop, m_pd3dDevice );
-	if ( FAILED(hr) )	return FALSE;
+	if ( FAILED(hr) )
+	{
+		SAFE_DELETE(pNewChar);
+		return FALSE;
+	}
 
-	//	Note : °ü¸® ID ºÎ¿©.
+	//	Note : ê´€ë¦¬ ID ë¶€ì—¬.
 	//
 	pNewChar->m_dwGaeaID = pCharDrop->dwGaeaID;
 	pNewChar->m_dwCeID = pLandNode->dwCID;
 
-	//	Note : °ü¸® ³ëµå Æ÷ÀÎÅÍ.
+	//	Note : ê´€ë¦¬ ë…¸ë“œ í¬ì¸í„°.
 	//
-	m_PCArray.insert ( std::make_pair(pNewChar->m_dwGaeaID,pNewChar) );			// - Àü¿ª.
+	m_PCArray.insert ( std::make_pair(pNewChar->m_dwGaeaID,pNewChar) );			// - ì „ì—­.
 
-	//	Note : ÄÉ¸¯ÅÍ ÀÌ¸§ ¸Ê µî·ÏÇÏ±â.
+	//	Note : ì¼€ë¦­í„° ì´ë¦„ ë§µ ë“±ë¡í•˜ê¸°.
 	//
 	m_mapPC.insert ( std::make_pair(pNewChar->GetCharData().szName,pNewChar) );
 
-	pNewChar->m_pGlobNode = m_GlobPCList.ADDHEAD ( pNewChar );					// - Àü¿ª.
+	pNewChar->m_pGlobNode = m_GlobPCList.ADDHEAD ( pNewChar );					// - ì „ì—­.
 
-	pNewChar->m_pQuadNode = pLandNode;											// - Æ®¸® ³ëµå.
-	pNewChar->m_pCellNode = pLandNode->pData->m_PCList.ADDHEAD ( pNewChar );	// - Æ®¸® ³ëµå.
+	pNewChar->m_pQuadNode = pLandNode;											// - íŠ¸ë¦¬ ë…¸ë“œ.
+	pNewChar->m_pCellNode = pLandNode->pData->m_PCList.ADDHEAD ( pNewChar );	// - íŠ¸ë¦¬ ë…¸ë“œ.
 
 	return TRUE;
 }
@@ -1435,12 +1447,12 @@ BOOL GLLandManClient::DropOutItem ( DWORD dwGlobID )
 	PITEMCLIENTDROP pItemDrop = m_ItemArray[dwGlobID];
 	m_ItemArray[dwGlobID] = NULL;
 
-	//	Note : Global-List ÇØÁö.
+	//	Note : Global-List í•´ì§€.
 	//
 	if ( pItemDrop->pGlobList )
 		m_GlobItemList.DELNODE ( pItemDrop->pGlobList );
 
-	//	Note : QuadNode-List ÇØÁö.
+	//	Note : QuadNode-List í•´ì§€.
 	//
 	CLIENTQUADNODE* pLandNode = pItemDrop->pQuadNode;
 	if ( pItemDrop->pCellList )
@@ -1453,7 +1465,7 @@ BOOL GLLandManClient::DropOutItem ( DWORD dwGlobID )
 	if ( RANPARAM::bMineEffect )
 		DxEffExtra::GetInstance().DeletePassiveEffect ( sTARID );
 
-	//	Note : ¸Ş¸ğ¸® ÇØÁö.
+	//	Note : ë©”ëª¨ë¦¬ í•´ì§€.
 	//
 	SAFE_DELETE(pItemDrop);
 
@@ -1473,12 +1485,12 @@ BOOL GLLandManClient::DropOutMoney ( DWORD dwGlobID )
 	PMONEYCLIENTDROP pMoneyDrop = m_MoneyArray[dwGlobID];
 	m_MoneyArray[dwGlobID] = NULL;
 
-	//	Note : Global-List ÇØÁö.
+	//	Note : Global-List í•´ì§€.
 	//
 	if ( pMoneyDrop->pGlobList )
 		m_GlobMoneyList.DELNODE ( pMoneyDrop->pGlobList );
 
-	//	Note : QuadNode-List ÇØÁö.
+	//	Note : QuadNode-List í•´ì§€.
 	//
 	CLIENTQUADNODE* pLandNode = pMoneyDrop->pQuadNode;
 	if ( pMoneyDrop->pCellList )
@@ -1490,7 +1502,7 @@ BOOL GLLandManClient::DropOutMoney ( DWORD dwGlobID )
 		DxEffExtra::GetInstance().DeletePassiveEffect ( sTARID );
 	}
 
-	//	Note : ¸Ş¸ğ¸® ÇØÁö.
+	//	Note : ë©”ëª¨ë¦¬ í•´ì§€.
 	//
 	SAFE_DELETE(pMoneyDrop);
 
@@ -1505,12 +1517,12 @@ BOOL GLLandManClient::DropOutCrow ( DWORD dwGlobID )
 	PGLCROWCLIENT pCrow = m_CROWArray[dwGlobID];
 	m_CROWArray[dwGlobID] = NULL;
 
-	//	Note : Global-List ÇØÁö.
+	//	Note : Global-List í•´ì§€.
 	//
 	if ( pCrow->m_pGlobNode )
 		m_GlobCROWList.DELNODE ( pCrow->m_pGlobNode );
 
-	//	Note : QuadNode-List ÇØÁö.
+	//	Note : QuadNode-List í•´ì§€.
 	//
 	CLIENTQUADNODE* pLandNode = pCrow->m_pQuadNode;
 
@@ -1522,7 +1534,7 @@ BOOL GLLandManClient::DropOutCrow ( DWORD dwGlobID )
 		STARGETID sTARID ( CROW_NPC, pCrow->m_dwGlobID, pCrow->GetPosition() );
 		DxEffExtra::GetInstance().DeletePassiveEffect ( GLCONST_CHAR::strCOMPLETE_NPC_EFFECT.c_str(),sTARID );
 	}
-	//	Note : ¸Ş¸ğ¸® ÇØÁö.
+	//	Note : ë©”ëª¨ë¦¬ í•´ì§€.
 	//
 	SAFE_DELETE(pCrow);
 
@@ -1537,19 +1549,19 @@ BOOL GLLandManClient::DropOutMaterial ( DWORD dwGlobID )
 	PGLMATERIALCLIENT pMaterial = m_MaterialArray[dwGlobID];
 	m_MaterialArray[dwGlobID] = NULL;
 
-	//	Note : Global-List ÇØÁö.
+	//	Note : Global-List í•´ì§€.
 	//
 	if ( pMaterial->m_pGlobNode )
 		m_GlobMaterialList.DELNODE ( pMaterial->m_pGlobNode );
 
-	//	Note : QuadNode-List ÇØÁö.
+	//	Note : QuadNode-List í•´ì§€.
 	//
 	CLIENTQUADNODE* pLandNode = pMaterial->m_pQuadNode;
 
 	if ( pMaterial->m_pCellNode )
 		pLandNode->pData->m_MaterailList.DELNODE ( pMaterial->m_pCellNode );
 
-	//	Note : ¸Ş¸ğ¸® ÇØÁö.
+	//	Note : ë©”ëª¨ë¦¬ í•´ì§€.
 	//
 	SAFE_DELETE(pMaterial);
 
@@ -1562,7 +1574,7 @@ BOOL GLLandManClient::DropOutChar ( DWORD dwGlobID )
 
 	GLCharClient* pChar = FindChar(dwGlobID);
 	
-	//	Note : ÄÉ¸¯ÅÍ ID ¸Ê Áö¿öÁÖ±â.
+	//	Note : ì¼€ë¦­í„° ID ë§µ ì§€ì›Œì£¼ê¸°.
 	//
 	{
 		CHARMAPID_ITER iter = m_PCArray.find(dwGlobID);
@@ -1576,11 +1588,11 @@ BOOL GLLandManClient::DropOutChar ( DWORD dwGlobID )
 			//strText << std::endl;
 			//strText << "GLLandManClient::DropOutChar m_PCArray.end()!=iter" << std::ends;
 			CDebugSet::ToLogFile( "\nGLLandManClient::DropOutChar m_PCArray.end()!=iter" );
-			//strText.freeze( false );	// Note : std::strstreamÀÇ freeze. ¾È ÇÏ¸é Leak ¹ß»ı.			
+			//strText.freeze( false );	// Note : std::strstreamì˜ freeze. ì•ˆ í•˜ë©´ Leak ë°œìƒ.			
 		}
 	}
 
-	//	Note : ÄÉ¸¯ÅÍ ÀÌ¸§ ¸Ê Áö¿öÁÖ±â.
+	//	Note : ì¼€ë¦­í„° ì´ë¦„ ë§µ ì§€ì›Œì£¼ê¸°.
 	//
 	{
 		CHARMAP_ITER iter = m_mapPC.find ( pChar->GetCharData().szName );
@@ -1594,21 +1606,21 @@ BOOL GLLandManClient::DropOutChar ( DWORD dwGlobID )
 			//strText << std::endl;
 			//strText << "GLLandManClient::DropOutChar m_mapPC.end()!=iter" << std::ends;
 			CDebugSet::ToLogFile( "\nGLLandManClient::DropOutChar m_mapPC.end()!=iter" );
-			//strText.freeze( false );	// Note : std::strstreamÀÇ freeze. ¾È ÇÏ¸é Leak ¹ß»ı.
+			//strText.freeze( false );	// Note : std::strstreamì˜ freeze. ì•ˆ í•˜ë©´ Leak ë°œìƒ.
 		}		
 	}
 
-	//	Note : Gaea-List ÇØÁö.
+	//	Note : Gaea-List í•´ì§€.
 	//
 	if ( pChar->m_pGlobNode )
 		m_GlobPCList.DELNODE ( pChar->m_pGlobNode );
 
-	//	Note : QuadNode-List ÇØÁö.
+	//	Note : QuadNode-List í•´ì§€.
 	//
 	if ( pChar->m_pQuadNode && pChar->m_pCellNode )
 		pChar->m_pQuadNode->pData->m_PCList.DELNODE ( pChar->m_pCellNode );
 
-	//	Note : CHAR ¸Ş¸ğ¸® ÇØÁ¦.
+	//	Note : CHAR ë©”ëª¨ë¦¬ í•´ì œ.
 	//
 	SAFE_DELETE(pChar);
 
@@ -1633,7 +1645,7 @@ PGLCHARCLIENT GLLandManClient::FindChar ( DWORD dwID )
 
 WORD GLLandManClient::GetTargetBodyRadius ( const STARGETID &sTargetID )
 {
-	//	Note : Å¸°ÙÀÇ À§Ä¡ Á¤º¸¸¦ °¡Á®¿È.
+	//	Note : íƒ€ê²Ÿì˜ ìœ„ì¹˜ ì •ë³´ë¥¼ ê°€ì ¸ì˜´.
 	if ( sTargetID.emCrow == CROW_PC )
 	{
 		PGLCHARCLIENT pChar = GetChar ( sTargetID.dwID );
@@ -1659,7 +1671,7 @@ WORD GLLandManClient::GetTargetBodyRadius ( const STARGETID &sTargetID )
 	}
 	else
 	{
-		GASSERT(0&&"emCrow°¡ Àß¸øµÈ ÁöÁ¤ÀÚ ÀÔ´Ï´Ù." );
+		GASSERT(0&&"emCrowê°€ ì˜ëª»ëœ ì§€ì •ì ì…ë‹ˆë‹¤." );
 	}
 
 	return WORD(0xFFFF);

@@ -40,7 +40,7 @@ BOOL CNpcTalkControl::SaveFile ( CSerialFile& SFile )
 {
 	if ( !SFile.IsOpen () )
 	{
-		GASSERT ( 0 && "ÆÄÀÏÀÌ ¿­·ÁÀÖÁö ¾Ê½À´Ï´Ù." );
+		GASSERT ( 0 && "íŒŒì¼ì´ ì—´ë ¤ìˆì§€ ì•ŠìŠµë‹ˆë‹¤." );
 		return FALSE;
 	}
 
@@ -90,7 +90,7 @@ BOOL CNpcTalkControl::LoadFile ( basestream& SFile )
 {
 	if ( !SFile.IsOpen () )
 	{
-		GASSERT ( 0 && "ÆÄÀÏÀÌ ¿­·ÁÀÖÁö ¾Ê½À´Ï´Ù." );
+		GASSERT ( 0 && "íŒŒì¼ì´ ì—´ë ¤ìˆì§€ ì•ŠìŠµë‹ˆë‹¤." );
 		return FALSE;
 	}
 
@@ -143,6 +143,7 @@ BOOL CNpcTalkControl::AddTalk ( SNpcTalk* pTalk )
 		return TRUE;
 	}
 
+	SAFE_DELETE( pTalk );
 	return FALSE;
 }
 

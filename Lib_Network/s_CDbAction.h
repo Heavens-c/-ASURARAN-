@@ -65,7 +65,7 @@ public:
 	virtual int Execute(CServer* m_pServer) { return 0; };
 
 protected:
-	DWORD		m_dwClient;	 // ¸Ş½ÃÁö¸¦ º¸³½ Å¬¶óÀÌ¾ğÆ® ¹øÈ£, °á°ú´Â´Ù½Ã Å¬¶óÀÌ¾ğÆ® ¹øÈ£·Î Àü¼ÛµÇ¾îÁ®¾ß ÇÑ´Ù.
+	DWORD		m_dwClient;	 // ë©”ì‹œì§€ë¥¼ ë³´ë‚¸ í´ë¼ì´ì–¸íŠ¸ ë²ˆí˜¸, ê²°ê³¼ëŠ”ë‹¤ì‹œ í´ë¼ì´ì–¸íŠ¸ ë²ˆí˜¸ë¡œ ì „ì†¡ë˜ì–´ì ¸ì•¼ í•œë‹¤.
 	CString		m_strUserIP; // IP Address
 	USHORT		m_uPort;
 
@@ -84,7 +84,7 @@ public:
 private:
 	CDbExecuter();
 	CDbExecuter(CServer* pServer);
-	virtual ~CDbExecuter() {};
+	virtual ~CDbExecuter();
 
 protected:
 	std::queue<CDbAction*> m_vJob;
@@ -106,7 +106,7 @@ public:
 private:
 	CLogDbExecuter();
 	CLogDbExecuter(CServer* pServer);
-	virtual ~CLogDbExecuter() {};
+	virtual ~CLogDbExecuter();
 
 protected:
 	std::queue<CDbAction*> m_vJob;
@@ -128,7 +128,7 @@ public:
 private:
 	CUserDbExecuter();
 	CUserDbExecuter(CServer* pServer);
-	virtual ~CUserDbExecuter() {};
+	virtual ~CUserDbExecuter();
 
 protected:
 	std::queue<CDbAction*> m_vJob;
@@ -150,7 +150,7 @@ public:
 private:
 	CWebDbExecuter();
 	CWebDbExecuter(CServer* pServer);
-	virtual ~CWebDbExecuter() {};
+	virtual ~CWebDbExecuter();
 
 protected:
 	std::queue<CDbAction*> m_vJob;
@@ -181,7 +181,7 @@ protected:
 };
 
 ///////////////////////////////////////////////////////////////////////////////
-// Session ¼­¹ö : Ä³¸¯ÅÍ »ı¼º¼ıÀÚ 1 °¨¼Ò
+// Session ì„œë²„ : ìºë¦­í„° ìƒì„±ìˆ«ì 1 ê°ì†Œ
 class CUserChaNumDecrease : public CDbAction
 {
 public:
@@ -194,7 +194,7 @@ protected:
 };
 
 ///////////////////////////////////////////////////////////////////////////////
-// Agent ¼­¹ö : Ä³¸¯ÅÍ »ı¼º¼ıÀÚ 1 °¨¼Ò
+// Agent ì„œë²„ : ìºë¦­í„° ìƒì„±ìˆ«ì 1 ê°ì†Œ
 class CAgentUserChaNumDecrease : public CDbAction
 {
 public:
@@ -207,7 +207,7 @@ protected:
 };
 
 ///////////////////////////////////////////////////////////////////////////////
-// TEST Session ¼­¹ö : Ä³¸¯ÅÍ »ı¼º¼ıÀÚ 1 °¨¼Ò
+// TEST Session ì„œë²„ : ìºë¦­í„° ìƒì„±ìˆ«ì 1 ê°ì†Œ
 class CUserTestChaNumDecrease : public CDbAction
 {
 public:
@@ -220,7 +220,7 @@ protected:
 };
 
 ///////////////////////////////////////////////////////////////////////////////
-// TEST Agent ¼­¹ö : Ä³¸¯ÅÍ »ı¼º¼ıÀÚ 1 °¨¼Ò
+// TEST Agent ì„œë²„ : ìºë¦­í„° ìƒì„±ìˆ«ì 1 ê°ì†Œ
 class CAgentUserTestChaNumDecrease : public CDbAction
 {
 public:
@@ -233,7 +233,7 @@ protected:
 };
 
 ///////////////////////////////////////////////////////////////////////////////
-// Session : »ı¼ºÇÒ ¼ö ÀÖ´Â Ä³¸¯ÅÍ ¼ö 1 Áõ°¡
+// Session : ìƒì„±í•  ìˆ˜ ìˆëŠ” ìºë¦­í„° ìˆ˜ 1 ì¦ê°€
 class CUserChaNumIncrease : public CDbAction
 {
 public:
@@ -246,7 +246,7 @@ protected:
 };
 
 ///////////////////////////////////////////////////////////////////////////////
-// Agent : »ı¼ºÇÒ ¼ö ÀÖ´Â Ä³¸¯ÅÍ ¼ö 1 Áõ°¡
+// Agent : ìƒì„±í•  ìˆ˜ ìˆëŠ” ìºë¦­í„° ìˆ˜ 1 ì¦ê°€
 class CAgentUserChaNumIncrease : public CDbAction
 {
 public:
@@ -260,7 +260,7 @@ protected:
 
 
 ///////////////////////////////////////////////////////////////////////////////
-// TEST Session : »ı¼ºÇÒ ¼ö ÀÖ´Â Ä³¸¯ÅÍ ¼ö 1 Áõ°¡
+// TEST Session : ìƒì„±í•  ìˆ˜ ìˆëŠ” ìºë¦­í„° ìˆ˜ 1 ì¦ê°€
 class CUserTestChaNumIncrease : public CDbAction
 {
 public:
@@ -273,7 +273,7 @@ protected:
 };
 
 ///////////////////////////////////////////////////////////////////////////////
-// TEST Agent : »ı¼ºÇÒ ¼ö ÀÖ´Â Ä³¸¯ÅÍ ¼ö 1 Áõ°¡
+// TEST Agent : ìƒì„±í•  ìˆ˜ ìˆëŠ” ìºë¦­í„° ìˆ˜ 1 ì¦ê°€
 class CAgentUserTestChaNumIncrease : public CDbAction
 {
 public:
@@ -299,7 +299,7 @@ protected:
 
 
 ///////////////////////////////////////////////////////////////////////////////
-// ÀÏº» Agent : ·Î±×ÀÎ Ã³¸®ÇÒ ¶§ WhiteRock System°ú Åë½ÅÇÏ´Â ºÎºĞ Ãß°¡
+// ì¼ë³¸ Agent : ë¡œê·¸ì¸ ì²˜ë¦¬í•  ë•Œ WhiteRock Systemê³¼ í†µì‹ í•˜ëŠ” ë¶€ë¶„ ì¶”ê°€
 class CAgentJapnaWRLogin : public CDbAction
 {
 public:
@@ -324,7 +324,7 @@ protected:
 };
 
 ///////////////////////////////////////////////////////////////////////////////
-// ÀÏº» Agent : ·Î±×¾Æ¿ô Ã³¸®ÇÒ ¶§ WhiteRock System°ú Åë½ÅÇÏ´Â ºÎºĞ Ãß°¡
+// ì¼ë³¸ Agent : ë¡œê·¸ì•„ì›ƒ ì²˜ë¦¬í•  ë•Œ WhiteRock Systemê³¼ í†µì‹ í•˜ëŠ” ë¶€ë¶„ ì¶”ê°€
 class CAgentJapnaWRLogout : public CDbAction
 {
 public:
@@ -388,7 +388,7 @@ protected:
 
 /**
  * \ingroup NetServerLib
- * »ç¿ëÀÚ Ã¼Å©
+ * ì‚¬ìš©ì ì²´í¬
  * Taiwan / Hongkong
  */
 class CAgentUserCheck : public CDbAction
@@ -400,9 +400,9 @@ public:
 		const TCHAR* szUserIP, // IP
 		const TCHAR* szRandomPasswd, // Random password
 		//const TCHAR* szPCID, //PCID
-		int nRandomNum, // ·£´ıÆĞ½º¿öµå ¹øÈ£
-		int nSvrGrp, // ¼­¹ö±×·ì
-		int nSvrNum, // ¼­¹ö¹øÈ£
+		int nRandomNum, // ëœë¤íŒ¨ìŠ¤ì›Œë“œ ë²ˆí˜¸
+		int nSvrGrp, // ì„œë²„ê·¸ë£¹
+		int nSvrNum, // ì„œë²„ë²ˆí˜¸
 		DWORD dwClient,
 		DWORD dwClientNum,
 		DWORD dwServiceProvider );
@@ -423,8 +423,8 @@ protected:
 
 /**
  * \ingroup NetServerLib
- * »ç¿ëÀÚ Ã¼Å©
- * Thailand (ÅÂ±¹)
+ * ì‚¬ìš©ì ì²´í¬
+ * Thailand (íƒœêµ­)
  */
 class CAgentThaiUserCheck : public CDbAction
 {
@@ -432,8 +432,8 @@ public:
 	CAgentThaiUserCheck (const char* szUserID, // ID 
 			             const char* szPasswd, // PWD
 			             const char* szUserIP, // IP
-			             int nSvrGrp,          // ¼­¹ö±×·ì
-			             int nSvrNum,          // ¼­¹ö¹øÈ£
+			             int nSvrGrp,          // ì„œë²„ê·¸ë£¹
+			             int nSvrNum,          // ì„œë²„ë²ˆí˜¸
 			             DWORD dwClient,
 			             DWORD dwClientNum);
 	virtual ~CAgentThaiUserCheck () {} ;
@@ -449,14 +449,14 @@ protected:
 
 
 /**
-* Daum »ç¿ëÀÚ Ã¼Å©
+* Daum ì‚¬ìš©ì ì²´í¬
 */
 
 //class CAgentDaumUserCheck : public CDbAction
 //{
 //public:
 //	/**
-//	* Daum »ç¿ëÀÚ Ã¼Å©
+//	* Daum ì‚¬ìš©ì ì²´í¬
 //	* \param szDaumGID 
 //	* \param szDaumUID 
 //	* \param szDaumSSNHEAD 
@@ -488,11 +488,11 @@ protected:
 //	CString m_strUserIP;
 //	int m_nSvrGrp;
 //	int m_nSvrNum;
-//	DWORD m_dwClientNum; // Agent ¿¡¼­ÀÇ Client ¹øÈ£
+//	DWORD m_dwClientNum; // Agent ì—ì„œì˜ Client ë²ˆí˜¸
 //};
 
 /**
- * Daum »ç¿ëÀÚ Ã¼Å©
+ * Daum ì‚¬ìš©ì ì²´í¬
  * \param szDecodedTID 
  * \param szUserIP 
  * \param nSvrGrp 
@@ -519,12 +519,12 @@ protected:
 	CString m_strUserIP;
 	int m_nSvrGrp;
 	int m_nSvrNum;
-	DWORD m_dwClientNum; // Agent ¿¡¼­ÀÇ Client ¹øÈ£
+	DWORD m_dwClientNum; // Agent ì—ì„œì˜ Client ë²ˆí˜¸
 };
 
 
 /**
- * TERRA : »ç¿ëÀÚ ·Î±×ÀÎ
+ * TERRA : ì‚¬ìš©ì ë¡œê·¸ì¸
  * \param szDecodedTID 
  * \param szUserIP 
  * \param nSvrGrp 
@@ -551,11 +551,11 @@ protected:
 	CString m_strUserIP;
 	int m_nSvrGrp;
 	int m_nSvrNum;
-	DWORD m_dwClientNum; // Agent ¿¡¼­ÀÇ Client ¹øÈ£
+	DWORD m_dwClientNum; // Agent ì—ì„œì˜ Client ë²ˆí˜¸
 };
 
 /**
- * GSP : »ç¿ëÀÚ ·Î±×ÀÎ
+ * GSP : ì‚¬ìš©ì ë¡œê·¸ì¸
  * \param szDecodedTID 
  * \param szUserIP 
  * \param nSvrGrp 
@@ -582,11 +582,11 @@ protected:
 	CString m_strUserIP;
 	int m_nSvrGrp;
 	int m_nSvrNum;
-	DWORD m_dwClientNum; // Agent ¿¡¼­ÀÇ Client ¹øÈ£
+	DWORD m_dwClientNum; // Agent ì—ì„œì˜ Client ë²ˆí˜¸
 };
 
 /**
-* Excite »ç¿ëÀÚ Ã¼Å©
+* Excite ì‚¬ìš©ì ì²´í¬
 */
 class CAgentExciteUserCheck : public CDbAction
 {
@@ -605,11 +605,11 @@ protected:
 	CString m_strUserIP;
 	int m_nSvrGrp;
 	int m_nSvrNum;
-	DWORD m_dwClientNum; // Agent ¿¡¼­ÀÇ Client ¹øÈ£
+	DWORD m_dwClientNum; // Agent ì—ì„œì˜ Client ë²ˆí˜¸
 };
 
 /**
-* ÀÏº» Gonzo »ç¿ëÀÚ Ã¼Å©
+* ì¼ë³¸ Gonzo ì‚¬ìš©ì ì²´í¬
 */
 class CAgentJapanUserCheck : public CDbAction
 {
@@ -630,12 +630,12 @@ protected:
 	int m_nSvrGrp;
 	int m_nSvrNum;
 	int m_nUserNum;
-	DWORD m_dwClientNum; // Agent ¿¡¼­ÀÇ Client ¹øÈ£
+	DWORD m_dwClientNum; // Agent ì—ì„œì˜ Client ë²ˆí˜¸
 };
 
 /**
  * \ingroup NetServerLib
- * »ç¿ëÀÚ Ã¼Å©
+ * ì‚¬ìš©ì ì²´í¬
  * Taiwan / Hongkong
  */
 class CAgentGsUserCheck : public CDbAction
@@ -645,8 +645,8 @@ public:
 		const TCHAR* szUserID, // ID 
 		const TCHAR* szPasswd, // PWD
 		const TCHAR* szUserIP, // IP
-		int nSvrGrp, // ¼­¹ö±×·ì
-		int nSvrNum, // ¼­¹ö¹øÈ£
+		int nSvrGrp, // ì„œë²„ê·¸ë£¹
+		int nSvrNum, // ì„œë²„ë²ˆí˜¸
 		DWORD dwClient,
 		DWORD dwClientNum,
 		DWORD dwServiceProvider );
@@ -663,7 +663,7 @@ protected:
 };
 
 /**
- * Daum : »ç¿ëÀÚ Password Check
+ * Daum : ì‚¬ìš©ì Password Check
  * \param szDaumGID
  * \param szUserPass 
  * \param dwClient 
@@ -686,12 +686,12 @@ protected:
 	CString m_strDaumGID;
 	CString m_strUserPass;
 	int		m_nCheckFlag;
-	DWORD m_dwClientNum; // Agent ¿¡¼­ÀÇ Client ¹øÈ£
+	DWORD m_dwClientNum; // Agent ì—ì„œì˜ Client ë²ˆí˜¸
 };
 
 
 /**
- * TERRA : »ç¿ëÀÚ Password Check
+ * TERRA : ì‚¬ìš©ì Password Check
  * \param szTLoginName
  * \param szUserPass 
  * \param dwClient 
@@ -714,12 +714,12 @@ protected:
 	CString m_strTLoginName;
 	CString m_strUserPass;
 	int		m_nCheckFlag;
-	DWORD m_dwClientNum; // Agent ¿¡¼­ÀÇ Client ¹øÈ£
+	DWORD m_dwClientNum; // Agent ì—ì„œì˜ Client ë²ˆí˜¸
 };
 
 
 /**
- * EXCITE : »ç¿ëÀÚ Password Check
+ * EXCITE : ì‚¬ìš©ì Password Check
  * \param szExciteUserID
  * \param szUserPass
  * \param dwClient 
@@ -744,11 +744,11 @@ protected:
 	CString m_strExciteUserID2;
 	CString m_strUserPass;
 	int		m_nCheckFlag;
-	DWORD m_dwClientNum; // Agent ¿¡¼­ÀÇ Client ¹øÈ£
+	DWORD m_dwClientNum; // Agent ì—ì„œì˜ Client ë²ˆí˜¸
 };
 
 ///////////////////////////////////////////////////////////////////////////////
-// ÀÏ¹İ : »ç¿ëÀÚ ·Î±×¾Æ¿ô
+// ì¼ë°˜ : ì‚¬ìš©ì ë¡œê·¸ì•„ì›ƒ
 class CUserLogoutSvr : public CDbAction
 {
 public:
@@ -765,19 +765,19 @@ protected:
 // Agent Server Database Action
 ///////////////////////////////////////////////////////////////////////////////
 
-// Ä³¸¯ÅÍ »ı¼º
+// ìºë¦­í„° ìƒì„±
 class CCreateNewCharacter : public CDbAction
 {
 public:
-    CCreateNewCharacter(int nIndex, // Ä³¸¯ÅÍ ÀÎµ¦½º
-                        DWORD dwUserNum, // »ç¿ëÀÚ¹øÈ£
-                        DWORD dwSvrGrp, // ¼­¹ö±×·ì¹øÈ£
-                        CString strChaName, // Ä³¸¯ÅÍÀÌ¸§
-                        WORD wSchool, // Ä³¸¯ÅÍÇĞ±³
-                        WORD wHair, // Ä³¸¯ÅÍ ¸Ó¸®¸ğ¾ç
-                        WORD wFace, // Ä³¸¯ÅÍ ¾ó±¼¸ğ¾ç
-						WORD wHairColor, // Çì¾î ÄÃ·¯
-						WORD wSex, // ¼ºº°
+    CCreateNewCharacter(int nIndex, // ìºë¦­í„° ì¸ë±ìŠ¤
+                        DWORD dwUserNum, // ì‚¬ìš©ìë²ˆí˜¸
+                        DWORD dwSvrGrp, // ì„œë²„ê·¸ë£¹ë²ˆí˜¸
+                        CString strChaName, // ìºë¦­í„°ì´ë¦„
+                        WORD wSchool, // ìºë¦­í„°í•™êµ
+                        WORD wHair, // ìºë¦­í„° ë¨¸ë¦¬ëª¨ì–‘
+                        WORD wFace, // ìºë¦­í„° ì–¼êµ´ëª¨ì–‘
+						WORD wHairColor, // í—¤ì–´ ì»¬ëŸ¬
+						WORD wSex, // ì„±ë³„
 						float fScaleRange,
                         DWORD dwClient, 
                         const char* szUserIP, 
@@ -798,7 +798,7 @@ protected:
 	float	m_fScaleRange;
 };
 
-// Ä³¸¯ÅÍ »èÁ¦
+// ìºë¦­í„° ì‚­ì œ
 class CDelCharacter : public CDbAction
 {
 public:
@@ -818,7 +818,7 @@ protected:
 };
 
 ///////////////////////////////////////////////////////////////////////////
-// Ä³¸¯ÅÍ¸¦ ¿Â¶óÀÎ »óÅÂ·Î ¸¸µç´Ù.
+// ìºë¦­í„°ë¥¼ ì˜¨ë¼ì¸ ìƒíƒœë¡œ ë§Œë“ ë‹¤.
 class CSetCharacterOnline : public CDbAction
 {
 public:
@@ -831,7 +831,7 @@ protected:
 };
 
 ///////////////////////////////////////////////////////////////////////////
-// Ä³¸¯ÅÍ¸¦ ¿ÀÇÁ¶óÀÎ »óÅÂ·Î ¸¸µç´Ù.
+// ìºë¦­í„°ë¥¼ ì˜¤í”„ë¼ì¸ ìƒíƒœë¡œ ë§Œë“ ë‹¤.
 class CSetCharacterOffline : public CDbAction
 {
 public:
@@ -844,7 +844,7 @@ protected:
 };
 
 /**
-* DAUM:Ä³¸¯ÅÍ »èÁ¦
+* DAUM:ìºë¦­í„° ì‚­ì œ
 */
 class CDaumDelCharacter : public CDbAction
 {
@@ -859,7 +859,7 @@ protected:
 };
 
 /**
-* TERRA:Ä³¸¯ÅÍ »èÁ¦
+* TERRA:ìºë¦­í„° ì‚­ì œ
 */
 class CTerraDelCharacter : public CDbAction
 {
@@ -874,7 +874,7 @@ protected:
 };
 
 /**
-* GSP:Ä³¸¯ÅÍ »èÁ¦
+* GSP:ìºë¦­í„° ì‚­ì œ
 */
 class CGspDelCharacter : public CDbAction
 {
@@ -894,7 +894,7 @@ protected:
 };
 
 /**
-* EXCITE:Ä³¸¯ÅÍ »èÁ¦
+* EXCITE:ìºë¦­í„° ì‚­ì œ
 */
 class CExciteDelCharacter : public CDbAction
 {
@@ -909,7 +909,7 @@ protected:
 };
 
 /**
-* JAPAN:Ä³¸¯ÅÍ »èÁ¦
+* JAPAN:ìºë¦­í„° ì‚­ì œ
 */
 class CJapanDelCharacter : public CDbAction
 {
@@ -1024,9 +1024,9 @@ public:
 };
 
 /**
-* »ç¿ëÀÚ¸¦ ÀÏÁ¤½Ã°£ ºí·° ½ÃÅ²´Ù.
-* nUserNum : »ç¿ëÀÚ¹øÈ£
-* nDay : ºí·° ½ÃÅ³ ±â°£(ÀÏ)
+* ì‚¬ìš©ìë¥¼ ì¼ì •ì‹œê°„ ë¸”ëŸ­ ì‹œí‚¨ë‹¤.
+* nUserNum : ì‚¬ìš©ìë²ˆí˜¸
+* nDay : ë¸”ëŸ­ ì‹œí‚¬ ê¸°ê°„(ì¼)
 */
 class CUserBlock : public CDbAction
 {
@@ -1052,18 +1052,18 @@ protected:
 };
 
 ///////////////////////////////////////////////////////////////////////////////
-// ¶õ ¼±¹°ÆãÆã!! ÀÌº¥Æ® 
-// ¸®ÅÏ°ª :
-// 1  1 µî P-4 PC
-// 2  2 µî È¿¸®Æù
-// 3  3 µî SONY µğÄ«
-// 4  4 µî ¾ÆÀÌ¸®¹ö MP ÇÃ·¹ÀÌ¾î
-// 5  5 µî MAX ¹«ºñ ¿µÈ­ »óÇ°±Ç 1 ¸¸¿ø±Ç
-// 6  6 µî MBC Game ÀÏÀÏ ¹«·á »óÇ°±Ç
-// 7  ÀÌ¹Ì º¹±ÇÀ» ÀÔ·ÂÇÑ »ç¿ëÀÚ
-// 8  PC ¹æ IP °¡ ¾Æ´Ô
-// 9  ÀÌ¹Ì »ç¿ëÇÑ º¹±Ç
-// 10 ¾Ë¼ö¾ø´Â ¿À·ù
+// ë€ ì„ ë¬¼í‘í‘!! ì´ë²¤íŠ¸ 
+// ë¦¬í„´ê°’ :
+// 1  1 ë“± P-4 PC
+// 2  2 ë“± íš¨ë¦¬í°
+// 3  3 ë“± SONY ë””ì¹´
+// 4  4 ë“± ì•„ì´ë¦¬ë²„ MP í”Œë ˆì´ì–´
+// 5  5 ë“± MAX ë¬´ë¹„ ì˜í™” ìƒí’ˆê¶Œ 1 ë§Œì›ê¶Œ
+// 6  6 ë“± MBC Game ì¼ì¼ ë¬´ë£Œ ìƒí’ˆê¶Œ
+// 7  ì´ë¯¸ ë³µê¶Œì„ ì…ë ¥í•œ ì‚¬ìš©ì
+// 8  PC ë°© IP ê°€ ì•„ë‹˜
+// 9  ì´ë¯¸ ì‚¬ìš©í•œ ë³µê¶Œ
+// 10 ì•Œìˆ˜ì—†ëŠ” ì˜¤ë¥˜
 class CLogLottery : public CDbAction
 {
 protected:
@@ -1083,7 +1083,7 @@ public:
 };
 
 ///////////////////////////////////////////////////////////////////////////////
-// ¼±¹°ÆãÆã ÀÌº¥Æ® ±â·ÏÀ» ³²±ä´Ù.
+// ì„ ë¬¼í‘í‘ ì´ë²¤íŠ¸ ê¸°ë¡ì„ ë‚¨ê¸´ë‹¤.
 class CLogPungPungWrite : public CDbAction
 {
 protected:
@@ -1098,12 +1098,12 @@ public:
 
 
 ///////////////////////////////////////////////////////////////////////////////
-// ¿©¸§¹æÇĞ PC ÇÁ·Î¸ğ¼Ç ¾ÆÀÌÅÛ 'ÆãÆã' ÀÌº¥Æ®
-// PC ¹æ¿¡¼­ ÇÏ·ç¿¡ ÇÑ»ç¶÷ÀÌ ÇÑ¹ø¸¸ °¡´É
-// ¸®ÅÏ°ª
-// 1 : ÀÌº¥Æ® ÀÀ¸ğ°¡´É
-// 2 : ÀÌ¹Ì ÀÌº¥Æ®¿¡ ÀÀ¸ğÇßÀ½, ÇÏ·ç¿¡ ÇÑ¹ø¸¸ °¡´É.
-// 3 : ÀÀ¸ğºÒ°¡ PC ¹æ IP ¾Æ´Ô
+// ì—¬ë¦„ë°©í•™ PC í”„ë¡œëª¨ì…˜ ì•„ì´í…œ 'í‘í‘' ì´ë²¤íŠ¸
+// PC ë°©ì—ì„œ í•˜ë£¨ì— í•œì‚¬ëŒì´ í•œë²ˆë§Œ ê°€ëŠ¥
+// ë¦¬í„´ê°’
+// 1 : ì´ë²¤íŠ¸ ì‘ëª¨ê°€ëŠ¥
+// 2 : ì´ë¯¸ ì´ë²¤íŠ¸ì— ì‘ëª¨í–ˆìŒ, í•˜ë£¨ì— í•œë²ˆë§Œ ê°€ëŠ¥.
+// 3 : ì‘ëª¨ë¶ˆê°€ PC ë°© IP ì•„ë‹˜
 class CLogPungPungCheck : public CDbAction
 {
 protected:

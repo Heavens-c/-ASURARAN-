@@ -74,8 +74,8 @@ BOOL CStringMemory::Open (	LPCSTR _szZipFileName,
 		m_nBufSize = cUnzip.UnzipToMemory( _szZipFileName, _szFileName, m_pBufferMem );
 	}
 	
-	// note :	ÆÄÀÏ »çÀÌÁî°¡ ³Ê¹« Ä¿µµ UINT_MAX°¡ ³Ñ¾î ¿È. ¾à 17¸Ş°¡.
-	//			ÆÄÀÏÀ» 1ÀÌ¶óµµ ÀĞ¾ú´Ù´Â°É È®½ÅÇÒ¼ö ÀÖ³ª?
+	// note :	íŒŒì¼ ì‚¬ì´ì¦ˆê°€ ë„ˆë¬´ ì»¤ë„ UINT_MAXê°€ ë„˜ì–´ ì˜´. ì•½ 17ë©”ê°€.
+	//			íŒŒì¼ì„ 1ì´ë¼ë„ ì½ì—ˆë‹¤ëŠ”ê±¸ í™•ì‹ í• ìˆ˜ ìˆë‚˜?
 	if( m_nBufSize == UINT_MAX || m_nBufSize == 0)
 		return FALSE;
 
@@ -105,7 +105,18 @@ BOOL CStringMemory::Open (	LPCSTR _szZipFileName,
 
 			m_oRijndael.DecryptEx( (char*)m_pBufferMem, m_nBufSize );
 		}else{
-			return FALSE;
+			char fname[_MAX_FNAME]={0,};
+			char ext[_MAX_EXT]={0,};
+			_splitpath( _szFileName, NULL, NULL, fname, ext );
+			if ( stricmp( fname, "param" ) == 0 || stricmp( ext, ".ini" ) == 0 || stricmp( ext, ".txt" ) == 0 || stricmp( ext, ".cfg" ) == 0 )
+			{
+				m_bDecode = FALSE;
+				m_nVersion = -1;
+			}
+			else
+			{
+				return FALSE;
+			}
 		}
 	}
 

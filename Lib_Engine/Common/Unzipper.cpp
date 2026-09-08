@@ -98,7 +98,7 @@ CUnzipper::CUnzipper(LPCTSTR szFileName) : m_uzFile(0)
 
 CUnzipper::~CUnzipper()
 {
-	//ClearVector(); // º¤ÅÍ¸¦ »èÁ¦ÇÑ´Ù.
+	//ClearVector(); // ë²¡í„°ë¥¼ ì‚­ì œí•œë‹¤.
 	CloseZip();
 }
 
@@ -517,6 +517,10 @@ BOOL CUnzipper::CreateFolder(LPCTSTR szFolder)
 		if (!::CreateDirectory(szFolder, NULL)) 
 			return FALSE;
 	}
+	else
+	{
+		free(szPath);
+	}
 	
 	return TRUE;
 }
@@ -544,7 +548,7 @@ BOOL CUnzipper::SetFileModTime(LPCTSTR szFilePath, DWORD dwDosDate)
 {
 	HANDLE hFile = CreateFile(szFilePath, GENERIC_READ | GENERIC_WRITE, 0, NULL, OPEN_EXISTING, 0, NULL);
 
-	if (!hFile)
+	if (hFile == INVALID_HANDLE_VALUE)
 		return FALSE;
 	
 	FILETIME ftm, ftLocal, ftCreate, ftLastAcc, ftLastWrite;
@@ -565,7 +569,7 @@ BOOL CUnzipper::SetFileModTime(LPCTSTR szFilePath, DWORD dwDosDate)
 	return bRes;
 }
 
-// szFileNameÀº full pathname, ÀÎÄÚµù ¿©ºÎ
+// szFileNameì€ full pathname, ì¸ì½”ë”© ì—¬ë¶€
 //
 UINT CUnzipper::UnzipToMemory( LPCTSTR szZipFileName, LPCTSTR szFileName, PBYTE &cBuffer )
 {
@@ -581,7 +585,7 @@ UINT CUnzipper::UnzipToMemory( LPCTSTR szZipFileName, LPCTSTR szFileName, PBYTE 
 	std::string strFileName = szZipFileName;
 	strFileName += szFileName;
 
-	if( GOTOFILEPOS( strFileName ) ) // GotoFilePos·Î ÀÌµ¿
+	if( GOTOFILEPOS( strFileName ) ) // GotoFilePosë¡œ ì´ë™
 	{
 		UZ_FileInfo info;
 		GetFileInfo(info);
@@ -590,9 +594,9 @@ UINT CUnzipper::UnzipToMemory( LPCTSTR szZipFileName, LPCTSTR szFileName, PBYTE 
 		//if (info.szFileName[lstrlen(info.szFileName) - 1] == '\\')
 		//	continue;
 
-		if( IsEncrypted( info.dwFlags ) ) // MEMO : ¾ÏÈ£È­ µÈ ÆÄÀÏÀÌ¸é...
+		if( IsEncrypted( info.dwFlags ) ) // MEMO : ì•”í˜¸í™” ëœ íŒŒì¼ì´ë©´...
 		{
-			if( unzOpenCurrentFilePassword(m_uzFile, ".ÏÈ£...¾ÏÈ£ÈµÈÆÄÀÏÀÌ¸é...") != UNZ_OK )
+			if( unzOpenCurrentFilePassword(m_uzFile, ".é‚±ï¿½...ì•”í˜¸í™´í›ˆì»¥èˆ…è¦‹ï¿½...") != UNZ_OK )
 				return UINT_MAX;
 		}
 		else
@@ -604,7 +608,7 @@ UINT CUnzipper::UnzipToMemory( LPCTSTR szZipFileName, LPCTSTR szFileName, PBYTE 
 		// read the file and output
 		UINT nRet(0);
 		char pBuffer[BUFFERSIZE] = "";
-		cBuffer = new BYTE[info.dwUncompressedSize]; // È£ÃâÇÏ´Â ºÎºÐ¿¡¼­ ¸Þ¸ð¸® ÇØÁ¦
+		cBuffer = new BYTE[info.dwUncompressedSize]; // í˜¸ì¶œí•˜ëŠ” ë¶€ë¶„ì—ì„œ ë©”ëª¨ë¦¬ í•´ì œ
 		
 		do
 		{
@@ -613,7 +617,7 @@ UINT CUnzipper::UnzipToMemory( LPCTSTR szZipFileName, LPCTSTR szFileName, PBYTE 
 			if (nRet > 0)
 			{
 				memcpy( cBuffer+nRetB, pBuffer, nRet );
-				nRetB += nRet; // ÀÌÀü ¹öÆÛ Å©±â
+				nRetB += nRet; // ì´ì „ ë²„í¼ í¬ê¸°
 			}
 		}
 		while (nRet > 0);

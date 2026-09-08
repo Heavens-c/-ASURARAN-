@@ -32,7 +32,7 @@ void OBJOCTree::Save ( CSerialFile& SFile, BOOL bPiece )
 	SFile << vMax;
 	SFile << vMin;
 
-	// Note : ObjectÀÇ Å¸ÀÔÀ» ¼³Á¤ÇÑ´Ù.
+	// Note : Objectì˜ íƒ€ì…ì„ ì„¤ì •í•œë‹¤.
 	if( bPiece )
 	{
 		m_emLandType = EMLR_PIECE;
@@ -54,7 +54,7 @@ void OBJOCTree::Save ( CSerialFile& SFile, BOOL bPiece )
 		SFile << bExist;
 		if ( bExist )
 		{
-			SFile << m_dwVERSION;	// ¹öÁ¯ ÀúÀå.
+			SFile << m_dwVERSION;	// ë²„ì ¼ ì €ì¥.
 
 			SFile << m_dwFVF;
 			SFile << m_dwVert;
@@ -99,7 +99,7 @@ void OBJOCTree::Load( const LPDIRECT3DDEVICEQ pd3dDevice, CSerialFile& SFile, co
 {
 	CleanUp();
 
-	// Note : ObjectÀÇ Å¸ÀÔÀ» ¼³Á¤ÇÑ´Ù.
+	// Note : Objectì˜ íƒ€ì…ì„ ì„¤ì •í•œë‹¤.
 	if( bPiece )
 	{
 		m_emLandType = EMLR_PIECE;
@@ -126,12 +126,12 @@ void OBJOCTree::Load( const LPDIRECT3DDEVICEQ pd3dDevice, CSerialFile& SFile, co
 
 void OBJOCTree::ThreadLoad( LOADINGDATALIST &listLoadingData, CRITICAL_SECTION &CSLockLoading )
 {
-	if( m_bCheck )	return;	// ´Ù½Ã ¾È µé¾î¿Àµµ·Ï Ã¼Å©ÇØ¾ß ÇÑ´Ù.
+	if( m_bCheck )	return;	// ë‹¤ì‹œ ì•ˆ ë“¤ì–´ì˜¤ë„ë¡ ì²´í¬í•´ì•¼ í•œë‹¤.
 	m_bCheck = TRUE;
 
 	DWORD dwData = (DWORD)(this);
 
-	// Note : ·Îµù µ¥ÀÌÅÍ¿¡ »ğÀÔÇØ ³Ö´Â´Ù.
+	// Note : ë¡œë”© ë°ì´í„°ì— ì‚½ì…í•´ ë„£ëŠ”ë‹¤.
 	EnterCriticalSection(&CSLockLoading);
 	{
 		listLoadingData.push_back( dwData );
@@ -162,8 +162,8 @@ BOOL OBJOCTree::DynamicLoad( const LPDIRECT3DDEVICEQ pd3dDevice, CSerialFile& SF
 		SFile >> dwVer;
 		if( dwVer < 0x10000 )
 		{
-			// Note : ¿¹Àü ¹öÁ¯À¸·Î µÇµ¹¸°´Ù. ÀÌ¶§´Â NormalÀ» »ç¿ëÇß¾ú´Ù.
-			//			dwVer´Â ÀÌ¶§ ´ç½Ã FVF·Î ÀúÀåµÇ¾ú¾ú´Ù.	±×·¡¼­ ³Ñ°ÜÁØ ÈÄ ·ÎµùÀ» ÇØ¾ßÇÑ´Ù.
+			// Note : ì˜ˆì „ ë²„ì ¼ìœ¼ë¡œ ë˜ëŒë¦°ë‹¤. ì´ë•ŒëŠ” Normalì„ ì‚¬ìš©í–ˆì—ˆë‹¤.
+			//			dwVerëŠ” ì´ë•Œ ë‹¹ì‹œ FVFë¡œ ì €ì¥ë˜ì—ˆì—ˆë‹¤.	ê·¸ë˜ì„œ ë„˜ê²¨ì¤€ í›„ ë¡œë”©ì„ í•´ì•¼í•œë‹¤.
 			if( !OctreeLoadOLD( pd3dDevice, SFile, dwVer, bThread ) )
 			{
 				bUse = FALSE;
@@ -189,7 +189,7 @@ BOOL OBJOCTree::DynamicLoad( const LPDIRECT3DDEVICEQ pd3dDevice, CSerialFile& SF
 		else
 		{
 			CDebugSet::ErrorVersion( "OBJOCTree::DynamicLoad", SFile.GetFileName(), dwVer );
-			// Note : ¾ø´Ù°í »ı°¢ÇÏ°í ·ÎµùÀ» ÇÏÁö ¾Ê´Â´Ù.
+			// Note : ì—†ë‹¤ê³  ìƒê°í•˜ê³  ë¡œë”©ì„ í•˜ì§€ ì•ŠëŠ”ë‹¤.
 			bUse = FALSE;
 			goto _RETURN;
 		}
@@ -204,11 +204,11 @@ BOOL OBJOCTree::DynamicLoad( const LPDIRECT3DDEVICEQ pd3dDevice, CSerialFile& SF
 		if ( pCollsionTREE )	pCollsionTREE->LoadFile( SFile );
 	}
 
-	m_bLoad = TRUE;		// ·Îµù ¿Ï·á
+	m_bLoad = TRUE;		// ë¡œë”© ì™„ë£Œ
 	return bUse;
 
 _RETURN:
-	m_bLoad = FALSE;	// ·Îµù ½ÇÆĞ
+	m_bLoad = FALSE;	// ë¡œë”© ì‹¤íŒ¨
 	return bUse;
 }
 
@@ -235,7 +235,7 @@ BOOL OBJOCTree::OctreeLoad( const LPDIRECT3DDEVICEQ pd3dDevice, CSerialFile& SFi
 		pd3dDevice->CreateVertexBuffer( m_dwVert*m_nFVFSize, D3DUSAGE_WRITEONLY, m_dwFVF, D3DPOOL_MANAGED, &m_pVB, NULL );
 		if( !m_pVB )
 		{
-			// Note : ÀÓ½Ã·Î ¸¸µç°ÍÀ» Áö¿öÁÜ.
+			// Note : ì„ì‹œë¡œ ë§Œë“ ê²ƒì„ ì§€ì›Œì¤Œ.
 			SAFE_DELETE_ARRAY( pTempVB );
 
 			LeaveCriticalSection(&m_pCSLockVB);
@@ -248,7 +248,7 @@ BOOL OBJOCTree::OctreeLoad( const LPDIRECT3DDEVICEQ pd3dDevice, CSerialFile& SFi
 	pd3dDevice->CreateIndexBuffer( m_dwFace*3*sizeof(WORD), 0L, D3DFMT_INDEX16, D3DPOOL_MANAGED, &m_pIB, NULL );
 	if( !m_pIB )
 	{
-		// Note : ÀÓ½Ã·Î ¸¸µç°ÍÀ» Áö¿öÁÜ.
+		// Note : ì„ì‹œë¡œ ë§Œë“ ê²ƒì„ ì§€ì›Œì¤Œ.
 		SAFE_DELETE_ARRAY( pTempVB );
 
 		EnterCriticalSection(&m_pCSLockVB);
@@ -260,10 +260,10 @@ BOOL OBJOCTree::OctreeLoad( const LPDIRECT3DDEVICEQ pd3dDevice, CSerialFile& SFi
 
 	if( bThread )	Sleep(0);
 
-	// Note : ÀúÀå µÇ¾ú´ø VB¸¦ ·ÎµåÇÑ´Ù.
+	// Note : ì €ì¥ ë˜ì—ˆë˜ VBë¥¼ ë¡œë“œí•œë‹¤.
 	if( bThread )
 	{
-		// ±âº» µ¥ÀÌÅÍ¸¦ ·ÎµåÇÑ´Ù.
+		// ê¸°ë³¸ ë°ì´í„°ë¥¼ ë¡œë“œí•œë‹¤.
 		DWORD dwSub = 0;
 		DWORD dwAdd = 60;	// ??byte * 60 = ????byte
 		for( DWORD i=0; i<m_dwVert; )
@@ -280,7 +280,7 @@ BOOL OBJOCTree::OctreeLoad( const LPDIRECT3DDEVICEQ pd3dDevice, CSerialFile& SFi
 		SFile.ReadBuffer( pTempVB, m_dwVert*m_nFVFSize );
 	}
 
-	// Note : ÀúÀå µÇ¾ú´ø IB¸¦ ·ÎµåÇÑ´Ù.
+	// Note : ì €ì¥ ë˜ì—ˆë˜ IBë¥¼ ë¡œë“œí•œë‹¤.
 	if( bThread )
 	{
 		DWORD dwSub = 0;
@@ -316,7 +316,7 @@ BOOL OBJOCTree::OctreeLoad( const LPDIRECT3DDEVICEQ pd3dDevice, CSerialFile& SFi
 
 	Sleep(0);
 
-	// Note : VertexBuffer »ı¼ºÈÄ µ¥ÀÌÅÍ »ğÀÔ.
+	// Note : VertexBuffer ìƒì„±í›„ ë°ì´í„° ì‚½ì….
 	EnterCriticalSection(&m_pCSLockVB);
 	{
 		BYTE* pVertices(NULL);
@@ -349,8 +349,8 @@ BOOL OBJOCTree::OctreeLoad( const LPDIRECT3DDEVICEQ pd3dDevice, CSerialFile& SFi
 		for( DWORD i=0; i<m_dwVert; ++i )
 		{
 			pPos = (D3DXVECTOR3*)( pTempVB + i*m_nFVFSize );
-			pNor = (D3DXVECTOR3*)( pTempVB + i*m_nFVFSize + 4*3 );	// 4¹ÙÀÌÆ® * (À§Ä¡)
-			pTex = (D3DXVECTOR2*)( pTempVB + i*m_nFVFSize + 4*6 );	// 4¹ÙÀÌÆ® * (À§Ä¡+³ë¸Ö)
+			pNor = (D3DXVECTOR3*)( pTempVB + i*m_nFVFSize + 4*3 );	// 4ë°”ì´íŠ¸ * (ìœ„ì¹˜)
+			pTex = (D3DXVECTOR2*)( pTempVB + i*m_nFVFSize + 4*6 );	// 4ë°”ì´íŠ¸ * (ìœ„ì¹˜+ë…¸ë©€)
 
 			m_pVertSrc[i].vPos = *pPos;
 			m_pVertSrc[i].vNor = *pNor;
@@ -363,7 +363,7 @@ BOOL OBJOCTree::OctreeLoad( const LPDIRECT3DDEVICEQ pd3dDevice, CSerialFile& SFi
 		break;
 	};
 
-	// Note : ÀÓ½Ã·Î ¸¸µç°ÍÀ» Áö¿öÁÜ.
+	// Note : ì„ì‹œë¡œ ë§Œë“ ê²ƒì„ ì§€ì›Œì¤Œ.
 	SAFE_DELETE_ARRAY( pTempVB );
 
 	return TRUE;
@@ -408,7 +408,7 @@ BOOL OBJOCTree::OctreeLoad_100( const LPDIRECT3DDEVICEQ pd3dDevice, CSerialFile&
 		pd3dDevice->CreateVertexBuffer( m_dwVert*m_nFVFSize, D3DUSAGE_WRITEONLY, m_dwFVF, D3DPOOL_MANAGED, &m_pVB, NULL );
 		if( !m_pVB )
 		{
-			// Note : ÀÓ½Ã·Î ¸¸µç°ÍÀ» Áö¿öÁÜ.
+			// Note : ì„ì‹œë¡œ ë§Œë“ ê²ƒì„ ì§€ì›Œì¤Œ.
 			SAFE_DELETE_ARRAY( pTempVB );
 
 			LeaveCriticalSection(&m_pCSLockVB);
@@ -421,7 +421,7 @@ BOOL OBJOCTree::OctreeLoad_100( const LPDIRECT3DDEVICEQ pd3dDevice, CSerialFile&
 	pd3dDevice->CreateIndexBuffer( m_dwFace*3*sizeof(WORD), 0L, D3DFMT_INDEX16, D3DPOOL_MANAGED, &m_pIB, NULL );
 	if( !m_pIB )
 	{
-		// Note : ÀÓ½Ã·Î ¸¸µç°ÍÀ» Áö¿öÁÜ.
+		// Note : ì„ì‹œë¡œ ë§Œë“ ê²ƒì„ ì§€ì›Œì¤Œ.
 		SAFE_DELETE_ARRAY( pTempVB );
 
 		EnterCriticalSection(&m_pCSLockVB);
@@ -433,10 +433,10 @@ BOOL OBJOCTree::OctreeLoad_100( const LPDIRECT3DDEVICEQ pd3dDevice, CSerialFile&
 
 	if( bThread )	Sleep(0);
 
-	// Note : ÀúÀå µÇ¾ú´ø VB¸¦ ·ÎµåÇÑ´Ù.
+	// Note : ì €ì¥ ë˜ì—ˆë˜ VBë¥¼ ë¡œë“œí•œë‹¤.
 	if( bThread )
 	{
-		// ±âº» µ¥ÀÌÅÍ¸¦ ·ÎµåÇÑ´Ù.
+		// ê¸°ë³¸ ë°ì´í„°ë¥¼ ë¡œë“œí•œë‹¤.
 		DWORD dwSub = 0;
 		DWORD dwAdd = 60;	// ??byte * 60 = ????byte
 		for( DWORD i=0; i<m_dwVert; )
@@ -453,7 +453,7 @@ BOOL OBJOCTree::OctreeLoad_100( const LPDIRECT3DDEVICEQ pd3dDevice, CSerialFile&
 		SFile.ReadBuffer( pTempVB, m_dwVert*dwSaveFVFSize );
 	}
 
-	// Note : ÀúÀå µÇ¾ú´ø IB¸¦ ·ÎµåÇÑ´Ù.
+	// Note : ì €ì¥ ë˜ì—ˆë˜ IBë¥¼ ë¡œë“œí•œë‹¤.
 	if( bThread )
 	{
 		DWORD dwSub = 0;
@@ -502,7 +502,7 @@ BOOL OBJOCTree::OctreeLoad_100( const LPDIRECT3DDEVICEQ pd3dDevice, CSerialFile&
 		for( DWORD i=0; i<m_dwVert; ++i )
 		{
 			pPos = (D3DXVECTOR3*)( pTempVB + i*dwSaveFVFSize );
-			pTex = (D3DXVECTOR2*)( pTempVB + i*dwSaveFVFSize + dwInverseTexFVFSize );	// 4¹ÙÀÌÆ® * (À§Ä¡+µğÇ»Áî)
+			pTex = (D3DXVECTOR2*)( pTempVB + i*dwSaveFVFSize + dwInverseTexFVFSize );	// 4ë°”ì´íŠ¸ * (ìœ„ì¹˜+ë””í“¨ì¦ˆ)
 
 			m_pVertSrc[i].vPos = *pPos;
 			m_pVertSrc[i].vNor = D3DXVECTOR3(0.f,1.f,0.f);
@@ -523,8 +523,8 @@ BOOL OBJOCTree::OctreeLoad_100( const LPDIRECT3DDEVICEQ pd3dDevice, CSerialFile&
 		for( DWORD i=0; i<m_dwVert; ++i )
 		{
 			pPos = (D3DXVECTOR3*)( pTempVB + i*m_nFVFSize );
-			pNor = (D3DXVECTOR3*)( pTempVB + i*m_nFVFSize + 4*3 );	// 4¹ÙÀÌÆ® * (À§Ä¡+³ë¸Ö)
-			pTex = (D3DXVECTOR2*)( pTempVB + i*m_nFVFSize + 4*6 );	// 4¹ÙÀÌÆ® * (À§Ä¡+³ë¸Ö)
+			pNor = (D3DXVECTOR3*)( pTempVB + i*m_nFVFSize + 4*3 );	// 4ë°”ì´íŠ¸ * (ìœ„ì¹˜+ë…¸ë©€)
+			pTex = (D3DXVECTOR2*)( pTempVB + i*m_nFVFSize + 4*6 );	// 4ë°”ì´íŠ¸ * (ìœ„ì¹˜+ë…¸ë©€)
 
 			m_pVertSrc[i].vPos = *pPos;
 			m_pVertSrc[i].vNor = *pNor;
@@ -541,7 +541,7 @@ BOOL OBJOCTree::OctreeLoad_100( const LPDIRECT3DDEVICEQ pd3dDevice, CSerialFile&
 	{
 	case EMLR_DAYNIGHT_ON:
 	case EMLR_DAYNIGHT_OFF:
-		// Note : VertexBuffer »ı¼ºÈÄ µ¥ÀÌÅÍ »ğÀÔ.
+		// Note : VertexBuffer ìƒì„±í›„ ë°ì´í„° ì‚½ì….
 		EnterCriticalSection(&m_pCSLockVB);
 		{
 			BYTE* pVertices(NULL);
@@ -553,7 +553,7 @@ BOOL OBJOCTree::OctreeLoad_100( const LPDIRECT3DDEVICEQ pd3dDevice, CSerialFile&
 		break;
 
 	case EMLR_PIECE:
-		// Note : VertexBuffer »ı¼ºÈÄ µ¥ÀÌÅÍ »ğÀÔ.
+		// Note : VertexBuffer ìƒì„±í›„ ë°ì´í„° ì‚½ì….
 		EnterCriticalSection(&m_pCSLockVB);
 		{
 			BYTE* pVertices(NULL);
@@ -568,7 +568,7 @@ BOOL OBJOCTree::OctreeLoad_100( const LPDIRECT3DDEVICEQ pd3dDevice, CSerialFile&
 
 	Sleep(0);
 
-	// Note : ÀÓ½Ã·Î ¸¸µç°ÍÀ» Áö¿öÁÜ.
+	// Note : ì„ì‹œë¡œ ë§Œë“ ê²ƒì„ ì§€ì›Œì¤Œ.
 	SAFE_DELETE_ARRAY( pTempVB );
 
 	return TRUE;
@@ -581,25 +581,25 @@ BOOL OBJOCTree::OctreeLoadOLD( const LPDIRECT3DDEVICEQ pd3dDevice, CSerialFile& 
 	SFile >> m_dwVert;
 	SFile >> m_dwFace;
 
-	UINT nSIZE = D3DXGetFVFVertexSize( dwFVF );	// dwFVFÀº Á¤ÇØÁöÁö ¾Ê´Â °ÍÀÌ µé¾î ¿À±â ´ë¹®¿¡ Áö¿ª º¯¼ö·Î ³Ö¾ú´Ù.
+	UINT nSIZE = D3DXGetFVFVertexSize( dwFVF );	// dwFVFì€ ì •í•´ì§€ì§€ ì•ŠëŠ” ê²ƒì´ ë“¤ì–´ ì˜¤ê¸° ëŒ€ë¬¸ì— ì§€ì—­ ë³€ìˆ˜ë¡œ ë„£ì—ˆë‹¤.
 
 	if( bThread )	Sleep(0);
 
-	// Note : ·Îµù µÇ¾îÀÖ´Â µ¥ÀÌÅÍ Çü.
+	// Note : ë¡œë”© ë˜ì–´ìˆëŠ” ë°ì´í„° í˜•.
 	BYTE*	pTempVB(NULL);
 	pTempVB = new BYTE[m_dwVert*nSIZE];
 
-	// Note : ±âº»ÀûÀÎ VB, IB, DIRECTPOINTCOLOR, µîÀ» »ı¼ºÇÑ´Ù.
+	// Note : ê¸°ë³¸ì ì¸ VB, IB, DIRECTPOINTCOLOR, ë“±ì„ ìƒì„±í•œë‹¤.
 	CreateBASE( pd3dDevice, m_dwVert, m_dwFace );
 	if( !m_pVB )	return FALSE;
 	if( !m_pIB )	return FALSE;
 
 	if( bThread )	Sleep(0);
 
-	// Note : ÀúÀå µÇ¾ú´ø VB¸¦ ·ÎµåÇÑ´Ù.
+	// Note : ì €ì¥ ë˜ì—ˆë˜ VBë¥¼ ë¡œë“œí•œë‹¤.
 	if( bThread )
 	{
-		// ±âº» µ¥ÀÌÅÍ¸¦ ·ÎµåÇÑ´Ù.
+		// ê¸°ë³¸ ë°ì´í„°ë¥¼ ë¡œë“œí•œë‹¤.
 		DWORD dwSub = 0;
 		DWORD dwAdd = 60;	// 32byte * 60 = 1920byte
 		for( DWORD i=0; i<m_dwVert; )
@@ -616,7 +616,7 @@ BOOL OBJOCTree::OctreeLoadOLD( const LPDIRECT3DDEVICEQ pd3dDevice, CSerialFile& 
 		SFile.ReadBuffer( pTempVB, m_dwVert*nSIZE );
 	}
 
-	// Note : ÀúÀå µÇ¾ú´ø IB¸¦ ·ÎµåÇÑ´Ù.
+	// Note : ì €ì¥ ë˜ì—ˆë˜ IBë¥¼ ë¡œë“œí•œë‹¤.
 	if( bThread )
 	{
 		DWORD dwSub = 0;
@@ -641,18 +641,18 @@ BOOL OBJOCTree::OctreeLoadOLD( const LPDIRECT3DDEVICEQ pd3dDevice, CSerialFile& 
 		m_pIB->Unlock();
 	}
 
-	// Note : VertSrc¸¦ »ı¼ºÇÑ´Ù.
+	// Note : VertSrcë¥¼ ìƒì„±í•œë‹¤.
 	CreateVertSrc( pTempVB, dwFVF, m_dwVert );
 
-	// Note : Normal°ú ÄÃ·¯¸¦ °¡Á®¿Â´Ù.
+	// Note : Normalê³¼ ì»¬ëŸ¬ë¥¼ ê°€ì ¸ì˜¨ë‹¤.
 	CreateNormalColor( pTempVB, dwFVF, m_dwVert );
 
 	if( bThread )	Sleep(0);
 	
-	// Note : ·»´õ¿¡ ¾²ÀÏ VB¸¦ ¼ÂÆÃÇÑ´Ù.
+	// Note : ë Œë”ì— ì“°ì¼ VBë¥¼ ì…‹íŒ…í•œë‹¤.
 	CopyVertSrcToVB( pTempVB, m_pVertSrc, m_pVB, m_dwVert );
 
-	// Note : ÀÓ½Ã·Î ¸¸µç°ÍÀ» Áö¿öÁÜ.
+	// Note : ì„ì‹œë¡œ ë§Œë“ ê²ƒì„ ì§€ì›Œì¤Œ.
 	SAFE_DELETE_ARRAY( pTempVB );
 
 	return TRUE;
@@ -663,7 +663,7 @@ void OBJOCTree::Load_VER100 ( const LPDIRECT3DDEVICEQ pd3dDevice, CSerialFile& S
 	HRESULT hr(S_OK);
 	CleanUp();
 
-	// Note : ÀÌ¶§´Â ¹«Á¶°Ç Piece°¡ ¾Æ´Ï¾ú´Ù. ObjectÀÇ Å¸ÀÔÀ» ¼³Á¤ÇÑ´Ù.
+	// Note : ì´ë•ŒëŠ” ë¬´ì¡°ê±´ Pieceê°€ ì•„ë‹ˆì—ˆë‹¤. Objectì˜ íƒ€ì…ì„ ì„¤ì •í•œë‹¤.
 	if( DxLightMan::GetInstance()->IsNightAndDay() )	m_emLandType = EMLR_DAYNIGHT_ON;
 	else												m_emLandType = EMLR_DAYNIGHT_OFF;
 
@@ -681,35 +681,35 @@ void OBJOCTree::Load_VER100 ( const LPDIRECT3DDEVICEQ pd3dDevice, CSerialFile& S
 
 		UINT nSIZE = D3DXGetFVFVertexSize ( dwFVF );
 
-		// Note : ·Îµù µÇ¾îÀÖ´Â µ¥ÀÌÅÍ Çü.
+		// Note : ë¡œë”© ë˜ì–´ìˆëŠ” ë°ì´í„° í˜•.
 		BYTE*	pTempVB(NULL);
 		pTempVB = new BYTE[m_dwVert*nSIZE];
 
-		// Note : ±âº»ÀûÀÎ VB, IB, DIRECTPOINTCOLOR, µîÀ» »ı¼ºÇÑ´Ù.
+		// Note : ê¸°ë³¸ì ì¸ VB, IB, DIRECTPOINTCOLOR, ë“±ì„ ìƒì„±í•œë‹¤.
 		CreateBASE( pd3dDevice, m_dwVert, m_dwFace );
 
-		// Note : ÀúÀå µÇ¾ú´ø VB¸¦ ·ÎµåÇÑ´Ù.
+		// Note : ì €ì¥ ë˜ì—ˆë˜ VBë¥¼ ë¡œë“œí•œë‹¤.
 		SFile.ReadBuffer( pTempVB, m_dwVert*nSIZE );
 
-		// Note : ÀúÀå µÇ¾ú´ø IB¸¦ ·ÎµåÇÑ´Ù.
+		// Note : ì €ì¥ ë˜ì—ˆë˜ IBë¥¼ ë¡œë“œí•œë‹¤.
 		WORD* pIndices;
 		m_pIB->Lock( 0, 0, (VOID**)&pIndices, 0L );
 		SFile.ReadBuffer( pIndices, sizeof(WORD)*m_dwFace*3 );
 		m_pIB->Unlock();
 
-		// Note : VertSrc¸¦ »ı¼ºÇÑ´Ù.
+		// Note : VertSrcë¥¼ ìƒì„±í•œë‹¤.
 		CreateVertSrc( pTempVB, dwFVF, m_dwVert );
 
-		// Note : Normal°ú ÄÃ·¯¸¦ °¡Á®¿Â´Ù.
+		// Note : Normalê³¼ ì»¬ëŸ¬ë¥¼ ê°€ì ¸ì˜¨ë‹¤.
 		CreateNormalColor( pTempVB, dwFVF, m_dwVert );
 			
-		// Note : ·»´õ¿¡ ¾²ÀÏ VB¸¦ ¼ÂÆÃÇÑ´Ù.
+		// Note : ë Œë”ì— ì“°ì¼ VBë¥¼ ì…‹íŒ…í•œë‹¤.
 		CopyVertSrcToVB( pTempVB, m_pVertSrc, m_pVB, m_dwVert );
 
 		SAFE_DELETE_ARRAY( pTempVB );
 	}
 
-	m_bLoad = TRUE;		// ·Îµù ¿Ï·á
+	m_bLoad = TRUE;		// ë¡œë”© ì™„ë£Œ
 }
 
 // -----------------------------------------------------------------------------------------------------------------------------------------
@@ -1072,7 +1072,7 @@ void DxSingleTexMesh::Load ( const LPDIRECT3DDEVICEQ pd3dDevice, CSerialFile& SF
 		SFile.SetOffSet( dwCur+dwBufferSize );
 	}
 
-	// Note : m_pAABBOctree¿¡¼­ Version Ã¼Å©°¡ ÀÏ¾î³­´Ù.
+	// Note : m_pAABBOctreeì—ì„œ Version ì²´í¬ê°€ ì¼ì–´ë‚œë‹¤.
 	BOOL bExist;
 	SFile >> bExist;
 	if ( bExist )
@@ -1125,7 +1125,7 @@ void DxSingleTexMesh::Load_EP9 ( const LPDIRECT3DDEVICEQ pd3dDevice, CSerialFile
 // -----------------------------------------------------------------------------------------------------------------------------------------
 namespace NSOCTREE
 {
-	BOOL				g_bDynamicLoad = FALSE;	// Tool ¿¡ µû¶ó º¯ÇÔ. Game »ç¿ë, Level Tool ¹Ì »ç¿ë.
+	BOOL				g_bDynamicLoad = FALSE;	// Tool ì— ë”°ë¼ ë³€í•¨. Game ì‚¬ìš©, Level Tool ë¯¸ ì‚¬ìš©.
 
 	void OneTimeSceneInit()
 	{
@@ -1164,7 +1164,7 @@ namespace NSOCTREE
 		D3DXVECTOR3 *pDest;
 		for ( DWORD i=0; i<dwFace; ++i )
 		{
-			// Note : ¸éÀÌ ¾Õ¿¡ ÀÖ´Ù.		 ¸é ´ÜÀ§ °è»ê
+			// Note : ë©´ì´ ì•ì— ìˆë‹¤.		 ë©´ ë‹¨ìœ„ ê³„ì‚°
 			if ( IsFaceFront ( &pSrc[nSIZE*i*3], sPlane, nSIZE ) )
 			{
 				pDest = (D3DXVECTOR3*)( pLeft + nSIZE*(dwLeft*3+0) );
@@ -1209,7 +1209,7 @@ namespace NSOCTREE
 
 	void MakeOctree1 ( POBJOCTREE& pTree, const UINT nSIZE )
 	{
-		// Note : ÀÌ°Ç ¿Ï·áµÈ µ¥ÀÌÅÍ
+		// Note : ì´ê±´ ì™„ë£Œëœ ë°ì´í„°
 		float fDisX = pTree->vMax.x - pTree->vMin.x;
 		float fDisY = pTree->vMax.y - pTree->vMin.y;
 		float fDisZ = pTree->vMax.z - pTree->vMin.z;
@@ -1219,7 +1219,7 @@ namespace NSOCTREE
 			return;
 		}
 
-		// Note : ºĞÇÒÀ» ÇÏÀÚ.
+		// Note : ë¶„í• ì„ í•˜ì.
 		DWORD	dwLeftFace = 0;
 		DWORD	dwRightFace = 0;
 		BYTE* pLeftVertex = new BYTE[nSIZE*pTree->dwFace*3];
@@ -1230,7 +1230,7 @@ namespace NSOCTREE
 		vCenter.x += (fDisX*0.5f);
 		vCenter.y += (fDisY*0.5f);
 		vCenter.z += (fDisZ*0.5f);
-		if ( (fDisX>fDisY) && (fDisX>fDisZ) )	// X ±æ´Ù.
+		if ( (fDisX>fDisY) && (fDisX>fDisZ) )	// X ê¸¸ë‹¤.
 		{
 			D3DXVECTOR3	v0 = vCenter;
 			D3DXVECTOR3	v1 = vCenter;
@@ -1239,7 +1239,7 @@ namespace NSOCTREE
 			v2.y += 1.f;
 			D3DXPlaneFromPoints ( &sPlane, &v0, &v1, &v2 );
 		}
-		else if (fDisZ>fDisY)									// Z ±æ´Ù.
+		else if (fDisZ>fDisY)									// Z ê¸¸ë‹¤.
 		{
 			D3DXVECTOR3	v0 = vCenter;
 			D3DXVECTOR3	v1 = vCenter;
@@ -1271,11 +1271,11 @@ namespace NSOCTREE
 			return;
 		}
 
-		// Note : ÇÊ¿ä ¾ø¾îÁø°Í »èÁ¦
+		// Note : í•„ìš” ì—†ì–´ì§„ê²ƒ ì‚­ì œ
 		SAFE_DELETE_ARRAY ( pTree->pVertex );
 		pTree->dwFace = 0;
 
-		// Note : Left »ı¼º
+		// Note : Left ìƒì„±
 		if ( dwLeftFace )
 		{
 			D3DXVECTOR3 vMax = D3DXVECTOR3 ( -FLT_MAX, -FLT_MAX, -FLT_MAX );
@@ -1293,7 +1293,7 @@ namespace NSOCTREE
 				if ( vMin.z > pVecter->z )	vMin.z = pVecter->z;
 			}
 
-			// Ãæµ¹À» À§ÇØ¼­
+			// ì¶©ëŒì„ ìœ„í•´ì„œ
 			vMax += D3DXVECTOR3( 0.0001f, 0.0001f, 0.0001f );
 			vMin -= D3DXVECTOR3( 0.0001f, 0.0001f, 0.0001f );
 
@@ -1310,7 +1310,7 @@ namespace NSOCTREE
 			SAFE_DELETE_ARRAY ( pLeftVertex );
 		}
 
-		// Note : Right »ı¼º
+		// Note : Right ìƒì„±
 		if ( dwRightFace )
 		{
 			D3DXVECTOR3 vMax = D3DXVECTOR3 ( -FLT_MAX, -FLT_MAX, -FLT_MAX );
@@ -1328,7 +1328,7 @@ namespace NSOCTREE
 				if ( vMin.z > pVecter->z )	vMin.z = pVecter->z;
 			}
 
-			// Ãæµ¹À» À§ÇØ¼­
+			// ì¶©ëŒì„ ìœ„í•´ì„œ
 			vMax += D3DXVECTOR3( 0.0001f, 0.0001f, 0.0001f );
 			vMin -= D3DXVECTOR3( 0.0001f, 0.0001f, 0.0001f );
 
@@ -1367,7 +1367,7 @@ namespace NSOCTREE
 			if ( vMin.z > pVecter->z )	vMin.z = pVecter->z;
 		}
 
-		// Ãæµ¹À» À§ÇØ¼­
+		// ì¶©ëŒì„ ìœ„í•´ì„œ
 		vMax += D3DXVECTOR3( 0.0001f, 0.0001f, 0.0001f );
 		vMin -= D3DXVECTOR3( 0.0001f, 0.0001f, 0.0001f );
 
@@ -1426,7 +1426,7 @@ namespace NSOCTREE
 	{
 		if ( pTree->pOcMesh )
 		{
-			// Note : ¸Ş½¬ÀÇ ÃÖÀûÈ­
+			// Note : ë©”ì‰¬ì˜ ìµœì í™”
 			NSOPTIMIZEMESH::MakeOptimizeMesh( pd3dDevice, pTree->pOcMesh );
 			return;
 		}
@@ -1446,9 +1446,13 @@ namespace NSOCTREE
 		pMesh->LockIndexBuffer( 0L, (VOID**)&pLockIndices );
 		pMesh->LockVertexBuffer( 0L, (VOID**)&pbLockPoints );
 
-		WORD *pFaces;
-		pFaces = new WORD[dwFaceNUM];
-		if ( pFaces == NULL )	return;// E_OUTOFMEMORY;
+		WORD *pFaces = new WORD[dwFaceNUM];
+		if ( pFaces == NULL )
+		{
+			pMesh->UnlockIndexBuffer();
+			pMesh->UnlockVertexBuffer();
+			return;
+		}
 
 		for ( WORD i=0; i<dwFaceNUM; i++ )
 			pFaces[i] = i;
@@ -1460,6 +1464,13 @@ namespace NSOCTREE
 		COLLISION::GetSizeNode ( matComb, pLockIndices, pbLockPoints, pMesh->GetFVF(), pFaces, dwFaceNUM, vMax, vMin );
 
 		DxAABBNode *pNode = new DxAABBNode;
+		if ( !pNode )
+		{
+			pMesh->UnlockIndexBuffer();
+			pMesh->UnlockVertexBuffer();
+			SAFE_DELETE_ARRAY( pFaces );
+			return;
+		}
 		pNode->fMaxX = vMax.x;
 		pNode->fMaxY = vMax.y;
 		pNode->fMaxZ = vMax.z;
@@ -1497,35 +1508,35 @@ namespace NSOCTREE
 	{
 		if( !pTree )	return;
 
-		// Note : VertexBuffer, IndexBuffer, pNormalÀ» »ı¼ºÇÏ°í Mesh´Â »èÁ¦ÇÑ´Ù.
-		//		Mesh´Â NormalÀ» Æ÷ÇÔÇÏ°í ÀÖ´Â °æ¿ìÀÏ °ÍÀÌ´Ù. ºĞÇØ ÈÄ ³Ö¾î¾ß ÇÑ´Ù.
+		// Note : VertexBuffer, IndexBuffer, pNormalì„ ìƒì„±í•˜ê³  MeshëŠ” ì‚­ì œí•œë‹¤.
+		//		MeshëŠ” Normalì„ í¬í•¨í•˜ê³  ìˆëŠ” ê²½ìš°ì¼ ê²ƒì´ë‹¤. ë¶„í•´ í›„ ë„£ì–´ì•¼ í•œë‹¤.
 		if( pTree->pOcMesh )
 		{
-			// Note : FVF¸¦ ¾ò´Â´Ù.
+			// Note : FVFë¥¼ ì–»ëŠ”ë‹¤.
 			DWORD dwFVF = pTree->pOcMesh->GetFVF();
 			DWORD dwVert = pTree->pOcMesh->GetNumVertices();
 			DWORD dwFaces = pTree->pOcMesh->GetNumFaces();
 
-			// Note : ±âº»ÀûÀÎ VB, IB, DIRECTPOINTCOLOR, µîÀ» »ı¼ºÇÑ´Ù.
+			// Note : ê¸°ë³¸ì ì¸ VB, IB, DIRECTPOINTCOLOR, ë“±ì„ ìƒì„±í•œë‹¤.
 			pTree->CreateBASE( pd3dDevice, dwVert, dwFaces );
 
-			// Note : µ¥ÀÌÅÍ¸¦ ¿Å±ä´Ù.
+			// Note : ë°ì´í„°ë¥¼ ì˜®ê¸´ë‹¤.
 			BYTE*	pVertices(NULL);
 			pTree->pOcMesh->LockVertexBuffer( 0L, (VOID**)&pVertices );
-			pTree->CreateVertSrc( pVertices, dwFVF, dwVert );				// VertSrc¸¦ »ı¼ºÇÑ´Ù.
-			pTree->CreateNormalColor( pVertices, dwFVF, dwVert );			// NormalColor¸¦ »ı¼ºÇÑ´Ù.
+			pTree->CreateVertSrc( pVertices, dwFVF, dwVert );				// VertSrcë¥¼ ìƒì„±í•œë‹¤.
+			pTree->CreateNormalColor( pVertices, dwFVF, dwVert );			// NormalColorë¥¼ ìƒì„±í•œë‹¤.
 
-			// Note : ·»´õ¿¡ ¾²ÀÏ VB¸¦ ¼ÂÆÃÇÑ´Ù.
+			// Note : ë Œë”ì— ì“°ì¼ VBë¥¼ ì…‹íŒ…í•œë‹¤.
 			pTree->CopyVertSrcToVB( pVertices, pTree->m_pVertSrc, pTree->m_pVB, dwVert );
 			pTree->pOcMesh->UnlockVertexBuffer();
 
-			// Note : ·»´õ¿¡ ¾²ÀÏ IB¸¦ ¼ÂÆÃÇÑ´Ù.
+			// Note : ë Œë”ì— ì“°ì¼ IBë¥¼ ì…‹íŒ…í•œë‹¤.
 			WORD* pIndexSRC(NULL);
 			pTree->pOcMesh->LockIndexBuffer( 0L, (VOID**)&pIndexSRC );
 			pTree->CopyMeshToIB( pIndexSRC, pTree->m_pIB, dwFaces );
 			pTree->pOcMesh->UnlockIndexBuffer();
 
-			// Note : ¸¶Áö¸·À¸·Î »èÁ¦ÇÑ´Ù.
+			// Note : ë§ˆì§€ë§‰ìœ¼ë¡œ ì‚­ì œí•œë‹¤.
 			SAFE_RELEASE( pTree->pOcMesh );
 
 			return;
@@ -1699,7 +1710,7 @@ namespace NSOCTREE
 					return;
 				}
 
-				DWORD fvfsize = sizeof(VERTEXNORCOLORTEX);		// CAUTION : pTree->m_pVertSrcÀÇ ÀÚ·áÇüÀÌ ¹Ù²î¾úÀ» ½Ã ¾È ¹Ù²ãÁÖ¸é Å« ¹®Á¦°¡ »ı±ä´Ù.
+				DWORD fvfsize = sizeof(VERTEXNORCOLORTEX);		// CAUTION : pTree->m_pVertSrcì˜ ìë£Œí˜•ì´ ë°”ë€Œì—ˆì„ ì‹œ ì•ˆ ë°”ê¿”ì£¼ë©´ í° ë¬¸ì œê°€ ìƒê¸´ë‹¤.
 				PWORD pwIndex = pwIndexB + pAABBCur->dwFace*3;
 				LPD3DXVECTOR3 pvT0 = (D3DXVECTOR3*) (pbDataVB+fvfsize*(*(pwIndex)));
 				LPD3DXVECTOR3 pvT1 = (D3DXVECTOR3*) (pbDataVB+fvfsize*(*(pwIndex+1)));
@@ -1711,7 +1722,7 @@ namespace NSOCTREE
 				vNewP1=vStart;
 				if ( COLLISION::IsLineTriangleCollision( pvT0, pvT1, pvT2, &vNewP1, &vNewP2, &vNewCollision, &vNewNormal, bFrontColl ) )
 				{
-					bColl = TRUE;		// Ãæµ¹ µÇ¾ú´Ù´Â °Í È®ÀÎ.
+					bColl = TRUE;		// ì¶©ëŒ ë˜ì—ˆë‹¤ëŠ” ê²ƒ í™•ì¸.
 
 					D3DXVECTOR3 vDxVect;
 					vDxVect = vStart - vNewCollision;

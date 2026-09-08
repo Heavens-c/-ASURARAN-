@@ -123,11 +123,11 @@ BOOL CNpcDialogueSet::Save ( const char* szFileName )
 	CSerialFile SFile;
 	if ( !SFile.OpenFile ( FOT_WRITE, szFileName ) )
 	{
-		GASSERT ( 0 && "¿À·ù¹ß»ı, ÆÄÀÏ ÀúÀåÇÏ±âÁß ¿­±â¿¡ ½ÇÆĞ" );
+		GASSERT ( 0 && "ì˜¤ë¥˜ë°œìƒ, íŒŒì¼ ì €ì¥í•˜ê¸°ì¤‘ ì—´ê¸°ì— ì‹¤íŒ¨" );
 		return FALSE;
 	}
 
-	//	Note : ÀúÀåÀü¿¡ dlg set ÀÇ ±â´ÉÀ» ¸®Æ÷ÆÃÇØµÒ.
+	//	Note : ì €ì¥ì „ì— dlg set ì˜ ê¸°ëŠ¥ì„ ë¦¬í¬íŒ…í•´ë‘ .
 	//
 	ReportAction ();
 
@@ -859,7 +859,7 @@ BOOL CNpcDialogueSet::Load ( const char* szFileName )
 		break;
 	};
 
-	//	talk Àü¿ª ID ¹èÁ¤.
+	//	talk ì „ì—­ ID ë°°ì •.
 	AssignTalkGlobID ();
 
 	return TRUE;
@@ -873,11 +873,11 @@ void CNpcDialogueSet::RemoveAllDialogue ()
 
 DWORD CNpcDialogueSet::MakeDlgNID ()
 {
-	//	°¡Àå Å« IDº¸´Ù 1Å« ID¸¦ ¸®ÅÏÇÑ´Ù.
-	//	ÀÏ¹İÀûÀ¸·Î´Â Àß µ¿ÀÛÇÏ°ÚÁö¸¸,
-	//	¸¸¾à °¡Àå Å« ID¸¦ °¡Áø ³ëµå¸¦ »èÁ¦ÇÒ °æ¿ì
-	//	¹®Á¦°¡ ¹ß»ıÇÒ ¼ö ÀÖ´Ù.	
-	//  -> ºñ¾îÀÖ´Â °¡Àå ÀÛÀº ID ¸®ÅÏÀ¸·Î º¯°æ
+	//	ê°€ì¥ í° IDë³´ë‹¤ 1í° IDë¥¼ ë¦¬í„´í•œë‹¤.
+	//	ì¼ë°˜ì ìœ¼ë¡œëŠ” ì˜ ë™ì‘í•˜ê² ì§€ë§Œ,
+	//	ë§Œì•½ ê°€ì¥ í° IDë¥¼ ê°€ì§„ ë…¸ë“œë¥¼ ì‚­ì œí•  ê²½ìš°
+	//	ë¬¸ì œê°€ ë°œìƒí•  ìˆ˜ ìˆë‹¤.	
+	//  -> ë¹„ì–´ìˆëŠ” ê°€ì¥ ì‘ì€ ID ë¦¬í„´ìœ¼ë¡œ ë³€ê²½
 
 
 
@@ -921,6 +921,7 @@ BOOL CNpcDialogueSet::AddDialogue ( CNpcDialogue* pDialogue )
 		return TRUE;
 	}
 
+	SAFE_DELETE( pDialogue );
 	return FALSE;
 }
 
@@ -992,7 +993,7 @@ void CNpcDialogueSet::GetDlgText( DWORD dwIndex, std::string& strName )
 	//strStream << "[" << pDlg->GetDlgNID() << "] " << pDlgCase->GetBasicTalk ();
 
 	//strName = strStream.str();
-	//strStream.freeze( false );	// Note : std::strstreamÀÇ freeze. ¾È ÇÏ¸é Leak ¹ß»ı.
+	//strStream.freeze( false );	// Note : std::strstreamì˜ freeze. ì•ˆ í•˜ë©´ Leak ë°œìƒ.
 }
 
 CNpcDialogueSet::DIALOGMAP*	CNpcDialogueSet::GetDialogueMap ()
@@ -1185,7 +1186,7 @@ CNpcDialogueSet& CNpcDialogueSet::operator= ( CNpcDialogueSet &rvalue )
 	m_bNPCShop = rvalue.m_bNPCShop;						/*npc shop, Juver, 2017/07/25 */
 	m_bNPCItemExchange = rvalue.m_bNPCItemExchange;		/*item exchange, Juver, 2017/10/11 */
 
-	//	talk Àü¿ª ID ¹èÁ¤.
+	//	talk ì „ì—­ ID ë°°ì •.
 	AssignTalkGlobID ();
 
 	return *this;

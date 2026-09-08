@@ -21,7 +21,7 @@
 #define new DEBUG_NEW
 #endif
 
-//	¿¡¹Ä ½ÇÇà½Ã dbman ½ÇÁ¦·Î db¶û ¿¬°áÀ» ÇÏÁö ¾ÊÀ½, ¸Ş¸ğ¸® ¸¯ ¹æÁö¿ë.
+//	ì—ë®¬ ì‹¤í–‰ì‹œ dbman ì‹¤ì œë¡œ dbë‘ ì—°ê²°ì„ í•˜ì§€ ì•ŠìŒ, ë©”ëª¨ë¦¬ ë¦­ ë°©ì§€ìš©.
 //
 class GLEmulatorDBMan : public GLDBMan
 {
@@ -29,19 +29,19 @@ public:
 	virtual int SaveCharacter ( LPVOID _pbuffer )		{ return 0; }
 	virtual int	ReadUserInven ( SCHARDATA2* pChaData2 )	{ return 0; }
 
-	//	¾Æ¹«°Íµµ ÇÏÁö ¾Ê´Â´Ù.
+	//	ì•„ë¬´ê²ƒë„ í•˜ì§€ ì•ŠëŠ”ë‹¤.
 	virtual void AddJob ( CDbAction *pDbActJob )
 	{
 		SAFE_DELETE(pDbActJob);
 	}
 
-	//	¾Æ¹«°Íµµ ÇÏÁö ¾Ê´Â´Ù.
+	//	ì•„ë¬´ê²ƒë„ í•˜ì§€ ì•ŠëŠ”ë‹¤.
 	virtual void AddLogJob ( CDbAction *pDbActJob )
 	{
 		SAFE_DELETE(pDbActJob);
 	}
 
-	//	¾Æ¹«°Íµµ ÇÏÁö ¾Ê´Â´Ù.
+	//	ì•„ë¬´ê²ƒë„ í•˜ì§€ ì•ŠëŠ”ë‹¤.
 	virtual void AddUserJob ( CDbAction *pDbActJob )
 	{
 		SAFE_DELETE(pDbActJob);
@@ -113,7 +113,7 @@ PGLCHARAG GLAgentServer::GetChar ( const char* szName )
 }
 
 // *****************************************************
-// Desc: Á¢¼ÓÁßÀÎ »ç¿ëÀÚ °èÁ¤À¸·Î PGLCHARAG ¹İÈ¯
+// Desc: ì ‘ì†ì¤‘ì¸ ì‚¬ìš©ì ê³„ì •ìœ¼ë¡œ PGLCHARAG ë°˜í™˜
 // *****************************************************
 PGLCHARAG GLAgentServer::GetCharUA ( const char* szUAccount )
 {
@@ -172,7 +172,7 @@ HRESULT GLAgentServer::Create ( DWORD dwMaxClient, DxMsgServer *pMsgServer, DxCo
 	{
 		const SMAPNODE *pMapNode = &(*iter).second;
 
-		//	Note : LandMan »ı¼ºÈÄ ÃÊ±âÈ­.
+		//	Note : LandMan ìƒì„±í›„ ì´ˆê¸°í™”.
 		//
 		GLAGLandMan *pNewLandMan = new GLAGLandMan;
 		pNewLandMan->SetMapID ( pMapNode->sNativeID, pMapNode->bPeaceZone!=FALSE, pMapNode->bPKZone==TRUE );
@@ -195,7 +195,7 @@ HRESULT GLAgentServer::Create ( DWORD dwMaxClient, DxMsgServer *pMsgServer, DxCo
 
 	m_cPartyMan.Create ( m_dwMaxClient );
 
-	//	Note : ÄÉ¸¯ÅÍ ÃÊ±â ½ÃÀÛ ¸Ê °ú ÃÊ±â ½ÃÀÛ Gate°¡ Á¤»óÀûÀ¸·Î Á¸Á¦ÇÏ´ÂÁö Á¡°Ë.
+	//	Note : ì¼€ë¦­í„° ì´ˆê¸° ì‹œì‘ ë§µ ê³¼ ì´ˆê¸° ì‹œì‘ Gateê°€ ì •ìƒì ìœ¼ë¡œ ì¡´ì œí•˜ëŠ”ì§€ ì ê²€.
 	//
 	for ( WORD i=0; i<GLCONST_CHAR::wSCHOOLNUM; ++i )
 	{
@@ -218,7 +218,7 @@ HRESULT GLAgentServer::Create ( DWORD dwMaxClient, DxMsgServer *pMsgServer, DxCo
 
 			MessageBox ( NULL, szTemp, "ERROR", MB_OK|MB_ICONEXCLAMATION );
 
-			//strStream.freeze( false );	// Note : std::strstreamÀÇ freeze. ¾È ÇÏ¸é Leak ¹ß»ı.
+			//strStream.freeze( false );	// Note : std::strstreamì˜ freeze. ì•ˆ í•˜ë©´ Leak ë°œìƒ.
 			continue;
 		}
 
@@ -239,12 +239,12 @@ HRESULT GLAgentServer::Create ( DWORD dwMaxClient, DxMsgServer *pMsgServer, DxCo
 
 			MessageBox ( NULL, szTemp, "ERROR", MB_OK );
 
-			//strStream.freeze( false );	// Note : std::strstreamÀÇ freeze. ¾È ÇÏ¸é Leak ¹ß»ı.
+			//strStream.freeze( false );	// Note : std::strstreamì˜ freeze. ì•ˆ í•˜ë©´ Leak ë°œìƒ.
 			continue;
 		}
 	}
 
-	//	Note : ÇÊµå ¼­¹ö À¯È¿¼º °Ë»ç.
+	//	Note : í•„ë“œ ì„œë²„ ìœ íš¨ì„± ê²€ì‚¬.
 	//
 	m_dwFIELDSVR_NUM = 0;
 
@@ -265,7 +265,7 @@ HRESULT GLAgentServer::Create ( DWORD dwMaxClient, DxMsgServer *pMsgServer, DxCo
 		}
 	}
 
-	//	Note : Å¬·´ÀÇ Á¤º¸¸¦ db¿¡¼­ ÀĞ¾î¿Â´Ù.
+	//	Note : í´ëŸ½ì˜ ì •ë³´ë¥¼ dbì—ì„œ ì½ì–´ì˜¨ë‹¤.
 	//
 	m_cClubMan.LoadFromDB ( pDBMan, false );
 
@@ -284,10 +284,10 @@ HRESULT GLAgentServer::Create ( DWORD dwMaxClient, DxMsgServer *pMsgServer, DxCo
 	/*pvp capture the flag, Juver, 2018/01/24 */
 	GLPVPCaptureTheFlagAgent::GetInstance().SetMapState();
 
-	// ÀÌº¥Æ®¿ë ÇÁ¸®ÇÇÄÉÀÌ ¸ğµå
+	// ì´ë²¤íŠ¸ìš© í”„ë¦¬í”¼ì¼€ì´ ëª¨ë“œ
 	m_cFreePK.RESET();
 
-	// ÇöÀç Àû¿ëµÈ ÀÌº¥Æ®µé ÃÊ±âÈ­
+	// í˜„ì¬ ì ìš©ëœ ì´ë²¤íŠ¸ë“¤ ì´ˆê¸°í™”
 	m_WorkEvent.Init();
 
 	/////////////////////////////////////////////////////////////////////////////
@@ -314,12 +314,13 @@ HRESULT GLAgentServer::CreateInstantMap( SNATIVEID sDestMapID, SNATIVEID sInstan
 	int iMapNum = sInstantMapID.wSubID-1;
 
 //	if( !m_pInstantMapLandMan[iMapNum] ) return E_FAIL;
-	GLAGLandMan	*pSrcLandMan = new GLAGLandMan;
 	SMAPNODE	*pMapNode	  = m_sMapList.FindMapNode ( sDestMapID );
 	GLAGLandMan *pDestLandMan = GetByMapID ( sDestMapID );
 
 	if ( !pMapNode ) return E_FAIL;
-	if( !pDestLandMan ) return E_FAIL;
+	if ( !pDestLandMan ) return E_FAIL;
+
+	GLAGLandMan	*pSrcLandMan = new GLAGLandMan;
 
 	SMAPNODE smap_node;
 	smap_node = *pMapNode;
@@ -342,13 +343,13 @@ HRESULT GLAgentServer::CreateInstantMap( SNATIVEID sDestMapID, SNATIVEID sInstan
 	}
 	else
 	{
+		SAFE_DELETE( pSrcLandMan );
 		CDebugSet::ToFileWithTime( "instancemap.txt", "[INFO AGENT]InstanceMap insert to mapslist failed[%d~%d]", 
 			sInstantMapID.wMainID, sInstantMapID.wSubID );
 		return E_FAIL;
 	}
 
 	return S_OK;
-
 }
 
 HRESULT GLAgentServer::InsertMap ( GLAGLandMan* pNewLandMan )
@@ -395,25 +396,25 @@ PGLCHARAG GLAgentServer::CreatePC ( GLCHARAG_DATA *pchar_data, DWORD dwClientID,
 	CLIENTMAP_ITER usernum_iter;
 	GLMSG::SNETPC_FIELDSVR_CHARCHK NetMsg;	
 
-	//	Note : °°Àº IP°¡ ÀÌ¹Ì Á¢¼ÓµÇ¾î ÀÖ´ÂÁö °Ë»çÇÕ´Ï´Ù.
+	//	Note : ê°™ì€ IPê°€ ì´ë¯¸ ì ‘ì†ë˜ì–´ ìˆëŠ”ì§€ ê²€ì‚¬í•©ë‹ˆë‹¤.
 	//name_iter = m_PCIpMap.find(pchar_data->m_szIp);
 	//if ( name_iter != m_PCIpMap.end() )
 	//{
 	//	PGLCHARAG pChar = (*name_iter).second;
 
-	//	//	Á¢¼ÓÀÚ¿¡°Ô DropOut ¸Ş½ÃÁö¸¦ º¸³À´Ï´Ù.
+	//	//	ì ‘ì†ìì—ê²Œ DropOut ë©”ì‹œì§€ë¥¼ ë³´ëƒ…ë‹ˆë‹¤.
 	//	GLMSG::SNET_DROP_OUT_FORCED NetMsgForced;
 	//	NetMsgForced.dwCharID = pChar->m_dwCharID;
 	//	NetMsgForced.emForced = EMDROPOUT_REQLOGIN;
 	//	SENDTOCLIENT ( dwClientID, &NetMsgForced );
 
-	//	//	¸ğµç ÇÊµå¿¡ °­Á¦ Á¾·á ¸Ş¼¼Áö.
+	//	//	ëª¨ë“  í•„ë“œì— ê°•ì œ ì¢…ë£Œ ë©”ì„¸ì§€.
 	//	SENDTOALLCHANNEL ( &NetMsgForced );
 
-	//	//	Á¾Àü Á¢¼ÓÀÚ¿¡°Ô DropOut ¸Ş½ÃÁö¸¦ º¸³À´Ï´Ù.
+	//	//	ì¢…ì „ ì ‘ì†ìì—ê²Œ DropOut ë©”ì‹œì§€ë¥¼ ë³´ëƒ…ë‹ˆë‹¤.
 	//	SENDTOCLIENT ( pChar->m_dwClientID, &NetMsgForced );
 
-	//	//	Á¾Àü Á¢¼ÓÀÚ¸¦ DropOut ½ÃÅµ´Ï´Ù.
+	//	//	ì¢…ì „ ì ‘ì†ìë¥¼ DropOut ì‹œí‚µë‹ˆë‹¤.
 	//	DropOutPC ( pChar->m_dwGaeaID );
 
 	//	m_pConsoleMsg->Write( _T("ERROR:m_PCIpMap failed") );
@@ -421,25 +422,25 @@ PGLCHARAG GLAgentServer::CreatePC ( GLCHARAG_DATA *pchar_data, DWORD dwClientID,
 	//	return NULL;
 	//}
 
-	//	Note : °°Àº Ä³¸¯ÅÍ°¡ ÀÌ¹Ì Á¢¼ÓµÇ¾î ÀÖ´ÂÁö °Ë»çÇÕ´Ï´Ù.
+	//	Note : ê°™ì€ ìºë¦­í„°ê°€ ì´ë¯¸ ì ‘ì†ë˜ì–´ ìˆëŠ”ì§€ ê²€ì‚¬í•©ë‹ˆë‹¤.
 	name_iter = m_PCNameMap.find(pchar_data->m_szName);
 	if ( name_iter != m_PCNameMap.end() )
 	{
 		PGLCHARAG pChar = (*name_iter).second;
 
-		//	Á¢¼ÓÀÚ¿¡°Ô DropOut ¸Ş½ÃÁö¸¦ º¸³À´Ï´Ù.
+		//	ì ‘ì†ìì—ê²Œ DropOut ë©”ì‹œì§€ë¥¼ ë³´ëƒ…ë‹ˆë‹¤.
 		GLMSG::SNET_DROP_OUT_FORCED NetMsgForced;
 		NetMsgForced.dwCharID = pChar->m_dwCharID;
 		NetMsgForced.emForced = EMDROPOUT_REQLOGIN;
 		SENDTOCLIENT ( dwClientID, &NetMsgForced );
 		
-		//	¸ğµç ÇÊµå¿¡ °­Á¦ Á¾·á ¸Ş¼¼Áö.
+		//	ëª¨ë“  í•„ë“œì— ê°•ì œ ì¢…ë£Œ ë©”ì„¸ì§€.
 		SENDTOALLCHANNEL ( &NetMsgForced );
 
-		//	Á¾Àü Á¢¼ÓÀÚ¿¡°Ô DropOut ¸Ş½ÃÁö¸¦ º¸³À´Ï´Ù.
+		//	ì¢…ì „ ì ‘ì†ìì—ê²Œ DropOut ë©”ì‹œì§€ë¥¼ ë³´ëƒ…ë‹ˆë‹¤.
 		SENDTOCLIENT ( pChar->m_dwClientID, &NetMsgForced );
 
-		//	Á¾Àü Á¢¼ÓÀÚ¸¦ DropOut ½ÃÅµ´Ï´Ù.
+		//	ì¢…ì „ ì ‘ì†ìë¥¼ DropOut ì‹œí‚µë‹ˆë‹¤.
 		DropOutPC ( pChar->m_dwGaeaID );
 
 		m_pConsoleMsg->Write( _T("ERROR:m_PCNameMap failed") );
@@ -454,19 +455,19 @@ PGLCHARAG GLAgentServer::CreatePC ( GLCHARAG_DATA *pchar_data, DWORD dwClientID,
 	{
 		PGLCHARAG pChar = (*name_iter).second;
 
-		//	Á¢¼ÓÀÚ¿¡°Ô DropOut ¸Ş½ÃÁö¸¦ º¸³À´Ï´Ù.
+		//	ì ‘ì†ìì—ê²Œ DropOut ë©”ì‹œì§€ë¥¼ ë³´ëƒ…ë‹ˆë‹¤.
 		GLMSG::SNET_DROP_OUT_FORCED NetMsgForced;
 		NetMsgForced.dwCharID = pChar->m_dwCharID;
 		NetMsgForced.emForced = EMDROPOUT_REQLOGIN;
 		SENDTOCLIENT ( dwClientID, &NetMsgForced );
 
-		//	¸ğµç ÇÊµå¿¡ °­Á¦ Á¾·á ¸Ş¼¼Áö.
+		//	ëª¨ë“  í•„ë“œì— ê°•ì œ ì¢…ë£Œ ë©”ì„¸ì§€.
 		SENDTOALLCHANNEL ( &NetMsgForced );
 
-		//	Á¾Àü Á¢¼ÓÀÚ¸¦ DropOut ½ÃÅµ´Ï´Ù.
+		//	ì¢…ì „ ì ‘ì†ìë¥¼ DropOut ì‹œí‚µë‹ˆë‹¤.
 		DropOutPC ( pChar->m_dwGaeaID );
 
-		//	Á¾Àü Á¢¼ÓÀÚ¿¡°Ô DropOut ¸Ş½ÃÁö¸¦ º¸³À´Ï´Ù.
+		//	ì¢…ì „ ì ‘ì†ìì—ê²Œ DropOut ë©”ì‹œì§€ë¥¼ ë³´ëƒ…ë‹ˆë‹¤.
 		SENDTOCLIENT ( pChar->m_dwClientID, &NetMsgForced );
 
 		m_pConsoleMsg->Write( _T("ERROR:m_UAccountMap failed") );
@@ -479,19 +480,19 @@ PGLCHARAG GLAgentServer::CreatePC ( GLCHARAG_DATA *pchar_data, DWORD dwClientID,
 	{
 		PGLCHARAG pChar = GetChar((*usernum_iter).second);
 
-		//	Á¢¼ÓÀÚ¿¡°Ô DropOut ¸Ş½ÃÁö¸¦ º¸³À´Ï´Ù.
+		//	ì ‘ì†ìì—ê²Œ DropOut ë©”ì‹œì§€ë¥¼ ë³´ëƒ…ë‹ˆë‹¤.
 		GLMSG::SNET_DROP_OUT_FORCED NetMsgForced;
 		NetMsgForced.dwCharID = pChar->m_dwCharID;
 		NetMsgForced.emForced = EMDROPOUT_REQLOGIN;
 		SENDTOCLIENT ( dwClientID, &NetMsgForced );
 
-		//	¸ğµç ÇÊµå¿¡ °­Á¦ Á¾·á ¸Ş¼¼Áö.
+		//	ëª¨ë“  í•„ë“œì— ê°•ì œ ì¢…ë£Œ ë©”ì„¸ì§€.
 		SENDTOALLCHANNEL ( &NetMsgForced );
 
-		//	Á¾Àü Á¢¼ÓÀÚ¿¡°Ô DropOut ¸Ş½ÃÁö¸¦ º¸³À´Ï´Ù.
+		//	ì¢…ì „ ì ‘ì†ìì—ê²Œ DropOut ë©”ì‹œì§€ë¥¼ ë³´ëƒ…ë‹ˆë‹¤.
 		SENDTOCLIENT ( pChar->m_dwClientID, &NetMsgForced );
 
-		//	Á¾Àü Á¢¼ÓÀÚ¸¦ DropOut ½ÃÅµ´Ï´Ù.
+		//	ì¢…ì „ ì ‘ì†ìë¥¼ DropOut ì‹œí‚µë‹ˆë‹¤.
 		DropOutPC ( pChar->m_dwGaeaID );
 
 
@@ -504,12 +505,12 @@ PGLCHARAG GLAgentServer::CreatePC ( GLCHARAG_DATA *pchar_data, DWORD dwClientID,
 	client_iter = m_PCClientIDMAP.find(dwClientID);
 	if ( client_iter != m_PCClientIDMAP.end() )
 	{
-		//	Á¢¼ÓÀÚ¿¡°Ô DropOut ¸Ş½ÃÁö¸¦ º¸³À´Ï´Ù.
+		//	ì ‘ì†ìì—ê²Œ DropOut ë©”ì‹œì§€ë¥¼ ë³´ëƒ…ë‹ˆë‹¤.
 		GLMSG::SNET_DROP_OUT_FORCED NetMsgForced;
 		NetMsgForced.emForced = EMDROPOUT_REQLOGIN;
 		SENDTOCLIENT ( dwClientID, &NetMsgForced );
 
-		//	Á¾Àü Á¢¼ÓÀÚ¸¦ DropOut ½ÃÅµ´Ï´Ù.
+		//	ì¢…ì „ ì ‘ì†ìë¥¼ DropOut ì‹œí‚µë‹ˆë‹¤.
 		DWORD dwGaeaID = (*client_iter).second;
 		DropOutPC ( dwGaeaID );
 
@@ -518,13 +519,13 @@ PGLCHARAG GLAgentServer::CreatePC ( GLCHARAG_DATA *pchar_data, DWORD dwClientID,
 		return NULL;
 	}
 
-	//	Note ÄÉ¸¯ÅÍ °¡ÀÌ¾Æ ID ÁöÁ¤.
+	//	Note ì¼€ë¦­í„° ê°€ì´ì•„ ID ì§€ì •.
 	//
 	if ( m_FreePCGIDs.empty() )		goto _ERROR;
 	DWORD dwGaeaID = m_FreePCGIDs.front();
 	m_FreePCGIDs.pop_front ();
 
-	//	Note : Ä³¸¯ÅÍ ÃÊ±âÈ­.
+	//	Note : ìºë¦­í„° ì´ˆê¸°í™”.
 	//
 	pPChar = new GLCharAG;
 
@@ -533,69 +534,69 @@ PGLCHARAG GLAgentServer::CreatePC ( GLCHARAG_DATA *pchar_data, DWORD dwClientID,
 	pPChar->m_dwGaeaID = dwGaeaID;
 	strcpy( pPChar->m_szIp, pchar_data->m_szIp );
 
-	// ÅÂ±¹ »çÀÌ¹ö Ä«Æä µî±Ş
+	// íƒœêµ­ ì‚¬ì´ë²„ ì¹´í˜ ë“±ê¸‰
 	pPChar->m_dwThaiCCafeClass	= dwThaiCCafeClass;
-	// ¸»·¹ÀÌ½Ã¾Æ PC¹æ ÀÌº¥Æ® µî±Ş
+	// ë§ë ˆì´ì‹œì•„ PCë°© ì´ë²¤íŠ¸ ë“±ê¸‰
 	pPChar->m_nMyCCafeClass		= nMyCCafeClass;
 
-	// Áß±¹ ½Ã°£
+	// ì¤‘êµ­ ì‹œê°„
 	pPChar->m_sChinaTime       = chinaTime;
-	// ÀÌº¥Æ® ½Ã°£ //** Add EventTime
+	// ì´ë²¤íŠ¸ ì‹œê°„ //** Add EventTime
 	pPChar->m_sEventTime.loginTime		 = chinaTime.loginTime;
 	pPChar->m_sEventTime.currentGameTime = 0;
-	// º£Æ®³² Å½´Ğ ¹æÁö ½Ã½ºÅÛ ½Ã°£
+	// ë² íŠ¸ë‚¨ íƒë‹‰ ë°©ì§€ ì‹œìŠ¤í…œ ì‹œê°„
 	pPChar->m_sVietnamSystem			 = pchar_data->m_sVietnamSystem;
-	// ÇöÀç ÃßÀûÁßÀÎ À¯ÀúÀÎÁö ¾Æ´ÑÁö
+	// í˜„ì¬ ì¶”ì ì¤‘ì¸ ìœ ì €ì¸ì§€ ì•„ë‹Œì§€
 	pPChar->m_bTracingUser				 = pchar_data->m_bTracingUser;
-	// ·Î±×ÀÎ ½Ã°£
+	// ë¡œê·¸ì¸ ì‹œê°„
 	pPChar->m_tLoginTime				 = CTime::GetCurrentTime().GetTime();
 
-	//	Note : Ä³¸¯ÅÍ µî·Ï.
+	//	Note : ìºë¦­í„° ë“±ë¡.
 	//
 	hr = pPChar->CreateChar ( pchar_data );
 	if ( FAILED(hr) )
 	{
-		DEBUGMSG_WRITE ( "pPChar->CreateChar () È£ÃâÁß ¿À·ù·Î ÀÎÇÏ¿© Ä³¸¯ÅÍ »ı¼º¿¡ ½ÇÆĞÇÏ¿´½À´Ï´Ù. [%s]", pchar_data->m_szName );
+		DEBUGMSG_WRITE ( "pPChar->CreateChar () í˜¸ì¶œì¤‘ ì˜¤ë¥˜ë¡œ ì¸í•˜ì—¬ ìºë¦­í„° ìƒì„±ì— ì‹¤íŒ¨í•˜ì˜€ìŠµë‹ˆë‹¤. [%s]", pchar_data->m_szName );
 		goto _ERROR;
 	}
 
-	//	Note : °¡ÀÌ¾Æ Array¿¡ µî·Ï.
+	//	Note : ê°€ì´ì•„ Arrayì— ë“±ë¡.
 	//
 	m_PCArray[pPChar->m_dwGaeaID] = pPChar;
 	
-	//	Note : È°¼º ¸®½ºÆ®¿¡ µî·Ï.
+	//	Note : í™œì„± ë¦¬ìŠ¤íŠ¸ì— ë“±ë¡.
 	//
 	pPChar->m_pPCNode = m_PCList.ADDTAIL ( pPChar );
 
-	//	Note : PC NAME map ¿¡ µî·Ï.
+	//	Note : PC NAME map ì— ë“±ë¡.
 	GASSERT ( m_PCNameMap.find(pPChar->m_szName)==m_PCNameMap.end() );
 	m_PCNameMap [ std::string(pPChar->m_szName) ] = pPChar;
 
-	//	Note : UserAcount map ¿¡ µî·Ï.
+	//	Note : UserAcount map ì— ë“±ë¡.
 	GASSERT ( m_UAccountMap.find(pPChar->m_szUserName)==m_UAccountMap.end() );
 	m_UAccountMap [ std::string(pPChar->m_szUserName) ] = pPChar;
 
-	//	Note : PC Client map ¿¡ µî·Ï.
+	//	Note : PC Client map ì— ë“±ë¡.
 	GASSERT ( m_PCClientIDMAP.find(pPChar->m_dwClientID)==m_PCClientIDMAP.end() );
 	m_PCClientIDMAP[pPChar->m_dwClientID] = pPChar->m_dwGaeaID;
 
-	//	Note : PC IP map ¿¡ µî·Ï.
+	//	Note : PC IP map ì— ë“±ë¡.
 //	GASSERT ( m_PCIpMap.find(pPChar->m_szIp)==m_PCIpMap.end() );
 //	m_PCIpMap[ std::string(pPChar->m_szIp) ] = pPChar;
 
-	//	Note : USER Number map ¿¡ µî·Ï.
+	//	Note : USER Number map ì— ë“±ë¡.
 	GASSERT ( m_UserNumberMap.find(pPChar->m_dwUserID)==m_UserNumberMap.end() );
 	m_UserNumberMap[pPChar->m_dwUserID] = pPChar->m_dwGaeaID;
 
-	//	Note : CID map ¿¡ µî·Ï.
+	//	Note : CID map ì— ë“±ë¡.
 	GASSERT ( m_mapCharID.find(pPChar->m_dwCharID)==m_mapCharID.end() );
 	m_mapCharID[pPChar->m_dwCharID] = pPChar->m_dwGaeaID;
 
-	//	Note : LAND ¸®½ºÆ®¿¡¼­ Á¦°Å.
+	//	Note : LAND ë¦¬ìŠ¤íŠ¸ì—ì„œ ì œê±°.
 	GLAGLandMan* pNEW_LAND = GLAgentServer::GetInstance().GetByMapID ( pPChar->m_sCurMapID );
 	if ( pNEW_LAND )	pNEW_LAND->DropPC ( pPChar->m_dwGaeaID );
 
-	//	Note : ÄÉ¸¯ÅÍ ÇÊµå ¼­¹ö¿¡ ÀÜÁ¸ Á¡°Ë ¸Ş¼¼Áö.
+	//	Note : ì¼€ë¦­í„° í•„ë“œ ì„œë²„ì— ì”ì¡´ ì ê²€ ë©”ì„¸ì§€.
 	//
 	NetMsg.dwClientID = pPChar->m_dwClientID;
 	NetMsg.dwGaeaID = pPChar->m_dwGaeaID;
@@ -605,19 +606,19 @@ PGLCHARAG GLAgentServer::CreatePC ( GLCHARAG_DATA *pchar_data, DWORD dwClientID,
 	StringCchCopy ( NetMsg.szName, CHAR_SZNAME, pPChar->m_szName );
 	SENDTOALLCHANNEL ( (NET_MSG_GENERIC*) &NetMsg );
 
-	return pPChar;	//	ÄÉ¸¯ÅÍ »ı¼º ¼º°ø.
+	return pPChar;	//	ì¼€ë¦­í„° ìƒì„± ì„±ê³µ.
 
 _ERROR:
 	SAFE_DELETE(pPChar);
 
-	//	Á¢¼Ó ½ÃµµÀÚ¿¡°Ô  ¸Ş½ÃÁö¸¦ º¸³À´Ï´Ù.
+	//	ì ‘ì† ì‹œë„ìì—ê²Œ  ë©”ì‹œì§€ë¥¼ ë³´ëƒ…ë‹ˆë‹¤.
 	GLMSG::SNETLOBBY_CHARJOIN_FB NetMsgFB;
 	NetMsgFB.emCharJoinFB = EMCJOIN_FB_ERROR;
 	SENDTOCLIENT ( dwClientID, &NetMsgFB );
 
 	m_pConsoleMsg->Write( _T("ERROR:SNETLOBBY_CHARJOIN_FB failed") );
 
-	return NULL;	//	ÄÉ¸¯ÅÍ »ı¼º ½ÇÆĞ.
+	return NULL;	//	ì¼€ë¦­í„° ìƒì„± ì‹¤íŒ¨.
 }
 
 HRESULT GLAgentServer::DropOutPC ( DWORD dwGaeaID )
@@ -625,65 +626,65 @@ HRESULT GLAgentServer::DropOutPC ( DWORD dwGaeaID )
 	PGLCHARAG pPChar = GetChar(dwGaeaID);
 	if ( !pPChar )	return E_FAIL;
 
-	//	Note : È°¼º ¸®½ºÆ®¿¡¼­ Á¦°Å.
+	//	Note : í™œì„± ë¦¬ìŠ¤íŠ¸ì—ì„œ ì œê±°.
 	//
 	if ( pPChar->m_pPCNode )
 		m_PCList.DELNODE ( pPChar->m_pPCNode );
 
-	//	Note : °¡ÀÌ¾Æ ID ¹İÈ¯.
+	//	Note : ê°€ì´ì•„ ID ë°˜í™˜.
 	//
 	m_FreePCGIDs.push_back ( dwGaeaID );
 	m_PCArray[dwGaeaID] = NULL;
 
-	//	Note : ÄÉ¸¯ÅÍ ÀÌ¸§ Á¦°Å.
+	//	Note : ì¼€ë¦­í„° ì´ë¦„ ì œê±°.
 	//
 	{
 		CHAR_MAP_ITER iter = m_PCNameMap.find(pPChar->m_szName);
 		if ( iter!=m_PCNameMap.end() )			m_PCNameMap.erase(iter);
 	}
 
-	//	Note : Ä³¸¯ÅÍ IP Á¦°Å.
+	//	Note : ìºë¦­í„° IP ì œê±°.
 	//
 	{
 //		CHAR_MAP_ITER iter = m_PCIpMap.find(pPChar->m_szIp);
 //		if ( iter!=m_PCIpMap.end() )			m_PCIpMap.erase(iter);
 	}
 
-	//	Note : User Account Á¦°Å.
+	//	Note : User Account ì œê±°.
 	//
 	{
 		CHAR_MAP_ITER iter = m_UAccountMap.find(pPChar->m_szUserName);
 		if ( iter!=m_UAccountMap.end() )		m_UAccountMap.erase(iter);
 	}
 
-	//	Note : PC Client map ¿¡¼­ Á¦°Å.
+	//	Note : PC Client map ì—ì„œ ì œê±°.
 	{
 		CLIENTMAP_ITER iter = m_PCClientIDMAP.find(pPChar->m_dwClientID);
 		if ( iter!=m_PCClientIDMAP.end() )		m_PCClientIDMAP.erase(iter);
 	}
 
-	//	Note : PC UserNumber map ¿¡¼­ Á¦°Å.
+	//	Note : PC UserNumber map ì—ì„œ ì œê±°.
 	{
 		CLIENTMAP_ITER iter = m_UserNumberMap.find(pPChar->m_dwUserID);
 		if ( iter!=m_UserNumberMap.end() )		m_UserNumberMap.erase(iter);
 	}
 
-	//	Note : CID map ¿¡¼­ Á¦°Å.
+	//	Note : CID map ì—ì„œ ì œê±°.
 	{
 		CLIENTMAP_ITER iter = m_mapCharID.find(pPChar->m_dwCharID);
 		if ( iter!=m_mapCharID.end() )		m_mapCharID.erase(iter);
 	}
 
-	//	Note : LAND ¸®½ºÆ®¿¡¼­ Á¦°Å.
+	//	Note : LAND ë¦¬ìŠ¤íŠ¸ì—ì„œ ì œê±°.
 	GLAGLandMan* pOLD_LAND = GLAgentServer::GetInstance().GetByMapID ( pPChar->m_sCurMapID );
 	if ( pOLD_LAND )	pOLD_LAND->DropOutPC ( pPChar->m_dwGaeaID );
 /*
-	//	Á¢¼ÓÀÚ¿¡°Ô DropOut ¸Ş½ÃÁö¸¦ º¸³À´Ï´Ù.
+	//	ì ‘ì†ìì—ê²Œ DropOut ë©”ì‹œì§€ë¥¼ ë³´ëƒ…ë‹ˆë‹¤.
 	GLMSG::SNET_DROP_OUT_FORCED NetMsgForced;
 	NetMsgForced.emForced = EMDROPOUT_REQLOGIN;
 	SendField ( dwGaeaID, &NetMsgForced );
 */
-	//	Note : ¸Ş¸ğ¸® ÇØÁö.
+	//	Note : ë©”ëª¨ë¦¬ í•´ì§€.
 	//
 	SAFE_DELETE(pPChar);
 
@@ -714,7 +715,7 @@ BOOL GLAgentServer::ClearReservedDropOutPC ()
 			PGLCHARAG pChar = GetChar(dwGaeaID);
 			if ( !pChar )
 			{
-				//DEBUGMSG_WRITE ( "Ä³¸¯ÅÍ¸¦ °ÔÀÓ¿¡¼­ DropOut ½ÃµµÁß GID %d ¸¦ Ã£Áö ¸øÇß½À´Ï´Ù.", dwGaeaID );
+				//DEBUGMSG_WRITE ( "ìºë¦­í„°ë¥¼ ê²Œì„ì—ì„œ DropOut ì‹œë„ì¤‘ GID %d ë¥¼ ì°¾ì§€ ëª»í–ˆìŠµë‹ˆë‹¤.", dwGaeaID );
 				continue;
 			}
 
@@ -740,7 +741,7 @@ BOOL GLAgentServer::ClearReservedDropOutPC ()
 
 HRESULT GLAgentServer::FrameMove ( float fTime, float fElapsedTime )
 {
-	//	Note : Ä³¸¯ÅÍ °»½Å.
+	//	Note : ìºë¦­í„° ê°±ì‹ .
 	//
 	for ( DWORD i=0; i<m_dwMaxClient; ++i )
 	{
@@ -751,18 +752,18 @@ HRESULT GLAgentServer::FrameMove ( float fTime, float fElapsedTime )
 		}
 	}
 
-	// ¼ºÇâÀÌ ±ïÀÌÁö ¾Ê´Â ÀÚÀ¯ÇÇÄÉÀÌ¸ğµå ( GM ¸í·ÉÀ¸·Î °¡´É )
+	// ì„±í–¥ì´ ê¹ì´ì§€ ì•ŠëŠ” ììœ í”¼ì¼€ì´ëª¨ë“œ ( GM ëª…ë ¹ìœ¼ë¡œ ê°€ëŠ¥ )
 	m_cFreePK.FrameMove( fElapsedTime );
 
-	//	Note : Á¦°Å ¸®½ºÆ®¿¡ µî·ÏµÈ ÄÉ¸¯ÅÍ ¿ÀºêÁ§Æ® Á¦°ÅÇØÁÖ±â.
+	//	Note : ì œê±° ë¦¬ìŠ¤íŠ¸ì— ë“±ë¡ëœ ì¼€ë¦­í„° ì˜¤ë¸Œì íŠ¸ ì œê±°í•´ì£¼ê¸°.
 	//
 	ClearReservedDropOutPC ();
 
-	//	Note : ÆÄÆ¼ ¾÷µ¥ÀÌÆ®.
+	//	Note : íŒŒí‹° ì—…ë°ì´íŠ¸.
 	//
 	m_cPartyMan.FrameMove ( fTime, fElapsedTime );
 
-	//	Note : ½Ã°£ °æ°úÀÇ ½ÌÅ©¸¦ ¸ÂÃß±â À§ÇÑ ¾÷µ¥ÀÌÆ® ÇÔ¼ö.
+	//	Note : ì‹œê°„ ê²½ê³¼ì˜ ì‹±í¬ë¥¼ ë§ì¶”ê¸° ìœ„í•œ ì—…ë°ì´íŠ¸ í•¨ìˆ˜.
 	//
 	m_fPERIOD_TIMER += fElapsedTime;
 	if ( m_fPERIOD_TIMER > 60.0f )
@@ -774,7 +775,7 @@ HRESULT GLAgentServer::FrameMove ( float fTime, float fElapsedTime )
 		SENDTOALLCHANNEL ( &NetPeriod );
 	}
 
-	// Å¬·´ °ü·Ã
+	// í´ëŸ½ ê´€ë ¨
 	m_cClubMan.FrameMoveAgent( fTime, fElapsedTime );
 
 	if( m_sEventState.bEventStart && m_sEventState.dwEventEndMinute != 0 )
@@ -797,7 +798,7 @@ HRESULT GLAgentServer::FrameMove ( float fTime, float fElapsedTime )
 	}
 
 
-	//	Note : ÇĞ¿ø°£ ÇÁ¸® pk ½Ã½ºÅÛ °»½Å.
+	//	Note : í•™ì›ê°„ í”„ë¦¬ pk ì‹œìŠ¤í…œ ê°±ì‹ .
 	//	
 	GLSchoolFreePK::GetInstance().FrameMove ( fElapsedTime );
 
@@ -828,7 +829,7 @@ bool GLAgentServer::StartPartyConfront ( const  DWORD dwPartyA, const DWORD dwPa
 
 	int i(0);
 
-	//	Note : A ÆÀ 'ÆÄÆ¼´ë·Ã' ÃÊ±âÈ­.
+	//	Note : A íŒ€ 'íŒŒí‹°ëŒ€ë ¨' ì´ˆê¸°í™”.
 	//
 	pPartyA->m_conftCURRENT.clear();
 	pPartyA->m_conftSTART.clear();
@@ -842,7 +843,7 @@ bool GLAgentServer::StartPartyConfront ( const  DWORD dwPartyA, const DWORD dwPa
 		if ( !pChar )							continue;
 		if ( pChar->m_sCurMapID != sMapID )		continue;
 
-		//	Note : ÆÄÆ¼¿øÀÇ ´ë·ÃÁ¤º¸ ¼³Á¤.
+		//	Note : íŒŒí‹°ì›ì˜ ëŒ€ë ¨ì •ë³´ ì„¤ì •.
 		//
 		pChar->m_sCONFTING.RESET();
 		pChar->m_sCONFTING.emTYPE = EMCONFT_PARTY;
@@ -854,7 +855,7 @@ bool GLAgentServer::StartPartyConfront ( const  DWORD dwPartyA, const DWORD dwPa
 
 	if ( pPartyA->GETCONFT_NUM()==0 )			return false;
 	
-	//	Note : B ÆÀ 'ÆÄÆ¼´ë·Ã' ÃÊ±âÈ­.
+	//	Note : B íŒ€ 'íŒŒí‹°ëŒ€ë ¨' ì´ˆê¸°í™”.
 	//
 	pPartyB->m_conftCURRENT.clear();
 	pPartyB->m_conftSTART.clear();
@@ -868,7 +869,7 @@ bool GLAgentServer::StartPartyConfront ( const  DWORD dwPartyA, const DWORD dwPa
 		if ( !pChar )							continue;
 		if ( pChar->m_sCurMapID != sMapID )		continue;
 
-		//	Note : ÆÄÆ¼¿øÀÇ ´ë·ÃÁ¤º¸ ¼³Á¤.
+		//	Note : íŒŒí‹°ì›ì˜ ëŒ€ë ¨ì •ë³´ ì„¤ì •.
 		//
 		pChar->m_sCONFTING.RESET();
 		pChar->m_sCONFTING.emTYPE = EMCONFT_PARTY;
@@ -880,7 +881,7 @@ bool GLAgentServer::StartPartyConfront ( const  DWORD dwPartyA, const DWORD dwPa
 
 	if ( pPartyB->GETCONFT_NUM()==0 )		return false;
 
-	//	Note : ÇĞ±³°£ ÆÄÆ¼ ´ë·ÃÀÎÁö °Ë»ç.
+	//	Note : í•™êµê°„ íŒŒí‹° ëŒ€ë ¨ì¸ì§€ ê²€ì‚¬.
 	//
 	bool bSCHOOL(false);
 	if ( sOption.bSCHOOL )
@@ -897,7 +898,7 @@ bool GLAgentServer::StartPartyConfront ( const  DWORD dwPartyA, const DWORD dwPa
 	}
 	sOPT_A.bSCHOOL = sOPT_B.bSCHOOL = bSCHOOL;
 
-	//	Note : ÆÄÆ¼´ë·Ã Á¤º¸ ÃÊ±âÈ­.
+	//	Note : íŒŒí‹°ëŒ€ë ¨ ì •ë³´ ì´ˆê¸°í™”.
 	//
 	pPartyA->m_conftOPTION = sOPT_A;
 	pPartyA->m_dwconftPARTYID = dwPartyB;
@@ -909,7 +910,7 @@ bool GLAgentServer::StartPartyConfront ( const  DWORD dwPartyA, const DWORD dwPa
 	pPartyB->m_fconftTIMER = 0.0f;
 	pPartyB->SETCONFT_MEMBER();
 
-	//	Note : ÇĞ±³°£ ÆÄÆ¼ ´ë·ÃÀÌ ½ÃÀÛµÇ¾ú½À´Ï´Ù. ¸ğµç ÇÃ·¡ÀÌ¾î¿¡°Ô ¸Ş½ÃÁö Àü¼Û.
+	//	Note : í•™êµê°„ íŒŒí‹° ëŒ€ë ¨ì´ ì‹œì‘ë˜ì—ˆìŠµë‹ˆë‹¤. ëª¨ë“  í”Œë˜ì´ì–´ì—ê²Œ ë©”ì‹œì§€ ì „ì†¡.
 	//
 	if ( sOPT_A.bSCHOOL )
 	{
@@ -932,8 +933,8 @@ bool GLAgentServer::StartPartyConfront ( const  DWORD dwPartyA, const DWORD dwPa
 		SENDTOALLCLIENT ( &NetMsg );*/
 	}
 
-	//	Note : ÇÊµå¿¡ ´ë·Ã ÃÊ±âÈ­ ¸Ş½ÃÁö.
-	//		¸Ş½ÃÁö¿¡ Àü¼ÛµÈ my, tar school Àº »ç¿ëµÇÁö ¾Ê´Â´Ù.
+	//	Note : í•„ë“œì— ëŒ€ë ¨ ì´ˆê¸°í™” ë©”ì‹œì§€.
+	//		ë©”ì‹œì§€ì— ì „ì†¡ëœ my, tar school ì€ ì‚¬ìš©ë˜ì§€ ì•ŠëŠ”ë‹¤.
 	GLMSG::SNETPC_CONFRONTPTY_START2_FLD NetMsgFld;
 	NetMsgFld.sMapID = sMapID;
 	NetMsgFld.dwPARTY_A= dwPartyA;
@@ -990,7 +991,7 @@ void GLAgentServer::ChangeNameMap ( PGLCHARAG pChar, const TCHAR* pszPhoneNumber
 }
 
 // *****************************************************
-// Desc: ÃÖÃÊ ÇÊµå¼­¹ö Á¢¼Ó Á¤º¸ Àü¼Û 
+// Desc: ìµœì´ˆ í•„ë“œì„œë²„ ì ‘ì† ì •ë³´ ì „ì†¡ 
 // *****************************************************
 void GLAgentServer::GameJoinToFieldSvr ( NET_MSG_GENERIC* nmg, DWORD dwClientID, DWORD dwGaeaID )
 {
@@ -1001,13 +1002,13 @@ void GLAgentServer::GameJoinToFieldSvr ( NET_MSG_GENERIC* nmg, DWORD dwClientID,
 
 	if ( m_pMsgServer->ConnectFieldSvr ( pChar->m_dwClientID, pNetMsg->dwFieldServer, pChar->m_dwGaeaID, pChar->m_nChannel ) != NET_OK )
 	{
-        //	Ä³¸¯ÅÍ°¡ »ı¼ºµÉ ÇÊµå¼­¹ö·Î Á¢¼ÓÀÌ ½ÇÆĞÇÔ
+        //	ìºë¦­í„°ê°€ ìƒì„±ë  í•„ë“œì„œë²„ë¡œ ì ‘ì†ì´ ì‹¤íŒ¨í•¨
 		DEBUGMSG_WRITE ( "Can't connect field. FIELDID : %d, CID[%d] name %s",
 			pNetMsg->dwFieldServer, pChar->m_dwClientID, pChar->m_szName );
 		return;
 	}
 
-	//	Ä³¸¯ÅÍ Á¶ÀÎ Á¤º¸ Àü¼Û
+	//	ìºë¦­í„° ì¡°ì¸ ì •ë³´ ì „ì†¡
 	NET_GAME_JOIN_FIELDSVR NetJoinField;
 	NetJoinField.emType				= EMJOINTYPE_FIRST;
 	NetJoinField.dwSlotAgentClient	= pChar->m_dwClientID;
@@ -1027,7 +1028,7 @@ void GLAgentServer::GameJoinToFieldSvr ( NET_MSG_GENERIC* nmg, DWORD dwClientID,
 	NetJoinField.bUseArmSub			= pChar->m_bUseArmSub;
 
 	NetJoinField.dwThaiCCafeClass	= pChar->m_dwThaiCCafeClass;
-	NetJoinField.nMyCCafeClass		= pChar->m_nMyCCafeClass;					// ¸»·¹ÀÌ½Ã¾Æ PC¹æ ÀÌº¥Æ®
+	NetJoinField.nMyCCafeClass		= pChar->m_nMyCCafeClass;					// ë§ë ˆì´ì‹œì•„ PCë°© ì´ë²¤íŠ¸
 
 	NetJoinField.sChinaTime			= pChar->m_sChinaTime;
 	NetJoinField.sVietnamGainSystem = pChar->m_sVietnamSystem;
@@ -1040,7 +1041,7 @@ void GLAgentServer::GameJoinToFieldSvr ( NET_MSG_GENERIC* nmg, DWORD dwClientID,
 
 	SENDTOFIELD ( pChar->m_dwClientID, &NetJoinField );
 
-	//	Note : ÄÉ¸¯ÅÍÀÇ ÇöÀç Á¢¼Ó ÇÊµå¼­¹ö ¹× ÇöÀç ¸Ê ID ÁöÁ¤.
+	//	Note : ì¼€ë¦­í„°ì˜ í˜„ì¬ ì ‘ì† í•„ë“œì„œë²„ ë° í˜„ì¬ ë§µ ID ì§€ì •.
 	//
 	pChar->SetCurrentField ( pNetMsg->dwFieldServer, pChar->m_sStartMapID );
 }
@@ -1079,27 +1080,27 @@ void GLAgentServer::ClubBattlePartyCheck( DWORD dwClubID, DWORD dwClubIDTar )
 
 					if ( pMemChar &&  pMemChar->m_dwGuild == dwClubIDTar )
 					{
-						// ½ÅÃ»Å¬·´¿øÀÌ ÆÄÆ¼ÀåÀÏ °æ¿ì
+						// ì‹ ì²­í´ëŸ½ì›ì´ íŒŒí‹°ì¥ì¼ ê²½ìš°
 						if ( pParty->ISMASTER(pMemChar->m_dwGaeaID) )
 						{
 							m_cPartyMan.DelParty( pParty->m_dwPARTYID );
 							break;
 						}
-						// µÑ´Ù ¾Æ´Ò°æ¿ì
+						// ë‘˜ë‹¤ ì•„ë‹ê²½ìš°
 						else
 						{
-							// B Ä³¸¯ÅÍ Å»Åğ
+							// B ìºë¦­í„° íƒˆí‡´
 							GLMSG::SNET_PARTY_DEL NetMsgDel;
 							NetMsgDel.dwPartyID = pParty->m_dwPARTYID;
 							NetMsgDel.dwDelMember = pMemChar->m_dwGaeaID;
 
 							SENDTOPARTY ( pParty->m_dwPARTYID, (NET_MSG_GENERIC*) &NetMsgDel );
 
-							//	Note : ÆÄÆ¼¿øÀÌ Å»Åğ ÇÔÀ» ÇÊµå ¼­¹ö¿¡ ¾Ë¸².
+							//	Note : íŒŒí‹°ì›ì´ íƒˆí‡´ í•¨ì„ í•„ë“œ ì„œë²„ì— ì•Œë¦¼.
 							//
 							SENDTOALLCHANNEL ( &NetMsgDel );
 
-							//	Note : ÆÄÆ¼ Å»Åğ Ã³¸®.
+							//	Note : íŒŒí‹° íƒˆí‡´ ì²˜ë¦¬.
 							//
 							pMemChar->ReSetPartyID ();
 							iter = pParty->m_cMEMBER.erase(iter);
@@ -1163,27 +1164,27 @@ void GLAgentServer::AllianceBattlePartyCheck( DWORD dwClubID, DWORD dwClubIDTar 
 							
 							if ( pClubS && pClubS->m_dwAlliance == dwClubIDTar )
 							{
-								// ½ÅÃ»Å¬·´¿øÀÌ ÆÄÆ¼ÀåÀÏ °æ¿ì
+								// ì‹ ì²­í´ëŸ½ì›ì´ íŒŒí‹°ì¥ì¼ ê²½ìš°
 								if ( pParty->ISMASTER(pMemChar->m_dwGaeaID) )
 								{
 									m_cPartyMan.DelParty( pParty->m_dwPARTYID );
 									break;
 								}
-								// µÑ´Ù ¾Æ´Ò°æ¿ì
+								// ë‘˜ë‹¤ ì•„ë‹ê²½ìš°
 								else
 								{
-									// B Ä³¸¯ÅÍ Å»Åğ
+									// B ìºë¦­í„° íƒˆí‡´
 									GLMSG::SNET_PARTY_DEL NetMsgDel;
 									NetMsgDel.dwPartyID = pParty->m_dwPARTYID;
 									NetMsgDel.dwDelMember = pMemChar->m_dwGaeaID;
 
 									SENDTOPARTY ( pParty->m_dwPARTYID, (NET_MSG_GENERIC*) &NetMsgDel );
 
-									//	Note : ÆÄÆ¼¿øÀÌ Å»Åğ ÇÔÀ» ÇÊµå ¼­¹ö¿¡ ¾Ë¸².
+									//	Note : íŒŒí‹°ì›ì´ íƒˆí‡´ í•¨ì„ í•„ë“œ ì„œë²„ì— ì•Œë¦¼.
 									//
 									SENDTOALLCHANNEL ( &NetMsgDel );
 
-									//	Note : ÆÄÆ¼ Å»Åğ Ã³¸®.
+									//	Note : íŒŒí‹° íƒˆí‡´ ì²˜ë¦¬.
 									//
 									pMemChar->ReSetPartyID ();
 									iter = pParty->m_cMEMBER.erase(iter);
@@ -1211,12 +1212,12 @@ void GLAgentServer::AllianceBattlePartyCheck( DWORD dwClubID, DWORD dwClubIDTar 
 
 HRESULT GLAgentServer::StartClubBattle( DWORD dwClubID, GLCLUBBATTLE sClubBattle )
 {
-	// ³»ÂÊ Å¬·´¹èÆ² Á¤º¸ Ãß°¡
+	// ë‚´ìª½ í´ëŸ½ë°°í‹€ ì •ë³´ ì¶”ê°€
 	GLCLUB* pClubP = m_cClubMan.GetClub( dwClubID );
 	GLCLUB* pClubS = m_cClubMan.GetClub( sClubBattle.m_dwCLUBID );
 	if( !pClubP || !pClubS ) return S_FALSE;
 
-	//	ÇÊµå¿¡ ¾Ë¸².
+	//	í•„ë“œì— ì•Œë¦¼.
 	GLMSG::SNET_CLUB_BATTLE_BEGIN_FLD NetMsgFld;
 	NetMsgFld.dwChiefClubID = pClubP->m_dwID;
 	NetMsgFld.dwIndianClubID = pClubS->m_dwID;
@@ -1225,7 +1226,7 @@ HRESULT GLAgentServer::StartClubBattle( DWORD dwClubID, GLCLUBBATTLE sClubBattle
 	NetMsgFld.bAlliance = sClubBattle.m_bAlliance;
 	GLAgentServer::GetInstance().SENDTOALLCHANNEL ( &NetMsgFld );	
 
-	//	Å¬¶óÀÌ¾ğÆ®µé¿¡ ¾Ë¸². 
+	//	í´ë¼ì´ì–¸íŠ¸ë“¤ì— ì•Œë¦¼. 
 	GLMSG::SNET_CLUB_BATTLE_BEGIN_CLT2 NetMsgClt;
 	NetMsgClt.dwClubID = pClubP->m_dwID;	
 	StringCchCopy ( NetMsgClt.szClubName, CHAR_SZNAME, pClubP->m_szName );	
@@ -1281,7 +1282,7 @@ HRESULT GLAgentServer::StartClubBattle( DWORD dwClubID, GLCLUBBATTLE sClubBattle
 	{	
 		pClubP->ADDBATTLECLUB( sClubBattle );
 		
-		// »ó´ëÆí Å¬·´¹èÆ² Á¤º¸ Ãß°¡
+		// ìƒëŒ€í¸ í´ëŸ½ë°°í‹€ ì •ë³´ ì¶”ê°€
 		sClubBattle.m_dwCLUBID = pClubP->m_dwID;
 		StringCchCopy ( sClubBattle.m_szClubName, CHAR_SZNAME, pClubP->m_szName );
 		pClubS->ADDBATTLECLUB( sClubBattle );

@@ -20,6 +20,18 @@ CDbExecuter::CDbExecuter(CServer* pServer)
 	m_pServer = pServer;
 }
 
+CDbExecuter::~CDbExecuter()
+{
+	LockOn();
+	while (!m_vJob.empty())
+	{
+		CDbAction* pJob = m_vJob.front();
+		m_vJob.pop();
+		SAFE_DELETE(pJob);
+	}
+	LockOff();
+}
+
 CDbExecuter* CDbExecuter::GetInstance()
 {
 	static CDbExecuter cSelfInstance;
@@ -105,6 +117,18 @@ m_pServer(NULL)
 CLogDbExecuter::CLogDbExecuter(CServer* pServer)
 {
 	m_pServer = pServer;
+}
+
+CLogDbExecuter::~CLogDbExecuter()
+{
+	LockOn();
+	while (!m_vJob.empty())
+	{
+		CDbAction* pJob = m_vJob.front();
+		m_vJob.pop();
+		SAFE_DELETE(pJob);
+	}
+	LockOff();
 }
 
 CLogDbExecuter* CLogDbExecuter::GetInstance()
@@ -194,6 +218,18 @@ CUserDbExecuter::CUserDbExecuter(CServer* pServer)
 	m_pServer = pServer;
 }
 
+CUserDbExecuter::~CUserDbExecuter()
+{
+	LockOn();
+	while (!m_vJob.empty())
+	{
+		CDbAction* pJob = m_vJob.front();
+		m_vJob.pop();
+		SAFE_DELETE(pJob);
+	}
+	LockOff();
+}
+
 CUserDbExecuter* CUserDbExecuter::GetInstance()
 {
 	static CUserDbExecuter cSelfInstance;
@@ -281,6 +317,18 @@ m_pServer(NULL)
 CWebDbExecuter::CWebDbExecuter(CServer* pServer)
 {
 	m_pServer = pServer;
+}
+
+CWebDbExecuter::~CWebDbExecuter()
+{
+	LockOn();
+	while (!m_vJob.empty())
+	{
+		CDbAction* pJob = m_vJob.front();
+		m_vJob.pop();
+		SAFE_DELETE(pJob);
+	}
+	LockOff();
 }
 
 CWebDbExecuter* CWebDbExecuter::GetInstance()
