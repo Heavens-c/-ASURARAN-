@@ -7,12 +7,12 @@
 #endif
 
 /**
-*  ½ÇÁ¦ Ä³¸¯ÅÍ »èÁ¦ ÇÔ¼ö
-* -2 : ±æµå¸¶½ºÅÍ ±æµå»èÁ¦°¡ ÇÊ¿äÇÏ´Ù
+*  ì‹¤ì œ ìºë¦­í„° ì‚­ì œ í•¨ìˆ˜
+* -2 : ê¸¸ë“œë§ˆìŠ¤í„° ê¸¸ë“œì‚­ì œê°€ í•„ìš”í•˜ë‹¤
 * -1 : db error
-*  0 : »èÁ¦¼º°ø
-*  1 : ±Ø°­ºÎ ³²ÀÚ »èÁ¦
-*  2 : ±Ø°­ºÎ ¿©ÀÚ »èÁ¦
+*  0 : ì‚­ì œì„±ê³µ
+*  1 : ê·¹ê°•ë¶€ ë‚¨ì ì‚­ì œ
+*  2 : ê·¹ê°•ë¶€ ì—¬ì ì‚­ì œ
 */
 int COdbcManager::DeleteCharacter(int nUsrNum, int nChaNum)
 {
@@ -25,13 +25,13 @@ int COdbcManager::DeleteCharacter(int nUsrNum, int nChaNum)
 	_snprintf( szTemp, 128, "{call sp_delete_character(%d, ?)}", nChaNum );
 
 	int nReturn = m_pGameDB->ExecuteSpInt(szTemp);
-//	strTemp.freeze( false );	// Note : std::strstreamÀÇ freeze. ¾È ÇÏ¸é Leak ¹ß»ı.
+//	strTemp.freeze( false );	// Note : std::strstreamì˜ freeze. ì•ˆ í•˜ë©´ Leak ë°œìƒ.
 
 	return nReturn;
 }
 
 /**
-* Ä³¸¯ÅÍ »èÁ¦
+* ìºë¦­í„° ì‚­ì œ
 */
 int	COdbcManager::DelCharacter(int nUsrNum, 
 							   int nChaNum, 
@@ -53,7 +53,7 @@ int	COdbcManager::DelCharacter(int nUsrNum,
 	ODBC_STMT* pConn = m_pUserDB->GetConnection();
 	if (!pConn) return DB_ERROR;
 
-	// 2Â÷ ºñ¹Ğ¹øÈ£ Ã¼Å©
+	// 2ì°¨ ë¹„ë°€ë²ˆí˜¸ ì²´í¬
 	//std::strstream strTemp;
 	//strTemp << "SELECT UserNum FROM UserInfo WITH (NOLOCK) WHERE UserNum=";
 	//strTemp << nUsrNum;
@@ -63,7 +63,7 @@ int	COdbcManager::DelCharacter(int nUsrNum,
 	//strTemp << std::ends;
 
 	TCHAR szTemp[512] = {0};
-	_snprintf( szTemp, 512, "SELECT UserNum FROM UserInfo WITH (NOLOCK) WHERE UserNum=%d AND UserPass2='%s'", nUsrNum, szPass2 );
+	_snprintf( szTemp, 512, "SELECT UserNum FROM UserInfo WHERE UserNum=%d AND UserPass2='%s'", nUsrNum, szPass2 );
 
 	sReturn = ::SQLExecDirect(pConn->hStmt,
 		(SQLCHAR*) szTemp, 
@@ -71,12 +71,12 @@ int	COdbcManager::DelCharacter(int nUsrNum,
 
 	if ((sReturn != SQL_SUCCESS) && (sReturn != SQL_SUCCESS_WITH_INFO)) 
 	{
-		// Log ¿¡ ºó¹øÇÏ°Ô ¹ß»ıÇØ¼­ »èÁ¦Ã³¸® ÇßÀ½
+		// Log ì— ë¹ˆë²ˆí•˜ê²Œ ë°œìƒí•´ì„œ ì‚­ì œì²˜ë¦¬ í–ˆìŒ
 		// Print(strTemp.str());		
 		// Print(GetErrorString(pConn->hStmt));
 		m_pUserDB->FreeConnection(pConn);
 
-		//		strTemp.freeze( false );	// Note : std::strstreamÀÇ freeze. ¾È ÇÏ¸é Leak ¹ß»ı.
+		//		strTemp.freeze( false );	// Note : std::strstreamì˜ freeze. ì•ˆ í•˜ë©´ Leak ë°œìƒ.
 		return DB_ERROR;
 	}	
 
@@ -89,7 +89,7 @@ int	COdbcManager::DelCharacter(int nUsrNum,
 			Print(GetErrorString(pConn->hStmt));
 			m_pUserDB->FreeConnection(pConn);
 
-			//			strTemp.freeze( false );	// Note : std::strstreamÀÇ freeze. ¾È ÇÏ¸é Leak ¹ß»ı.
+			//			strTemp.freeze( false );	// Note : std::strstreamì˜ freeze. ì•ˆ í•˜ë©´ Leak ë°œìƒ.
 			return DB_ERROR;
 		}
 
@@ -99,7 +99,7 @@ int	COdbcManager::DelCharacter(int nUsrNum,
 			Print(GetErrorString(pConn->hStmt));
 			m_pUserDB->FreeConnection(pConn);
 
-			//			strTemp.freeze( false );	// Note : std::strstreamÀÇ freeze. ¾È ÇÏ¸é Leak ¹ß»ı.
+			//			strTemp.freeze( false );	// Note : std::strstreamì˜ freeze. ì•ˆ í•˜ë©´ Leak ë°œìƒ.
 			return DB_ERROR;
 		}
 
@@ -113,7 +113,7 @@ int	COdbcManager::DelCharacter(int nUsrNum,
 		}		
 		Sleep( 0 );
 	}
-	//	strTemp.freeze( false );	// Note : std::strstreamÀÇ freeze. ¾È ÇÏ¸é Leak ¹ß»ı.
+	//	strTemp.freeze( false );	// Note : std::strstreamì˜ freeze. ì•ˆ í•˜ë©´ Leak ë°œìƒ.
 
 	m_pUserDB->FreeConnection(pConn);
 
@@ -123,21 +123,21 @@ int	COdbcManager::DelCharacter(int nUsrNum,
 }
 
 /**
-* Ä³¸¯ÅÍ »èÁ¦
+* ìºë¦­í„° ì‚­ì œ
 */
 int	COdbcManager::DaumDelCharacter(int nUsrNum, int nChaNum)
 {
 	return DeleteCharacter(nUsrNum, nChaNum);
 }
 
-// GSP Ä³¸¯ÅÍ »èÁ¦
+// GSP ìºë¦­í„° ì‚­ì œ
 int	COdbcManager::GspDelCharacter( int nUsrNum, int nChaNum )
 {
 	return DeleteCharacter( nUsrNum, nChaNum );
 }
 
 /**
-* Ä³¸¯ÅÍ »èÁ¦
+* ìºë¦­í„° ì‚­ì œ
 */
 int	COdbcManager::TerraDelCharacter(int nUsrNum, int nChaNum)
 {
@@ -145,7 +145,7 @@ int	COdbcManager::TerraDelCharacter(int nUsrNum, int nChaNum)
 }
 
 /**
-* Ä³¸¯ÅÍ »èÁ¦
+* ìºë¦­í„° ì‚­ì œ
 */
 int COdbcManager::ExciteDelCharacter(int nUsrNum, int nChaNum)
 {
@@ -153,7 +153,7 @@ int COdbcManager::ExciteDelCharacter(int nUsrNum, int nChaNum)
 }
 
 /**
-* Japan Ä³¸¯ÅÍ »èÁ¦
+* Japan ìºë¦­í„° ì‚­ì œ
 */
 int COdbcManager::JapanDelCharacter(int nUsrNum, int nChaNum)
 {
@@ -162,7 +162,7 @@ int COdbcManager::JapanDelCharacter(int nUsrNum, int nChaNum)
 
 
 /**
-* GS Ä³¸¯ÅÍ »èÁ¦
+* GS ìºë¦­í„° ì‚­ì œ
 */
 int	COdbcManager::GsDelCharacter(int nUsrNum, int nChaNum )
 {

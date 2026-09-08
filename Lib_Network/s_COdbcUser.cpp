@@ -25,46 +25,46 @@ __time64_t COdbcManager::GetChatBlockTime(int nUserNum)
 	switch (m_nServiceProvider)
 	{
 	case SP_KOREA :
-		//strTemp << "SELECT ChatBlockDate FROM DaumUserInfo WITH (NOLOCK) WHERE UserNum=";
+		//strTemp << "SELECT ChatBlockDate FROM DaumUserInfo WHERE UserNum=";
 		//strTemp << nUserNum;
 		//strTemp << std::ends;
-		_snprintf( szTemp, 128, "SELECT ChatBlockDate FROM DaumUserInfo WITH (NOLOCK) WHERE UserNum=%d", nUserNum );
+		_snprintf( szTemp, 128, "SELECT ChatBlockDate FROM DaumUserInfo WHERE UserNum=%d", nUserNum );
 		break;
 	case SP_JAPAN:
-		_snprintf( szTemp, 128, "SELECT ChatBlockDate FROM JapanUserInfo WITH (NOLOCK) WHERE UserNum=%d", nUserNum );
+		_snprintf( szTemp, 128, "SELECT ChatBlockDate FROM JapanUserInfo WHERE UserNum=%d", nUserNum );
 		break;
 	case SP_TERRA :
-		//strTemp << "SELECT ChatBlockDate FROM TerraUserInfo WITH (NOLOCK) WHERE UserNum=";
+		//strTemp << "SELECT ChatBlockDate FROM TerraUserInfo WHERE UserNum=";
 		//strTemp << nUserNum;
 		//strTemp << std::ends;
-		_snprintf( szTemp, 128, "SELECT ChatBlockDate FROM TerraUserInfo WITH (NOLOCK) WHERE UserNum=%d", nUserNum );
+		_snprintf( szTemp, 128, "SELECT ChatBlockDate FROM TerraUserInfo WHERE UserNum=%d", nUserNum );
 		break;
 	case SP_MALAYSIA :
-		//strTemp << "SELECT ChatBlockDate FROM TerraUserInfo WITH (NOLOCK) WHERE UserNum=";
+		//strTemp << "SELECT ChatBlockDate FROM TerraUserInfo WHERE UserNum=";
 		//strTemp << nUserNum;
 		//strTemp << std::ends;
-		_snprintf( szTemp, 128, "SELECT ChatBlockDate FROM TerraUserInfo WITH (NOLOCK) WHERE UserNum=%d", nUserNum );
+		_snprintf( szTemp, 128, "SELECT ChatBlockDate FROM TerraUserInfo WHERE UserNum=%d", nUserNum );
 		break;
 	case SP_THAILAND :
-		//strTemp << "SELECT ChatBlockDate FROM UserInfo WITH (NOLOCK) WHERE UserNum=";
+		//strTemp << "SELECT ChatBlockDate FROM UserInfo WHERE UserNum=";
 		//strTemp << nUserNum ;
 		//strTemp << std::ends;
-		_snprintf( szTemp, 128, "SELECT ChatBlockDate FROM UserInfo WITH (NOLOCK) WHERE UserNum=%d", nUserNum );
+		_snprintf( szTemp, 128, "SELECT ChatBlockDate FROM UserInfo WHERE UserNum=%d", nUserNum );
 		break;
 	case SP_GLOBAL:
-		//strTemp << "SELECT ChatBlockDate FROM GspUserInfo WITH (NOLOCK) WHERE UserNum=";
+		//strTemp << "SELECT ChatBlockDate FROM GspUserInfo WHERE UserNum=";
 		//strTemp << nUserNum ;
 		//strTemp << std::ends;
-		_snprintf( szTemp, 128, "SELECT ChatBlockDate FROM GspUserInfo WITH (NOLOCK) WHERE UserNum=%d", nUserNum );
+		_snprintf( szTemp, 128, "SELECT ChatBlockDate FROM GspUserInfo WHERE UserNum=%d", nUserNum );
 		break;
 	case SP_GS :
-		_snprintf( szTemp, 128, "SELECT ChatBlockDate FROM GSUserInfo WITH (NOLOCK) WHERE UserNum=%d", nUserNum );
+		_snprintf( szTemp, 128, "SELECT ChatBlockDate FROM GSUserInfo WHERE UserNum=%d", nUserNum );
 		break;
 	default :
-		//strTemp << "SELECT ChatBlockDate FROM UserInfo WITH (NOLOCK) WHERE UserNum=";
+		//strTemp << "SELECT ChatBlockDate FROM UserInfo WHERE UserNum=";
 		//strTemp << nUserNum ;
 		//strTemp << std::ends;
-		_snprintf( szTemp, 128, "SELECT ChatBlockDate FROM UserInfo WITH (NOLOCK) WHERE UserNum=%d", nUserNum );
+		_snprintf( szTemp, 128, "SELECT ChatBlockDate FROM UserInfo WHERE UserNum=%d", nUserNum );
 		break;
 	}
 
@@ -81,7 +81,7 @@ __time64_t COdbcManager::GetChatBlockTime(int nUserNum)
 		Print(GetErrorString(pConn->hStmt));
 		m_pUserDB->FreeConnection(pConn);
 
-		//strTemp.freeze( false );	// Note : std::strstreamÀÇ freeze. ¾È ÇÏ¸é Leak ¹ß»ý.
+		//strTemp.freeze( false );	// Note : std::strstreamï¿½ï¿½ freeze. ï¿½ï¿½ ï¿½Ï¸ï¿½ Leak ï¿½ß»ï¿½.
 
         return DB_ERROR;
 	}
@@ -95,7 +95,7 @@ __time64_t COdbcManager::GetChatBlockTime(int nUserNum)
 			Print(GetErrorString(pConn->hStmt));
             m_pUserDB->FreeConnection(pConn);
 
-			//strTemp.freeze( false );	// Note : std::strstreamÀÇ freeze. ¾È ÇÏ¸é Leak ¹ß»ý.
+			//strTemp.freeze( false );	// Note : std::strstreamï¿½ï¿½ freeze. ï¿½ï¿½ ï¿½Ï¸ï¿½ Leak ï¿½ß»ï¿½.
 
             return DB_ERROR;
 		}
@@ -116,7 +116,7 @@ __time64_t COdbcManager::GetChatBlockTime(int nUserNum)
 		}
 		Sleep( 0 );
 	}
-	//strTemp.freeze( false );	// Note : std::strstreamÀÇ freeze. ¾È ÇÏ¸é Leak ¹ß»ý.
+	//strTemp.freeze( false );	// Note : std::strstreamï¿½ï¿½ freeze. ï¿½ï¿½ ï¿½Ï¸ï¿½ Leak ï¿½ß»ï¿½.
 
     m_pUserDB->FreeConnection(pConn);
     return tChatBlockDate;
@@ -136,69 +136,69 @@ int COdbcManager::SetChatBlockTime(int nUserNum, __time64_t tBlockTime)
 	switch (m_nServiceProvider)
 	{
 	case SP_KOREA :
-		//strTemp << "UPDATE DaumUserInfo WITH (UPDLOCK) SET ChatBlockDate='";
+		//strTemp << "UPDATE DaumUserInfo SET ChatBlockDate='";
 		//strTemp << strTime.GetString() << "' WHERE UserNum=";
 		//strTemp << nUserNum;
 		//strTemp << std::ends;
-		_snprintf( szTemp, 256, "UPDATE DaumUserInfo WITH (UPDLOCK) SET ChatBlockDate='%s' WHERE UserNum=%d", strTime.GetString(), nUserNum );
+		_snprintf( szTemp, 256, "UPDATE DaumUserInfo SET ChatBlockDate='%s' WHERE UserNum=%d", strTime.GetString(), nUserNum );
 		break;	
 	case SP_JAPAN :
-		//_snprintf( szTemp, 256, "UPDATE ExciteUserInfo WITH (UPDLOCK) SET ChatBlockDate='%s' WHERE UserNum=%d", strTime.GetString(), nUserNum );
-		// ÀÏº» Excite¿¡¼­ Gonzo·Î ¼­ºñ½º»ç º¯°æ¿¡ µû¸¥ º¯°æ
-		_snprintf( szTemp, 256, "UPDATE JapanUserInfo WITH (UPDLOCK) SET ChatBlockDate='%s' WHERE UserNum=%d", strTime.GetString(), nUserNum );
+		//_snprintf( szTemp, 256, "UPDATE ExciteUserInfo SET ChatBlockDate='%s' WHERE UserNum=%d", strTime.GetString(), nUserNum );
+		// ï¿½Ïºï¿½ Exciteï¿½ï¿½ï¿½ï¿½ Gonzoï¿½ï¿½ ï¿½ï¿½ï¿½ñ½º»ï¿½ ï¿½ï¿½ï¿½æ¿¡ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+		_snprintf( szTemp, 256, "UPDATE JapanUserInfo SET ChatBlockDate='%s' WHERE UserNum=%d", strTime.GetString(), nUserNum );
 		break;
 	case SP_TERRA :
-		//strTemp << "UPDATE TerraUserInfo WITH (UPDLOCK) SET ChatBlockDate='";
+		//strTemp << "UPDATE TerraUserInfo SET ChatBlockDate='";
 		//strTemp << strTime.GetString() << "' WHERE UserNum=";
 		//strTemp << nUserNum;
 		//strTemp << std::ends;
-		_snprintf( szTemp, 256, "UPDATE TerraUserInfo WITH (UPDLOCK) SET ChatBlockDate='%s' WHERE UserNum=%d", strTime.GetString(), nUserNum );
+		_snprintf( szTemp, 256, "UPDATE TerraUserInfo SET ChatBlockDate='%s' WHERE UserNum=%d", strTime.GetString(), nUserNum );
 		break;
 	case SP_MALAYSIA :
-		//strTemp << "UPDATE TerraUserInfo WITH (UPDLOCK) SET ChatBlockDate='";
+		//strTemp << "UPDATE TerraUserInfo SET ChatBlockDate='";
 		//strTemp << strTime.GetString() << "' WHERE UserNum=";
 		//strTemp << nUserNum;
 		//strTemp << std::ends;
-		_snprintf( szTemp, 256, "UPDATE TerraUserInfo WITH (UPDLOCK) SET ChatBlockDate='%s' WHERE UserNum=%d", strTime.GetString(), nUserNum );
+		_snprintf( szTemp, 256, "UPDATE TerraUserInfo SET ChatBlockDate='%s' WHERE UserNum=%d", strTime.GetString(), nUserNum );
 		break;
 	case SP_THAILAND :
-		//strTemp << "UPDATE UserInfo WITH (UPDLOCK) SET ChatBlockDate='";
+		//strTemp << "UPDATE UserInfo SET ChatBlockDate='";
 		//strTemp << strTime.GetString() << "' WHERE UserNum=";
 		//strTemp << nUserNum;
 		//strTemp << std::ends;
-		_snprintf( szTemp, 256, "UPDATE UserInfo WITH (UPDLOCK) SET ChatBlockDate='%s' WHERE UserNum=%d", strTime.GetString(), nUserNum );
+		_snprintf( szTemp, 256, "UPDATE UserInfo SET ChatBlockDate='%s' WHERE UserNum=%d", strTime.GetString(), nUserNum );
 		break;
 	case SP_GLOBAL:
-		//strTemp << "UPDATE GspUserInfo WITH (UPDLOCK) SET ChatBlockDate='";
+		//strTemp << "UPDATE GspUserInfo SET ChatBlockDate='";
 		//strTemp << strTime.GetString() << "' WHERE UserNum=";
 		//strTemp << nUserNum;
 		//strTemp << std::ends;
-		_snprintf( szTemp, 256, "UPDATE GspUserInfo WITH (UPDLOCK) SET ChatBlockDate='%s' WHERE UserNum=%d", strTime.GetString(), nUserNum );
+		_snprintf( szTemp, 256, "UPDATE GspUserInfo SET ChatBlockDate='%s' WHERE UserNum=%d", strTime.GetString(), nUserNum );
 		break;
 	case SP_GS :
-		//strTemp << "UPDATE UserInfo WITH (UPDLOCK) SET ChatBlockDate='";
+		//strTemp << "UPDATE UserInfo SET ChatBlockDate='";
 		//strTemp << strTime.GetString() << "' WHERE UserNum=";
 		//strTemp << nUserNum;
 		//strTemp << std::ends;
-		_snprintf( szTemp, 256, "UPDATE GSUserInfo WITH (UPDLOCK) SET ChatBlockDate='%s' WHERE UserNum=%d", strTime.GetString(), nUserNum );
+		_snprintf( szTemp, 256, "UPDATE GSUserInfo SET ChatBlockDate='%s' WHERE UserNum=%d", strTime.GetString(), nUserNum );
 		break;
 	default :
-		//strTemp << "UPDATE UserInfo WITH (UPDLOCK) SET ChatBlockDate='";
+		//strTemp << "UPDATE UserInfo SET ChatBlockDate='";
 		//strTemp << strTime.GetString() << "' WHERE UserNum=";
 		//strTemp << nUserNum;
 		//strTemp << std::ends;
-		_snprintf( szTemp, 256, "UPDATE UserInfo WITH (UPDLOCK) SET ChatBlockDate='%s' WHERE UserNum=%d", strTime.GetString(), nUserNum );
+		_snprintf( szTemp, 256, "UPDATE UserInfo SET ChatBlockDate='%s' WHERE UserNum=%d", strTime.GetString(), nUserNum );
 		break;
 	}
 
 	int nReturn = m_pUserDB->ExecuteSQL(szTemp);
-	//strTemp.freeze( false );	// Note : std::strstreamÀÇ freeze. ¾È ÇÏ¸é Leak ¹ß»ý.
+	//strTemp.freeze( false );	// Note : std::strstreamï¿½ï¿½ freeze. ï¿½ï¿½ ï¿½Ï¸ï¿½ Leak ï¿½ß»ï¿½.
 
 	return nReturn;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-// ÇØ´ç »ç¿ëÀÚÀÇ ÇÁ¸®¹Ì¾ö ±â°£À» °¡Á®¿Â´Ù.
+// ï¿½Ø´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ì¾ï¿½ ï¿½â°£ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Â´ï¿½.
 __time64_t COdbcManager::GetPremiumTime(int nUserNum)
 {
 	if (nUserNum <= 0) return DB_ERROR;
@@ -214,51 +214,51 @@ __time64_t COdbcManager::GetPremiumTime(int nUserNum)
 	switch (m_nServiceProvider)
 	{
 	case SP_KOREA :
-		//strTemp << "SELECT PremiumDate FROM DaumUserInfo WITH (NOLOCK) WHERE UserNum=";
+		//strTemp << "SELECT PremiumDate FROM DaumUserInfo WHERE UserNum=";
 		//strTemp << nUserNum ;
 		//strTemp << std::ends;
-		_snprintf( szTemp, 128, "SELECT PremiumDate FROM DaumUserInfo WITH (NOLOCK) WHERE UserNum=%d", nUserNum );
+		_snprintf( szTemp, 128, "SELECT PremiumDate FROM DaumUserInfo WHERE UserNum=%d", nUserNum );
 		break;
 	case SP_TERRA :
-		//strTemp << "SELECT PremiumDate FROM TerraUserInfo WITH (NOLOCK) WHERE UserNum=";
+		//strTemp << "SELECT PremiumDate FROM TerraUserInfo WHERE UserNum=";
 		//strTemp << nUserNum ;
 		//strTemp << std::ends;
-		_snprintf( szTemp, 128, "SELECT PremiumDate FROM TerraUserInfo WITH (NOLOCK) WHERE UserNum=%d", nUserNum );
+		_snprintf( szTemp, 128, "SELECT PremiumDate FROM TerraUserInfo WHERE UserNum=%d", nUserNum );
 		break;
 	case SP_MALAYSIA :
-		//strTemp << "SELECT PremiumDate FROM TerraUserInfo WITH (NOLOCK) WHERE UserNum=";
+		//strTemp << "SELECT PremiumDate FROM TerraUserInfo WHERE UserNum=";
 		//strTemp << nUserNum ;
 		//strTemp << std::ends;
-		_snprintf( szTemp, 128, "SELECT PremiumDate FROM TerraUserInfo WITH (NOLOCK) WHERE UserNum=%d", nUserNum );
+		_snprintf( szTemp, 128, "SELECT PremiumDate FROM TerraUserInfo WHERE UserNum=%d", nUserNum );
 		break;
 	case SP_JAPAN :
-		//_snprintf( szTemp, 128, "SELECT PremiumDate FROM ExciteUserInfo WITH (NOLOCK) WHERE UserNum=%d", nUserNum );
-		// ÀÏº» Excite¿¡¼­ Gonzo·Î ¼­ºñ½º»ç º¯°æ¿¡ µû¸¥ º¯°æ
-		_snprintf( szTemp, 128, "SELECT PremiumDate FROM JapanUserInfo WITH (NOLOCK) WHERE UserNum=%d", nUserNum );
+		//_snprintf( szTemp, 128, "SELECT PremiumDate FROM ExciteUserInfo WHERE UserNum=%d", nUserNum );
+		// ï¿½Ïºï¿½ Exciteï¿½ï¿½ï¿½ï¿½ Gonzoï¿½ï¿½ ï¿½ï¿½ï¿½ñ½º»ï¿½ ï¿½ï¿½ï¿½æ¿¡ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+		_snprintf( szTemp, 128, "SELECT PremiumDate FROM JapanUserInfo WHERE UserNum=%d", nUserNum );
 		break;
 	case SP_THAILAND :
-		//strTemp << "SELECT PremiumDate FROM UserInfo WITH (NOLOCK) WHERE UserNum=";
+		//strTemp << "SELECT PremiumDate FROM UserInfo WHERE UserNum=";
 		//strTemp << nUserNum ;
 		//strTemp << std::ends;
-		_snprintf( szTemp, 128, "SELECT PremiumDate FROM UserInfo WITH (NOLOCK) WHERE UserNum=%d", nUserNum );
+		_snprintf( szTemp, 128, "SELECT PremiumDate FROM UserInfo WHERE UserNum=%d", nUserNum );
 		break;
 	case SP_GLOBAL:
-		//strTemp << "SELECT PremiumDate FROM GspUserInfo WITH (NOLOCK) WHERE UserNum=";
+		//strTemp << "SELECT PremiumDate FROM GspUserInfo WHERE UserNum=";
 		//strTemp << nUserNum ;
 		//strTemp << std::ends;
-		_snprintf( szTemp, 128, "SELECT PremiumDate FROM GspUserInfo WITH (NOLOCK) WHERE UserNum=%d", nUserNum );
+		_snprintf( szTemp, 128, "SELECT PremiumDate FROM GspUserInfo WHERE UserNum=%d", nUserNum );
 		break;
 	case SP_GS :
-		//strTemp << "SELECT PremiumDate FROM UserInfo WITH (NOLOCK) WHERE UserNum=";
+		//strTemp << "SELECT PremiumDate FROM UserInfo WHERE UserNum=";
 		//strTemp << nUserNum ;
 		//strTemp << std::ends;
-		_snprintf( szTemp, 128, "SELECT PremiumDate FROM GSUserInfo WITH (NOLOCK) WHERE UserNum=%d", nUserNum );
+		_snprintf( szTemp, 128, "SELECT PremiumDate FROM GSUserInfo WHERE UserNum=%d", nUserNum );
 		break;
 	default :
-		//strTemp << "SELECT PremiumDate FROM UserInfo WITH (NOLOCK) WHERE UserNum=";
+		//strTemp << "SELECT PremiumDate FROM UserInfo WHERE UserNum=";
 		//strTemp << nUserNum ;
 		//strTemp << std::ends;
-		_snprintf( szTemp, 128, "SELECT PremiumDate FROM UserInfo WITH (NOLOCK) WHERE UserNum=%d", nUserNum );
+		_snprintf( szTemp, 128, "SELECT PremiumDate FROM UserInfo WHERE UserNum=%d", nUserNum );
 		break;
 	}
 
@@ -275,7 +275,7 @@ __time64_t COdbcManager::GetPremiumTime(int nUserNum)
 		Print(GetErrorString(pConn->hStmt));
 		m_pUserDB->FreeConnection(pConn);
 
-		//strTemp.freeze( false );	// Note : std::strstreamÀÇ freeze. ¾È ÇÏ¸é Leak ¹ß»ý.
+		//strTemp.freeze( false );	// Note : std::strstreamï¿½ï¿½ freeze. ï¿½ï¿½ ï¿½Ï¸ï¿½ Leak ï¿½ß»ï¿½.
 
         return DB_ERROR;
 	}
@@ -289,7 +289,7 @@ __time64_t COdbcManager::GetPremiumTime(int nUserNum)
 			Print(GetErrorString(pConn->hStmt));
             m_pUserDB->FreeConnection(pConn);
 
-			//strTemp.freeze( false );	// Note : std::strstreamÀÇ freeze. ¾È ÇÏ¸é Leak ¹ß»ý.
+			//strTemp.freeze( false );	// Note : std::strstreamï¿½ï¿½ freeze. ï¿½ï¿½ ï¿½Ï¸ï¿½ Leak ï¿½ß»ï¿½.
 
             return DB_ERROR;
 		}
@@ -310,14 +310,14 @@ __time64_t COdbcManager::GetPremiumTime(int nUserNum)
 		}
 		Sleep( 0 );
 	}
-	//strTemp.freeze( false );	// Note : std::strstreamÀÇ freeze. ¾È ÇÏ¸é Leak ¹ß»ý.
+	//strTemp.freeze( false );	// Note : std::strstreamï¿½ï¿½ freeze. ï¿½ï¿½ ï¿½Ï¸ï¿½ Leak ï¿½ß»ï¿½.
 
     m_pUserDB->FreeConnection(pConn);
     return tPremiumDate;
 }
 
 /**
- * ÇØ´ç »ç¿ëÀÚÀÇ ÇÁ¸®¹Ì¾ö ±â°£À» ¼¼ÆÃÇÑ´Ù.
+ * ï¿½Ø´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ì¾ï¿½ ï¿½â°£ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ñ´ï¿½.
  */
 int COdbcManager::SetPremiumTime(int nUserNum, __time64_t tPremiumTime)
 {
@@ -341,7 +341,7 @@ int COdbcManager::SetPremiumTime(int nUserNum, __time64_t tPremiumTime)
 		break;
 	case SP_JAPAN :
 		//_snprintf( szTemp, 256, "UPDATE ExciteUserInfo SET PremiumDate='%s' WHERE UserNum=%d", strTime.GetString(), nUserNum );
-		// ÀÏº» Excite¿¡¼­ Gonzo·Î ¼­ºñ½º»ç º¯°æ¿¡ µû¸¥ º¯°æ
+		// ï¿½Ïºï¿½ Exciteï¿½ï¿½ï¿½ï¿½ Gonzoï¿½ï¿½ ï¿½ï¿½ï¿½ñ½º»ï¿½ ï¿½ï¿½ï¿½æ¿¡ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 		_snprintf( szTemp, 256, "UPDATE JapanUserInfo SET PremiumDate='%s' WHERE UserNum=%d", strTime.GetString(), nUserNum );
 		break;
 	case SP_TERRA :
@@ -389,17 +389,17 @@ int COdbcManager::SetPremiumTime(int nUserNum, __time64_t tPremiumTime)
 	} // switch (nServiceProvider)
 
 	int nReturn = m_pUserDB->ExecuteSQL(szTemp);
-	//strTemp.freeze( false );	// Note : std::strstreamÀÇ freeze. ¾È ÇÏ¸é Leak ¹ß»ý.
+	//strTemp.freeze( false );	// Note : std::strstreamï¿½ï¿½ freeze. ï¿½ï¿½ ï¿½Ï¸ï¿½ Leak ï¿½ß»ï¿½.
 
 	return nReturn;
 }
 
 /**
- * 0 ÀÏ¹Ý»ç¿ëÀÚ
- * 10 Æ¯º°»ç¿ëÀÚ (°ÔÀÓ¹æ ¾÷Ã¼ »çÀå, ±âÀÚ µîµî)
- * 20 GM 3 ±Þ
- * 21 GM 2 ±Þ
- * 22 GM 1 ±Þ
+ * 0 ï¿½Ï¹Ý»ï¿½ï¿½ï¿½ï¿½
+ * 10 Æ¯ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ (ï¿½ï¿½ï¿½Ó¹ï¿½ ï¿½ï¿½Ã¼ ï¿½ï¿½ï¿½ï¿½, ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½)
+ * 20 GM 3 ï¿½ï¿½
+ * 21 GM 2 ï¿½ï¿½
+ * 22 GM 1 ï¿½ï¿½
  * 30 Master
  */
 int COdbcManager::GetUserType(int nUserNum)
@@ -421,7 +421,7 @@ int COdbcManager::GetUserType(int nUserNum)
 		break;
 	case SP_JAPAN :
 		//_snprintf( szTemp, 128, "{call excite_user_gettype(%d, ?)}", nUserNum );
-		// ÀÏº» Excite¿¡¼­ Gonzo·Î ¼­ºñ½º»ç º¯°æ¿¡ µû¸¥ º¯°æ
+		// ï¿½Ïºï¿½ Exciteï¿½ï¿½ï¿½ï¿½ Gonzoï¿½ï¿½ ï¿½ï¿½ï¿½ñ½º»ï¿½ ï¿½ï¿½ï¿½æ¿¡ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 		_snprintf( szTemp, 128, "{call Japan_user_gettype(%d, ?)}", nUserNum );
 		break;
 	case SP_TERRA :
@@ -469,13 +469,13 @@ int COdbcManager::GetUserType(int nUserNum)
 	} // switch (nServiceProvider)
 	
 	int nReturn = m_pUserDB->ExecuteSpInt(szTemp);
-	//strTemp.freeze( false );	// Note : std::strstreamÀÇ freeze. ¾È ÇÏ¸é Leak ¹ß»ý.
+	//strTemp.freeze( false );	// Note : std::strstreamï¿½ï¿½ freeze. ï¿½ï¿½ ï¿½Ï¸ï¿½ Leak ï¿½ß»ï¿½.
 
 	return nReturn;
 }
 
 /**
- * ÇØ´ç»ç¿ëÀÚÀÇ ¸¸µé ¼ö ÀÖ´Â Ä³¸¯ÅÍ °¹¼ö¸¦ °¡Á®¿Â´Ù.
+ * ï¿½Ø´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½Ö´ï¿½ Ä³ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Â´ï¿½.
  */
 int COdbcManager::GetUserChaRemain(int nUserNum)
 {
@@ -496,7 +496,7 @@ int COdbcManager::GetUserChaRemain(int nUserNum)
 		break;
 	case SP_JAPAN :		
 		//_snprintf( szTemp, 128, "{call excite_user_cha_remain(%d, ?)}", nUserNum );
-		// ÀÏº» Excite¿¡¼­ Gonzo·Î ¼­ºñ½º»ç º¯°æ¿¡ µû¸¥ º¯°æ
+		// ï¿½Ïºï¿½ Exciteï¿½ï¿½ï¿½ï¿½ Gonzoï¿½ï¿½ ï¿½ï¿½ï¿½ñ½º»ï¿½ ï¿½ï¿½ï¿½æ¿¡ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 		_snprintf( szTemp, 128, "{call Japan_user_cha_remain(%d, ?)}", nUserNum );
 		break;
 	case SP_TERRA :
@@ -544,9 +544,9 @@ int COdbcManager::GetUserChaRemain(int nUserNum)
 	} // switch (m_nServiceProvider)
 
 	int nReturn = m_pUserDB->ExecuteSpInt(szTemp);
-	//strTemp.freeze( false );	// Note : std::strstreamÀÇ freeze. ¾È ÇÏ¸é Leak ¹ß»ý.
+	//strTemp.freeze( false );	// Note : std::strstreamï¿½ï¿½ freeze. ï¿½ï¿½ ï¿½Ï¸ï¿½ Leak ï¿½ß»ï¿½.
 
-    // Ä³¸¯ÅÍ»ý¼º°¹¼ö ¿¡·¯
+    // Ä³ï¿½ï¿½ï¿½Í»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
     if (nReturn < 0 || nReturn > MAX_CHAR_LENGTH)
     {
         nReturn = 0;
@@ -555,7 +555,7 @@ int COdbcManager::GetUserChaRemain(int nUserNum)
 }
 
 /**
- * Test ¼­¹ö¿¡¼­ ¸¸µé ¼ö ÀÖ´Â Ä³¸¯ÅÍ °¹¼ö
+ * Test ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½Ö´ï¿½ Ä³ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
  */
 int	COdbcManager::GetUserChaTestRemain(int nUserNum)
 {
@@ -575,7 +575,7 @@ int	COdbcManager::GetUserChaTestRemain(int nUserNum)
 		break;
 	case SP_JAPAN :
 		//_snprintf( szTemp, 128, "{call excite_user_cha_test_remain(%d, ?)}", nUserNum );
-		// ÀÏº» Excite¿¡¼­ Gonzo·Î ¼­ºñ½º»ç º¯°æ¿¡ µû¸¥ º¯°æ
+		// ï¿½Ïºï¿½ Exciteï¿½ï¿½ï¿½ï¿½ Gonzoï¿½ï¿½ ï¿½ï¿½ï¿½ñ½º»ï¿½ ï¿½ï¿½ï¿½æ¿¡ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 		_snprintf( szTemp, 128, "{call Japan_user_cha_test_remain(%d, ?)}", nUserNum );
 		break;
 	case SP_TERRA :
@@ -611,9 +611,9 @@ int	COdbcManager::GetUserChaTestRemain(int nUserNum)
 	int nReturn=0;
 	
 	nReturn = m_pUserDB->ExecuteSpInt(szTemp);
-	//strTemp.freeze( false );	// Note : std::strstreamÀÇ freeze. ¾È ÇÏ¸é Leak ¹ß»ý.
+	//strTemp.freeze( false );	// Note : std::strstreamï¿½ï¿½ freeze. ï¿½ï¿½ ï¿½Ï¸ï¿½ Leak ï¿½ß»ï¿½.
 
-    // Ä³¸¯ÅÍ»ý¼º°¹¼ö ¿¡·¯
+    // Ä³ï¿½ï¿½ï¿½Í»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
     if (nReturn < 0 || nReturn > MAX_CHAR_LENGTH)
     {
         nReturn = 0;
@@ -622,7 +622,7 @@ int	COdbcManager::GetUserChaTestRemain(int nUserNum)
 }
 
 ///////////////////////////////////////////////////////////////////////////
-// ÇØ´ç»ç¿ëÀÚ¸¦ Logout ÇÑ´Ù
+// ï¿½Ø´ï¿½ï¿½ï¿½ï¿½Ú¸ï¿½ Logout ï¿½Ñ´ï¿½
 int	COdbcManager::UserLogout(
 	const TCHAR* szUsrID, 
 	int nUsrNum, 
@@ -663,7 +663,7 @@ int	COdbcManager::UserLogout(
 
 	case SP_JAPAN : 
 		//_snprintf( szTemp, 256, "{call excite_user_logout('%s',%d,%d,%d,%d,%d)}", szUsrID, nUsrNum, nGameTime, nChaNum, nSvrGrp, nSvrNum );
-		// ÀÏº» Excite¿¡¼­ Gonzo·Î ¼­ºñ½º»ç º¯°æ¿¡ µû¸¥ º¯°æ
+		// ï¿½Ïºï¿½ Exciteï¿½ï¿½ï¿½ï¿½ Gonzoï¿½ï¿½ ï¿½ï¿½ï¿½ñ½º»ï¿½ ï¿½ï¿½ï¿½æ¿¡ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 		_snprintf( szTemp, 256, "{call Japan_user_logout('%s',%d,%d,%d,%d,%d)}", szUsrID, nUsrNum, nGameTime, nChaNum, nSvrGrp, nSvrNum );
 		break;
 	case SP_TERRA : 
@@ -740,13 +740,13 @@ int	COdbcManager::UserLogout(
 	} // switch (nServiceProvider)
 
 	int nReturn = m_pUserDB->ExecuteSp(szTemp);
-	//strTemp.freeze( false );	// Note : std::strstreamÀÇ freeze. ¾È ÇÏ¸é Leak ¹ß»ý.
+	//strTemp.freeze( false );	// Note : std::strstreamï¿½ï¿½ freeze. ï¿½ï¿½ ï¿½Ï¸ï¿½ Leak ï¿½ß»ï¿½.
 
 	return nReturn;
 }
 
 /**
- * »ç¿ëÀÚ ID ¸¦ ÀÌ¿ëÇØ¼­ »ç¿ëÀÚ¸¦ ·Î±×¾Æ¿ô ½ÃÅ²´Ù
+ * ï¿½ï¿½ï¿½ï¿½ï¿½ ID ï¿½ï¿½ ï¿½Ì¿ï¿½ï¿½Ø¼ï¿½ ï¿½ï¿½ï¿½ï¿½Ú¸ï¿½ ï¿½Î±×¾Æ¿ï¿½ ï¿½ï¿½Å²ï¿½ï¿½
  */
 int COdbcManager::UserLogoutSimple( const TCHAR* szUsrID )
 {
@@ -769,7 +769,7 @@ int COdbcManager::UserLogoutSimple( const TCHAR* szUsrID )
 		//strTemp << szUsrID << "')}";
 		//strTemp << std::ends;
 //		_snprintf( szTemp, 128, "{call Excite_UserLogoutSimple('%s')}", szUsrID );
-		// ÀÏº» Excite¿¡¼­ Gonzo·Î ¼­ºñ½º»ç º¯°æ¿¡ µû¸¥ º¯°æ
+		// ï¿½Ïºï¿½ Exciteï¿½ï¿½ï¿½ï¿½ Gonzoï¿½ï¿½ ï¿½ï¿½ï¿½ñ½º»ï¿½ ï¿½ï¿½ï¿½æ¿¡ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 		_snprintf( szTemp, 128, "{call Japan_UserLogoutSimple('%s')}", szUsrID );
 		break;
 	case SP_TERRA : // [TLoginName]
@@ -811,13 +811,13 @@ int COdbcManager::UserLogoutSimple( const TCHAR* szUsrID )
 	} // switch (nServiceProvider)
 
 	int nReturn = m_pUserDB->ExecuteSp(szTemp);
-	//strTemp.freeze( false );	// Note : std::strstreamÀÇ freeze. ¾È ÇÏ¸é Leak ¹ß»ý.
+	//strTemp.freeze( false );	// Note : std::strstreamï¿½ï¿½ freeze. ï¿½ï¿½ ï¿½Ï¸ï¿½ Leak ï¿½ß»ï¿½.
 
 	return nReturn;
 }
 
 /**
- * »ç¿ëÀÚ ¹øÈ£¸¦ ÀÌ¿ëÇØ¼­ »ç¿ëÀÚ¸¦ ·Î±×¾Æ¿ô ½ÃÅ²´Ù
+ * ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½È£ï¿½ï¿½ ï¿½Ì¿ï¿½ï¿½Ø¼ï¿½ ï¿½ï¿½ï¿½ï¿½Ú¸ï¿½ ï¿½Î±×¾Æ¿ï¿½ ï¿½ï¿½Å²ï¿½ï¿½
  */
 int COdbcManager::UserLogoutSimple2(int nUserNum)
 {	
@@ -842,7 +842,7 @@ int COdbcManager::UserLogoutSimple2(int nUserNum)
 		//strTemp << ")}";
 		//strTemp << std::ends;
 //		_snprintf( szTemp, 128, "{call Excite_UserLogoutSimple2(%d)}", nUserNum );
-		// ÀÏº» Excite¿¡¼­ Gonzo·Î ¼­ºñ½º»ç º¯°æ¿¡ µû¸¥ º¯°æ
+		// ï¿½Ïºï¿½ Exciteï¿½ï¿½ï¿½ï¿½ Gonzoï¿½ï¿½ ï¿½ï¿½ï¿½ñ½º»ï¿½ ï¿½ï¿½ï¿½æ¿¡ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 		_snprintf( szTemp, 128, "{call Japan_UserLogoutSimple2(%d)}", nUserNum );
 		break;
 	case SP_TERRA :
@@ -890,12 +890,12 @@ int COdbcManager::UserLogoutSimple2(int nUserNum)
 	} // switch (nServiceProvider)
 
 	int nReturn = m_pUserDB->ExecuteSp(szTemp);
-	//strTemp.freeze( false );	// Note : std::strstreamÀÇ freeze. ¾È ÇÏ¸é Leak ¹ß»ý.
+	//strTemp.freeze( false );	// Note : std::strstreamï¿½ï¿½ freeze. ï¿½ï¿½ ï¿½Ï¸ï¿½ Leak ï¿½ß»ï¿½.
 
 	return nReturn;
 }
 
-// ÇØ´ç °ÔÀÓ¼­¹öÀÇ ÀüÃ¼ À¯Àú¸¦ ·Î±×¾Æ¿ô ½ÃÅ²´Ù.
+// ï¿½Ø´ï¿½ ï¿½ï¿½ï¿½Ó¼ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ã¼ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Î±×¾Æ¿ï¿½ ï¿½ï¿½Å²ï¿½ï¿½.
 int	COdbcManager::UserLogoutSvr(int nSvrGrp, 
 								int nSvrNum)
 {
@@ -920,7 +920,7 @@ int	COdbcManager::UserLogoutSvr(int nSvrGrp,
 		//strTemp << nSvrNum;
 		//strTemp << std::ends;
 //		_snprintf( szTemp, 256, "UPDATE ExciteUserInfo SET UserLoginState=0 WHERE UserLoginState=1 AND SGNum=%d AND SvrNum=%d", nSvrGrp, nSvrNum );
-		// ÀÏº» Excite¿¡¼­ Gonzo·Î ¼­ºñ½º»ç º¯°æ¿¡ µû¸¥ º¯°æ
+		// ï¿½Ïºï¿½ Exciteï¿½ï¿½ï¿½ï¿½ Gonzoï¿½ï¿½ ï¿½ï¿½ï¿½ñ½º»ï¿½ ï¿½ï¿½ï¿½æ¿¡ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 		_snprintf( szTemp, 256, "UPDATE JapanUserInfo SET UserLoginState=0 WHERE UserLoginState=1 AND SGNum=%d AND SvrNum=%d", nSvrGrp, nSvrNum );
 		break;
 	case SP_TERRA :
@@ -974,7 +974,7 @@ int	COdbcManager::UserLogoutSvr(int nSvrGrp,
 	} // switch (nServiceProvider)
 
 	int nReturn = m_pUserDB->ExecuteSQL(szTemp);
-	//strTemp.freeze( false );	// Note : std::strstreamÀÇ freeze. ¾È ÇÏ¸é Leak ¹ß»ý.
+	//strTemp.freeze( false );	// Note : std::strstreamï¿½ï¿½ freeze. ï¿½ï¿½ ï¿½Ï¸ï¿½ Leak ï¿½ß»ï¿½.
 
     return nReturn;
 }
@@ -999,7 +999,7 @@ int COdbcManager::UserUpdateCha( int nUsrNum, const TCHAR* szChaName )
 		//strTemp << szChaName << "')}";
 		//strTemp << std::ends;
 		//_snprintf( szTemp, 128, "{call Excite_UpdateChaName(%d,'%s')}", nUsrNum, szChaName );
-		// ÀÏº» Excite¿¡¼­ Gonzo·Î ¼­ºñ½º»ç º¯°æ¿¡ µû¸¥ º¯°æ
+		// ï¿½Ïºï¿½ Exciteï¿½ï¿½ï¿½ï¿½ Gonzoï¿½ï¿½ ï¿½ï¿½ï¿½ñ½º»ï¿½ ï¿½ï¿½ï¿½æ¿¡ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 		_snprintf( szTemp, 128, "{call Japan_UpdateChaName(%d,'%s')}", nUsrNum, szChaName );
 		break;
 	case SP_TERRA :
@@ -1047,13 +1047,13 @@ int COdbcManager::UserUpdateCha( int nUsrNum, const TCHAR* szChaName )
 	} // switch (nServiceProvider)
 
 	int nReturn = m_pUserDB->ExecuteSp(szTemp);
-	//strTemp.freeze( false );	// Note : std::strstreamÀÇ freeze. ¾È ÇÏ¸é Leak ¹ß»ý.
+	//strTemp.freeze( false );	// Note : std::strstreamï¿½ï¿½ freeze. ï¿½ï¿½ ï¿½Ï¸ï¿½ Leak ï¿½ß»ï¿½.
 
 	return nReturn;
 }
 
 /**
-* ÇØ´ç id »ç¿ëÀÚÀÇ »ç¿ëÀÚ ¹øÈ£¸¦ °¡Á®¿Â´Ù.
+* ï¿½Ø´ï¿½ id ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½È£ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Â´ï¿½.
 */
 int COdbcManager::GetUserNum( const TCHAR* szUsrId )
 {
@@ -1072,46 +1072,46 @@ int COdbcManager::GetUserNum( const TCHAR* szUsrId )
 	switch (m_nServiceProvider)
 	{
 	case SP_KOREA :
-		//strTemp << "SELECT UserNum FROM DaumUserInfo WITH (NOLOCK)  WHERE UserUID='" << szUsrId << "'";
+		//strTemp << "SELECT UserNum FROM DaumUserInfo  WHERE UserUID='" << szUsrId << "'";
 		//strTemp << std::ends;
-		_snprintf( szTemp, 256, "SELECT UserNum FROM DaumUserInfo WITH (NOLOCK)  WHERE UserUID='%s'", szUsrId );
+		_snprintf( szTemp, 256, "SELECT UserNum FROM DaumUserInfo  WHERE UserUID='%s'", szUsrId );
 		break;
 	case SP_JAPAN :
-		//strTemp << "SELECT UserNum FROM ExciteUserInfo WITH (NOLOCK) WHERE UserID='" << szUsrId << "'";
+		//strTemp << "SELECT UserNum FROM ExciteUserInfo WHERE UserID='" << szUsrId << "'";
 		//strTemp << std::ends;
-//		_snprintf( szTemp, 256, "SELECT UserNum FROM ExciteUserInfo WITH (NOLOCK)  WHERE UserUID='%s'", szUsrId );		
-		// ÀÏº» Excite¿¡¼­ Gonzo·Î ¼­ºñ½º»ç º¯°æ¿¡ µû¸¥ º¯°æ
-		_snprintf( szTemp, 256, "SELECT UserNum FROM JapanUserInfo WITH (NOLOCK)  WHERE UserUID='%s'", szUsrId );
+//		_snprintf( szTemp, 256, "SELECT UserNum FROM ExciteUserInfo  WHERE UserUID='%s'", szUsrId );		
+		// ï¿½Ïºï¿½ Exciteï¿½ï¿½ï¿½ï¿½ Gonzoï¿½ï¿½ ï¿½ï¿½ï¿½ñ½º»ï¿½ ï¿½ï¿½ï¿½æ¿¡ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+		_snprintf( szTemp, 256, "SELECT UserNum FROM JapanUserInfo  WHERE UserUID='%s'", szUsrId );
 		break;
 	case SP_TERRA :
-		//strTemp << "SELECT UserNum FROM TerraUserInfo WITH (NOLOCK) WHERE TLoginName='" << szUsrId << "'";
+		//strTemp << "SELECT UserNum FROM TerraUserInfo WHERE TLoginName='" << szUsrId << "'";
 		//strTemp << std::ends;
-		_snprintf( szTemp, 256, "SELECT UserNum FROM TerraUserInfo WITH (NOLOCK)  WHERE UserUID='%s'", szUsrId );
+		_snprintf( szTemp, 256, "SELECT UserNum FROM TerraUserInfo  WHERE UserUID='%s'", szUsrId );
 		break;
 	case SP_MALAYSIA :
-		//strTemp << "SELECT UserNum FROM TerraUserInfo WITH (NOLOCK) WHERE TLoginName='" << szUsrId << "'";
+		//strTemp << "SELECT UserNum FROM TerraUserInfo WHERE TLoginName='" << szUsrId << "'";
 		//strTemp << std::ends;
-		_snprintf( szTemp, 256, "SELECT UserNum FROM TerraUserInfo WITH (NOLOCK)  WHERE UserUID='%s'", szUsrId );
+		_snprintf( szTemp, 256, "SELECT UserNum FROM TerraUserInfo  WHERE UserUID='%s'", szUsrId );
 		break;
 	case SP_THAILAND :
-		//strTemp << "SELECT UserNum FROM UserInfo WITH (NOLOCK) WHERE UserID='" << szUsrId << "'";
+		//strTemp << "SELECT UserNum FROM UserInfo WHERE UserID='" << szUsrId << "'";
 		//strTemp << std::ends;
-		_snprintf( szTemp, 256, "SELECT UserNum FROM UserInfo WITH (NOLOCK)  WHERE UserUID='%s'", szUsrId );
+		_snprintf( szTemp, 256, "SELECT UserNum FROM UserInfo  WHERE UserUID='%s'", szUsrId );
 		break;
 	case SP_GLOBAL:
-		//strTemp << "SELECT UserNum FROM GspUserInfo WITH (NOLOCK) WHERE UserID='" << szUsrId << "'";
+		//strTemp << "SELECT UserNum FROM GspUserInfo WHERE UserID='" << szUsrId << "'";
 		//strTemp << std::ends;
-		_snprintf( szTemp, 256, "SELECT UserNum FROM GspUserInfo WITH (NOLOCK)  WHERE UserUID='%s'", szUsrId );
+		_snprintf( szTemp, 256, "SELECT UserNum FROM GspUserInfo  WHERE UserUID='%s'", szUsrId );
 		break;
 	case SP_GS :
-		//strTemp << "SELECT UserNum FROM UserInfo WITH (NOLOCK) WHERE UserID='" << szUsrId << "'";
+		//strTemp << "SELECT UserNum FROM UserInfo WHERE UserID='" << szUsrId << "'";
 		//strTemp << std::ends;
-		_snprintf( szTemp, 256, "SELECT UserNum FROM GSUserInfo WITH (NOLOCK)  WHERE UserUID='%s'", szUsrId );
+		_snprintf( szTemp, 256, "SELECT UserNum FROM GSUserInfo  WHERE UserUID='%s'", szUsrId );
 		break;
 	default:		
-		//strTemp << "SELECT UserNum FROM UserInfo WITH (NOLOCK) WHERE UserID='" << szUsrId << "'";
+		//strTemp << "SELECT UserNum FROM UserInfo WHERE UserID='" << szUsrId << "'";
 		//strTemp << std::ends;
-		_snprintf( szTemp, 256, "SELECT UserNum FROM UserInfo WITH (NOLOCK)  WHERE UserUID='%s'", szUsrId );
+		_snprintf( szTemp, 256, "SELECT UserNum FROM UserInfo  WHERE UserUID='%s'", szUsrId );
 		break;
 	}
 
@@ -1124,7 +1124,7 @@ int COdbcManager::GetUserNum( const TCHAR* szUsrId )
 		Print(GetErrorString(pConn->hStmt));
 		m_pUserDB->FreeConnection(pConn);
 
-		//strTemp.freeze( false );	// Note : std::strstreamÀÇ freeze. ¾È ÇÏ¸é Leak ¹ß»ý.
+		//strTemp.freeze( false );	// Note : std::strstreamï¿½ï¿½ freeze. ï¿½ï¿½ ï¿½Ï¸ï¿½ Leak ï¿½ß»ï¿½.
 
 		return DB_ERROR;
 	}
@@ -1139,7 +1139,7 @@ int COdbcManager::GetUserNum( const TCHAR* szUsrId )
 		        Print(GetErrorString(pConn->hStmt));
 				m_pUserDB->FreeConnection(pConn);
 
-				//strTemp.freeze( false );	// Note : std::strstreamÀÇ freeze. ¾È ÇÏ¸é Leak ¹ß»ý.
+				//strTemp.freeze( false );	// Note : std::strstreamï¿½ï¿½ freeze. ï¿½ï¿½ ï¿½Ï¸ï¿½ Leak ï¿½ß»ï¿½.
 
 				return DB_ERROR;
 			}
@@ -1153,7 +1153,7 @@ int COdbcManager::GetUserNum( const TCHAR* szUsrId )
 			}
 		}
 
-		//strTemp.freeze( false );	// Note : std::strstreamÀÇ freeze. ¾È ÇÏ¸é Leak ¹ß»ý.
+		//strTemp.freeze( false );	// Note : std::strstreamï¿½ï¿½ freeze. ï¿½ï¿½ ï¿½Ï¸ï¿½ Leak ï¿½ß»ï¿½.
 	}
 	m_pUserDB->FreeConnection(pConn);
 	return nUserNum;
@@ -1169,13 +1169,13 @@ int COdbcManager::AddBlockIPList( TCHAR* szIP, TCHAR* szReason )
 	_snprintf( szTemp, 256, "INSERT INTO BlockAddress (BlockAddress, BlockReason) VALUES('%s', '%s')", szIP, szReason ); 
 
 	int nReturn = m_pUserDB->ExecuteSQL(szTemp);
-	//strTemp.freeze( false );	// Note : std::strstreamÀÇ freeze. ¾È ÇÏ¸é Leak ¹ß»ý.
+	//strTemp.freeze( false );	// Note : std::strstreamï¿½ï¿½ freeze. ï¿½ï¿½ ï¿½Ï¸ï¿½ Leak ï¿½ß»ï¿½.
 
 	return nReturn;
 }
 
 /**
- * Ä³¸¯ÅÍ »ý¼º, °¹¼ö °¨¼Ò
+ * Ä³ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½, ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
  */
 int	COdbcManager::UserChaNumDecrease(int nUserNum)
 {
@@ -1199,7 +1199,7 @@ int	COdbcManager::UserChaNumDecrease(int nUserNum)
 		//strTemp << ", ?)}";
 		//strTemp << std::ends;
 		//_snprintf( szTemp, 128, "{call Excite_UpdateChaNumDecrease(%d, ?)}", nUserNum );		
-		// ÀÏº» Excite¿¡¼­ Gonzo·Î ¼­ºñ½º»ç º¯°æ¿¡ µû¸¥ º¯°æ
+		// ï¿½Ïºï¿½ Exciteï¿½ï¿½ï¿½ï¿½ Gonzoï¿½ï¿½ ï¿½ï¿½ï¿½ñ½º»ï¿½ ï¿½ï¿½ï¿½æ¿¡ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 		_snprintf( szTemp, 128, "{call Japan_UpdateChaNumDecrease(%d, ?)}", nUserNum );
 		break;
 	case SP_TERRA :
@@ -1247,13 +1247,13 @@ int	COdbcManager::UserChaNumDecrease(int nUserNum)
 	} // switch (nServiceProvider)
 
 	int nReturn = m_pUserDB->ExecuteSpInt(szTemp);
-	//strTemp.freeze( false );	// Note : std::strstreamÀÇ freeze. ¾È ÇÏ¸é Leak ¹ß»ý.
+	//strTemp.freeze( false );	// Note : std::strstreamï¿½ï¿½ freeze. ï¿½ï¿½ ï¿½Ï¸ï¿½ Leak ï¿½ß»ï¿½.
 
 	return nReturn;
 }
 
 /*
- * TEST ¼­¹ö Ä³¸¯ÅÍ »ý¼º°¹¼ö °¨¼Ò
+ * TEST ï¿½ï¿½ï¿½ï¿½ Ä³ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
  */
 int	COdbcManager::UserTestChaNumDecrease(int nUserNum)
 {
@@ -1278,7 +1278,7 @@ int	COdbcManager::UserTestChaNumDecrease(int nUserNum)
 		//strTemp << ", ?)}";
 		//strTemp << std::ends;
 		//_snprintf( szTemp, 128, "{call Excite_UpdateTestChaNumDecrease(%d, ?)}", nUserNum );		
-		// ÀÏº» Excite¿¡¼­ Gonzo·Î ¼­ºñ½º»ç º¯°æ¿¡ µû¸¥ º¯°æ
+		// ï¿½Ïºï¿½ Exciteï¿½ï¿½ï¿½ï¿½ Gonzoï¿½ï¿½ ï¿½ï¿½ï¿½ñ½º»ï¿½ ï¿½ï¿½ï¿½æ¿¡ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 		_snprintf( szTemp, 128, "{call Japan_UpdateTestChaNumDecrease(%d, ?)}", nUserNum );
 		break;
 	case SP_TERRA :
@@ -1326,13 +1326,13 @@ int	COdbcManager::UserTestChaNumDecrease(int nUserNum)
 	} // switch (nServiceProvider)
 
 	int nReturn = m_pUserDB->ExecuteSpInt(szTemp);
-	//strTemp.freeze( false );	// Note : std::strstreamÀÇ freeze. ¾È ÇÏ¸é Leak ¹ß»ý.
+	//strTemp.freeze( false );	// Note : std::strstreamï¿½ï¿½ freeze. ï¿½ï¿½ ï¿½Ï¸ï¿½ Leak ï¿½ß»ï¿½.
 
 	return nReturn;
 }
 
 /**
- * Ä³¸¯ÅÍ »èÁ¦, Ä³¸¯ÅÍ»ý¼º °¹¼ö Áõ°¡
+ * Ä³ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½, Ä³ï¿½ï¿½ï¿½Í»ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
  */
 int COdbcManager::UserChaNumIncrease(int nUserNum)
 {
@@ -1357,7 +1357,7 @@ int COdbcManager::UserChaNumIncrease(int nUserNum)
 		//strTemp << ", ?)}";
 		//strTemp << std::ends;
 		//_snprintf( szTemp, 128, "{call Excite_UpdateChaNumIncrease(%d, ?)}", nUserNum );
-		// ÀÏº» Excite¿¡¼­ Gonzo·Î ¼­ºñ½º»ç º¯°æ¿¡ µû¸¥ º¯°æ
+		// ï¿½Ïºï¿½ Exciteï¿½ï¿½ï¿½ï¿½ Gonzoï¿½ï¿½ ï¿½ï¿½ï¿½ñ½º»ï¿½ ï¿½ï¿½ï¿½æ¿¡ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 		_snprintf( szTemp, 128, "{call Japan_UpdateChaNumIncrease(%d, ?)}", nUserNum );
 		break;
 	case SP_TERRA : 
@@ -1405,13 +1405,13 @@ int COdbcManager::UserChaNumIncrease(int nUserNum)
 	} // switch (nServiceProvider)
 
 	int nReturn = m_pUserDB->ExecuteSpInt(szTemp);
-	//strTemp.freeze( false );	// Note : std::strstreamÀÇ freeze. ¾È ÇÏ¸é Leak ¹ß»ý.
+	//strTemp.freeze( false );	// Note : std::strstreamï¿½ï¿½ freeze. ï¿½ï¿½ ï¿½Ï¸ï¿½ Leak ï¿½ß»ï¿½.
 
 	return nReturn;
 }
 
 /**
- * TEST ¼­¹ö Ä³¸¯ÅÍ »èÁ¦, °¹¼ö Áõ°¡
+ * TEST ï¿½ï¿½ï¿½ï¿½ Ä³ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½, ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
  */
 int COdbcManager::UserTestChaNumIncrease(int nUserNum)
 {
@@ -1435,7 +1435,7 @@ int COdbcManager::UserTestChaNumIncrease(int nUserNum)
 		//strTemp << ", ?)}";
 		//strTemp << std::ends;
 		//_snprintf( szTemp, 128, "{call Excite_UpdateTestChaNumIncrease(%d, ?)}", nUserNum );
-		// ÀÏº» Excite¿¡¼­ Gonzo·Î ¼­ºñ½º»ç º¯°æ¿¡ µû¸¥ º¯°æ
+		// ï¿½Ïºï¿½ Exciteï¿½ï¿½ï¿½ï¿½ Gonzoï¿½ï¿½ ï¿½ï¿½ï¿½ñ½º»ï¿½ ï¿½ï¿½ï¿½æ¿¡ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 		_snprintf( szTemp, 128, "{call Japan_UpdateTestChaNumIncrease(%d, ?)}", nUserNum );
 		break;
 	case SP_TERRA :
@@ -1483,15 +1483,15 @@ int COdbcManager::UserTestChaNumIncrease(int nUserNum)
 	} // switch (nServiceProvider)
 
 	int nReturn = m_pUserDB->ExecuteSpInt(szTemp);
-	//strTemp.freeze( false );	// Note : std::strstreamÀÇ freeze. ¾È ÇÏ¸é Leak ¹ß»ý.
+	//strTemp.freeze( false );	// Note : std::strstreamï¿½ï¿½ freeze. ï¿½ï¿½ ï¿½Ï¸ï¿½ Leak ï¿½ß»ï¿½.
 
 	return nReturn;
 }
 
 /**
-* ÇØ´ç»ç¿ëÀÚ¸¦ ºí·Ï½ÃÅ²´Ù.
-* \param nUserNum »ç¿ëÀÚ¹øÈ£
-* \param nHour ½Ã°£
+* ï¿½Ø´ï¿½ï¿½ï¿½ï¿½Ú¸ï¿½ ï¿½ï¿½Ï½ï¿½Å²ï¿½ï¿½.
+* \param nUserNum ï¿½ï¿½ï¿½ï¿½Ú¹ï¿½È£
+* \param nHour ï¿½Ã°ï¿½
 * \return 
 */
 int COdbcManager::UserBlockDate(
@@ -1514,84 +1514,84 @@ int COdbcManager::UserBlockDate(
 	switch (m_nServiceProvider)
 	{
 	case SP_KOREA :
-		//strTemp << "UPDATE DaumUserInfo WITH (UPDLOCK) SET UserBlock=1,";
+		//strTemp << "UPDATE DaumUserInfo SET UserBlock=1,";
 		//strTemp << "UserBlockDate='" << strTime.GetString() << "'" ;
 		//strTemp << " WHERE UserNum=";
 		//strTemp << nUserNum;
 		//strTemp << std::ends;
-		_snprintf( szTemp, 256, "UPDATE DaumUserInfo WITH (UPDLOCK) SET UserBlock=1,UserBlockDate='%s' WHERE UserNum=%d", strTime.GetString(), nUserNum );
+		_snprintf( szTemp, 256, "UPDATE DaumUserInfo SET UserBlock=1,UserBlockDate='%s' WHERE UserNum=%d", strTime.GetString(), nUserNum );
 		break;
 	case SP_JAPAN :
-		//strTemp << "UPDATE ExciteUserInfo WITH (UPDLOCK) SET UserBlock=1,";
+		//strTemp << "UPDATE ExciteUserInfo SET UserBlock=1,";
 		//strTemp << "UserBlockDate='" << strTime.GetString() << "'" ;
 		//strTemp << " WHERE UserNum=";
 		//strTemp << nUserNum;
 		//strTemp << std::ends;
-		//_snprintf( szTemp, 256, "UPDATE ExciteUserInfo WITH (UPDLOCK) SET UserBlock=1,UserBlockDate='%s' WHERE UserNum=%d", strTime.GetString(), nUserNum );
-		// ÀÏº» Excite¿¡¼­ Gonzo·Î ¼­ºñ½º»ç º¯°æ¿¡ µû¸¥ º¯°æ
-		_snprintf( szTemp, 256, "UPDATE JapanUserInfo WITH (UPDLOCK) SET UserBlock=1,UserBlockDate='%s' WHERE UserNum=%d", strTime.GetString(), nUserNum );
+		//_snprintf( szTemp, 256, "UPDATE ExciteUserInfo SET UserBlock=1,UserBlockDate='%s' WHERE UserNum=%d", strTime.GetString(), nUserNum );
+		// ï¿½Ïºï¿½ Exciteï¿½ï¿½ï¿½ï¿½ Gonzoï¿½ï¿½ ï¿½ï¿½ï¿½ñ½º»ï¿½ ï¿½ï¿½ï¿½æ¿¡ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+		_snprintf( szTemp, 256, "UPDATE JapanUserInfo SET UserBlock=1,UserBlockDate='%s' WHERE UserNum=%d", strTime.GetString(), nUserNum );
 		break;
 	case SP_TERRA :
-		//strTemp << "UPDATE TerraUserInfo WITH (UPDLOCK) SET UserBlock=1,";
+		//strTemp << "UPDATE TerraUserInfo SET UserBlock=1,";
 		//strTemp << "UserBlockDate='" << strTime.GetString() << "'" ;
 		//strTemp << " WHERE UserNum=";
 		//strTemp << nUserNum;
 		//strTemp << std::ends;
-		_snprintf( szTemp, 256, "UPDATE TerraUserInfo WITH (UPDLOCK) SET UserBlock=1,UserBlockDate='%s' WHERE UserNum=%d", strTime.GetString(), nUserNum );
+		_snprintf( szTemp, 256, "UPDATE TerraUserInfo SET UserBlock=1,UserBlockDate='%s' WHERE UserNum=%d", strTime.GetString(), nUserNum );
 		break;
 	case SP_MALAYSIA :
-		//strTemp << "UPDATE TerraUserInfo WITH (UPDLOCK) SET UserBlock=1,";
+		//strTemp << "UPDATE TerraUserInfo SET UserBlock=1,";
 		//strTemp << "UserBlockDate='" << strTime.GetString() << "'" ;
 		//strTemp << " WHERE UserNum=";
 		//strTemp << nUserNum;
 		//strTemp << std::ends;
-		_snprintf( szTemp, 256, "UPDATE TerraUserInfo WITH (UPDLOCK) SET UserBlock=1,UserBlockDate='%s' WHERE UserNum=%d", strTime.GetString(), nUserNum );
+		_snprintf( szTemp, 256, "UPDATE TerraUserInfo SET UserBlock=1,UserBlockDate='%s' WHERE UserNum=%d", strTime.GetString(), nUserNum );
 		break;
 	case SP_THAILAND :
-		//strTemp << "UPDATE UserInfo WITH (UPDLOCK) SET UserBlock=1,";
+		//strTemp << "UPDATE UserInfo SET UserBlock=1,";
 		//strTemp << "UserBlockDate='" << strTime.GetString() << "'" ;
 		//strTemp << " WHERE UserNum=";
 		//strTemp << nUserNum;
 		//strTemp << std::ends;
-		_snprintf( szTemp, 256, "UPDATE UserInfo WITH (UPDLOCK) SET UserBlock=1,UserBlockDate='%s' WHERE UserNum=%d", strTime.GetString(), nUserNum );
+		_snprintf( szTemp, 256, "UPDATE UserInfo SET UserBlock=1,UserBlockDate='%s' WHERE UserNum=%d", strTime.GetString(), nUserNum );
 		break;
 	case SP_GLOBAL:
-		//strTemp << "UPDATE GspUserInfo WITH (UPDLOCK) SET UserBlock=1,";
+		//strTemp << "UPDATE GspUserInfo SET UserBlock=1,";
 		//strTemp << "UserBlockDate='" << strTime.GetString() << "'" ;
 		//strTemp << " WHERE UserNum=";
 		//strTemp << nUserNum;
 		//strTemp << std::ends;
-		_snprintf( szTemp, 256, "UPDATE GspUserInfo WITH (UPDLOCK) SET UserBlock=1,UserBlockDate='%s' WHERE UserNum=%d", strTime.GetString(), nUserNum );
+		_snprintf( szTemp, 256, "UPDATE GspUserInfo SET UserBlock=1,UserBlockDate='%s' WHERE UserNum=%d", strTime.GetString(), nUserNum );
 		break;
 	case SP_GS :
-		//strTemp << "UPDATE UserInfo WITH (UPDLOCK) SET UserBlock=1,";
+		//strTemp << "UPDATE UserInfo SET UserBlock=1,";
 		//strTemp << "UserBlockDate='" << strTime.GetString() << "'" ;
 		//strTemp << " WHERE UserNum=";
 		//strTemp << nUserNum;
 		//strTemp << std::ends;
-		_snprintf( szTemp, 256, "UPDATE GSUserInfo WITH (UPDLOCK) SET UserBlock=1,UserBlockDate='%s' WHERE UserNum=%d", strTime.GetString(), nUserNum );
+		_snprintf( szTemp, 256, "UPDATE GSUserInfo SET UserBlock=1,UserBlockDate='%s' WHERE UserNum=%d", strTime.GetString(), nUserNum );
 		break;
 	default :
-		//strTemp << "UPDATE UserInfo WITH (UPDLOCK) SET UserBlock=1,";
+		//strTemp << "UPDATE UserInfo SET UserBlock=1,";
 		//strTemp << "UserBlockDate='" << strTime.GetString() << "'" ;
 		//strTemp << " WHERE UserNum=";
 		//strTemp << nUserNum;
 		//strTemp << std::ends;
-		_snprintf( szTemp, 256, "UPDATE UserInfo WITH (UPDLOCK) SET UserBlock=1,UserBlockDate='%s' WHERE UserNum=%d", strTime.GetString(), nUserNum );
+		_snprintf( szTemp, 256, "UPDATE UserInfo SET UserBlock=1,UserBlockDate='%s' WHERE UserNum=%d", strTime.GetString(), nUserNum );
 		break;
 	} // switch (nServiceProvider)
 
 	int nReturn = m_pUserDB->ExecuteSQL(szTemp);
-	//strTemp.freeze( false );	// Note : std::strstreamÀÇ freeze. ¾È ÇÏ¸é Leak ¹ß»ý.
+	//strTemp.freeze( false );	// Note : std::strstreamï¿½ï¿½ freeze. ï¿½ï¿½ ï¿½Ï¸ï¿½ Leak ï¿½ß»ï¿½.
 
 	return nReturn;
 }
 
 /**
- * ÇØ´ç»ç¿ëÀÚ¸¦ ºí·Ï½ÃÅ²´Ù.
- * ÀÔ·Â
- * nUserNum : »ç¿ëÀÚ¹øÈ£
- * nDay : ºí·°ÀÏ¼ö 1 - 15 ±îÁö
+ * ï¿½Ø´ï¿½ï¿½ï¿½ï¿½Ú¸ï¿½ ï¿½ï¿½Ï½ï¿½Å²ï¿½ï¿½.
+ * ï¿½Ô·ï¿½
+ * nUserNum : ï¿½ï¿½ï¿½ï¿½Ú¹ï¿½È£
+ * nDay : ï¿½ï¿½ï¿½ï¿½Ï¼ï¿½ 1 - 15 ï¿½ï¿½ï¿½ï¿½
  */
 int COdbcManager::UserBlock(
 	int nUserNum,
@@ -1609,81 +1609,81 @@ int COdbcManager::UserBlock(
 	switch (m_nServiceProvider)
 	{
 	case SP_KOREA :
-		//strTemp << "UPDATE DaumUserInfo WITH (UPDLOCK) SET UserBlock=1,";
+		//strTemp << "UPDATE DaumUserInfo SET UserBlock=1,";
 		//strTemp << "UserBlockDate=getdate()+" << nDay ;
 		//strTemp << " WHERE UserNum=";
 		//strTemp << nUserNum;
 		//strTemp << std::ends;
-		_snprintf( szTemp, 256, "UPDATE DaumUserInfo WITH (UPDLOCK) SET UserBlock=1,UserBlockDate=getdate()+%d WHERE UserNum=%d", nDay, nUserNum );
+		_snprintf( szTemp, 256, "UPDATE DaumUserInfo SET UserBlock=1,UserBlockDate=CURRENT_TIMESTAMP + interval '%d days' WHERE UserNum=%d", nDay, nUserNum );
 		break;
 	case SP_JAPAN :
-		//strTemp << "UPDATE ExciteUserInfo WITH (UPDLOCK) SET UserBlock=1,";
+		//strTemp << "UPDATE ExciteUserInfo SET UserBlock=1,";
 		//strTemp << "UserBlockDate=getdate()+" << nDay ;
 		//strTemp << " WHERE UserNum=";
 		//strTemp << nUserNum;
 		//strTemp << std::ends;
-		//_snprintf( szTemp, 256, "UPDATE ExciteUserInfo WITH (UPDLOCK) SET UserBlock=1,UserBlockDate=getdate()+%d WHERE UserNum=%d", nDay, nUserNum );
-		// ÀÏº» Excite¿¡¼­ Gonzo·Î ¼­ºñ½º»ç º¯°æ¿¡ µû¸¥ º¯°æ
-		_snprintf( szTemp, 256, "UPDATE JapanUserInfo WITH (UPDLOCK) SET UserBlock=1,UserBlockDate=getdate()+%d WHERE UserNum=%d", nDay, nUserNum );
+		//_snprintf( szTemp, 256, "UPDATE ExciteUserInfo SET UserBlock=1,UserBlockDate=CURRENT_TIMESTAMP + interval '%d days' WHERE UserNum=%d", nDay, nUserNum );
+		// ï¿½Ïºï¿½ Exciteï¿½ï¿½ï¿½ï¿½ Gonzoï¿½ï¿½ ï¿½ï¿½ï¿½ñ½º»ï¿½ ï¿½ï¿½ï¿½æ¿¡ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+		_snprintf( szTemp, 256, "UPDATE JapanUserInfo SET UserBlock=1,UserBlockDate=CURRENT_TIMESTAMP + interval '%d days' WHERE UserNum=%d", nDay, nUserNum );
 		break;
 	case SP_TERRA :
-		//strTemp << "UPDATE TerraUserInfo WITH (UPDLOCK) SET UserBlock=1,";
+		//strTemp << "UPDATE TerraUserInfo SET UserBlock=1,";
 		//strTemp << "UserBlockDate=getdate()+" << nDay ;
 		//strTemp << " WHERE UserNum=";
 		//strTemp << nUserNum;
 		//strTemp << std::ends;
-		_snprintf( szTemp, 256, "UPDATE TerraUserInfo WITH (UPDLOCK) SET UserBlock=1,UserBlockDate=getdate()+%d WHERE UserNum=%d", nDay, nUserNum );
+		_snprintf( szTemp, 256, "UPDATE TerraUserInfo SET UserBlock=1,UserBlockDate=CURRENT_TIMESTAMP + interval '%d days' WHERE UserNum=%d", nDay, nUserNum );
 		break;
 	case SP_MALAYSIA :
-		//strTemp << "UPDATE TerraUserInfo WITH (UPDLOCK) SET UserBlock=1,";
+		//strTemp << "UPDATE TerraUserInfo SET UserBlock=1,";
 		//strTemp << "UserBlockDate=getdate()+" << nDay ;
 		//strTemp << " WHERE UserNum=";
 		//strTemp << nUserNum;
 		//strTemp << std::ends;
-		_snprintf( szTemp, 256, "UPDATE TerraUserInfo WITH (UPDLOCK) SET UserBlock=1,UserBlockDate=getdate()+%d WHERE UserNum=%d", nDay, nUserNum );
+		_snprintf( szTemp, 256, "UPDATE TerraUserInfo SET UserBlock=1,UserBlockDate=CURRENT_TIMESTAMP + interval '%d days' WHERE UserNum=%d", nDay, nUserNum );
 		break;
 	case SP_THAILAND :
-		//strTemp << "UPDATE UserInfo WITH (UPDLOCK) SET UserBlock=1,";
+		//strTemp << "UPDATE UserInfo SET UserBlock=1,";
 		//strTemp << "UserBlockDate=getdate()+" << nDay ;
 		//strTemp << " WHERE UserNum=";
 		//strTemp << nUserNum;
 		//strTemp << std::ends;
-		_snprintf( szTemp, 256, "UPDATE UserInfo WITH (UPDLOCK) SET UserBlock=1,UserBlockDate=getdate()+%d WHERE UserNum=%d", nDay, nUserNum );
+		_snprintf( szTemp, 256, "UPDATE UserInfo SET UserBlock=1,UserBlockDate=CURRENT_TIMESTAMP + interval '%d days' WHERE UserNum=%d", nDay, nUserNum );
 		break;
 	case SP_GLOBAL:
-		//strTemp << "UPDATE GspUserInfo WITH (UPDLOCK) SET UserBlock=1,";
+		//strTemp << "UPDATE GspUserInfo SET UserBlock=1,";
 		//strTemp << "UserBlockDate=getdate()+" << nDay ;
 		//strTemp << " WHERE UserNum=";
 		//strTemp << nUserNum;
 		//strTemp << std::ends;
-		_snprintf( szTemp, 256, "UPDATE GspUserInfo WITH (UPDLOCK) SET UserBlock=1,UserBlockDate=getdate()+%d WHERE UserNum=%d", nDay, nUserNum );
+		_snprintf( szTemp, 256, "UPDATE GspUserInfo SET UserBlock=1,UserBlockDate=CURRENT_TIMESTAMP + interval '%d days' WHERE UserNum=%d", nDay, nUserNum );
 		break;
 	case SP_GS :
-		//strTemp << "UPDATE UserInfo WITH (UPDLOCK) SET UserBlock=1,";
+		//strTemp << "UPDATE UserInfo SET UserBlock=1,";
 		//strTemp << "UserBlockDate=getdate()+" << nDay ;
 		//strTemp << " WHERE UserNum=";
 		//strTemp << nUserNum;
 		//strTemp << std::ends;
-		_snprintf( szTemp, 256, "UPDATE GSUserInfo WITH (UPDLOCK) SET UserBlock=1,UserBlockDate=getdate()+%d WHERE UserNum=%d", nDay, nUserNum );
+		_snprintf( szTemp, 256, "UPDATE GSUserInfo SET UserBlock=1,UserBlockDate=CURRENT_TIMESTAMP + interval '%d days' WHERE UserNum=%d", nDay, nUserNum );
 		break;
 	default :
-		//strTemp << "UPDATE UserInfo WITH (UPDLOCK) SET UserBlock=1,";
+		//strTemp << "UPDATE UserInfo SET UserBlock=1,";
 		//strTemp << "UserBlockDate=getdate()+" << nDay ;
 		//strTemp << " WHERE UserNum=";
 		//strTemp << nUserNum;
 		//strTemp << std::ends;
-		_snprintf( szTemp, 256, "UPDATE UserInfo WITH (UPDLOCK) SET UserBlock=1,UserBlockDate=getdate()+%d WHERE UserNum=%d", nDay, nUserNum );
+		_snprintf( szTemp, 256, "UPDATE UserInfo SET UserBlock=1,UserBlockDate=CURRENT_TIMESTAMP + interval '%d days' WHERE UserNum=%d", nDay, nUserNum );
 		break;
 	} // switch (nServiceProvider)
 
 	int nReturn = m_pUserDB->ExecuteSQL(szTemp);
-	//strTemp.freeze( false );	// Note : std::strstreamÀÇ freeze. ¾È ÇÏ¸é Leak ¹ß»ý.
+	//strTemp.freeze( false );	// Note : std::strstreamï¿½ï¿½ freeze. ï¿½ï¿½ ï¿½Ï¸ï¿½ Leak ï¿½ß»ï¿½.
 
 	return nReturn;
 }
 
 /**
- * ÇØ´ç °ÔÀÓ¼­¹öÀÇ ÀüÃ¼ À¯Àú¸¦ ·Î±×¾Æ¿ô ½ÃÅ²´Ù.
+ * ï¿½Ø´ï¿½ ï¿½ï¿½ï¿½Ó¼ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ã¼ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Î±×¾Æ¿ï¿½ ï¿½ï¿½Å²ï¿½ï¿½.
  */
 int	COdbcManager::AllServerUserLogout(int nSvrGrp)
 {
@@ -1693,53 +1693,53 @@ int	COdbcManager::AllServerUserLogout(int nSvrGrp)
 	switch (m_nServiceProvider)
 	{
 	case SP_KOREA :
-		//strTemp << "UPDATE DaumUserInfo WITH (UPDLOCK) SET UserLoginState=0 WHERE UserLoginState=1 AND SGNum=";
+		//strTemp << "UPDATE DaumUserInfo SET UserLoginState=0 WHERE UserLoginState=1 AND SGNum=";
 		//strTemp << nSvrGrp;
 		//strTemp << std::ends;
-		_snprintf( szTemp, 256, "UPDATE DaumUserInfo WITH (UPDLOCK) SET UserLoginState=0 WHERE UserLoginState=1 AND SGNum=%d", nSvrGrp );
+		_snprintf( szTemp, 256, "UPDATE DaumUserInfo SET UserLoginState=0 WHERE UserLoginState=1 AND SGNum=%d", nSvrGrp );
 		break;
 	case SP_JAPAN :
-		//strTemp << "UPDATE ExciteUserInfo WITH (UPDLOCK) SET UserLoginState=0 WHERE UserLoginState=1 AND SGNum=";
+		//strTemp << "UPDATE ExciteUserInfo SET UserLoginState=0 WHERE UserLoginState=1 AND SGNum=";
 		//strTemp << nSvrGrp;
 		//strTemp << std::ends;
-		// ÀÏº» Excite¿¡¼­ Gonzo·Î ¼­ºñ½º»ç º¯°æ¿¡ µû¸¥ º¯°æ
-		_snprintf( szTemp, 256, "UPDATE JapanUserInfo WITH (UPDLOCK) SET UserLoginState=0 WHERE UserLoginState=1 AND SGNum=%d", nSvrGrp );
+		// ï¿½Ïºï¿½ Exciteï¿½ï¿½ï¿½ï¿½ Gonzoï¿½ï¿½ ï¿½ï¿½ï¿½ñ½º»ï¿½ ï¿½ï¿½ï¿½æ¿¡ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+		_snprintf( szTemp, 256, "UPDATE JapanUserInfo SET UserLoginState=0 WHERE UserLoginState=1 AND SGNum=%d", nSvrGrp );
 		break;
 	case SP_TERRA :
-		//strTemp << "UPDATE TerraUserInfo WITH (UPDLOCK) SET UserLoginState=0 WHERE UserLoginState=1 AND SGNum=";
+		//strTemp << "UPDATE TerraUserInfo SET UserLoginState=0 WHERE UserLoginState=1 AND SGNum=";
 		//strTemp << nSvrGrp;
 		//strTemp << std::ends;
-		_snprintf( szTemp, 256, "UPDATE TerraUserInfo WITH (UPDLOCK) SET UserLoginState=0 WHERE UserLoginState=1 AND SGNum=%d", nSvrGrp );
+		_snprintf( szTemp, 256, "UPDATE TerraUserInfo SET UserLoginState=0 WHERE UserLoginState=1 AND SGNum=%d", nSvrGrp );
 		break;
 	case SP_MALAYSIA :
-		//strTemp << "UPDATE TerraUserInfo WITH (UPDLOCK) SET UserLoginState=0 WHERE UserLoginState=1 AND SGNum=";
+		//strTemp << "UPDATE TerraUserInfo SET UserLoginState=0 WHERE UserLoginState=1 AND SGNum=";
 		//strTemp << nSvrGrp;
 		//strTemp << std::ends;
-		_snprintf( szTemp, 256, "UPDATE TerraUserInfo WITH (UPDLOCK) SET UserLoginState=0 WHERE UserLoginState=1 AND SGNum=%d", nSvrGrp );
+		_snprintf( szTemp, 256, "UPDATE TerraUserInfo SET UserLoginState=0 WHERE UserLoginState=1 AND SGNum=%d", nSvrGrp );
 		break;
 	case SP_THAILAND :
-		//strTemp << "UPDATE UserInfo WITH (UPDLOCK) SET UserLoginState=0 WHERE UserLoginState=1 AND SGNum=";
+		//strTemp << "UPDATE UserInfo SET UserLoginState=0 WHERE UserLoginState=1 AND SGNum=";
 		//strTemp << nSvrGrp;
 		//strTemp << std::ends;
-		_snprintf( szTemp, 256, "UPDATE UserInfo WITH (UPDLOCK) SET UserLoginState=0 WHERE UserLoginState=1 AND SGNum=%d", nSvrGrp );
+		_snprintf( szTemp, 256, "UPDATE UserInfo SET UserLoginState=0 WHERE UserLoginState=1 AND SGNum=%d", nSvrGrp );
 		break;
 	case SP_GLOBAL:
-		//strTemp << "UPDATE GspUserInfo WITH (UPDLOCK) SET UserLoginState=0 WHERE UserLoginState=1 AND SGNum=";
+		//strTemp << "UPDATE GspUserInfo SET UserLoginState=0 WHERE UserLoginState=1 AND SGNum=";
 		//strTemp << nSvrGrp;
 		//strTemp << std::ends;
-		_snprintf( szTemp, 256, "UPDATE GspUserInfo WITH (UPDLOCK) SET UserLoginState=0 WHERE UserLoginState=1 AND SGNum=%d", nSvrGrp );
+		_snprintf( szTemp, 256, "UPDATE GspUserInfo SET UserLoginState=0 WHERE UserLoginState=1 AND SGNum=%d", nSvrGrp );
 		break;
 	case SP_GS :
-		//strTemp << "UPDATE UserInfo WITH (UPDLOCK) SET UserLoginState=0 WHERE UserLoginState=1 AND SGNum=";
+		//strTemp << "UPDATE UserInfo SET UserLoginState=0 WHERE UserLoginState=1 AND SGNum=";
 		//strTemp << nSvrGrp;
 		//strTemp << std::ends;
-		_snprintf( szTemp, 256, "UPDATE GSUserInfo WITH (UPDLOCK) SET UserLoginState=0 WHERE UserLoginState=1 AND SGNum=%d", nSvrGrp );
+		_snprintf( szTemp, 256, "UPDATE GSUserInfo SET UserLoginState=0 WHERE UserLoginState=1 AND SGNum=%d", nSvrGrp );
 		break;
 	default :
-		//strTemp << "UPDATE UserInfo WITH (UPDLOCK) SET UserLoginState=0 WHERE UserLoginState=1 AND SGNum=";
+		//strTemp << "UPDATE UserInfo SET UserLoginState=0 WHERE UserLoginState=1 AND SGNum=";
 		//strTemp << nSvrGrp;
 		//strTemp << std::ends;
-		_snprintf( szTemp, 256, "UPDATE UserInfo WITH (UPDLOCK) SET UserLoginState=0 WHERE UserLoginState=1 AND SGNum=%d", nSvrGrp );
+		_snprintf( szTemp, 256, "UPDATE UserInfo SET UserLoginState=0 WHERE UserLoginState=1 AND SGNum=%d", nSvrGrp );
 		break;
 	}
 
@@ -1748,13 +1748,13 @@ int	COdbcManager::AllServerUserLogout(int nSvrGrp)
 		return nReturn;
 	}
 	
-	//strTemp.freeze( false );	// Note : std::strstreamÀÇ freeze. ¾È ÇÏ¸é Leak ¹ß»ý.
+	//strTemp.freeze( false );	// Note : std::strstreamï¿½ï¿½ freeze. ï¿½ï¿½ ï¿½Ï¸ï¿½ Leak ï¿½ß»ï¿½.
 
     return DB_OK;
 }
 
 /**
- * ÀüÃ¼ À¯Àú¸¦ ·Î±×¾Æ¿ô ½ÃÅ²´Ù.
+ * ï¿½ï¿½Ã¼ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Î±×¾Æ¿ï¿½ ï¿½ï¿½Å²ï¿½ï¿½.
  */
 int	COdbcManager::AllUserLogout()
 {
@@ -1764,49 +1764,49 @@ int	COdbcManager::AllUserLogout()
 	switch (m_nServiceProvider)
 	{
 	case SP_KOREA :
-		//strTemp << "UPDATE DaumUserInfo WITH (UPDLOCK) SET UserLoginState=0 WHERE UserLoginState=1";
+		//strTemp << "UPDATE DaumUserInfo SET UserLoginState=0 WHERE UserLoginState=1";
 		//strTemp << std::ends;
-		_snprintf( szTemp, 128, "UPDATE DaumUserInfo WITH (UPDLOCK) SET UserLoginState=0 WHERE UserLoginState=1" );
+		_snprintf( szTemp, 128, "UPDATE DaumUserInfo SET UserLoginState=0 WHERE UserLoginState=1" );
 		break;
 	case SP_JAPAN :				
-		//_snprintf( szTemp, 128, "UPDATE ExciteUserInfo WITH (UPDLOCK) SET UserLoginState=0 WHERE UserLoginState=1" );
-		// ÀÏº» Excite¿¡¼­ Gonzo·Î ¼­ºñ½º»ç º¯°æ¿¡ µû¸¥ º¯°æ
-		_snprintf( szTemp, 128, "UPDATE JapanUserInfo WITH (UPDLOCK) SET UserLoginState=0 WHERE UserLoginState=1" );
+		//_snprintf( szTemp, 128, "UPDATE ExciteUserInfo SET UserLoginState=0 WHERE UserLoginState=1" );
+		// ï¿½Ïºï¿½ Exciteï¿½ï¿½ï¿½ï¿½ Gonzoï¿½ï¿½ ï¿½ï¿½ï¿½ñ½º»ï¿½ ï¿½ï¿½ï¿½æ¿¡ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+		_snprintf( szTemp, 128, "UPDATE JapanUserInfo SET UserLoginState=0 WHERE UserLoginState=1" );
 		break;
 	case SP_TERRA :
-		//strTemp << "UPDATE TerraUserInfo WITH (UPDLOCK) SET UserLoginState=0 WHERE UserLoginState=1";
+		//strTemp << "UPDATE TerraUserInfo SET UserLoginState=0 WHERE UserLoginState=1";
 		//strTemp << std::ends;
-		_snprintf( szTemp, 128, "UPDATE TerraUserInfo WITH (UPDLOCK) SET UserLoginState=0 WHERE UserLoginState=1" );
+		_snprintf( szTemp, 128, "UPDATE TerraUserInfo SET UserLoginState=0 WHERE UserLoginState=1" );
 		break;
 	case SP_MALAYSIA :
-		//strTemp << "UPDATE TerraUserInfo WITH (UPDLOCK) SET UserLoginState=0 WHERE UserLoginState=1";
+		//strTemp << "UPDATE TerraUserInfo SET UserLoginState=0 WHERE UserLoginState=1";
 		//strTemp << std::ends;
-		_snprintf( szTemp, 128, "UPDATE TerraUserInfo WITH (UPDLOCK) SET UserLoginState=0 WHERE UserLoginState=1" );
+		_snprintf( szTemp, 128, "UPDATE TerraUserInfo SET UserLoginState=0 WHERE UserLoginState=1" );
 		break;
 	case SP_THAILAND :
-		//strTemp << "UPDATE UserInfo WITH (UPDLOCK) SET UserLoginState=0 WHERE UserLoginState=1";
+		//strTemp << "UPDATE UserInfo SET UserLoginState=0 WHERE UserLoginState=1";
 		//strTemp << std::ends;
-		_snprintf( szTemp, 128, "UPDATE UserInfo WITH (UPDLOCK) SET UserLoginState=0 WHERE UserLoginState=1" );
+		_snprintf( szTemp, 128, "UPDATE UserInfo SET UserLoginState=0 WHERE UserLoginState=1" );
 		break;
 	case SP_GLOBAL:
-		//strTemp << "UPDATE GspUserInfo WITH (UPDLOCK) SET UserLoginState=0 WHERE UserLoginState=1";
+		//strTemp << "UPDATE GspUserInfo SET UserLoginState=0 WHERE UserLoginState=1";
 		//strTemp << std::ends;
-		_snprintf( szTemp, 128, "UPDATE GspUserInfo WITH (UPDLOCK) SET UserLoginState=0 WHERE UserLoginState=1" );
+		_snprintf( szTemp, 128, "UPDATE GspUserInfo SET UserLoginState=0 WHERE UserLoginState=1" );
 		break;
 	case SP_GS :
-		//strTemp << "UPDATE UserInfo WITH (UPDLOCK) SET UserLoginState=0 WHERE UserLoginState=1";
+		//strTemp << "UPDATE UserInfo SET UserLoginState=0 WHERE UserLoginState=1";
 		//strTemp << std::ends;
-		_snprintf( szTemp, 128, "UPDATE GSUserInfo WITH (UPDLOCK) SET UserLoginState=0 WHERE UserLoginState=1" );
+		_snprintf( szTemp, 128, "UPDATE GSUserInfo SET UserLoginState=0 WHERE UserLoginState=1" );
 		break;
 	default :
-		//strTemp << "UPDATE UserInfo WITH (UPDLOCK) SET UserLoginState=0 WHERE UserLoginState=1";
+		//strTemp << "UPDATE UserInfo SET UserLoginState=0 WHERE UserLoginState=1";
 		//strTemp << std::ends;
-		_snprintf( szTemp, 128, "UPDATE UserInfo WITH (UPDLOCK) SET UserLoginState=0 WHERE UserLoginState=1" );
+		_snprintf( szTemp, 128, "UPDATE UserInfo SET UserLoginState=0 WHERE UserLoginState=1" );
 		break;
 	} // switch (nServiceProvider)
 
 	int nReturn = m_pUserDB->ExecuteSQL(szTemp);
-	//strTemp.freeze( false );	// Note : std::strstreamÀÇ freeze. ¾È ÇÏ¸é Leak ¹ß»ý.
+	//strTemp.freeze( false );	// Note : std::strstreamï¿½ï¿½ freeze. ï¿½ï¿½ ï¿½Ï¸ï¿½ Leak ï¿½ß»ï¿½.
 
     return nReturn;
 }

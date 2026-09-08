@@ -66,7 +66,7 @@ int COdbcManager::LogItemExchange(
 
 		
 	int nReturn = m_pLogDB->ExecuteSpInt(szTemp);
-//	strTemp.freeze( false );	// Note : std::strstreamÀÇ freeze. ¾È ÇÏ¸é Leak ¹ß»ı.
+//	strTemp.freeze( false );	// Note : std::strstreamì˜ freeze. ì•ˆ í•˜ë©´ Leak ë°œìƒ.
 
 	if(nReturn == 1)	return DB_OK;
 	else				return DB_ERROR;
@@ -125,7 +125,7 @@ int	COdbcManager::LogMoneyExchange(
 											temp, temp, _sLOG.m_lnPrice );
 
 	int nReturn = m_pLogDB->ExecuteSpInt(szTemp);
-//	strTemp.freeze( false );	// Note : std::strstreamÀÇ freeze. ¾È ÇÏ¸é Leak ¹ß»ı.
+//	strTemp.freeze( false );	// Note : std::strstreamì˜ freeze. ì•ˆ í•˜ë©´ Leak ë°œìƒ.
 	
 	if (nReturn == 1)	return DB_OK;
 	else				return DB_ERROR;
@@ -186,7 +186,7 @@ int COdbcManager::LogItemConversion(
 										_sLOG.m_nCOSTUME_SID, temp);
 
 	int nReturn = m_pLogDB->ExecuteSpInt(szTemp);
-//	strTemp.freeze( false );	// Note : std::strstreamÀÇ freeze. ¾È ÇÏ¸é Leak ¹ß»ı.
+//	strTemp.freeze( false );	// Note : std::strstreamì˜ freeze. ì•ˆ í•˜ë©´ Leak ë°œìƒ.
 	
 	if (nReturn == 1)	return DB_OK;
 	else				return DB_ERROR;	
@@ -229,7 +229,7 @@ LONGLONG COdbcManager::GetItemMaxNum(
     strTemp << std::ends;
 */
 	TCHAR szTemp[128] = {0};
-	_snprintf( szTemp, 128, "SELECT MaxNum, NIDMain, NIDSub, MakeType FROM LogItemMax WITH (NOLOCK) WHERE "
+	_snprintf( szTemp, 128, "SELECT MaxNum, NIDMain, NIDSub, MakeType FROM LogItemMax WHERE "
 			"SGNum=%d AND SvrNum=%d AND FldNum=%d", nSGNum, nSvrNum, nFldNum );
 
     sReturn = ::SQLExecDirect(pConn->hStmt,
@@ -242,7 +242,7 @@ LONGLONG COdbcManager::GetItemMaxNum(
 		Print(GetErrorString(pConn->hStmt));
 		m_pLogDB->FreeConnection(pConn);
 
-//		strTemp.freeze( false );	// Note : std::strstreamÀÇ freeze. ¾È ÇÏ¸é Leak ¹ß»ı.
+//		strTemp.freeze( false );	// Note : std::strstreamì˜ freeze. ì•ˆ í•˜ë©´ Leak ë°œìƒ.
 
         return DB_ERROR;
 	}
@@ -256,7 +256,7 @@ LONGLONG COdbcManager::GetItemMaxNum(
 			Print(GetErrorString(pConn->hStmt));
             m_pLogDB->FreeConnection(pConn);
 
-//			strTemp.freeze( false );	// Note : std::strstreamÀÇ freeze. ¾È ÇÏ¸é Leak ¹ß»ı.
+//			strTemp.freeze( false );	// Note : std::strstreamì˜ freeze. ì•ˆ í•˜ë©´ Leak ë°œìƒ.
 
             return DB_ERROR;
 		}
@@ -283,7 +283,7 @@ LONGLONG COdbcManager::GetItemMaxNum(
 		}
 		Sleep( 0 );
 	}
-//	strTemp.freeze( false );	// Note : std::strstreamÀÇ freeze. ¾È ÇÏ¸é Leak ¹ß»ı.
+//	strTemp.freeze( false );	// Note : std::strstreamì˜ freeze. ì•ˆ í•˜ë©´ Leak ë°œìƒ.
 
 	m_pLogDB->FreeConnection(pConn);
     return DB_OK;

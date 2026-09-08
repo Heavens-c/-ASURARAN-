@@ -7,9 +7,9 @@
 #endif
 
 /**
-* »õ·Î¿î Å¬·´À» »ı¼ºÇÑ´Ù.
-* \param strClubName Å¬·´ÀÌ¸§
-* \param dwChaNum Å¬·´À» »ı¼ºÇÏ·Á´Â Ä³¸¯ÅÍ ¹øÈ£ (ÀÌ Ä³¸¯ÅÍ°¡ Å¬·´ÀÇ ¸¶½ºÅÍ°¡ µÈ´Ù)
+* ìƒˆë¡œìš´ í´ëŸ½ì„ ìƒì„±í•œë‹¤.
+* \param strClubName í´ëŸ½ì´ë¦„
+* \param dwChaNum í´ëŸ½ì„ ìƒì„±í•˜ë ¤ëŠ” ìºë¦­í„° ë²ˆí˜¸ (ì´ ìºë¦­í„°ê°€ í´ëŸ½ì˜ ë§ˆìŠ¤í„°ê°€ ëœë‹¤)
 */
 int COdbcManager::CreateClub(
 	CString strClubName,
@@ -27,15 +27,15 @@ int COdbcManager::CreateClub(
 							strClubName.GetString() );
 	
 	int nReturn = m_pGameDB->ExecuteSpInt(szTemp);
-	//strTemp.freeze( false );	// Note : std::strstreamÀÇ freeze. ¾È ÇÏ¸é Leak ¹ß»ı.
+	//strTemp.freeze( false );	// Note : std::strstreamì˜ freeze. ì•ˆ í•˜ë©´ Leak ë°œìƒ.
 
 	return nReturn;
 }
 
 /**
-* Å¬·´À» »èÁ¦ÇÑ´Ù.
-* \param dwClub Å¬·´¹øÈ£
-* \param dwChaNum Å¬·´À» »èÁ¦ÇÏ·Á´Â Ä³¸¯ÅÍ¹øÈ£(Ä³¸¯ÅÍ ¹øÈ£°¡ Å¬·´ ¸¶½ºÅÍ°¡ ¾Æ´Ï¸é »èÁ¦°¡ µÇÁö ¾Ê´Â´Ù)
+* í´ëŸ½ì„ ì‚­ì œí•œë‹¤.
+* \param dwClub í´ëŸ½ë²ˆí˜¸
+* \param dwChaNum í´ëŸ½ì„ ì‚­ì œí•˜ë ¤ëŠ” ìºë¦­í„°ë²ˆí˜¸(ìºë¦­í„° ë²ˆí˜¸ê°€ í´ëŸ½ ë§ˆìŠ¤í„°ê°€ ì•„ë‹ˆë©´ ì‚­ì œê°€ ë˜ì§€ ì•ŠëŠ”ë‹¤)
 */
 int COdbcManager::DeleteClub(
 	DWORD dwClub,
@@ -51,15 +51,15 @@ int COdbcManager::DeleteClub(
 	_snprintf( szTemp, 128, "{call sp_delete_guild(%u,%u,?)}", dwClub, dwChaNum );
 
 	int nReturn = m_pGameDB->ExecuteSpInt(szTemp);
-	//strTemp.freeze( false );	// Note : std::strstreamÀÇ freeze. ¾È ÇÏ¸é Leak ¹ß»ı.
+	//strTemp.freeze( false );	// Note : std::strstreamì˜ freeze. ì•ˆ í•˜ë©´ Leak ë°œìƒ.
 	
 	return nReturn;
 }
 
 /**
-* Å¬·´·©Å·À» ¼¼ÆÃÇÑ´Ù.
-* \param dwClub : Å¬·´¹øÈ£
-* \param dwRank : ·©Å·
+* í´ëŸ½ë­í‚¹ì„ ì„¸íŒ…í•œë‹¤.
+* \param dwClub : í´ëŸ½ë²ˆí˜¸
+* \param dwRank : ë­í‚¹
 */
 int COdbcManager::SetClubRank(
 	DWORD dwClub,
@@ -75,15 +75,15 @@ int COdbcManager::SetClubRank(
 	_snprintf( szTemp, 128, "{call sp_update_guild_rank(%u,%u,?)}", dwClub, dwRank );
 
 	int nReturn = m_pGameDB->ExecuteSpInt(szTemp);
-	//strTemp.freeze( false );	// Note : std::strstreamÀÇ freeze. ¾È ÇÏ¸é Leak ¹ß»ı.
+	//strTemp.freeze( false );	// Note : std::strstreamì˜ freeze. ì•ˆ í•˜ë©´ Leak ë°œìƒ.
 
 	return nReturn;
 }
 
 /**
-* Å¬·´ ÇØÃ¼½Ã°£À» ¼³Á¤ÇÑ´Ù.
-* \param dwClub Å¬·´¹øÈ£
-* \param tDiss ÇØÃ¼½Ã°£
+* í´ëŸ½ í•´ì²´ì‹œê°„ì„ ì„¤ì •í•œë‹¤.
+* \param dwClub í´ëŸ½ë²ˆí˜¸
+* \param tDiss í•´ì²´ì‹œê°„
 * \return 
 */
 int COdbcManager::SetClubDissolutionTime(
@@ -105,15 +105,15 @@ int COdbcManager::SetClubDissolutionTime(
 							dwClub );
 
 	int nReturn = m_pGameDB->ExecuteSQL(szTemp);
-	//strTemp.freeze( false );	// Note : std::strstreamÀÇ freeze. ¾È ÇÏ¸é Leak ¹ß»ı.
+	//strTemp.freeze( false );	// Note : std::strstreamì˜ freeze. ì•ˆ í•˜ë©´ Leak ë°œìƒ.
 
     return nReturn;
 }
 
 /**
-* Å¬·´ÀÇ µ¿¸ÍÅ»Åğ È¤Àº Á¦¸í½Ã°£À» Á¤ÇÑ´Ù.
-* \param dwClub Å¬·´¹øÈ£
-* \param tSec ½Ã°£
+* í´ëŸ½ì˜ ë™ë§¹íƒˆí‡´ í˜¹ì€ ì œëª…ì‹œê°„ì„ ì •í•œë‹¤.
+* \param dwClub í´ëŸ½ë²ˆí˜¸
+* \param tSec ì‹œê°„
 * \return 
 */
 int COdbcManager::SetClubAllianceSec(
@@ -135,15 +135,15 @@ int COdbcManager::SetClubAllianceSec(
 							dwClub );
 
 	int nReturn = m_pGameDB->ExecuteSQL(szTemp);
-	//strTemp.freeze( false );	// Note : std::strstreamÀÇ freeze. ¾È ÇÏ¸é Leak ¹ß»ı.
+	//strTemp.freeze( false );	// Note : std::strstreamì˜ freeze. ì•ˆ í•˜ë©´ Leak ë°œìƒ.
 
     return nReturn;
 }
 
 /**
-* Å¬·´ÀÇ µ¿¸ÍÇØ»ê ½Ã°£À» Á¤ÇÑ´Ù.
-* \param dwClub Å¬·´¹øÈ£
-* \param tDis ÇØ»ê½Ã°£
+* í´ëŸ½ì˜ ë™ë§¹í•´ì‚° ì‹œê°„ì„ ì •í•œë‹¤.
+* \param dwClub í´ëŸ½ë²ˆí˜¸
+* \param tDis í•´ì‚°ì‹œê°„
 * \return 
 */
 int COdbcManager::SetClubAllianceDis(
@@ -165,15 +165,15 @@ int COdbcManager::SetClubAllianceDis(
 							dwClub );
 
 	int nReturn = m_pGameDB->ExecuteSQL(szTemp);
-	//strTemp.freeze( false );	// Note : std::strstreamÀÇ freeze. ¾È ÇÏ¸é Leak ¹ß»ı.
+	//strTemp.freeze( false );	// Note : std::strstreamì˜ freeze. ì•ˆ í•˜ë©´ Leak ë°œìƒ.
 
     return nReturn;
 }
 
 /**
-* Å¬·´ÀÇ ¸¶½ºÅÍÀ§ÀÓ ½Ã°£À» Á¤ÇÑ´Ù.
-* \param dwClub Å¬·´¹øÈ£
-* \param tDis ¸¶½ºÅÍ À§ÀÓ½Ã°£
+* í´ëŸ½ì˜ ë§ˆìŠ¤í„°ìœ„ì„ ì‹œê°„ì„ ì •í•œë‹¤.
+* \param dwClub í´ëŸ½ë²ˆí˜¸
+* \param tDis ë§ˆìŠ¤í„° ìœ„ì„ì‹œê°„
 * \return 
 */
 int COdbcManager::SetClubAuthorityTime(DWORD dwClub, __time64_t tAuthority)
@@ -192,9 +192,9 @@ int COdbcManager::SetClubAuthorityTime(DWORD dwClub, __time64_t tAuthority)
 }
 
 /**
-* »õ·Î¿î Ä³¸¯ÅÍ¸¦ Å¬·´¿¡ °¡ÀÔ½ÃÅ²´Ù
-* \param dwClub Å¬·´¹øÈ£
-* \param dwChaNum °¡ÀÔ½ÃÅ°·Á´Â Ä³¸¯ÅÍ¹øÈ£
+* ìƒˆë¡œìš´ ìºë¦­í„°ë¥¼ í´ëŸ½ì— ê°€ì…ì‹œí‚¨ë‹¤
+* \param dwClub í´ëŸ½ë²ˆí˜¸
+* \param dwChaNum ê°€ì…ì‹œí‚¤ë ¤ëŠ” ìºë¦­í„°ë²ˆí˜¸
 */
 int COdbcManager::AddClubMember(
 	DWORD dwClub,
@@ -210,14 +210,14 @@ int COdbcManager::AddClubMember(
 	_snprintf( szTemp, 128, "{call sp_add_guild_member(%u,%u,?)}", dwClub, dwChaNum );
 
 	int nReturn = m_pGameDB->ExecuteSpInt(szTemp);
-	//strTemp.freeze( false );	// Note : std::strstreamÀÇ freeze. ¾È ÇÏ¸é Leak ¹ß»ı.
+	//strTemp.freeze( false );	// Note : std::strstreamì˜ freeze. ì•ˆ í•˜ë©´ Leak ë°œìƒ.
 
 	return nReturn;
 }
 
 /**
-* °¡ÀÔµÇ¾î ÀÖ´Â Ä³¸¯ÅÍ¸¦ Å¬·´¿¡¼­ Å»Åğ½ÃÅ²´Ù
-* \param dwChaNum Ä³¸¯ÅÍ¹øÈ£
+* ê°€ì…ë˜ì–´ ìˆëŠ” ìºë¦­í„°ë¥¼ í´ëŸ½ì—ì„œ íƒˆí‡´ì‹œí‚¨ë‹¤
+* \param dwChaNum ìºë¦­í„°ë²ˆí˜¸
 */
 int COdbcManager::DeleteClubMember(DWORD dwChaNum)
 {
@@ -230,15 +230,15 @@ int COdbcManager::DeleteClubMember(DWORD dwChaNum)
 	_snprintf( szTemp, 128, "{call sp_delete_guild_member(%u,?)}", dwChaNum );
 
 	int nReturn = m_pGameDB->ExecuteSpInt(szTemp);
-	//strTemp.freeze( false );	// Note : std::strstreamÀÇ freeze. ¾È ÇÏ¸é Leak ¹ß»ı.
+	//strTemp.freeze( false );	// Note : std::strstreamì˜ freeze. ì•ˆ í•˜ë©´ Leak ë°œìƒ.
 
 	return nReturn;
 }
 
 /**
-* ÇØ´ç Å¬·´ÀÇ ¸â¹ö¸¦ °¡Á®¿Â´Ù
-* dwGuild : Å¬·´¹øÈ£
-* vMember : Å¬·´¸â¹ö
+* í•´ë‹¹ í´ëŸ½ì˜ ë©¤ë²„ë¥¼ ê°€ì ¸ì˜¨ë‹¤
+* dwGuild : í´ëŸ½ë²ˆí˜¸
+* vMember : í´ëŸ½ë©¤ë²„
 */
 int COdbcManager::GetClubMember(DWORD dwClub, std::vector<GLCLUBMEMBER> &vMember)
 {
@@ -266,7 +266,7 @@ int COdbcManager::GetClubMember(DWORD dwClub, std::vector<GLCLUBMEMBER> &vMember
 		Print(GetErrorString(pConn->hStmt));
 		m_pGameDB->FreeConnection(pConn);
 
-		//strTemp.freeze( false );	// Note : std::strstreamÀÇ freeze. ¾È ÇÏ¸é Leak ¹ß»ı.
+		//strTemp.freeze( false );	// Note : std::strstreamì˜ freeze. ì•ˆ í•˜ë©´ Leak ë°œìƒ.
 		return DB_ERROR;
 	}
 
@@ -283,7 +283,7 @@ int COdbcManager::GetClubMember(DWORD dwClub, std::vector<GLCLUBMEMBER> &vMember
 		    Print(GetErrorString(pConn->hStmt));
             m_pGameDB->FreeConnection(pConn);
 
-			//strTemp.freeze( false );	// Note : std::strstreamÀÇ freeze. ¾È ÇÏ¸é Leak ¹ß»ı.
+			//strTemp.freeze( false );	// Note : std::strstreamì˜ freeze. ì•ˆ í•˜ë©´ Leak ë°œìƒ.
             return DB_ERROR;
 		}
 
@@ -310,14 +310,14 @@ int COdbcManager::GetClubMember(DWORD dwClub, std::vector<GLCLUBMEMBER> &vMember
 		Sleep( 0 );
 	}
 
-	//strTemp.freeze( false );	// Note : std::strstreamÀÇ freeze. ¾È ÇÏ¸é Leak ¹ß»ı.
+	//strTemp.freeze( false );	// Note : std::strstreamì˜ freeze. ì•ˆ í•˜ë©´ Leak ë°œìƒ.
 	m_pGameDB->FreeConnection(pConn);
 	return DB_OK;
 }
 
 /**
-* ¼­¹öÀÇ ¸ğµç Å¬·´Á¤º¸¸¦ °¡Á®¿Â´Ù.
-* \param &vClub Å¬·´Á¤º¸
+* ì„œë²„ì˜ ëª¨ë“  í´ëŸ½ì •ë³´ë¥¼ ê°€ì ¸ì˜¨ë‹¤.
+* \param &vClub í´ëŸ½ì •ë³´
 * \return 
 */
 int COdbcManager::GetClubInfo(std::vector<GLCLUBINFO> &vClub)
@@ -326,8 +326,8 @@ int COdbcManager::GetClubInfo(std::vector<GLCLUBINFO> &vClub)
 	ODBC_STMT* pConn = m_pGameDB->GetConnection();
 	if (!pConn) return DB_ERROR;
 
-// Å¬·´ ¹èÆ² ½Ã½ºÅÛ Ãß°¡·Î ÀÎÇØ¼­ GuildInfo Table ÄÃ·³ Ãß°¡
-// GuildInfo Table ÄÃ·³ Ãß°¡, viewGuildInfo ¼öÁ¤ ÇÊ¿ä
+// í´ëŸ½ ë°°í‹€ ì‹œìŠ¤í…œ ì¶”ê°€ë¡œ ì¸í•´ì„œ GuildInfo Table ì»¬ëŸ¼ ì¶”ê°€
+// GuildInfo Table ì»¬ëŸ¼ ì¶”ê°€, viewGuildInfo ìˆ˜ì • í•„ìš”
 	SQLINTEGER nGuBattleWin    = 0, cbGuBattleWin=SQL_NTS;
     SQLINTEGER nGuBattleDraw   = 0, cbGuBattleDraw=SQL_NTS;
 	SQLINTEGER nGuBattleLose   = 0, cbGuBattleLose=SQL_NTS;
@@ -408,7 +408,7 @@ int COdbcManager::GetClubInfo(std::vector<GLCLUBINFO> &vClub)
 			::SQLGetData(pConn->hStmt, 8, SQL_C_SBIGINT,        &llGuildIncomeMoney,        0, &cbGuildIncomeMoney);
             ::SQLGetData(pConn->hStmt, 9, SQL_C_LONG,	        &nGuMarkVer,                0, &cbGuMarkVer);
 
-			// Å¬·´ ¹èÆ² Ãß°¡
+			// í´ëŸ½ ë°°í‹€ ì¶”ê°€
 			::SQLGetData(pConn->hStmt,10, SQL_C_LONG,	        &nGuBattleWin,              0, &cbGuBattleWin);
 			::SQLGetData(pConn->hStmt,11, SQL_C_LONG,	        &nGuBattleDraw,             0, &cbGuBattleDraw);
 			::SQLGetData(pConn->hStmt,12, SQL_C_LONG,	        &nGuBattleLose,             0, &cbGuBattleLose);
@@ -426,13 +426,13 @@ int COdbcManager::GetClubInfo(std::vector<GLCLUBINFO> &vClub)
 			::SQLGetData(pConn->hStmt,22, SQL_C_CHAR,           szGuNotice, EMCLUB_NOTICE_LEN+1, &cbGuNotice);
             
             sCLUB.m_dwID = (DWORD) nGuNum;
-            sCLUB.m_dwMasterID = (DWORD) nChaNum; // ¼±µµÅ¬·´ ÀÎÁõ ´ë¸®ÀÚ Default(0)
-			sCLUB.m_dwCDCertifior = (DWORD) nGuDeputy; // ¼±µµÅ¬·´ ÀÎÁõ ´ë¸®ÀÚ Default(0)            
+            sCLUB.m_dwMasterID = (DWORD) nChaNum; // ì„ ë„í´ëŸ½ ì¸ì¦ ëŒ€ë¦¬ì Default(0)
+			sCLUB.m_dwCDCertifior = (DWORD) nGuDeputy; // ì„ ë„í´ëŸ½ ì¸ì¦ ëŒ€ë¦¬ì Default(0)            
             
             if (cbGuName != 0 && cbGuName != -1)
 			{
 				CString strGuName(szGuName);
-				strGuName.Trim(_T(" ")); // ¾ÕµÚ °ø¹éÁ¦°Å
+				strGuName.Trim(_T(" ")); // ì•ë’¤ ê³µë°±ì œê±°
                 ::StringCchCopy(
 					sCLUB.m_szName,
 					CHR_ID_LENGTH,
@@ -442,7 +442,7 @@ int COdbcManager::GetClubInfo(std::vector<GLCLUBINFO> &vClub)
             if (cbChaName != 0 && cbChaName != -1)
 			{
 				CString strChaName(szChaName);
-				strChaName.Trim(_T(" ")); // ¾ÕµÚ °ø¹éÁ¦°Å
+				strChaName.Trim(_T(" ")); // ì•ë’¤ ê³µë°±ì œê±°
 			    ::StringCchCopy(
 					sCLUB.m_szMasterName,
 					CHR_ID_LENGTH,
@@ -452,7 +452,7 @@ int COdbcManager::GetClubInfo(std::vector<GLCLUBINFO> &vClub)
             if (cbGuNotice != 0 && cbGuNotice != -1)
 			{
 				CString strGuNotice(szGuNotice);
-				strGuNotice.Trim(_T(" ")); // ¾ÕµÚ °ø¹éÁ¦°Å
+				strGuNotice.Trim(_T(" ")); // ì•ë’¤ ê³µë°±ì œê±°
 				strGuNotice.Replace("''", "'"); // '' -> '
 				::StringCchCopy(
 					sCLUB.m_szNotice,
@@ -465,7 +465,7 @@ int COdbcManager::GetClubInfo(std::vector<GLCLUBINFO> &vClub)
 			sCLUB.m_lnIncomeMoney  = llGuildIncomeMoney;
 	        sCLUB.m_dwMarkVER = (DWORD) nGuMarkVer;
 
-			// Å¬·´ ¹èÆ² Ãß°¡
+			// í´ëŸ½ ë°°í‹€ ì¶”ê°€
 			sCLUB.m_dwBattleWin = (DWORD) nGuBattleWin;
 			sCLUB.m_dwBattleDraw = (DWORD) nGuBattleDraw;
 			sCLUB.m_dwBattleLose = (DWORD) nGuBattleLose;
@@ -534,7 +534,7 @@ int COdbcManager::GetClubInfo(std::vector<GLCLUBINFO> &vClub)
 }
 
 ///////////////////////////////////////////////////////////////////////////
-// ÇØ´ç Å¬·´ÀÇ Å¬·´¸¶Å© ÀÌ¹ÌÁö¸¦ ÀĞ¾î¿Â´Ù
+// í•´ë‹¹ í´ëŸ½ì˜ í´ëŸ½ë§ˆí¬ ì´ë¯¸ì§€ë¥¼ ì½ì–´ì˜¨ë‹¤
 int COdbcManager::ReadClubMarkImage(DWORD dwClub, CByteStream &ByteStream)
 {
     SQLRETURN sReturn = 0;
@@ -558,10 +558,10 @@ int COdbcManager::ReadClubMarkImage(DWORD dwClub, CByteStream &ByteStream)
 		Print(GetErrorString(pConn->hStmt));
 		m_pGameDB->FreeConnection(pConn);
 
-		//strTemp.freeze( false );	// Note : std::strstreamÀÇ freeze. ¾È ÇÏ¸é Leak ¹ß»ı.
+		//strTemp.freeze( false );	// Note : std::strstreamì˜ freeze. ì•ˆ í•˜ë©´ Leak ë°œìƒ.
 		return DB_ERROR;
 	}
-	//strTemp.freeze( false );	// Note : std::strstreamÀÇ freeze. ¾È ÇÏ¸é Leak ¹ß»ı.
+	//strTemp.freeze( false );	// Note : std::strstreamì˜ freeze. ì•ˆ í•˜ë©´ Leak ë°œìƒ.
 	
 	// Retrieve and display each row of data.
 	BYTE pBuffer[DB_IMAGE_BUF_SIZE] = {0};
@@ -593,7 +593,7 @@ int COdbcManager::ReadClubMarkImage(DWORD dwClub, CByteStream &ByteStream)
 }
 
 ///////////////////////////////////////////////////////////////////////////
-// Å¬·´ÀÇ °øÁö»çÇ×À» ¼¼ÆÃÇÑ´Ù.
+// í´ëŸ½ì˜ ê³µì§€ì‚¬í•­ì„ ì„¸íŒ…í•œë‹¤.
 int COdbcManager::SetClubNotice(
 	DWORD dwClub, 
 	const TCHAR* szClubNotice )
@@ -615,13 +615,13 @@ int COdbcManager::SetClubNotice(
 	_snprintf( szTemp, 1024, "UPDATE GuildInfo SET GuNotice='%s' WHERE GuNum=%u", szClubNotice, dwClub );
 
 	int nReturn = m_pGameDB->ExecuteSQL(szTemp);
-	//strTemp.freeze( false );	// Note : std::strstreamÀÇ freeze. ¾È ÇÏ¸é Leak ¹ß»ı.
+	//strTemp.freeze( false );	// Note : std::strstreamì˜ freeze. ì•ˆ í•˜ë©´ Leak ë°œìƒ.
 
 	return nReturn;
 }
 
 ///////////////////////////////////////////////////////////////////////////
-// ÇØ´ç Å¬·´ÀÇ Å¬·´¸¶Å© ÀÌ¹ÌÁö¸¦ ÀúÀåÇÑ´Ù.
+// í•´ë‹¹ í´ëŸ½ì˜ í´ëŸ½ë§ˆí¬ ì´ë¯¸ì§€ë¥¼ ì €ì¥í•œë‹¤.
 int	COdbcManager::WriteClubMarkImage(
 	DWORD dwClub,
 	DWORD dwMarkVer,
@@ -642,7 +642,7 @@ int	COdbcManager::WriteClubMarkImage(
 
     m_pGameDB->ExecuteSQL(szTemp);
 
-	//strTempVer.freeze( false );	// Note : std::strstreamÀÇ freeze. ¾È ÇÏ¸é Leak ¹ß»ı.
+	//strTempVer.freeze( false );	// Note : std::strstreamì˜ freeze. ì•ˆ í•˜ë©´ Leak ë°œìƒ.
 
     // Update Image
 	ODBC_STMT* pConn = m_pGameDB->GetConnection();
@@ -664,7 +664,7 @@ int	COdbcManager::WriteClubMarkImage(
 		Print(GetErrorString(pConn->hStmt));
 		m_pGameDB->FreeConnection(pConn);
 
-		//strTemp.freeze( false );	// Note : std::strstreamÀÇ freeze. ¾È ÇÏ¸é Leak ¹ß»ı.
+		//strTemp.freeze( false );	// Note : std::strstreamì˜ freeze. ì•ˆ í•˜ë©´ Leak ë°œìƒ.
 		return DB_ERROR;
 	}	
 	
@@ -687,7 +687,7 @@ int	COdbcManager::WriteClubMarkImage(
 		Print(GetErrorString(pConn->hStmt));
 		m_pGameDB->FreeConnection(pConn);
 
-		//strTemp.freeze( false );	// Note : std::strstreamÀÇ freeze. ¾È ÇÏ¸é Leak ¹ß»ı.
+		//strTemp.freeze( false );	// Note : std::strstreamì˜ freeze. ì•ˆ í•˜ë©´ Leak ë°œìƒ.
 		return DB_ERROR;
 	}
 
@@ -699,7 +699,7 @@ int	COdbcManager::WriteClubMarkImage(
 		Print(GetErrorString(pConn->hStmt));
 		m_pGameDB->FreeConnection(pConn);
 
-		//strTemp.freeze( false );	// Note : std::strstreamÀÇ freeze. ¾È ÇÏ¸é Leak ¹ß»ı.
+		//strTemp.freeze( false );	// Note : std::strstreamì˜ freeze. ì•ˆ í•˜ë©´ Leak ë°œìƒ.
         return DB_ERROR;
 	}
 	
@@ -713,15 +713,15 @@ int	COdbcManager::WriteClubMarkImage(
 		}
 		Sleep( 0 );
 	}
-	//strTemp.freeze( false );	// Note : std::strstreamÀÇ freeze. ¾È ÇÏ¸é Leak ¹ß»ı.
+	//strTemp.freeze( false );	// Note : std::strstreamì˜ freeze. ì•ˆ í•˜ë©´ Leak ë°œìƒ.
 
 	m_pGameDB->FreeConnection(pConn);
 	return DB_OK;
 }
 
 ///////////////////////////////////////////////////////////////////////////
-// Ä³¸¯ÅÍÀÇ Å¬·´¹øÈ£¸¦ °¡Á®¿Â´Ù.
-// dwChaNum : Ä³¸¯ÅÍ¹øÈ£
+// ìºë¦­í„°ì˜ í´ëŸ½ë²ˆí˜¸ë¥¼ ê°€ì ¸ì˜¨ë‹¤.
+// dwChaNum : ìºë¦­í„°ë²ˆí˜¸
 int COdbcManager::GetChaGuildNum(DWORD dwChaNum)
 {
     SQLRETURN sReturn = 0;
@@ -745,7 +745,7 @@ int COdbcManager::GetChaGuildNum(DWORD dwChaNum)
 		Print(GetErrorString(pConn->hStmt));
 		m_pGameDB->FreeConnection(pConn);
 
-		//strTemp.freeze( false );	// Note : std::strstreamÀÇ freeze. ¾È ÇÏ¸é Leak ¹ß»ı.
+		//strTemp.freeze( false );	// Note : std::strstreamì˜ freeze. ì•ˆ í•˜ë©´ Leak ë°œìƒ.
 		return DB_ERROR;
 	}
 
@@ -761,7 +761,7 @@ int COdbcManager::GetChaGuildNum(DWORD dwChaNum)
 		    Print(GetErrorString(pConn->hStmt));
             m_pGameDB->FreeConnection(pConn);
 
-			//strTemp.freeze( false );	// Note : std::strstreamÀÇ freeze. ¾È ÇÏ¸é Leak ¹ß»ı.
+			//strTemp.freeze( false );	// Note : std::strstreamì˜ freeze. ì•ˆ í•˜ë©´ Leak ë°œìƒ.
             return DB_ERROR;
 		}
 
@@ -777,16 +777,16 @@ int COdbcManager::GetChaGuildNum(DWORD dwChaNum)
 		}
 		Sleep( 0 );
 	}
-	//strTemp.freeze( false );	// Note : std::strstreamÀÇ freeze. ¾È ÇÏ¸é Leak ¹ß»ı.
+	//strTemp.freeze( false );	// Note : std::strstreamì˜ freeze. ì•ˆ í•˜ë©´ Leak ë°œìƒ.
 
 	m_pGameDB->FreeConnection(pConn);
 	return nReturn;
 }
 
 ///////////////////////////////////////////////////////////////////////////
-// ÇØ´çÅ¬·´ÀÇ ¼öÀÔ±İ¾×À» ¼¼ÆÃÇÑ´Ù. (Storage)
-// dwClub : Å¬·´¹øÈ£
-// llMoney : ¼öÀÔ±İ¾× (±İ¾×Àº >= 0)
+// í•´ë‹¹í´ëŸ½ì˜ ìˆ˜ì…ê¸ˆì•¡ì„ ì„¸íŒ…í•œë‹¤. (Storage)
+// dwClub : í´ëŸ½ë²ˆí˜¸
+// llMoney : ìˆ˜ì…ê¸ˆì•¡ (ê¸ˆì•¡ì€ >= 0)
 int COdbcManager::SetClubIncomeMoney(DWORD dwClub, LONGLONG llMoney)
 {
 	if (llMoney < 0)
@@ -805,15 +805,15 @@ int COdbcManager::SetClubIncomeMoney(DWORD dwClub, LONGLONG llMoney)
 	_snprintf( szTemp, 128, "Update GuildInfo Set GuIncomeMoney=%I64d WHERE GuNum=%u", llMoney, dwClub );
 
 	int nReturn = m_pGameDB->ExecuteSQL(szTemp);
-	//strTemp.freeze( false );	// Note : std::strstreamÀÇ freeze. ¾È ÇÏ¸é Leak ¹ß»ı.
+	//strTemp.freeze( false );	// Note : std::strstreamì˜ freeze. ì•ˆ í•˜ë©´ Leak ë°œìƒ.
     
     return nReturn;
 }
 
 ///////////////////////////////////////////////////////////////////////////
-// ÇØ´çÅ¬·´ÀÇ ¼öÀÔ±İ¾×À» °¡Á®¿Â´Ù. (Storage)
-// dwClub : Å¬·´¹øÈ£
-// ¸®ÅÏ°ªÀº >= 0, 0 º¸´Ù ÀÛÀ¸¸é ERROR
+// í•´ë‹¹í´ëŸ½ì˜ ìˆ˜ì…ê¸ˆì•¡ì„ ê°€ì ¸ì˜¨ë‹¤. (Storage)
+// dwClub : í´ëŸ½ë²ˆí˜¸
+// ë¦¬í„´ê°’ì€ >= 0, 0 ë³´ë‹¤ ì‘ìœ¼ë©´ ERROR
 LONGLONG COdbcManager::GetClubIncomeMoney(DWORD dwClub)
 {
 	if (dwClub < 1)
@@ -844,7 +844,7 @@ LONGLONG COdbcManager::GetClubIncomeMoney(DWORD dwClub)
 		Print(GetErrorString(pConn->hStmt));
 		m_pGameDB->FreeConnection(pConn);
 
-		//strTemp.freeze( false );	// Note : std::strstreamÀÇ freeze. ¾È ÇÏ¸é Leak ¹ß»ı.
+		//strTemp.freeze( false );	// Note : std::strstreamì˜ freeze. ì•ˆ í•˜ë©´ Leak ë°œìƒ.
 		return DB_ERROR;
 	}
 
@@ -860,7 +860,7 @@ LONGLONG COdbcManager::GetClubIncomeMoney(DWORD dwClub)
 			Print(GetErrorString(pConn->hStmt));
             m_pGameDB->FreeConnection(pConn);
 
-			//strTemp.freeze( false );	// Note : std::strstreamÀÇ freeze. ¾È ÇÏ¸é Leak ¹ß»ı.
+			//strTemp.freeze( false );	// Note : std::strstreamì˜ freeze. ì•ˆ í•˜ë©´ Leak ë°œìƒ.
             return DB_ERROR;
 		}
 
@@ -875,16 +875,16 @@ LONGLONG COdbcManager::GetClubIncomeMoney(DWORD dwClub)
 		}
 		Sleep( 0 );
 	}
-	//strTemp.freeze( false );	// Note : std::strstreamÀÇ freeze. ¾È ÇÏ¸é Leak ¹ß»ı.
+	//strTemp.freeze( false );	// Note : std::strstreamì˜ freeze. ì•ˆ í•˜ë©´ Leak ë°œìƒ.
 
 	m_pGameDB->FreeConnection(pConn);
 	return llGuMoney;
 }
 
 ///////////////////////////////////////////////////////////////////////////
-// ÇØ´çÅ¬·´ÀÇ º¸À¯±İ¾×À» ¼¼ÆÃÇÑ´Ù.
-// dwClub : Å¬·´¹øÈ£
-// llMoney : º¸À¯±İ¾× (±İ¾×Àº >= 0)
+// í•´ë‹¹í´ëŸ½ì˜ ë³´ìœ ê¸ˆì•¡ì„ ì„¸íŒ…í•œë‹¤.
+// dwClub : í´ëŸ½ë²ˆí˜¸
+// llMoney : ë³´ìœ ê¸ˆì•¡ (ê¸ˆì•¡ì€ >= 0)
 int COdbcManager::SetClubMoney(DWORD dwClub, LONGLONG llMoney)
 {
 	if (llMoney < 0)
@@ -903,15 +903,15 @@ int COdbcManager::SetClubMoney(DWORD dwClub, LONGLONG llMoney)
 	_snprintf( szTemp, 128, "Update GuildInfo Set GuMoney=%I64d WHERE GuNum=%u", llMoney, dwClub );
     
 	int nReturn = m_pGameDB->ExecuteSQL(szTemp);
-	//strTemp.freeze( false );	// Note : std::strstreamÀÇ freeze. ¾È ÇÏ¸é Leak ¹ß»ı.
+	//strTemp.freeze( false );	// Note : std::strstreamì˜ freeze. ì•ˆ í•˜ë©´ Leak ë°œìƒ.
 
     return nReturn;
 }
 
 ///////////////////////////////////////////////////////////////////////////
-// ÇØ´çÅ¬·´ÀÇ º¸À¯±İ¾×À» °¡Á®¿Â´Ù.
-// dwClub : Å¬·´¹øÈ£
-// ¸®ÅÏ°ªÀº >= 0, 0 º¸´Ù ÀÛÀ¸¸é ERROR
+// í•´ë‹¹í´ëŸ½ì˜ ë³´ìœ ê¸ˆì•¡ì„ ê°€ì ¸ì˜¨ë‹¤.
+// dwClub : í´ëŸ½ë²ˆí˜¸
+// ë¦¬í„´ê°’ì€ >= 0, 0 ë³´ë‹¤ ì‘ìœ¼ë©´ ERROR
 LONGLONG COdbcManager::GetClubMoney(DWORD dwClub)
 {
 	if (dwClub < 1)
@@ -942,7 +942,7 @@ LONGLONG COdbcManager::GetClubMoney(DWORD dwClub)
 		Print(GetErrorString(pConn->hStmt));
 		m_pGameDB->FreeConnection(pConn);
 
-		//strTemp.freeze( false );	// Note : std::strstreamÀÇ freeze. ¾È ÇÏ¸é Leak ¹ß»ı.
+		//strTemp.freeze( false );	// Note : std::strstreamì˜ freeze. ì•ˆ í•˜ë©´ Leak ë°œìƒ.
 		return DB_ERROR;
 	}
 
@@ -958,7 +958,7 @@ LONGLONG COdbcManager::GetClubMoney(DWORD dwClub)
 			Print(GetErrorString(pConn->hStmt));
             m_pGameDB->FreeConnection(pConn);
 
-			//strTemp.freeze( false );	// Note : std::strstreamÀÇ freeze. ¾È ÇÏ¸é Leak ¹ß»ı.
+			//strTemp.freeze( false );	// Note : std::strstreamì˜ freeze. ì•ˆ í•˜ë©´ Leak ë°œìƒ.
             return DB_ERROR;
 		}
 
@@ -973,16 +973,16 @@ LONGLONG COdbcManager::GetClubMoney(DWORD dwClub)
 		}
 		Sleep( 0 );
 	}
-	//strTemp.freeze( false );	// Note : std::strstreamÀÇ freeze. ¾È ÇÏ¸é Leak ¹ß»ı.
+	//strTemp.freeze( false );	// Note : std::strstreamì˜ freeze. ì•ˆ í•˜ë©´ Leak ë°œìƒ.
 
 	m_pGameDB->FreeConnection(pConn);
 	return llGuMoney;
 }
 
 ///////////////////////////////////////////////////////////////////////////
-// ÇØ´çÅ¬·´ÀÇ Å¬·´Ã¢°í¸¦ ÀĞ¾î¿Â´Ù.
-// dwClub : Å¬·´¹øÈ£
-// ByteStream : ¹öÆÛ
+// í•´ë‹¹í´ëŸ½ì˜ í´ëŸ½ì°½ê³ ë¥¼ ì½ì–´ì˜¨ë‹¤.
+// dwClub : í´ëŸ½ë²ˆí˜¸
+// ByteStream : ë²„í¼
 int COdbcManager::ReadClubStorage(DWORD dwClub, CByteStream &ByteStream)
 {
 	if (dwClub < 1)
@@ -1012,10 +1012,10 @@ int COdbcManager::ReadClubStorage(DWORD dwClub, CByteStream &ByteStream)
 		Print(GetErrorString(pConn->hStmt));
 		m_pGameDB->FreeConnection(pConn);
 
-		//strTemp.freeze( false );	// Note : std::strstreamÀÇ freeze. ¾È ÇÏ¸é Leak ¹ß»ı.
+		//strTemp.freeze( false );	// Note : std::strstreamì˜ freeze. ì•ˆ í•˜ë©´ Leak ë°œìƒ.
 		return DB_ERROR;
 	}
-	//strTemp.freeze( false );	// Note : std::strstreamÀÇ freeze. ¾È ÇÏ¸é Leak ¹ß»ı.
+	//strTemp.freeze( false );	// Note : std::strstreamì˜ freeze. ì•ˆ í•˜ë©´ Leak ë°œìƒ.
 	
 	// Retrieve and display each row of data.
 	BYTE pBuffer[DB_IMAGE_BUF_SIZE] = {0};
@@ -1047,10 +1047,10 @@ int COdbcManager::ReadClubStorage(DWORD dwClub, CByteStream &ByteStream)
 }
 
 ///////////////////////////////////////////////////////////////////////////
-// ÇØ´çÅ¬·´ÀÇ Å¬·´Ã¢°í¸¦ ÀúÀåÇÑ´Ù.
-// dwClub : Å¬·´¹øÈ£
-// pData : Ã¢°íÀ§Ä¡
-// nSize : ¹öÆÛ ÀüÃ¼Å©±â
+// í•´ë‹¹í´ëŸ½ì˜ í´ëŸ½ì°½ê³ ë¥¼ ì €ì¥í•œë‹¤.
+// dwClub : í´ëŸ½ë²ˆí˜¸
+// pData : ì°½ê³ ìœ„ì¹˜
+// nSize : ë²„í¼ ì „ì²´í¬ê¸°
 int COdbcManager::WriteClubStorage(
 	DWORD dwClub,
 	BYTE* pData,
@@ -1083,7 +1083,7 @@ int COdbcManager::WriteClubStorage(
 		Print(GetErrorString(pConn->hStmt));
 		m_pGameDB->FreeConnection(pConn);
 
-		//strTemp.freeze( false );	// Note : std::strstreamÀÇ freeze. ¾È ÇÏ¸é Leak ¹ß»ı.
+		//strTemp.freeze( false );	// Note : std::strstreamì˜ freeze. ì•ˆ í•˜ë©´ Leak ë°œìƒ.
 		return DB_ERROR;
 	}	
 	
@@ -1106,7 +1106,7 @@ int COdbcManager::WriteClubStorage(
 		Print(GetErrorString(pConn->hStmt));
 		m_pGameDB->FreeConnection(pConn);
 
-		//strTemp.freeze( false );	// Note : std::strstreamÀÇ freeze. ¾È ÇÏ¸é Leak ¹ß»ı.
+		//strTemp.freeze( false );	// Note : std::strstreamì˜ freeze. ì•ˆ í•˜ë©´ Leak ë°œìƒ.
 		return DB_ERROR;
 	}
 
@@ -1118,7 +1118,7 @@ int COdbcManager::WriteClubStorage(
 		Print(GetErrorString(pConn->hStmt));
 		m_pGameDB->FreeConnection(pConn);
 
-		//strTemp.freeze( false );	// Note : std::strstreamÀÇ freeze. ¾È ÇÏ¸é Leak ¹ß»ı.
+		//strTemp.freeze( false );	// Note : std::strstreamì˜ freeze. ì•ˆ í•˜ë©´ Leak ë°œìƒ.
         return DB_ERROR;
 	}
 	
@@ -1133,16 +1133,16 @@ int COdbcManager::WriteClubStorage(
 		Sleep( 0 );
 	}
 
-	//strTemp.freeze( false );	// Note : std::strstreamÀÇ freeze. ¾È ÇÏ¸é Leak ¹ß»ı.
+	//strTemp.freeze( false );	// Note : std::strstreamì˜ freeze. ì•ˆ í•˜ë©´ Leak ë°œìƒ.
 	m_pGameDB->FreeConnection(pConn);
 	return DB_OK;
 }
 
 ///////////////////////////////////////////////////////////////////////////
-// ºÎ Å¬·´ÀåÀ» ¼¼ÆÃÇÑ´Ù
-// dwClub : Å¬·´¹øÈ£
-// dwChaNum : Ä³¸¯ÅÍ¹øÈ£
-// dwSubMasterFlags : ÇÃ·¡±× (0 À¸·Î ³ÖÀ¸¸é ÀÏ¹İ±æµå¿øÀÌ µÈ´Ù)
+// ë¶€ í´ëŸ½ì¥ì„ ì„¸íŒ…í•œë‹¤
+// dwClub : í´ëŸ½ë²ˆí˜¸
+// dwChaNum : ìºë¦­í„°ë²ˆí˜¸
+// dwSubMasterFlags : í”Œë˜ê·¸ (0 ìœ¼ë¡œ ë„£ìœ¼ë©´ ì¼ë°˜ê¸¸ë“œì›ì´ ëœë‹¤)
 int COdbcManager::SetClubMasterFlags(DWORD dwClub, DWORD dwChaNum, DWORD dwSubMasterFlags)
 {
 	if (dwClub == 0 || dwChaNum <= 0)
@@ -1162,15 +1162,15 @@ int COdbcManager::SetClubMasterFlags(DWORD dwClub, DWORD dwChaNum, DWORD dwSubMa
 							dwSubMasterFlags, dwClub, dwChaNum );
     
 	int nReturn = m_pGameDB->ExecuteSQL(szTemp);
-	//strTemp.freeze( false );	// Note : std::strstreamÀÇ freeze. ¾È ÇÏ¸é Leak ¹ß»ı.
+	//strTemp.freeze( false );	// Note : std::strstreamì˜ freeze. ì•ˆ í•˜ë©´ Leak ë°œìƒ.
 
     return nReturn;
 }
 
 ///////////////////////////////////////////////////////////////////////////
-// Å¬·´ÀÇ ¼±µµÅ¬·´ ÀÎÁõ ´ë¸®ÀÚ¸¦ ¼¼ÆÃÇÑ´Ù.
-// dwClub : Å¬·´¹øÈ£
-// dwDeputy : ¼±µµÅ¬·´ ÀÎÁõ ´ë¸®ÀÚ Ä³¸¯ÅÍ¹øÈ£
+// í´ëŸ½ì˜ ì„ ë„í´ëŸ½ ì¸ì¦ ëŒ€ë¦¬ìë¥¼ ì„¸íŒ…í•œë‹¤.
+// dwClub : í´ëŸ½ë²ˆí˜¸
+// dwDeputy : ì„ ë„í´ëŸ½ ì¸ì¦ ëŒ€ë¦¬ì ìºë¦­í„°ë²ˆí˜¸
 int COdbcManager::SetClubDeputy(DWORD dwClub, DWORD dwDeputy)
 {
 	//std::strstream strTemp;
@@ -1180,23 +1180,23 @@ int COdbcManager::SetClubDeputy(DWORD dwClub, DWORD dwDeputy)
  //   strTemp << std::ends;
 
 	TCHAR szTemp[128] = {0};
-	_snprintf( szTemp, 128, "Update GuildInfo WITH (UPDLOCK) Set GuDeputy=%u WHERE GuNum=%u", dwDeputy, dwClub );
+	_snprintf( szTemp, 128, "Update GuildInfo Set GuDeputy=%u WHERE GuNum=%u", dwDeputy, dwClub );
     
 	int nReturn = m_pGameDB->ExecuteSQL(szTemp);	
-	//strTemp.freeze( false );	// Note : std::strstreamÀÇ freeze. ¾È ÇÏ¸é Leak ¹ß»ı.
+	//strTemp.freeze( false );	// Note : std::strstreamì˜ freeze. ì•ˆ í•˜ë©´ Leak ë°œìƒ.
 
     return nReturn;
 }
 
 
 ///////////////////////////////////////////////////////////////////////////
-// Å¬·´ÀÇ ¸¶½ºÅÍ ±ÇÇÑÀ» À§ÀÓÇÑ´Ù.
-// dwClub : Å¬·´¹øÈ£
-// dwDeputy : ¼±µµÅ¬·´ ¸¶½ºÅÍ°¡ µÉ Ä³¸¯ÅÍ ¹øÈ£
+// í´ëŸ½ì˜ ë§ˆìŠ¤í„° ê¶Œí•œì„ ìœ„ì„í•œë‹¤.
+// dwClub : í´ëŸ½ë²ˆí˜¸
+// dwDeputy : ì„ ë„í´ëŸ½ ë§ˆìŠ¤í„°ê°€ ë  ìºë¦­í„° ë²ˆí˜¸
 int COdbcManager::SetClubAuthority (DWORD dwClub, DWORD dwMasterID)
 {
 	TCHAR szTemp[128] = {0};
-	_snprintf( szTemp, 128, "Update GuildInfo WITH (UPDLOCK) Set ChaNum=%u WHERE GuNum=%u", dwMasterID, dwClub );
+	_snprintf( szTemp, 128, "Update GuildInfo Set ChaNum=%u WHERE GuNum=%u", dwMasterID, dwClub );
     
 	int nReturn = m_pGameDB->ExecuteSQL(szTemp);	
     return nReturn;
@@ -1204,7 +1204,7 @@ int COdbcManager::SetClubAuthority (DWORD dwClub, DWORD dwMasterID)
 
 
 ///////////////////////////////////////////////////////////////////////////
-// ÇöÀç ¸ğµçÁö¿ªÀÇ ¼±µµ Å¬·´µ¥ÀÌÅÍ¸¦ °¡Á®¿Â´Ù.    
+// í˜„ì¬ ëª¨ë“ ì§€ì—­ì˜ ì„ ë„ í´ëŸ½ë°ì´í„°ë¥¼ ê°€ì ¸ì˜¨ë‹¤.    
 int COdbcManager::GetClubRegion(std::vector<GLGUID_DB> &vGUID_DB)
 {
 	SQLRETURN sReturn = 0;
@@ -1216,7 +1216,7 @@ int COdbcManager::GetClubRegion(std::vector<GLGUID_DB> &vGUID_DB)
  //   strTemp += " ORDER BY RegionID";
 
 	TCHAR szTemp[128] = {0};
-	_snprintf( szTemp, 128, "SELECT RegionID, GuNum, RegionTax FROM GuildRegion WITH (NOLOCK) ORDER BY RegionID" ); 
+	_snprintf( szTemp, 128, "SELECT RegionID, GuNum, RegionTax FROM GuildRegion ORDER BY RegionID" ); 
 	
 	sReturn = ::SQLExecDirect(pConn->hStmt,
 							(SQLCHAR*)szTemp, 
@@ -1271,10 +1271,10 @@ int COdbcManager::GetClubRegion(std::vector<GLGUID_DB> &vGUID_DB)
 }
     
 ///////////////////////////////////////////////////////////////////////////
-// Áö¿ª°ú ±×Áö¿ªÀ» ¼ÒÀ¯ÇÑ Å¬·´ ¼¼À²À» Á¤ÇÑ´Ù.
-// dwRegionID : Áö¿ª ID
-// dwClub : Å¬·´ ID
-// fTax : ¼¼À²
+// ì§€ì—­ê³¼ ê·¸ì§€ì—­ì„ ì†Œìœ í•œ í´ëŸ½ ì„¸ìœ¨ì„ ì •í•œë‹¤.
+// dwRegionID : ì§€ì—­ ID
+// dwClub : í´ëŸ½ ID
+// fTax : ì„¸ìœ¨
 int COdbcManager::SetClubRegion(DWORD dwRegionID, DWORD dwClub, float fTax)
 {
 	//std::strstream strTemp;
@@ -1288,15 +1288,15 @@ int COdbcManager::SetClubRegion(DWORD dwRegionID, DWORD dwClub, float fTax)
 	_snprintf( szTemp, 128, "{call sp_add_guild_region(%u,%u,%f,?)}", dwRegionID, dwClub, fTax );
 
 	int nReturn = m_pGameDB->ExecuteSpInt(szTemp);
-	//strTemp.freeze( false );	// Note : std::strstreamÀÇ freeze. ¾È ÇÏ¸é Leak ¹ß»ı.
+	//strTemp.freeze( false );	// Note : std::strstreamì˜ freeze. ì•ˆ í•˜ë©´ Leak ë°œìƒ.
 
 	return nReturn;
 }
 
 ///////////////////////////////////////////////////////////////////////////
-// ÇØ´ç Áö¿ªÀÇ ¼ÒÀ¯ »óÅÂ¸¦ ¸®¼ÂÇÑ´Ù.
-// dwRegionID : Áö¿ª ID
-// dwClub : Å¬·´ ID (±âº» 0 ÀÌ´Ù)    
+// í•´ë‹¹ ì§€ì—­ì˜ ì†Œìœ  ìƒíƒœë¥¼ ë¦¬ì…‹í•œë‹¤.
+// dwRegionID : ì§€ì—­ ID
+// dwClub : í´ëŸ½ ID (ê¸°ë³¸ 0 ì´ë‹¤)    
 int COdbcManager::DelClubRegion(DWORD dwRegionID, DWORD dwClub)
 {
 	//std::strstream strTemp;
@@ -1309,20 +1309,20 @@ int COdbcManager::DelClubRegion(DWORD dwRegionID, DWORD dwClub)
 	_snprintf( szTemp, 128, "{call sp_delete_guild_region(%u,%u,?)}", dwRegionID, dwClub );
 
 	int nReturn = m_pGameDB->ExecuteSpInt(szTemp);
-	//strTemp.freeze( false );	// Note : std::strstreamÀÇ freeze. ¾È ÇÏ¸é Leak ¹ß»ı.
+	//strTemp.freeze( false );	// Note : std::strstreamì˜ freeze. ì•ˆ í•˜ë©´ Leak ë°œìƒ.
 
 	return nReturn;
 }
 
 ///////////////////////////////////////////////////////////////////////////
-// µ¿¸Í Å¬·´À» °á¼ºÇÑ´Ù.
-// dwClubP : ÁÖ Å¬·´¹øÈ£ (µ¿¸Í Å¬·´ÀÇ ÁÖ)
-// dwClubS : º¸Á¶ Å¬·´¹øÈ£ (ÁÖ Å¬·´ ¹ØÀ¸·Î µé¾î°¡´Â ÇÏÀ§ Å¬·´)
-// * ÁÖÀÇ *
-// db ´Â Å¬·´ÀÇ ¹«°á¼ºÀ» Ã¼Å©ÇÏÁö ¾Ê´Â´Ù.
-// A °¡ B ÀÇ º¸Á¶ÀÎ »óÅÂ¿¡¼­ 
-// B °¡ C ÀÇ º¸Á¶·Î µé¾î°¡°í
-// C °¡ A ÀÇ º¸Á¶·Î µé¾î°¡¸é ¼ÒÀ¯±Ç Ã¼ÀÎ ¹®Á¦°¡ ¹ß»ıÇÑ´Ù.
+// ë™ë§¹ í´ëŸ½ì„ ê²°ì„±í•œë‹¤.
+// dwClubP : ì£¼ í´ëŸ½ë²ˆí˜¸ (ë™ë§¹ í´ëŸ½ì˜ ì£¼)
+// dwClubS : ë³´ì¡° í´ëŸ½ë²ˆí˜¸ (ì£¼ í´ëŸ½ ë°‘ìœ¼ë¡œ ë“¤ì–´ê°€ëŠ” í•˜ìœ„ í´ëŸ½)
+// * ì£¼ì˜ *
+// db ëŠ” í´ëŸ½ì˜ ë¬´ê²°ì„±ì„ ì²´í¬í•˜ì§€ ì•ŠëŠ”ë‹¤.
+// A ê°€ B ì˜ ë³´ì¡°ì¸ ìƒíƒœì—ì„œ 
+// B ê°€ C ì˜ ë³´ì¡°ë¡œ ë“¤ì–´ê°€ê³ 
+// C ê°€ A ì˜ ë³´ì¡°ë¡œ ë“¤ì–´ê°€ë©´ ì†Œìœ ê¶Œ ì²´ì¸ ë¬¸ì œê°€ ë°œìƒí•œë‹¤.
 int	COdbcManager::SetClubAlliance(DWORD dwClubP, DWORD dwClubS)
 {
 	if (dwClubP == 0 || dwClubS == 0)
@@ -1341,15 +1341,15 @@ int	COdbcManager::SetClubAlliance(DWORD dwClubP, DWORD dwClubS)
 	_snprintf( szTemp, 128, "{call InsertGuildAlliance(%u,%u,?)}", dwClubP, dwClubS );
 
 	int nReturn = m_pGameDB->ExecuteSpInt(szTemp);
-	//strTemp.freeze( false );	// Note : std::strstreamÀÇ freeze. ¾È ÇÏ¸é Leak ¹ß»ı.
+	//strTemp.freeze( false );	// Note : std::strstreamì˜ freeze. ì•ˆ í•˜ë©´ Leak ë°œìƒ.
 	
 	return nReturn;
 }
 
 ///////////////////////////////////////////////////////////////////////////
-// µ¿¸Í Å¬·´À» ÇØÃ¼ÇÑ´Ù.
-// dwClubP : ÁÖ Å¬·´¹øÈ£ (µ¿¸Í Å¬·´ÀÇ ÁÖ)
-// dwClubS : º¸Á¶ Å¬·´¹øÈ£ (ÁÖ Å¬·´ ¹ØÀ¸·Î µé¾î°¡´Â ÇÏÀ§ Å¬·´)
+// ë™ë§¹ í´ëŸ½ì„ í•´ì²´í•œë‹¤.
+// dwClubP : ì£¼ í´ëŸ½ë²ˆí˜¸ (ë™ë§¹ í´ëŸ½ì˜ ì£¼)
+// dwClubS : ë³´ì¡° í´ëŸ½ë²ˆí˜¸ (ì£¼ í´ëŸ½ ë°‘ìœ¼ë¡œ ë“¤ì–´ê°€ëŠ” í•˜ìœ„ í´ëŸ½)
 int COdbcManager::DelClubAlliance(DWORD dwClubP, DWORD dwClubS)
 {
 	if (dwClubP == 0 || dwClubS == 0)
@@ -1368,13 +1368,13 @@ int COdbcManager::DelClubAlliance(DWORD dwClubP, DWORD dwClubS)
 	_snprintf( szTemp, 128, "{call DeleteGuildAlliance(%u,%u,?)}", dwClubP, dwClubS );
 
 	int nReturn = m_pGameDB->ExecuteSpInt(szTemp);
-	//strTemp.freeze( false );	// Note : std::strstreamÀÇ freeze. ¾È ÇÏ¸é Leak ¹ß»ı.
+	//strTemp.freeze( false );	// Note : std::strstreamì˜ freeze. ì•ˆ í•˜ë©´ Leak ë°œìƒ.
 
 	return nReturn;
 }
 
 ///////////////////////////////////////////////////////////////////////////
-// µ¿¸Í Å¬·´Á¤º¸¸¦ °¡Á®¿Â´Ù.	
+// ë™ë§¹ í´ëŸ½ì •ë³´ë¥¼ ê°€ì ¸ì˜¨ë‹¤.	
 int COdbcManager::GetClubAlliance ( std::vector< std::pair<DWORD,DWORD> > &vecAlliance )
 {
 	vecAlliance.clear();
@@ -1387,7 +1387,7 @@ int COdbcManager::GetClubAlliance ( std::vector< std::pair<DWORD,DWORD> > &vecAl
 	//strTemp = "SELECT GuNumP, GuNumS FROM GuildAlliance WITH (NOLOCK) ORDER BY GuNumP";
 
 	TCHAR szTemp[128] = {0};
-	_snprintf( szTemp, 128, "SELECT GuNumP, GuNumS FROM GuildAlliance WITH (NOLOCK) ORDER BY GuNumP" );
+	_snprintf( szTemp, 128, "SELECT GuNumP, GuNumS FROM GuildAlliance ORDER BY GuNumP" );
 	
 	sReturn = ::SQLExecDirect(pConn->hStmt,
 							(SQLCHAR*)szTemp, 
@@ -1436,9 +1436,9 @@ int COdbcManager::GetClubAlliance ( std::vector< std::pair<DWORD,DWORD> > &vecAl
 }
 
 /**
-* Å¬·´ ¹èÆ²À» ½ÅÃ»ÇÑ´Ù.
-* \param dwClubP ÁÖÅ¬·´¹øÈ£( Å¬·´ ¹èÆ²ÀÇ ½ÅÃ»À» ¹ŞÀº ÁÖ )
-* \param dwClubS º¸Á¶ Å¬·´¹øÈ£( Å¬·´ ¹èÆ²ÀÇ ½ÅÃ»À» ÇÑ Å¬·´ )
+* í´ëŸ½ ë°°í‹€ì„ ì‹ ì²­í•œë‹¤.
+* \param dwClubP ì£¼í´ëŸ½ë²ˆí˜¸( í´ëŸ½ ë°°í‹€ì˜ ì‹ ì²­ì„ ë°›ì€ ì£¼ )
+* \param dwClubS ë³´ì¡° í´ëŸ½ë²ˆí˜¸( í´ëŸ½ ë°°í‹€ì˜ ì‹ ì²­ì„ í•œ í´ëŸ½ )
 * \return
 */
 int COdbcManager::SetClubBattle( DWORD dwClubP, DWORD dwClubS, DWORD dwEndTime, int nAlliance )
@@ -1460,11 +1460,11 @@ int COdbcManager::SetClubBattle( DWORD dwClubP, DWORD dwClubS, DWORD dwEndTime, 
 
 
 /**
-* Å¬·´ ¹èÆ²À» Á¾·áÇÑ´Ù.
-* \param dwClubP ÁÖÅ¬·´ ¹øÈ£( Å¬·´ ¹èÆ²ÀÇ ½ÅÃ»À» ¹ŞÀº ÁÖ )
-* \param dwClubS º¸Á¶ Å¬·´ ¹øÈ£( Å¬·´ ¹èÆ²ÀÇ ½ÅÃ»À» ÇÑ Å¬·´ )
-* \param nGuFlag ½ÂÆĞ¿©ºÎ
-* \param nGuKillNum Å¬·´ ¹èÆ² Å³¼ö
+* í´ëŸ½ ë°°í‹€ì„ ì¢…ë£Œí•œë‹¤.
+* \param dwClubP ì£¼í´ëŸ½ ë²ˆí˜¸( í´ëŸ½ ë°°í‹€ì˜ ì‹ ì²­ì„ ë°›ì€ ì£¼ )
+* \param dwClubS ë³´ì¡° í´ëŸ½ ë²ˆí˜¸( í´ëŸ½ ë°°í‹€ì˜ ì‹ ì²­ì„ í•œ í´ëŸ½ )
+* \param nGuFlag ìŠ¹íŒ¨ì—¬ë¶€
+* \param nGuKillNum í´ëŸ½ ë°°í‹€ í‚¬ìˆ˜
 * \return
 */
 int COdbcManager::EndClubBattle( DWORD dwClubP, DWORD dwClubS, int nGuFlag, int nGuKillNum, int nGuDeathNum, bool bAlliance )
@@ -1497,10 +1497,10 @@ int COdbcManager::EndClubBattle( DWORD dwClubP, DWORD dwClubS, int nGuFlag, int 
 }
 
 /**
-* Å¬·´ ¹èÆ²Á¤º¸¸¦ ÀúÀåÇÑ´Ù,( Å¬·´ ¹èÆ²ÀÌ Á¾·áµÇ±âÀü ¼­¹öÀç½ÃÀÛÀÌ ÇÊ¿äÇÑ°æ¿ì ¹èÆ² Á¤º¸ÀÇ ÀúÀåÀÌ ÇÊ¿äÇÔ )
-* \param dwClubP ÁÖÅ¬·´ ¹øÈ£( Å¬·´ ¹èÆ²ÀÇ ½ÅÃ»À» ¹ŞÀº ÁÖ)
-* \param dwClubS º¸Á¶ Å¬·´ ¹øÈ£( Å¬·´ ¹èÆ²ÀÇ ½ÅÃ»À» ÇÑ Å¬·´ )
-* \param nGuKillNum Å¬·´ ¹èÆ² Å³¼ö
+* í´ëŸ½ ë°°í‹€ì •ë³´ë¥¼ ì €ì¥í•œë‹¤,( í´ëŸ½ ë°°í‹€ì´ ì¢…ë£Œë˜ê¸°ì „ ì„œë²„ì¬ì‹œì‘ì´ í•„ìš”í•œê²½ìš° ë°°í‹€ ì •ë³´ì˜ ì €ì¥ì´ í•„ìš”í•¨ )
+* \param dwClubP ì£¼í´ëŸ½ ë²ˆí˜¸( í´ëŸ½ ë°°í‹€ì˜ ì‹ ì²­ì„ ë°›ì€ ì£¼)
+* \param dwClubS ë³´ì¡° í´ëŸ½ ë²ˆí˜¸( í´ëŸ½ ë°°í‹€ì˜ ì‹ ì²­ì„ í•œ í´ëŸ½ )
+* \param nGuKillNum í´ëŸ½ ë°°í‹€ í‚¬ìˆ˜
 * \return
 */
 int COdbcManager::SaveClubBattle( DWORD dwClubP, DWORD dwClubS, int nGuKillNum, int nGuDeathNum )
@@ -1521,8 +1521,8 @@ int COdbcManager::SaveClubBattle( DWORD dwClubP, DWORD dwClubS, int nGuKillNum, 
 
 
 /**
-* µ¿¸Í¹èÆ² ÀüÀûÀ» ÃÊ±âÈ­ ½ÃÅ°±ä´Ù.
-* \param dwClub Å¬·´ ¹øÈ£
+* ë™ë§¹ë°°í‹€ ì „ì ì„ ì´ˆê¸°í™” ì‹œí‚¤ê¸´ë‹¤.
+* \param dwClub í´ëŸ½ ë²ˆí˜¸
 * \return
 */
 int COdbcManager::ReSetAllianceBattle( DWORD dwClub )
@@ -1543,9 +1543,9 @@ int COdbcManager::ReSetAllianceBattle( DWORD dwClub )
 }
 
 /**
-* ÇØ´ç Å¬·´ÀÇ ¹èÆ²ÁßÀÎ Å¬·´ Á¤º¸¸¦ °¡Á®¿Â´Ù.
-* \param dwClub Å¬·´¹øÈ£
-* \param &vMember Å¬·´¹èÆ² Á¤º¸
+* í•´ë‹¹ í´ëŸ½ì˜ ë°°í‹€ì¤‘ì¸ í´ëŸ½ ì •ë³´ë¥¼ ê°€ì ¸ì˜¨ë‹¤.
+* \param dwClub í´ëŸ½ë²ˆí˜¸
+* \param &vMember í´ëŸ½ë°°í‹€ ì •ë³´
 * \return 
 */
 int COdbcManager::GetClubBattleInfo( DWORD dwClub, std::vector<GLCLUBBATTLE> &vBattleInfo )
@@ -1589,7 +1589,7 @@ int COdbcManager::GetClubBattleInfo( DWORD dwClub, std::vector<GLCLUBBATTLE> &vB
 		    Print(GetErrorString(pConn->hStmt));
             m_pGameDB->FreeConnection(pConn);
 
-			//strTemp.freeze( false );	// Note : std::strstreamÀÇ freeze. ¾È ÇÏ¸é Leak ¹ß»ı.
+			//strTemp.freeze( false );	// Note : std::strstreamì˜ freeze. ì•ˆ í•˜ë©´ Leak ë°œìƒ.
             return DB_ERROR;
 		}
 

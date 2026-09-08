@@ -27,8 +27,8 @@ int COdbcManager::GetChaFriend(
 							"WHERE ChaP=%d", nChaNum );
 #else
 	TCHAR szTemp[128] = {0};
-	_snprintf( szTemp, 128, "SELECT TOP 100 ChaP, ChaS, ChaName, ChaFlag From viewChaFriend "
-							"WHERE ChaP=%d", nChaNum );
+	_snprintf( szTemp, 128, "SELECT ChaP, ChaS, ChaName, ChaFlag From viewChaFriend "
+							"WHERE ChaP=%d LIMIT 100", nChaNum );
 #endif
 	
 	sReturn = ::SQLExecDirect(pConn->hStmt,
@@ -41,7 +41,7 @@ int COdbcManager::GetChaFriend(
 		Print(GetErrorString(pConn->hStmt));
 		m_pGameDB->FreeConnection(pConn);
 
-		//strTemp.freeze( false );	// Note : std::strstreamÀÇ freeze. ¾È ÇÏ¸é Leak ¹ß»ı.
+		//strTemp.freeze( false );	// Note : std::strstreamì˜ freeze. ì•ˆ í•˜ë©´ Leak ë°œìƒ.
 		return DB_ERROR;
 	}
 
@@ -59,7 +59,7 @@ int COdbcManager::GetChaFriend(
 			Print(GetErrorString(pConn->hStmt));
             m_pGameDB->FreeConnection(pConn);
 
-			//strTemp.freeze( false );	// Note : std::strstreamÀÇ freeze. ¾È ÇÏ¸é Leak ¹ß»ı.
+			//strTemp.freeze( false );	// Note : std::strstreamì˜ freeze. ì•ˆ í•˜ë©´ Leak ë°œìƒ.
             return DB_ERROR;
 		}
 
@@ -89,7 +89,7 @@ int COdbcManager::GetChaFriend(
 	}	  
 	m_pGameDB->FreeConnection(pConn);
 
-	//strTemp.freeze( false );	// Note : std::strstreamÀÇ freeze. ¾È ÇÏ¸é Leak ¹ß»ı.
+	//strTemp.freeze( false );	// Note : std::strstreamì˜ freeze. ì•ˆ í•˜ë©´ Leak ë°œìƒ.
 
 	return DB_OK;
 }
@@ -108,7 +108,7 @@ int COdbcManager::DelChaFriend(int nChaP, int nChaS)
 	_snprintf( szTemp, 128, "{call DeleteChaFriend(%d,%d,?)}", nChaP, nChaS );
 
 	int nReturn = m_pGameDB->ExecuteSpInt(szTemp);
-	//strTemp.freeze( false );	// Note : std::strstreamÀÇ freeze. ¾È ÇÏ¸é Leak ¹ß»ı.
+	//strTemp.freeze( false );	// Note : std::strstreamì˜ freeze. ì•ˆ í•˜ë©´ Leak ë°œìƒ.
 
 	return nReturn;
 }
@@ -127,7 +127,7 @@ int COdbcManager::AddChaFriend(int nChaP, int nChaS)
 	_snprintf( szTemp, 128, "{call InsertChaFriend(%d,%d,?)}", nChaP, nChaS );
 
 	int nReturn = m_pGameDB->ExecuteSpInt(szTemp);
-	//strTemp.freeze( false );	// Note : std::strstreamÀÇ freeze. ¾È ÇÏ¸é Leak ¹ß»ı.
+	//strTemp.freeze( false );	// Note : std::strstreamì˜ freeze. ì•ˆ í•˜ë©´ Leak ë°œìƒ.
 
     return nReturn;
 }
@@ -147,7 +147,7 @@ int COdbcManager::SetChaFriend(int nChaP, int nChaS, int nFlag)
 	_snprintf( szTemp, 128, "{call UpdateChaFriend(%d,%d,%d,?)}", nChaP, nChaS, nFlag );
 
 	int nReturn = m_pGameDB->ExecuteSpInt(szTemp);
-	//strTemp.freeze( false );	// Note : std::strstreamÀÇ freeze. ¾È ÇÏ¸é Leak ¹ß»ı.
+	//strTemp.freeze( false );	// Note : std::strstreamì˜ freeze. ì•ˆ í•˜ë©´ Leak ë°œìƒ.
 
 	return nReturn;
 }

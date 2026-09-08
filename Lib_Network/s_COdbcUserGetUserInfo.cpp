@@ -5,7 +5,7 @@
 #define new DEBUG_NEW
 #endif
 
-// ´ë¸¸/È«Äá/Áß±¹
+// ëŒ€ë§Œ/í™ì½©/ì¤‘êµ­
 USER_INFO_BASIC COdbcManager::GetUserInfo(
 	const TCHAR* szUsrId,
 	const TCHAR* szPasswd )
@@ -29,7 +29,7 @@ USER_INFO_BASIC COdbcManager::GetUserInfo(
 
 	TCHAR szTemp[256] = {0};
 	_snprintf( szTemp, 256, "SELECT UserNum, UserID, LastLoginDate "
-							"FROM UserInfo WITH (NOLOCK) WHERE UserID = '%s' AND UserPass ='%s'",
+							"FROM UserInfo WHERE UserID = '%s' AND UserPass ='%s'",
 							szUsrId, szPasswd );
 
 	SQLRETURN	sReturn = 0;
@@ -47,7 +47,7 @@ USER_INFO_BASIC COdbcManager::GetUserInfo(
         Print(szTemp);
 		Print(GetErrorString(pConn->hStmt));
 
-		//strTemp.freeze( false );	// Note : std::strstreamÀÇ freeze. ¾È ÇÏ¸é Leak ¹ß»ı.
+		//strTemp.freeze( false );	// Note : std::strstreamì˜ freeze. ì•ˆ í•˜ë©´ Leak ë°œìƒ.
 	}
 	else
 	{
@@ -70,7 +70,7 @@ USER_INFO_BASIC COdbcManager::GetUserInfo(
 			}
 		}
 
-		//strTemp.freeze( false );	// Note : std::strstreamÀÇ freeze. ¾È ÇÏ¸é Leak ¹ß»ı.
+		//strTemp.freeze( false );	// Note : std::strstreamì˜ freeze. ì•ˆ í•˜ë©´ Leak ë°œìƒ.
 	}
 	m_pUserDB->FreeConnection(pConn);
 
@@ -78,7 +78,7 @@ USER_INFO_BASIC COdbcManager::GetUserInfo(
 }
 
 /**
-* »ç¿ëÀÚ Á¤º¸¸¦ °¡Á®¿Â´Ù
+* ì‚¬ìš©ì ì •ë³´ë¥¼ ê°€ì ¸ì˜¨ë‹¤
 * Thailand
 * \param szUserID 
 * \param pMsg 
@@ -120,7 +120,7 @@ int COdbcManager::ThaiGetUserInfo(
 		Print(GetErrorString(pConn->hStmt));
 		m_pUserDB->FreeConnection(pConn);
 
-		//strTemp.freeze( false );	// Note : std::strstreamÀÇ freeze. ¾È ÇÏ¸é Leak ¹ß»ı.
+		//strTemp.freeze( false );	// Note : std::strstreamì˜ freeze. ì•ˆ í•˜ë©´ Leak ë°œìƒ.
 
 		return DB_ERROR;
 	}
@@ -135,7 +135,7 @@ int COdbcManager::ThaiGetUserInfo(
 		        Print(GetErrorString(pConn->hStmt));
 				m_pUserDB->FreeConnection(pConn);
 
-				//strTemp.freeze( false );	// Note : std::strstreamÀÇ freeze. ¾È ÇÏ¸é Leak ¹ß»ı.
+				//strTemp.freeze( false );	// Note : std::strstreamì˜ freeze. ì•ˆ í•˜ë©´ Leak ë°œìƒ.
 				return DB_ERROR;
 			}
  			if (sReturn == SQL_SUCCESS || sReturn == SQL_SUCCESS_WITH_INFO)
@@ -152,7 +152,7 @@ int COdbcManager::ThaiGetUserInfo(
                 pMsg->nUserType      = nUserType;
 				pMsg->uChaRemain     = (USHORT) nChaRemain;
                 pMsg->uChaTestRemain = (USHORT) nChaTestRemain;
-				pMsg->wThaiFlag      = (WORD) nUserThaiFlag; // Thailand »ç¿ëÀÚ Å¸ÀÔ ÇÃ·¡±×
+				pMsg->wThaiFlag      = (WORD) nUserThaiFlag; // Thailand ì‚¬ìš©ì íƒ€ì… í”Œë˜ê·¸
 
 				VerifyTimeValid( "COdbcManager::ThaiGetUserInfo", "sPremiumDate", sPremiumDate );
 				VerifyTimeValid( "COdbcManager::ThaiGetUserInfo", "sChatBlockDate", sChatBlockDate );
@@ -171,12 +171,12 @@ int COdbcManager::ThaiGetUserInfo(
 			}
         }
 
-		//strTemp.freeze( false );	// Note : std::strstreamÀÇ freeze. ¾È ÇÏ¸é Leak ¹ß»ı.
+		//strTemp.freeze( false );	// Note : std::strstreamì˜ freeze. ì•ˆ í•˜ë©´ Leak ë°œìƒ.
 	}
 	m_pUserDB->FreeConnection(pConn);
 
-	// ±Ø°­ºÎ Ãß°¡
-	// ±Ø°­ºÎ »ı¼º °¡´É ¿©ºÎ¸¦ Ã¼Å©ÇÏ±â À§ÇØ¼­
+	// ê·¹ê°•ë¶€ ì¶”ê°€
+	// ê·¹ê°•ë¶€ ìƒì„± ê°€ëŠ¥ ì—¬ë¶€ë¥¼ ì²´í¬í•˜ê¸° ìœ„í•´ì„œ
 	sReturn = 0;
 	pConn = m_pGameDB->GetConnection();
 	if (!pConn)	return DB_ERROR;
@@ -184,7 +184,7 @@ int COdbcManager::ThaiGetUserInfo(
 	SQLINTEGER nExtremeM = 0, cbExtremeM = SQL_NTS;
 	SQLINTEGER nExtremeW = 0, cbExtremeW = SQL_NTS;
 
-	// ±Ø°­ºÎ »ı¼º°¡´É ¿©ºÎ Ã¼Å© 
+	// ê·¹ê°•ë¶€ ìƒì„±ê°€ëŠ¥ ì—¬ë¶€ ì²´í¬ 
 	//std::strstream strTemp1;
 	//strTemp1 << "Exec sp_Extreme ";
 	//strTemp1 << nUserNum;
@@ -202,7 +202,7 @@ int COdbcManager::ThaiGetUserInfo(
 		Print(GetErrorString(pConn->hStmt));
 		m_pGameDB->FreeConnection(pConn);
 
-		//strTemp1.freeze( false );	// Note : std::strstreamÀÇ freeze. ¾È ÇÏ¸é Leak ¹ß»ı.
+		//strTemp1.freeze( false );	// Note : std::strstreamì˜ freeze. ì•ˆ í•˜ë©´ Leak ë°œìƒ.
 		return DB_ERROR;
 	}
 
@@ -215,7 +215,7 @@ int COdbcManager::ThaiGetUserInfo(
 			Print(GetErrorString(pConn->hStmt));
             m_pGameDB->FreeConnection(pConn);
 
-			//strTemp1.freeze( false );	// Note : std::strstreamÀÇ freeze. ¾È ÇÏ¸é Leak ¹ß»ı.
+			//strTemp1.freeze( false );	// Note : std::strstreamì˜ freeze. ì•ˆ í•˜ë©´ Leak ë°œìƒ.
             return DB_ERROR;
 		}
 
@@ -234,7 +234,7 @@ int COdbcManager::ThaiGetUserInfo(
 		Sleep( 0 );
 	}
 
-	//strTemp1.freeze( false );	// Note : std::strstreamÀÇ freeze. ¾È ÇÏ¸é Leak ¹ß»ı.
+	//strTemp1.freeze( false );	// Note : std::strstreamì˜ freeze. ì•ˆ í•˜ë©´ Leak ë°œìƒ.
 
 	m_pGameDB->FreeConnection(pConn);
 
@@ -242,7 +242,7 @@ int COdbcManager::ThaiGetUserInfo(
 }
 
 /**
-* »ç¿ëÀÚ Á¤º¸¸¦ °¡Á®¿Í¼­ Agent ·Î Àü¼Û
+* ì‚¬ìš©ì ì •ë³´ë¥¼ ê°€ì ¸ì™€ì„œ Agent ë¡œ ì „ì†¡
 */
 int COdbcManager::GetUserInfo(
 	const TCHAR* szUserID,
@@ -272,7 +272,7 @@ int COdbcManager::GetUserInfo(
 	//strTemp << std::ends;
 	TIMESTAMP_STRUCT sLastLoginTime; SQLINTEGER cbLastLoginTime = SQL_NTS;	
 #if defined( CH_PARAM )
-	// Áß±¹ GameTime Check¸¦ À§ÇØ¼­ Ãß°¡
+	// ì¤‘êµ­ GameTime Checkë¥¼ ìœ„í•´ì„œ ì¶”ê°€
 
 	SQLINTEGER nChinaGameTime = 0, cbChinaGameTime = SQL_NTS;
 	SQLINTEGER nChinaOfflineTime = 0, cbChinaOfflineTime = SQL_NTS;
@@ -316,7 +316,7 @@ int COdbcManager::GetUserInfo(
 		Print(GetErrorString(pConn->hStmt));
 		m_pUserDB->FreeConnection(pConn);
 
-		//strTemp.freeze( false );	// Note : std::strstreamÀÇ freeze. ¾È ÇÏ¸é Leak ¹ß»ı.
+		//strTemp.freeze( false );	// Note : std::strstreamì˜ freeze. ì•ˆ í•˜ë©´ Leak ë°œìƒ.
 
 		return DB_ERROR;
 	}
@@ -332,7 +332,7 @@ int COdbcManager::GetUserInfo(
 		        Print(GetErrorString(pConn->hStmt));
 				m_pUserDB->FreeConnection(pConn);
 
-				//strTemp.freeze( false );	// Note : std::strstreamÀÇ freeze. ¾È ÇÏ¸é Leak ¹ß»ı.
+				//strTemp.freeze( false );	// Note : std::strstreamì˜ freeze. ì•ˆ í•˜ë©´ Leak ë°œìƒ.
 				return DB_ERROR;
 			}
  			if (sReturn == SQL_SUCCESS || sReturn == SQL_SUCCESS_WITH_INFO)
@@ -394,7 +394,7 @@ int COdbcManager::GetUserInfo(
 		        Print(GetErrorString(pConn->hStmt));
 				m_pUserDB->FreeConnection(pConn);
 
-				//strTemp.freeze( false );	// Note : std::strstreamÀÇ freeze. ¾È ÇÏ¸é Leak ¹ß»ı.
+				//strTemp.freeze( false );	// Note : std::strstreamì˜ freeze. ì•ˆ í•˜ë©´ Leak ë°œìƒ.
 				return DB_ERROR;
 			}
  			if (sReturn == SQL_SUCCESS || sReturn == SQL_SUCCESS_WITH_INFO)
@@ -456,12 +456,12 @@ int COdbcManager::GetUserInfo(
 			}
         }
 #endif
-		//strTemp.freeze( false );	// Note : std::strstreamÀÇ freeze. ¾È ÇÏ¸é Leak ¹ß»ı.
+		//strTemp.freeze( false );	// Note : std::strstreamì˜ freeze. ì•ˆ í•˜ë©´ Leak ë°œìƒ.
 	}
 	m_pUserDB->FreeConnection(pConn);
 
-	// ±Ø°­ºÎ Ãß°¡
-	// ±Ø°­ºÎ »ı¼º °¡´É ¿©ºÎ¸¦ Ã¼Å©ÇÏ±â À§ÇØ¼­
+	// ê·¹ê°•ë¶€ ì¶”ê°€
+	// ê·¹ê°•ë¶€ ìƒì„± ê°€ëŠ¥ ì—¬ë¶€ë¥¼ ì²´í¬í•˜ê¸° ìœ„í•´ì„œ
 	sReturn = 0;
 	pConn = m_pGameDB->GetConnection(); 
 	if (!pConn)	return DB_ERROR;
@@ -469,7 +469,7 @@ int COdbcManager::GetUserInfo(
 	SQLINTEGER nExtremeM = 0, cbExtremeM = SQL_NTS;
 	SQLINTEGER nExtremeW = 0, cbExtremeW = SQL_NTS;
 
-	// ±Ø°­ºÎ »ı¼º°¡´É ¿©ºÎ Ã¼Å© 
+	// ê·¹ê°•ë¶€ ìƒì„±ê°€ëŠ¥ ì—¬ë¶€ ì²´í¬ 
 	//std::strstream strTemp1;
 	//strTemp1 << "Exec sp_Extreme ";
 	//strTemp1 << nUserNum;
@@ -487,7 +487,7 @@ int COdbcManager::GetUserInfo(
 		Print(GetErrorString(pConn->hStmt));
 		m_pGameDB->FreeConnection(pConn);
 
-		//strTemp1.freeze( false );	// Note : std::strstreamÀÇ freeze. ¾È ÇÏ¸é Leak ¹ß»ı.
+		//strTemp1.freeze( false );	// Note : std::strstreamì˜ freeze. ì•ˆ í•˜ë©´ Leak ë°œìƒ.
 		return DB_ERROR;
 	}
 
@@ -500,7 +500,7 @@ int COdbcManager::GetUserInfo(
 			Print(GetErrorString(pConn->hStmt));
             m_pGameDB->FreeConnection(pConn);
 
-			//strTemp1.freeze( false );	// Note : std::strstreamÀÇ freeze. ¾È ÇÏ¸é Leak ¹ß»ı.
+			//strTemp1.freeze( false );	// Note : std::strstreamì˜ freeze. ì•ˆ í•˜ë©´ Leak ë°œìƒ.
             return DB_ERROR;
 		}
 
@@ -519,7 +519,7 @@ int COdbcManager::GetUserInfo(
 		Sleep( 0 );
 	}
 
-	//strTemp1.freeze( false );	// Note : std::strstreamÀÇ freeze. ¾È ÇÏ¸é Leak ¹ß»ı.
+	//strTemp1.freeze( false );	// Note : std::strstreamì˜ freeze. ì•ˆ í•˜ë©´ Leak ë°œìƒ.
 	
 	/*dmk14 level required gametime*/
 	sReturn = 0;
@@ -574,7 +574,7 @@ int COdbcManager::GetUserInfo(
 }
 
 /**
-* DAUM : »ç¿ëÀÚ Á¤º¸¸¦ °¡Á®¿Í¼­ Agent ·Î Àü¼Û
+* DAUM : ì‚¬ìš©ì ì •ë³´ë¥¼ ê°€ì ¸ì™€ì„œ Agent ë¡œ ì „ì†¡
 */
 int COdbcManager::DaumGetUserInfo(
 	const TCHAR* szGID,
@@ -611,7 +611,7 @@ int COdbcManager::DaumGetUserInfo(
 		Print(GetErrorString(pConn->hStmt));
 		m_pUserDB->FreeConnection(pConn);
 
-		//strTemp.freeze( false );	// Note : std::strstreamÀÇ freeze. ¾È ÇÏ¸é Leak ¹ß»ı.
+		//strTemp.freeze( false );	// Note : std::strstreamì˜ freeze. ì•ˆ í•˜ë©´ Leak ë°œìƒ.
 
 		return DB_ERROR;
 	}
@@ -626,7 +626,7 @@ int COdbcManager::DaumGetUserInfo(
 		        Print(GetErrorString(pConn->hStmt));
 				m_pUserDB->FreeConnection(pConn);
 
-				//strTemp.freeze( false );	// Note : std::strstreamÀÇ freeze. ¾È ÇÏ¸é Leak ¹ß»ı.
+				//strTemp.freeze( false );	// Note : std::strstreamì˜ freeze. ì•ˆ í•˜ë©´ Leak ë°œìƒ.
 				return DB_ERROR;
 			}
  			if (sReturn == SQL_SUCCESS || sReturn == SQL_SUCCESS_WITH_INFO)
@@ -661,12 +661,12 @@ int COdbcManager::DaumGetUserInfo(
 			}
         }
 
-		//strTemp.freeze( false );	// Note : std::strstreamÀÇ freeze. ¾È ÇÏ¸é Leak ¹ß»ı.
+		//strTemp.freeze( false );	// Note : std::strstreamì˜ freeze. ì•ˆ í•˜ë©´ Leak ë°œìƒ.
 	}
 	m_pUserDB->FreeConnection(pConn);
 
-    // ±Ø°­ºÎ Ãß°¡
-	// ±Ø°­ºÎ »ı¼º °¡´É ¿©ºÎ¸¦ Ã¼Å©ÇÏ±â À§ÇØ¼­
+    // ê·¹ê°•ë¶€ ì¶”ê°€
+	// ê·¹ê°•ë¶€ ìƒì„± ê°€ëŠ¥ ì—¬ë¶€ë¥¼ ì²´í¬í•˜ê¸° ìœ„í•´ì„œ
 	sReturn = 0;
 	pConn = m_pGameDB->GetConnection(); 
 	if (!pConn)	return DB_ERROR;
@@ -674,7 +674,7 @@ int COdbcManager::DaumGetUserInfo(
 	SQLINTEGER nExtremeM = 0, cbExtremeM = SQL_NTS;
 	SQLINTEGER nExtremeW = 0, cbExtremeW = SQL_NTS;
 
-	// ±Ø°­ºÎ »ı¼º°¡´É ¿©ºÎ Ã¼Å© 
+	// ê·¹ê°•ë¶€ ìƒì„±ê°€ëŠ¥ ì—¬ë¶€ ì²´í¬ 
 	//std::strstream strTemp1;
 	//strTemp1 << "Exec sp_Extreme ";
 	//strTemp1 << nUserNum;
@@ -692,7 +692,7 @@ int COdbcManager::DaumGetUserInfo(
 		Print(GetErrorString(pConn->hStmt));
 		m_pGameDB->FreeConnection(pConn);
 
-		//strTemp1.freeze( false );	// Note : std::strstreamÀÇ freeze. ¾È ÇÏ¸é Leak ¹ß»ı.
+		//strTemp1.freeze( false );	// Note : std::strstreamì˜ freeze. ì•ˆ í•˜ë©´ Leak ë°œìƒ.
 		return DB_ERROR;
 	}
 
@@ -705,7 +705,7 @@ int COdbcManager::DaumGetUserInfo(
 			Print(GetErrorString(pConn->hStmt));
             m_pGameDB->FreeConnection(pConn);
 
-			//strTemp1.freeze( false );	// Note : std::strstreamÀÇ freeze. ¾È ÇÏ¸é Leak ¹ß»ı.
+			//strTemp1.freeze( false );	// Note : std::strstreamì˜ freeze. ì•ˆ í•˜ë©´ Leak ë°œìƒ.
             return DB_ERROR;
 		}
 
@@ -724,18 +724,18 @@ int COdbcManager::DaumGetUserInfo(
 		Sleep( 0 );
 	}
 	
-	//strTemp1.freeze( false );	// Note : std::strstreamÀÇ freeze. ¾È ÇÏ¸é Leak ¹ß»ı.	
+	//strTemp1.freeze( false );	// Note : std::strstreamì˜ freeze. ì•ˆ í•˜ë©´ Leak ë°œìƒ.	
 
 	m_pGameDB->FreeConnection(pConn);
 
-	// Daum ÆĞ½º¿öµå ÀÔ·ÂÀ» À§ÇØ¼­ ÄÚµå¸¦ Ãß°¡ÇÑ´Ù.
+	// Daum íŒ¨ìŠ¤ì›Œë“œ ì…ë ¥ì„ ìœ„í•´ì„œ ì½”ë“œë¥¼ ì¶”ê°€í•œë‹¤.
 	sReturn = 0;
 	pConn = m_pUserDB->GetConnection();
 	if (!pConn) return DB_ERROR;
 
 	SQLINTEGER nCheckFlag = 0, cbCheckFlag = SQL_NTS;
 
-	// UserÀÇ ÆĞ½º¿öµå ÀÔ·Â ¿©ºÎ ÆÇ´Ü
+	// Userì˜ íŒ¨ìŠ¤ì›Œë“œ ì…ë ¥ ì—¬ë¶€ íŒë‹¨
 	//std::strstream strTemp2;
 	//strTemp2 << "SELECT CheckFlag FROM ";
 	//strTemp2 << "DaumUserInfo WHERE UserUID='" << szUID << "'";
@@ -751,7 +751,7 @@ int COdbcManager::DaumGetUserInfo(
 		Print(GetErrorString(pConn->hStmt));
 		m_pUserDB->FreeConnection( false );
 
-		//strTemp2.freeze( false );	// Note : std::strstreamÀÇ freeze. ¾È ÇÏ¸é Leak ¹ß»ı.
+		//strTemp2.freeze( false );	// Note : std::strstreamì˜ freeze. ì•ˆ í•˜ë©´ Leak ë°œìƒ.
 		return DB_ERROR;
 	}
 
@@ -764,7 +764,7 @@ int COdbcManager::DaumGetUserInfo(
 			Print(GetErrorString(pConn->hStmt));
             m_pUserDB->FreeConnection(pConn);
 
-			//strTemp2.freeze( false );	// Note : std::strstreamÀÇ freeze. ¾È ÇÏ¸é Leak ¹ß»ı.
+			//strTemp2.freeze( false );	// Note : std::strstreamì˜ freeze. ì•ˆ í•˜ë©´ Leak ë°œìƒ.
             return DB_ERROR;
 		}
 		if( sReturn == SQL_SUCCESS || sReturn == SQL_SUCCESS_WITH_INFO )
@@ -780,7 +780,7 @@ int COdbcManager::DaumGetUserInfo(
 		Sleep( 0 );
 	}
 
-	//strTemp2.freeze( false );	// Note : std::strstreamÀÇ freeze. ¾È ÇÏ¸é Leak ¹ß»ı.
+	//strTemp2.freeze( false );	// Note : std::strstreamì˜ freeze. ì•ˆ í•˜ë©´ Leak ë°œìƒ.
 
 	m_pUserDB->FreeConnection(pConn);
 
@@ -788,7 +788,7 @@ int COdbcManager::DaumGetUserInfo(
 }
 
 /**
-* GSP »ç¿ëÀÚ Á¤º¸¸¦ °¡Á®¿Â´Ù.
+* GSP ì‚¬ìš©ì ì •ë³´ë¥¼ ê°€ì ¸ì˜¨ë‹¤.
 * \param szUserID UserID varchar(50)
 * \param pMsg
 * \return 
@@ -828,7 +828,7 @@ int COdbcManager::GspGetUserInfo(
         Print( szTemp );
 		Print( GetErrorString( pConn->hStmt ) );
 		m_pUserDB->FreeConnection( pConn );
-		//strTemp.freeze( false );	// Note : std::strstreamÀÇ freeze. ¾È ÇÏ¸é Leak ¹ß»ı.
+		//strTemp.freeze( false );	// Note : std::strstreamì˜ freeze. ì•ˆ í•˜ë©´ Leak ë°œìƒ.
 		return DB_ERROR;
 	}
 	else
@@ -842,7 +842,7 @@ int COdbcManager::GspGetUserInfo(
 		        Print( GetErrorString( pConn->hStmt ) );
 				m_pUserDB->FreeConnection( pConn );
 
-				//strTemp.freeze( false );	// Note : std::strstreamÀÇ freeze. ¾È ÇÏ¸é Leak ¹ß»ı.
+				//strTemp.freeze( false );	// Note : std::strstreamì˜ freeze. ì•ˆ í•˜ë©´ Leak ë°œìƒ.
 				return DB_ERROR;
 			}
  			if ( (sReturn == SQL_SUCCESS) || (sReturn == SQL_SUCCESS_WITH_INFO) )
@@ -876,13 +876,13 @@ int COdbcManager::GspGetUserInfo(
 			}
         }
 
-		//strTemp.freeze( false );	// Note : std::strstreamÀÇ freeze. ¾È ÇÏ¸é Leak ¹ß»ı.
+		//strTemp.freeze( false );	// Note : std::strstreamì˜ freeze. ì•ˆ í•˜ë©´ Leak ë°œìƒ.
 	}
 	m_pUserDB->FreeConnection(pConn);
     return DB_OK;
 }
 
-// ¸»·¹ÀÌÁö¾Æ
+// ë§ë ˆì´ì§€ì•„
 int COdbcManager::TerraGetUserInfo(
 	const TCHAR* szTLoginName, 
 	TERRA_NET_LOGIN_FEEDBACK_DATA2* pMsg )
@@ -905,7 +905,7 @@ int COdbcManager::TerraGetUserInfo(
 	//strTemp << std::ends;
 
 #if defined( VN_PARAM ) //vietnamtest%%%
-// º£Æ®³² Å½´Ğ ¹æÁö ½Ã½ºÅÛ Ãß°¡
+// ë² íŠ¸ë‚¨ íƒë‹‰ ë°©ì§€ ì‹œìŠ¤í…œ ì¶”ê°€
 
 	SQLINTEGER nVTGameTime = 0, cbVTGameTime = SQL_NTS;
 	TIMESTAMP_STRUCT sLastLoginTime; SQLINTEGER cbLastLoginTime = SQL_NTS;	
@@ -931,7 +931,7 @@ int COdbcManager::TerraGetUserInfo(
 		Print(GetErrorString(pConn->hStmt));
 		m_pUserDB->FreeConnection(pConn);
 
-		//strTemp.freeze( false );	// Note : std::strstreamÀÇ freeze. ¾È ÇÏ¸é Leak ¹ß»ı.
+		//strTemp.freeze( false );	// Note : std::strstreamì˜ freeze. ì•ˆ í•˜ë©´ Leak ë°œìƒ.
 
 		return DB_ERROR;
 	}
@@ -947,7 +947,7 @@ int COdbcManager::TerraGetUserInfo(
 				Print(GetErrorString(pConn->hStmt));
 				m_pUserDB->FreeConnection(pConn);
 
-				//strTemp.freeze( false );	// Note : std::strstreamÀÇ freeze. ¾È ÇÏ¸é Leak ¹ß»ı.
+				//strTemp.freeze( false );	// Note : std::strstreamì˜ freeze. ì•ˆ í•˜ë©´ Leak ë°œìƒ.
 				return DB_ERROR;
 			}
 			if (sReturn == SQL_SUCCESS || sReturn == SQL_SUCCESS_WITH_INFO)
@@ -1001,7 +1001,7 @@ int COdbcManager::TerraGetUserInfo(
 		        Print(GetErrorString(pConn->hStmt));
 				m_pUserDB->FreeConnection(pConn);
 
-				//strTemp.freeze( false );	// Note : std::strstreamÀÇ freeze. ¾È ÇÏ¸é Leak ¹ß»ı.
+				//strTemp.freeze( false );	// Note : std::strstreamì˜ freeze. ì•ˆ í•˜ë©´ Leak ë°œìƒ.
 				return DB_ERROR;
 			}
  			if (sReturn == SQL_SUCCESS || sReturn == SQL_SUCCESS_WITH_INFO)
@@ -1035,12 +1035,12 @@ int COdbcManager::TerraGetUserInfo(
 			}
         }
 #endif
-		//strTemp.freeze( false );	// Note : std::strstreamÀÇ freeze. ¾È ÇÏ¸é Leak ¹ß»ı.
+		//strTemp.freeze( false );	// Note : std::strstreamì˜ freeze. ì•ˆ í•˜ë©´ Leak ë°œìƒ.
 	}
 	m_pUserDB->FreeConnection(pConn);
 
-	// ±Ø°­ºÎ Ãß°¡
-	// ±Ø°­ºÎ »ı¼º °¡´É ¿©ºÎ¸¦ Ã¼Å©ÇÏ±â À§ÇØ¼­
+	// ê·¹ê°•ë¶€ ì¶”ê°€
+	// ê·¹ê°•ë¶€ ìƒì„± ê°€ëŠ¥ ì—¬ë¶€ë¥¼ ì²´í¬í•˜ê¸° ìœ„í•´ì„œ
 	sReturn = 0;
 	pConn = m_pGameDB->GetConnection(); 
 	if (!pConn)	return DB_ERROR;
@@ -1048,7 +1048,7 @@ int COdbcManager::TerraGetUserInfo(
 	SQLINTEGER nExtremeM = 0, cbExtremeM = SQL_NTS;
 	SQLINTEGER nExtremeW = 0, cbExtremeW = SQL_NTS;
 
-	// ±Ø°­ºÎ »ı¼º°¡´É ¿©ºÎ Ã¼Å© 
+	// ê·¹ê°•ë¶€ ìƒì„±ê°€ëŠ¥ ì—¬ë¶€ ì²´í¬ 
 	//std::strstream strTemp1;
 	//strTemp1 << "Exec sp_Extreme ";
 	//strTemp1 << nUserNum;
@@ -1066,7 +1066,7 @@ int COdbcManager::TerraGetUserInfo(
 		Print(GetErrorString(pConn->hStmt));
 		m_pGameDB->FreeConnection(pConn);
 
-		//strTemp1.freeze( false );	// Note : std::strstreamÀÇ freeze. ¾È ÇÏ¸é Leak ¹ß»ı.
+		//strTemp1.freeze( false );	// Note : std::strstreamì˜ freeze. ì•ˆ í•˜ë©´ Leak ë°œìƒ.
 		return DB_ERROR;
 	}
 
@@ -1079,7 +1079,7 @@ int COdbcManager::TerraGetUserInfo(
 			Print(GetErrorString(pConn->hStmt));
             m_pGameDB->FreeConnection(pConn);
 
-			//strTemp1.freeze( false );	// Note : std::strstreamÀÇ freeze. ¾È ÇÏ¸é Leak ¹ß»ı.
+			//strTemp1.freeze( false );	// Note : std::strstreamì˜ freeze. ì•ˆ í•˜ë©´ Leak ë°œìƒ.
             return DB_ERROR;
 		}
 
@@ -1098,18 +1098,18 @@ int COdbcManager::TerraGetUserInfo(
 		Sleep( 0 );
 	}
 
-	//strTemp1.freeze( false );	// Note : std::strstreamÀÇ freeze. ¾È ÇÏ¸é Leak ¹ß»ı.
+	//strTemp1.freeze( false );	// Note : std::strstreamì˜ freeze. ì•ˆ í•˜ë©´ Leak ë°œìƒ.
 
 	m_pGameDB->FreeConnection(pConn);
 /*	
-	// ¸»·¹ÀÌÁö¾Æ ÆĞ½º¿öµå ÀÔ·ÂÀ» À§ÇØ¼­ ÄÚµå¸¦ Ãß°¡ÇÑ´Ù.
+	// ë§ë ˆì´ì§€ì•„ íŒ¨ìŠ¤ì›Œë“œ ì…ë ¥ì„ ìœ„í•´ì„œ ì½”ë“œë¥¼ ì¶”ê°€í•œë‹¤.
 	sReturn = 0;
 	pConn = m_pUserDB->GetConnection();
 	if (!pConn) return DB_ERROR;
 
 	SQLINTEGER nCheckFlag = 0, cbCheckFlag = SQL_NTS;
 
-	// UserÀÇ ÆĞ½º¿öµå ÀÔ·Â ¿©ºÎ ÆÇ´Ü
+	// Userì˜ íŒ¨ìŠ¤ì›Œë“œ ì…ë ¥ ì—¬ë¶€ íŒë‹¨
 	//std::strstream strTemp1;
 	//strTemp1 << "SELECT CheckFlag FROM ";
 	//strTemp1 << "TerraUserInfo WHERE TLoginName='" << szTLoginName << "'";
@@ -1127,7 +1127,7 @@ int COdbcManager::TerraGetUserInfo(
 		Print(GetErrorString(pConn->hStmt));
 		m_pUserDB->FreeConnection( false );
 
-		//strTemp1.freeze( false );	// Note : std::strstreamÀÇ freeze. ¾È ÇÏ¸é Leak ¹ß»ı.
+		//strTemp1.freeze( false );	// Note : std::strstreamì˜ freeze. ì•ˆ í•˜ë©´ Leak ë°œìƒ.
 		return DB_ERROR;
 	}
 
@@ -1140,7 +1140,7 @@ int COdbcManager::TerraGetUserInfo(
 			Print(GetErrorString(pConn->hStmt));
             m_pUserDB->FreeConnection(pConn);
 
-			//strTemp1.freeze( false );	// Note : std::strstreamÀÇ freeze. ¾È ÇÏ¸é Leak ¹ß»ı.
+			//strTemp1.freeze( false );	// Note : std::strstreamì˜ freeze. ì•ˆ í•˜ë©´ Leak ë°œìƒ.
             return DB_ERROR;
 		}
 		if( sReturn == SQL_SUCCESS || sReturn == SQL_SUCCESS_WITH_INFO )
@@ -1156,7 +1156,7 @@ int COdbcManager::TerraGetUserInfo(
 		Sleep( 0 );
 	}
 
-	//strTemp1.freeze( false );	// Note : std::strstreamÀÇ freeze. ¾È ÇÏ¸é Leak ¹ß»ı.
+	//strTemp1.freeze( false );	// Note : std::strstreamì˜ freeze. ì•ˆ í•˜ë©´ Leak ë°œìƒ.
 
 	m_pUserDB->FreeConnection(pConn);
 */
@@ -1164,7 +1164,7 @@ int COdbcManager::TerraGetUserInfo(
 }
 
 /**
-* Excite »ç¿ëÀÚ Á¤º¸¸¦ °¡Á®¿Â´Ù.ÀÏº».
+* Excite ì‚¬ìš©ì ì •ë³´ë¥¼ ê°€ì ¸ì˜¨ë‹¤.ì¼ë³¸.
 * \param szUserID UserID varchar(20)
 * \param pMsg
 * \return 
@@ -1206,7 +1206,7 @@ int COdbcManager::ExciteGetUserInfo(
 		Print(GetErrorString(pConn->hStmt));
 		m_pUserDB->FreeConnection(pConn);	
 
-		//strTemp.freeze( false );	// Note : std::strstreamÀÇ freeze. ¾È ÇÏ¸é Leak ¹ß»ı.
+		//strTemp.freeze( false );	// Note : std::strstreamì˜ freeze. ì•ˆ í•˜ë©´ Leak ë°œìƒ.
 
 		return DB_ERROR;
 	}
@@ -1223,7 +1223,7 @@ int COdbcManager::ExciteGetUserInfo(
 		        Print(GetErrorString(pConn->hStmt));
 				m_pUserDB->FreeConnection(pConn);
 
-				//strTemp.freeze( false );	// Note : std::strstreamÀÇ freeze. ¾È ÇÏ¸é Leak ¹ß»ı.
+				//strTemp.freeze( false );	// Note : std::strstreamì˜ freeze. ì•ˆ í•˜ë©´ Leak ë°œìƒ.
 				return DB_ERROR;
 			}
  			if (sReturn == SQL_SUCCESS || sReturn == SQL_SUCCESS_WITH_INFO)
@@ -1257,18 +1257,18 @@ int COdbcManager::ExciteGetUserInfo(
 			}
         }
 
-		//strTemp.freeze( false );	// Note : std::strstreamÀÇ freeze. ¾È ÇÏ¸é Leak ¹ß»ı.
+		//strTemp.freeze( false );	// Note : std::strstreamì˜ freeze. ì•ˆ í•˜ë©´ Leak ë°œìƒ.
 	}
 	m_pUserDB->FreeConnection(pConn);
 	
-	// ÀÏº» ÆĞ½º¿öµå ÀÔ·ÂÀ» À§ÇØ¼­ ÄÚµå¸¦ Ãß°¡ÇÑ´Ù.
+	// ì¼ë³¸ íŒ¨ìŠ¤ì›Œë“œ ì…ë ¥ì„ ìœ„í•´ì„œ ì½”ë“œë¥¼ ì¶”ê°€í•œë‹¤.
 	sReturn = 0;
 	pConn = m_pUserDB->GetConnection();
 	if (!pConn) return DB_ERROR;
 
 	SQLINTEGER nCheckFlag = 0, cbCheckFlag = SQL_NTS;
 
-	// UserÀÇ ÆĞ½º¿öµå ÀÔ·Â ¿©ºÎ ÆÇ´Ü
+	// Userì˜ íŒ¨ìŠ¤ì›Œë“œ ì…ë ¥ ì—¬ë¶€ íŒë‹¨
 	_snprintf( szTemp, 256, "SELECT CheckFlag FROM "
 							"ExciteUserInfo WHERE UserID='%s'",
 							szUserID );
@@ -1314,7 +1314,7 @@ int COdbcManager::ExciteGetUserInfo(
 }
 
 /**
-* Japan(Gonzo) »ç¿ëÀÚ Á¤º¸¸¦ °¡Á®¿Â´Ù.
+* Japan(Gonzo) ì‚¬ìš©ì ì •ë³´ë¥¼ ê°€ì ¸ì˜¨ë‹¤.
 * \param szUserID UserID varchar(16)
 * \param pMsg
 * \return 
@@ -1397,11 +1397,11 @@ int COdbcManager::JapanGetUserInfo( const TCHAR* szUserID, JAPAN_NET_LOGIN_FEEDB
 			}
         }
 
-		//strTemp.freeze( false );	// Note : std::strstreamÀÇ freeze. ¾È ÇÏ¸é Leak ¹ß»ı.
+		//strTemp.freeze( false );	// Note : std::strstreamì˜ freeze. ì•ˆ í•˜ë©´ Leak ë°œìƒ.
 	}
 	m_pUserDB->FreeConnection(pConn);
 
-	// ±Ø°­ºÎ »ı¼º °¡´É ¿©ºÎ¸¦ Ã¼Å©ÇÏ±â À§ÇØ¼­
+	// ê·¹ê°•ë¶€ ìƒì„± ê°€ëŠ¥ ì—¬ë¶€ë¥¼ ì²´í¬í•˜ê¸° ìœ„í•´ì„œ
 	sReturn = 0;
 	pConn = m_pGameDB->GetConnection(); 
 	if (!pConn)	return DB_ERROR;
@@ -1409,7 +1409,7 @@ int COdbcManager::JapanGetUserInfo( const TCHAR* szUserID, JAPAN_NET_LOGIN_FEEDB
 	SQLINTEGER nExtremeM = 0, cbExtremeM = SQL_NTS;
 	SQLINTEGER nExtremeW = 0, cbExtremeW = SQL_NTS;
 
-	// ±Ø°­ºÎ »ı¼º°¡´É ¿©ºÎ Ã¼Å© 
+	// ê·¹ê°•ë¶€ ìƒì„±ê°€ëŠ¥ ì—¬ë¶€ ì²´í¬ 
 	_snprintf( szTemp, 256, "Exec sp_Extreme %d", nUserNum );
 
 	sReturn = ::SQLExecDirect(pConn->hStmt,
@@ -1458,7 +1458,7 @@ int COdbcManager::JapanGetUserInfo( const TCHAR* szUserID, JAPAN_NET_LOGIN_FEEDB
 }
 
 /**
-* »ç¿ëÀÚ Á¤º¸¸¦ °¡Á®¿Í¼­ Agent ·Î Àü¼Û
+* ì‚¬ìš©ì ì •ë³´ë¥¼ ê°€ì ¸ì™€ì„œ Agent ë¡œ ì „ì†¡
 */
 int COdbcManager::GsGetUserInfo(
 	const TCHAR* szUserID,
@@ -1496,7 +1496,7 @@ int COdbcManager::GsGetUserInfo(
 		Print(GetErrorString(pConn->hStmt));
 		m_pUserDB->FreeConnection(pConn);
 
-		//strTemp.freeze( false );	// Note : std::strstreamÀÇ freeze. ¾È ÇÏ¸é Leak ¹ß»ı.
+		//strTemp.freeze( false );	// Note : std::strstreamì˜ freeze. ì•ˆ í•˜ë©´ Leak ë°œìƒ.
 
 		return DB_ERROR;
 	}
@@ -1511,7 +1511,7 @@ int COdbcManager::GsGetUserInfo(
 		        Print(GetErrorString(pConn->hStmt));
 				m_pUserDB->FreeConnection(pConn);
 
-				//strTemp.freeze( false );	// Note : std::strstreamÀÇ freeze. ¾È ÇÏ¸é Leak ¹ß»ı.
+				//strTemp.freeze( false );	// Note : std::strstreamì˜ freeze. ì•ˆ í•˜ë©´ Leak ë°œìƒ.
 				return DB_ERROR;
 			}
  			if (sReturn == SQL_SUCCESS || sReturn == SQL_SUCCESS_WITH_INFO)
@@ -1544,12 +1544,12 @@ int COdbcManager::GsGetUserInfo(
 				break;
 			}
         }
-		//strTemp.freeze( false );	// Note : std::strstreamÀÇ freeze. ¾È ÇÏ¸é Leak ¹ß»ı.
+		//strTemp.freeze( false );	// Note : std::strstreamì˜ freeze. ì•ˆ í•˜ë©´ Leak ë°œìƒ.
 	}
 	m_pUserDB->FreeConnection(pConn);
 
-	// ±Ø°­ºÎ Ãß°¡
-	// ±Ø°­ºÎ »ı¼º °¡´É ¿©ºÎ¸¦ Ã¼Å©ÇÏ±â À§ÇØ¼­
+	// ê·¹ê°•ë¶€ ì¶”ê°€
+	// ê·¹ê°•ë¶€ ìƒì„± ê°€ëŠ¥ ì—¬ë¶€ë¥¼ ì²´í¬í•˜ê¸° ìœ„í•´ì„œ
 	sReturn = 0;
 	pConn = m_pGameDB->GetConnection(); 
 	if (!pConn)	return DB_ERROR;
@@ -1557,7 +1557,7 @@ int COdbcManager::GsGetUserInfo(
 	SQLINTEGER nExtremeM = 0, cbExtremeM = SQL_NTS;
 	SQLINTEGER nExtremeW = 0, cbExtremeW = SQL_NTS;
 
-	// ±Ø°­ºÎ »ı¼º°¡´É ¿©ºÎ Ã¼Å© 
+	// ê·¹ê°•ë¶€ ìƒì„±ê°€ëŠ¥ ì—¬ë¶€ ì²´í¬ 
 	//std::strstream strTemp1;
 	//strTemp1 << "Exec sp_Extreme ";
 	//strTemp1 << nUserNum;
@@ -1575,7 +1575,7 @@ int COdbcManager::GsGetUserInfo(
 		Print(GetErrorString(pConn->hStmt));
 		m_pGameDB->FreeConnection(pConn);
 
-		//strTemp1.freeze( false );	// Note : std::strstreamÀÇ freeze. ¾È ÇÏ¸é Leak ¹ß»ı.
+		//strTemp1.freeze( false );	// Note : std::strstreamì˜ freeze. ì•ˆ í•˜ë©´ Leak ë°œìƒ.
 		return DB_ERROR;
 	}
 
@@ -1588,7 +1588,7 @@ int COdbcManager::GsGetUserInfo(
 			Print(GetErrorString(pConn->hStmt));
             m_pGameDB->FreeConnection(pConn);
 
-			//strTemp1.freeze( false );	// Note : std::strstreamÀÇ freeze. ¾È ÇÏ¸é Leak ¹ß»ı.
+			//strTemp1.freeze( false );	// Note : std::strstreamì˜ freeze. ì•ˆ í•˜ë©´ Leak ë°œìƒ.
             return DB_ERROR;
 		}
 
@@ -1607,7 +1607,7 @@ int COdbcManager::GsGetUserInfo(
 		Sleep( 0 );
 	}
 
-	//strTemp1.freeze( false );	// Note : std::strstreamÀÇ freeze. ¾È ÇÏ¸é Leak ¹ß»ı.
+	//strTemp1.freeze( false );	// Note : std::strstreamì˜ freeze. ì•ˆ í•˜ë©´ Leak ë°œìƒ.
 
 	m_pGameDB->FreeConnection(pConn);
 
@@ -1615,7 +1615,7 @@ int COdbcManager::GsGetUserInfo(
 }
 
 /**
-* ÅÂ±¹:ÇØ´ç »ç¿ëÀÚÀÇ ¿À´Ã °ÔÀÓÇÃ·¹ÀÌ ½Ã°£(ºĞ)À» °¡Á®¿Â´Ù.
+* íƒœêµ­:í•´ë‹¹ ì‚¬ìš©ìì˜ ì˜¤ëŠ˜ ê²Œì„í”Œë ˆì´ ì‹œê°„(ë¶„)ì„ ê°€ì ¸ì˜¨ë‹¤.
 * \param nUserNum 
 * \return 
 */
@@ -1630,7 +1630,7 @@ WORD COdbcManager::ThaiGetTodayPlayTime( int nUserNum )
 	_snprintf( szTemp, 128, "{call Thai_GetGameTime(%d,?)}", nUserNum );
 
 	int nReturn = m_pUserDB->ExecuteSpInt(szTemp);
-	//strTemp.freeze( false );	// Note : std::strstreamÀÇ freeze. ¾È ÇÏ¸é Leak ¹ß»ı.
+	//strTemp.freeze( false );	// Note : std::strstreamì˜ freeze. ì•ˆ í•˜ë©´ Leak ë°œìƒ.
 	
 	if (nReturn == DB_ERROR)
 	{

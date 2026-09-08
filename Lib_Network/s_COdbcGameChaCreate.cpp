@@ -6,14 +6,14 @@
 #define new DEBUG_NEW
 #endif
 /**
-* »õ·Î¿î Ä³¸¯ÅÍ¸¦ »ý¼ºÇÑ´Ù.
+* ìƒˆë¡œìš´ ìºë¦­í„°ë¥¼ ìƒì„±í•œë‹¤.
 */
 int COdbcManager::CreateNewCharacter(SCHARDATA2* pCharData2)
 {
 	SQLRETURN	sReturn = 0;
 
-	DWORD dwUserNum = pCharData2->GetUserID(); // »ç¿ëÀÚ¹øÈ£
-	DWORD dwSvrNum  = pCharData2->m_dwServerID; // ¼­¹ö±×·ì¹øÈ£	
+	DWORD dwUserNum = pCharData2->GetUserID(); // ì‚¬ìš©ìžë²ˆí˜¸
+	DWORD dwSvrNum  = pCharData2->m_dwServerID; // ì„œë²„ê·¸ë£¹ë²ˆí˜¸	
 
 	TCHAR szTemp[2048] = {0};
 	_snprintf( szTemp, 2048, "INSERT INTO ChaInfo(UserNum, SGNum, ChaName, ChaTribe, ChaClass, "
@@ -111,31 +111,31 @@ int COdbcManager::CreateNewCharacter(SCHARDATA2* pCharData2)
 //		Print(GetErrorString(pConn2->hStmt));
 		m_pGameDB->FreeConnection(pConn2);
 
-		//strTemp.freeze( false );	// Note : std::strstreamÀÇ freeze. ¾È ÇÏ¸é Leak ¹ß»ý.
+		//strTemp.freeze( false );	// Note : std::strstreamì˜ freeze. ì•ˆ í•˜ë©´ Leak ë°œìƒ.
 		return DB_ERROR;
 	}
 
-	// Áßº¹Ä³¸¯ÅÍ°¡ ÀÖÀ½
+	// ì¤‘ë³µìºë¦­í„°ê°€ ìžˆìŒ
 	if (sReturn == SQL_ERROR) 
 	{
 		// Print(GetErrorString(pConn2->hStmt));
 		m_pGameDB->FreeConnection(pConn2);
 
-		//strTemp.freeze( false );	// Note : std::strstreamÀÇ freeze. ¾È ÇÏ¸é Leak ¹ß»ý.
+		//strTemp.freeze( false );	// Note : std::strstreamì˜ freeze. ì•ˆ í•˜ë©´ Leak ë°œìƒ.
 		return DB_CHA_DUF;
 	}
 	// m_pGameDB->FreeStmt(pStmt2);
 
-	// Ä³¸¯ÅÍ »ý¼º¼º°ø
-	// »ý¼ºÇÑ Ä³¸¯ÅÍÀÇ °íÀ¯¹øÈ£¸¦ °¡Á®¿Â´Ù.
-	// ChaNameInfo TableÀÇ Æ®¸®°Å·Î ÀÎÇØ¼­ SELECT cast(SCOPE_IDENTITY() as int) ±¸¹® »ç¿ë
+	// ìºë¦­í„° ìƒì„±ì„±ê³µ
+	// ìƒì„±í•œ ìºë¦­í„°ì˜ ê³ ìœ ë²ˆí˜¸ë¥¼ ê°€ì ¸ì˜¨ë‹¤.
+	// ChaNameInfo Tableì˜ íŠ¸ë¦¬ê±°ë¡œ ì¸í•´ì„œ SELECT cast(SCOPE_IDENTITY() as int) êµ¬ë¬¸ ì‚¬ìš©
 	/*
 	sReturn = ::SQLExecDirect(pConn2->hStmt,
 		(SQLCHAR*) "SELECT @@IDENTITY", 
 		SQL_NTS);
 	*/
 		sReturn = ::SQLExecDirect(pConn2->hStmt,
-		(SQLCHAR*) "SELECT cast(SCOPE_IDENTITY() as int)", 
+		(SQLCHAR*) "SELECT cast(lastval() as int)", 
 		SQL_NTS);
 
 	if ((sReturn != SQL_SUCCESS) && (sReturn != SQL_SUCCESS_WITH_INFO)) 
@@ -143,7 +143,7 @@ int COdbcManager::CreateNewCharacter(SCHARDATA2* pCharData2)
 		Print(GetErrorString(pConn2->hStmt));
 		m_pGameDB->FreeConnection(pConn2);
 
-		//strTemp.freeze( false );	// Note : std::strstreamÀÇ freeze. ¾È ÇÏ¸é Leak ¹ß»ý.
+		//strTemp.freeze( false );	// Note : std::strstreamì˜ freeze. ì•ˆ í•˜ë©´ Leak ë°œìƒ.
 		return DB_ERROR;
 	}
 
@@ -158,7 +158,7 @@ int COdbcManager::CreateNewCharacter(SCHARDATA2* pCharData2)
 			Print(GetErrorString(pConn2->hStmt));
 			m_pGameDB->FreeConnection(pConn2);
 
-			//strTemp.freeze( false );	// Note : std::strstreamÀÇ freeze. ¾È ÇÏ¸é Leak ¹ß»ý.
+			//strTemp.freeze( false );	// Note : std::strstreamì˜ freeze. ì•ˆ í•˜ë©´ Leak ë°œìƒ.
 			return DB_ERROR;
 		}
 		if (sReturn == SQL_SUCCESS || sReturn == SQL_SUCCESS_WITH_INFO)
@@ -172,7 +172,7 @@ int COdbcManager::CreateNewCharacter(SCHARDATA2* pCharData2)
 		}
 		Sleep( 0 );
 	}
-	//strTemp.freeze( false );	// Note : std::strstreamÀÇ freeze. ¾È ÇÏ¸é Leak ¹ß»ý.
+	//strTemp.freeze( false );	// Note : std::strstreamì˜ freeze. ì•ˆ í•˜ë©´ Leak ë°œìƒ.
 
 	m_pGameDB->FreeConnection(pConn2);
 
@@ -193,7 +193,7 @@ int COdbcManager::CreateNewCharacter(SCHARDATA2* pCharData2)
 		_snprintf( szTemp, 128, "UPDATE ChaInfo SET ChaInfo.ChaSkills=? WHERE (ChaNum=%d)", nChaNewNum );
 		m_pGameDB->WriteImage(szTemp, nChaNewNum, (BYTE *) pBuffer, dwSize);
 
-		//strSkillls.freeze( false );	// Note : std::strstreamÀÇ freeze. ¾È ÇÏ¸é Leak ¹ß»ý.
+		//strSkillls.freeze( false );	// Note : std::strstreamì˜ freeze. ì•ˆ í•˜ë©´ Leak ë°œìƒ.
 		pBuffer = NULL;
 	}	
 
@@ -210,7 +210,7 @@ int COdbcManager::CreateNewCharacter(SCHARDATA2* pCharData2)
 		_snprintf( szTemp, 128, "UPDATE ChaInfo SET ChaInfo.ChaSkillSlot=? WHERE (ChaNum=%d)", nChaNewNum );
 		m_pGameDB->WriteImage(szTemp, nChaNewNum, (BYTE *) pBuffer, dwSize);
 
-		//strSkillSlot.freeze( false );	// Note : std::strstreamÀÇ freeze. ¾È ÇÏ¸é Leak ¹ß»ý.
+		//strSkillSlot.freeze( false );	// Note : std::strstreamì˜ freeze. ì•ˆ í•˜ë©´ Leak ë°œìƒ.
 		pBuffer = NULL;
 	}
 
@@ -227,7 +227,7 @@ int COdbcManager::CreateNewCharacter(SCHARDATA2* pCharData2)
 		_snprintf( szTemp, 128, "UPDATE ChaInfo SET ChaInfo.ChaActionSlot=? WHERE (ChaNum=%d)", nChaNewNum );
 		m_pGameDB->WriteImage(szTemp, nChaNewNum, (BYTE *) pBuffer, dwSize);
 
-		//strActionSlot.freeze( false );	// Note : std::strstreamÀÇ freeze. ¾È ÇÏ¸é Leak ¹ß»ý.
+		//strActionSlot.freeze( false );	// Note : std::strstreamì˜ freeze. ì•ˆ í•˜ë©´ Leak ë°œìƒ.
 		pBuffer = NULL;
 	}
 
@@ -244,7 +244,7 @@ int COdbcManager::CreateNewCharacter(SCHARDATA2* pCharData2)
 		_snprintf( szTemp, 128, "UPDATE ChaInfo SET ChaInfo.ChaPutOnItems=? WHERE (ChaNum=%d)", nChaNewNum );
 		m_pGameDB->WriteImage(szTemp, nChaNewNum, (BYTE *) pBuffer, dwSize);
 
-		//strPutOnItems.freeze( false );	// Note : std::strstreamÀÇ freeze. ¾È ÇÏ¸é Leak ¹ß»ý.
+		//strPutOnItems.freeze( false );	// Note : std::strstreamì˜ freeze. ì•ˆ í•˜ë©´ Leak ë°œìƒ.
 		pBuffer = NULL;
 	}
 
@@ -262,7 +262,7 @@ int COdbcManager::CreateNewCharacter(SCHARDATA2* pCharData2)
 		_snprintf( szTemp, 128, "UPDATE ChaInfo SET ChaInfo.ChaInven=? WHERE (ChaNum=%d)", nChaNewNum );
 		m_pGameDB->WriteImage(szTemp, nChaNewNum, (BYTE *) pBuffer, dwSize);
 
-		//strInven.freeze( false );	// Note : std::strstreamÀÇ freeze. ¾È ÇÏ¸é Leak ¹ß»ý.
+		//strInven.freeze( false );	// Note : std::strstreamì˜ freeze. ì•ˆ í•˜ë©´ Leak ë°œìƒ.
 		pBuffer = NULL;
 	}
 
@@ -279,7 +279,7 @@ int COdbcManager::CreateNewCharacter(SCHARDATA2* pCharData2)
 		_snprintf( szTemp, 128, "UPDATE ChaInfo SET ChaInfo.ChaQuest=? WHERE (ChaNum=%d)", nChaNewNum );
 		m_pGameDB->WriteImage(szTemp, nChaNewNum, (BYTE *) pBuffer, dwSize);
 
-		//strQuest.freeze( false );	// Note : std::strstreamÀÇ freeze. ¾È ÇÏ¸é Leak ¹ß»ý.
+		//strQuest.freeze( false );	// Note : std::strstreamì˜ freeze. ì•ˆ í•˜ë©´ Leak ë°œìƒ.
 		pBuffer = NULL;
 	}
 
@@ -327,8 +327,8 @@ int COdbcManager::CreateNewCharacter(SCHARDATA2* pCharData2)
 	}
 
 #if defined ( TW_PARAM ) || defined ( HK_PARAM ) 
-	// ´ë¸¸,È«Äá
-	// Ä³¸¯ÅÍ »ý¼º½Ã Temp Table¿¡ Ä³¸¯ÅÍ ·¹º§°ú ±Ý¾× Á¤º¸¸¦ ¾ÏÈ£È­ ÇØ¼­ ÀúÀåÇØ µÎ´Â ºÎºÐ
+	// ëŒ€ë§Œ,í™ì½©
+	// ìºë¦­í„° ìƒì„±ì‹œ Temp Tableì— ìºë¦­í„° ë ˆë²¨ê³¼ ê¸ˆì•¡ ì •ë³´ë¥¼ ì•”í˜¸í™” í•´ì„œ ì €ìž¥í•´ ë‘ëŠ” ë¶€ë¶„
 	int nReturn = InsertCharInfoTemp( nChaNewNum );
 #endif
 
@@ -336,8 +336,8 @@ int COdbcManager::CreateNewCharacter(SCHARDATA2* pCharData2)
 }
 
 
-// ´ë¸¸,È«Äá
-// Ä³¸¯ÅÍ »ý¼º½Ã Temp Table¿¡ Ä³¸¯ÅÍ ·¹º§°ú ±Ý¾× Á¤º¸¸¦ ¾ÏÈ£È­ ÇØ¼­ ÀúÀåÇØ µÐ´Ù.
+// ëŒ€ë§Œ,í™ì½©
+// ìºë¦­í„° ìƒì„±ì‹œ Temp Tableì— ìºë¦­í„° ë ˆë²¨ê³¼ ê¸ˆì•¡ ì •ë³´ë¥¼ ì•”í˜¸í™” í•´ì„œ ì €ìž¥í•´ ë‘”ë‹¤.
 int	COdbcManager::InsertCharInfoTemp( int nChaNum )
 {
 	ODBC_STMT* pConn2 = m_pGameDB->GetConnection();

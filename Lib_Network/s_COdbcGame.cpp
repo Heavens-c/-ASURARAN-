@@ -7,23 +7,23 @@
 #endif
 
 /**
-* Ä³¸¯ÅÍ°¡ ½ÃÀÛÇÒ ¸Ê, °ÔÀÌÆ®, À§Ä¡¸¦ °¡Á®¿Â´Ù
-* \param nUserNum »ç¿ëÀÚ¹øÈ£
-* \param nChaNum Ä³¸¯ÅÍ¹øÈ£
-* \param pChaData Ä³¸¯ÅÍ µ¥ÀÌÅÍ¸¦ ¹ŞÀ» Æ÷ÀÎÆ®
+* ìºë¦­í„°ê°€ ì‹œì‘í•  ë§µ, ê²Œì´íŠ¸, ìœ„ì¹˜ë¥¼ ê°€ì ¸ì˜¨ë‹¤
+* \param nUserNum ì‚¬ìš©ìë²ˆí˜¸
+* \param nChaNum ìºë¦­í„°ë²ˆí˜¸
+* \param pChaData ìºë¦­í„° ë°ì´í„°ë¥¼ ë°›ì„ í¬ì¸íŠ¸
 * \return DB_OK, DB_ERROR
 */
 int COdbcManager::GetCharacterInfo(int nUserNumber,
 								   int nChaNum,
 								   GLCHARAG_DATA* pChaData)
 {
-	assert(pChaData&&"(GLCHARAG_DATA*)ÀÇ °ªÀÌ À¯È¿ÇÏÁö ¾Ê½À´Ï´Ù.");
+	assert(pChaData&&"(GLCHARAG_DATA*)ì˜ ê°’ì´ ìœ íš¨í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
 	SQLRETURN sReturn = 0;
 
 	ODBC_STMT* pConn = m_pGameDB->GetConnection();
 	if (!pConn) return DB_ERROR;
 
-	// Ä³¸¯ÅÍ Á¤º¸¸¦ °¡Á®¿Â´Ù.
+	// ìºë¦­í„° ì •ë³´ë¥¼ ê°€ì ¸ì˜¨ë‹¤.
 	//std::strstream strTemp;
 	//strTemp << "SELECT UserNum, SGNum, ChaName, ChaClass, ChaBright, ChaStartMap, ";
 	//strTemp << "ChaStartGate, ChaPosX, ChaPosY, ChaPosZ, ";    
@@ -51,13 +51,13 @@ int COdbcManager::GetCharacterInfo(int nUserNumber,
 		Print(GetErrorString(pConn->hStmt));
 		m_pGameDB->FreeConnection(pConn);
 
-		//strTemp.freeze( false );	// Note : std::strstreamÀÇ freeze. ¾È ÇÏ¸é Leak ¹ß»ı.
+		//strTemp.freeze( false );	// Note : std::strstreamì˜ freeze. ì•ˆ í•˜ë©´ Leak ë°œìƒ.
         return DB_ERROR;
 	}
 
 	SQLINTEGER nUserNum = 0, cbUserNum=SQL_NTS;
 	SQLINTEGER nSGNum   = 0, cbSGNum=SQL_NTS;
-    SQLINTEGER nGuNum   = 0, cbGuNum=SQL_NTS; // Club ¹øÈ£
+    SQLINTEGER nGuNum   = 0, cbGuNum=SQL_NTS; // Club ë²ˆí˜¸
 	SQLCHAR    szChaName[CHR_ID_LENGTH+1] = {0}; SQLINTEGER cbChaName = SQL_NTS;
 	SQLCHAR    szChaPhoneNumber[SMS_RECEIVER] = {0}; SQLINTEGER cbChaPhoneNumber = SQL_NTS;
 	SQLINTEGER nChaClass = 0, cbChaClass=SQL_NTS;
@@ -78,7 +78,7 @@ int COdbcManager::GetCharacterInfo(int nUserNumber,
 	SQLFLOAT fChaSavePosZ = 0; SQLINTEGER cbChaSavePosZ=SQL_NTS;
 
 	SQLINTEGER nChaSchool = 0, cbChaSchool=SQL_NTS;
-    TIMESTAMP_STRUCT sChaGuSecede; SQLINTEGER cbChaGuSecede = SQL_NTS; // Å¬·´Å»Åğ½Ã°£
+    TIMESTAMP_STRUCT sChaGuSecede; SQLINTEGER cbChaGuSecede = SQL_NTS; // í´ëŸ½íƒˆí‡´ì‹œê°„
 
 	while (true)
 	{
@@ -89,7 +89,7 @@ int COdbcManager::GetCharacterInfo(int nUserNumber,
 			Print(GetErrorString(pConn->hStmt));
             m_pGameDB->FreeConnection(pConn);
 
-			//strTemp.freeze( false );	// Note : std::strstreamÀÇ freeze. ¾È ÇÏ¸é Leak ¹ß»ı.
+			//strTemp.freeze( false );	// Note : std::strstreamì˜ freeze. ì•ˆ í•˜ë©´ Leak ë°œìƒ.
             return DB_ERROR;
 		}
 
@@ -158,10 +158,10 @@ int COdbcManager::GetCharacterInfo(int nUserNumber,
 	}
 	m_pGameDB->FreeConnection(pConn);
 
-	//strTemp.freeze( false );	// Note : std::strstreamÀÇ freeze. ¾È ÇÏ¸é Leak ¹ß»ı.
+	//strTemp.freeze( false );	// Note : std::strstreamì˜ freeze. ì•ˆ í•˜ë©´ Leak ë°œìƒ.
 
 #if defined(KRT_PARAM)
-	// Ä³¸¯ÅÍÀÇ ÀüÈ­¹øÈ£¸¦ °¡Á®¿Â´Ù.
+	// ìºë¦­í„°ì˜ ì „í™”ë²ˆí˜¸ë¥¼ ê°€ì ¸ì˜¨ë‹¤.
 	GetChaPhoneNumber( nChaNum, pChaData->m_szPhoneNumber );
 #endif
 
@@ -169,7 +169,7 @@ int COdbcManager::GetCharacterInfo(int nUserNumber,
 }
 
 ///////////////////////////////////////////////////////////////////////////
-// ÇØ´ç »ç¿ëÀÚÀÇ Ä³¸¯ÅÍ Á¤º¸¸¦ °¡Á®¿Â´Ù.	
+// í•´ë‹¹ ì‚¬ìš©ìì˜ ìºë¦­í„° ì •ë³´ë¥¼ ê°€ì ¸ì˜¨ë‹¤.	
 int COdbcManager::GetChaAllInfo(int nUsrNum)
 {	
 	return DB_OK;
@@ -194,9 +194,9 @@ int COdbcManager::GetChaBAInfo(int nUsrNum,
 	//strTemp << std::ends;
 
 	TCHAR szTemp[256] = {0};
-	_snprintf( szTemp, 256, "SELECT TOP 16 ChaNum FROM ChaInfo WITH (NOLOCK) WHERE UserNum=%d"
+	_snprintf( szTemp, 256, "SELECT ChaNum FROM ChaInfo WHERE UserNum=%d"
 							" AND SGNum=%d"
-							" AND ChaDeleted=0 ORDER BY ChaNum", nUsrNum, nSvrGrp );
+							" AND ChaDeleted=0 ORDER BY ChaNum LIMIT 16", nUsrNum, nSvrGrp );
 
 	sReturn = ::SQLExecDirect(pConn->hStmt,
 							(SQLCHAR*)szTemp, 
@@ -209,7 +209,7 @@ int COdbcManager::GetChaBAInfo(int nUsrNum,
 		Print(GetErrorString(pConn->hStmt));
 		m_pGameDB->FreeConnection(pConn);
 
-		//strTemp.freeze( false );	// Note : std::strstreamÀÇ freeze. ¾È ÇÏ¸é Leak ¹ß»ı.
+		//strTemp.freeze( false );	// Note : std::strstreamì˜ freeze. ì•ˆ í•˜ë©´ Leak ë°œìƒ.
 		return DB_ERROR;
 	}
 
@@ -225,7 +225,7 @@ int COdbcManager::GetChaBAInfo(int nUsrNum,
 			Print(GetErrorString(pConn->hStmt));
             m_pGameDB->FreeConnection(pConn);
 
-			//strTemp.freeze( false );	// Note : std::strstreamÀÇ freeze. ¾È ÇÏ¸é Leak ¹ß»ı.
+			//strTemp.freeze( false );	// Note : std::strstreamì˜ freeze. ì•ˆ í•˜ë©´ Leak ë°œìƒ.
             return DB_ERROR;
 		}
 
@@ -247,12 +247,12 @@ int COdbcManager::GetChaBAInfo(int nUsrNum,
 	ncbi->nChaSNum = nLoop;	
 	m_pGameDB->FreeConnection(pConn);
 
-	//strTemp.freeze( false );	// Note : std::strstreamÀÇ freeze. ¾È ÇÏ¸é Leak ¹ß»ı.
+	//strTemp.freeze( false );	// Note : std::strstreamì˜ freeze. ì•ˆ í•˜ë©´ Leak ë°œìƒ.
 	return DB_OK;
 }
 
 /**
- * ÇĞ±³vsÇĞ±³ ÆÄÆ¼´ë·Ã°á°úÀúÀå
+ * í•™êµvsí•™êµ íŒŒí‹°ëŒ€ë ¨ê²°ê³¼ì €ì¥
  */
 int	COdbcManager::LogPartyMatch(int nSGNum, int nSvrNum, WORD wWin, WORD wLost)
 {	
@@ -268,19 +268,19 @@ int	COdbcManager::LogPartyMatch(int nSGNum, int nSvrNum, WORD wWin, WORD wLost)
 	_snprintf( szTemp, 128, "{call InsertPartyMatch(%d,%d,%u,%u)}", nSGNum, nSvrNum, wWin, wLost );
 
 	int nReturn = m_pGameDB->ExecuteSp(szTemp);
-	//strTemp.freeze( false );	// Note : std::strstreamÀÇ freeze. ¾È ÇÏ¸é Leak ¹ß»ı.
+	//strTemp.freeze( false );	// Note : std::strstreamì˜ freeze. ì•ˆ í•˜ë©´ Leak ë°œìƒ.
 
 	return nReturn;
 }
 
 ///////////////////////////////////////////////////////////////////////////
-// ÇØ´ç Ä³¸¯ÅÍÀÇ °æÇèÄ¡¸¦ ¼¼ÆÃÇÑ´Ù.
-// ÀÔ·Â
-// nChaNum : Ä³¸¯ÅÍ¹øÈ£
-// llExp : °æÇèÄ¡
-// ÁÖÀÇ 
-// Ä³¸¯ÅÍ¹øÈ£´Â 0 º¸´Ù Ä¿¾ßÇÑ´Ù.
-// °æÇèÄ¡´Â 0 º¸´Ù Ä¿¾ßÇÑ´Ù.
+// í•´ë‹¹ ìºë¦­í„°ì˜ ê²½í—˜ì¹˜ë¥¼ ì„¸íŒ…í•œë‹¤.
+// ì…ë ¥
+// nChaNum : ìºë¦­í„°ë²ˆí˜¸
+// llExp : ê²½í—˜ì¹˜
+// ì£¼ì˜ 
+// ìºë¦­í„°ë²ˆí˜¸ëŠ” 0 ë³´ë‹¤ ì»¤ì•¼í•œë‹¤.
+// ê²½í—˜ì¹˜ëŠ” 0 ë³´ë‹¤ ì»¤ì•¼í•œë‹¤.
 int COdbcManager::SetChaExp(int nChaNum, LONGLONG llExp)
 {
     if (nChaNum < 1 || llExp < 0)
@@ -298,20 +298,20 @@ int COdbcManager::SetChaExp(int nChaNum, LONGLONG llExp)
 	_snprintf( szTemp, 128, "{call UpdateChaExp(%I64d,%d,?)}", llExp, nChaNum );
 
 	int nReturn = m_pGameDB->ExecuteSpInt(szTemp);
-	//strTemp.freeze( false );	// Note : std::strstreamÀÇ freeze. ¾È ÇÏ¸é Leak ¹ß»ı.
+	//strTemp.freeze( false );	// Note : std::strstreamì˜ freeze. ì•ˆ í•˜ë©´ Leak ë°œìƒ.
 
     return nReturn;
 }
 
 ///////////////////////////////////////////////////////////////////////////
-// ÇØ´ç Ä³¸¯ÅÍÀÇ °æÇèÄ¡¸¦ °¡Á®¿Â´Ù.
-// ÀÔ·Â
-// nChaNum : Ä³¸¯ÅÍ¹øÈ£
-// ¸®ÅÏ
-// LONGLONG : °æÇèÄ¡
-// ÁÖÀÇ 
-// Ä³¸¯ÅÍ¹øÈ£´Â 0 º¸´Ù Ä¿¾ßÇÑ´Ù.
-// °æÇèÄ¡°¡ 0 º¸´Ù ÀÛÀ¸¸é ¿¡·¯ÀÌ´Ù.
+// í•´ë‹¹ ìºë¦­í„°ì˜ ê²½í—˜ì¹˜ë¥¼ ê°€ì ¸ì˜¨ë‹¤.
+// ì…ë ¥
+// nChaNum : ìºë¦­í„°ë²ˆí˜¸
+// ë¦¬í„´
+// LONGLONG : ê²½í—˜ì¹˜
+// ì£¼ì˜ 
+// ìºë¦­í„°ë²ˆí˜¸ëŠ” 0 ë³´ë‹¤ ì»¤ì•¼í•œë‹¤.
+// ê²½í—˜ì¹˜ê°€ 0 ë³´ë‹¤ ì‘ìœ¼ë©´ ì—ëŸ¬ì´ë‹¤.
 LONGLONG COdbcManager::GetChaExp(int nChaNum)
 {
     if (nChaNum < 1)
@@ -342,7 +342,7 @@ LONGLONG COdbcManager::GetChaExp(int nChaNum)
 		Print(GetErrorString(pConn->hStmt));
 		m_pGameDB->FreeConnection(pConn);
 
-		//strTemp.freeze( false );	// Note : std::strstreamÀÇ freeze. ¾È ÇÏ¸é Leak ¹ß»ı.
+		//strTemp.freeze( false );	// Note : std::strstreamì˜ freeze. ì•ˆ í•˜ë©´ Leak ë°œìƒ.
 		return DB_ERROR;
 	}
 
@@ -358,7 +358,7 @@ LONGLONG COdbcManager::GetChaExp(int nChaNum)
 			Print(GetErrorString(pConn->hStmt));
             m_pGameDB->FreeConnection(pConn);
 
-			//strTemp.freeze( false );	// Note : std::strstreamÀÇ freeze. ¾È ÇÏ¸é Leak ¹ß»ı.
+			//strTemp.freeze( false );	// Note : std::strstreamì˜ freeze. ì•ˆ í•˜ë©´ Leak ë°œìƒ.
             return DB_ERROR;
 		}
 
@@ -373,14 +373,14 @@ LONGLONG COdbcManager::GetChaExp(int nChaNum)
 		}
 		Sleep( 0 );
 	}
-	//strTemp.freeze( false );	// Note : std::strstreamÀÇ freeze. ¾È ÇÏ¸é Leak ¹ß»ı.
+	//strTemp.freeze( false );	// Note : std::strstreamì˜ freeze. ì•ˆ í•˜ë©´ Leak ë°œìƒ.
 
 	m_pGameDB->FreeConnection(pConn);
 	return llChaExp;
 }
 
 ///////////////////////////////////////////////////////////////////////////
-// Á÷Àü±ÍÈ¯ Ä«µå »ç¿ëÀ» À§ÇÑ Æ÷Áö¼ÇÀ» ÀúÀåÇÑ´Ù.
+// ì§ì „ê·€í™˜ ì¹´ë“œ ì‚¬ìš©ì„ ìœ„í•œ í¬ì§€ì…˜ì„ ì €ì¥í•œë‹¤.
 int COdbcManager::SetLastCallPos(int nChaNum, DWORD dwMapID, D3DXVECTOR3 vPos)
 {
  //   std::strstream strTemp;
@@ -396,13 +396,13 @@ int COdbcManager::SetLastCallPos(int nChaNum, DWORD dwMapID, D3DXVECTOR3 vPos)
 	_snprintf( szTemp, 128, "{call UpdateChaLastCallPos(%u,%f,%f,%f,%d,?)}", dwMapID, vPos.x, vPos.y, vPos.z, nChaNum );
 
 	int nReturn = m_pGameDB->ExecuteSpInt(szTemp);
-	//strTemp.freeze( false );	// Note : std::strstreamÀÇ freeze. ¾È ÇÏ¸é Leak ¹ß»ı.
+	//strTemp.freeze( false );	// Note : std::strstreamì˜ freeze. ì•ˆ í•˜ë©´ Leak ë°œìƒ.
 
     return nReturn;
 }
 
 ///////////////////////////////////////////////////////////////////////////
-// Ä³¸¯ÅÍ¸¦ ¿ÀÇÁ¶óÀÎ »óÅÂ·Î ¸¸µç´Ù.
+// ìºë¦­í„°ë¥¼ ì˜¤í”„ë¼ì¸ ìƒíƒœë¡œ ë§Œë“ ë‹¤.
 int COdbcManager::SetCharacterOffline(int nChaNum)
 {
 	if (nChaNum < 0) return NET_ERROR;
@@ -416,13 +416,13 @@ int COdbcManager::SetCharacterOffline(int nChaNum)
 	_snprintf( szTemp, 128, "{call UpdateChaOnline(%d,0)}", nChaNum );
 
 	int nReturn = m_pGameDB->ExecuteSp(szTemp);
-	//strTemp.freeze( false );	// Note : std::strstreamÀÇ freeze. ¾È ÇÏ¸é Leak ¹ß»ı.
+	//strTemp.freeze( false );	// Note : std::strstreamì˜ freeze. ì•ˆ í•˜ë©´ Leak ë°œìƒ.
 
 	return nReturn;
 }
 
 ///////////////////////////////////////////////////////////////////////////
-// Ä³¸¯ÅÍ¸¦ ¿Â¶óÀÎ »óÅÂ·Î ¸¸µç´Ù.
+// ìºë¦­í„°ë¥¼ ì˜¨ë¼ì¸ ìƒíƒœë¡œ ë§Œë“ ë‹¤.
 int COdbcManager::SetCharacterOnline(int nChaNum)
 {
 	if (nChaNum < 0) return NET_ERROR;
@@ -436,13 +436,13 @@ int COdbcManager::SetCharacterOnline(int nChaNum)
 	_snprintf( szTemp, 128, "{call UpdateChaOnline(%d,1)}", nChaNum );
 
 	int nReturn = m_pGameDB->ExecuteSp(szTemp);
-	//strTemp.freeze( false );	// Note : std::strstreamÀÇ freeze. ¾È ÇÏ¸é Leak ¹ß»ı.
+	//strTemp.freeze( false );	// Note : std::strstreamì˜ freeze. ì•ˆ í•˜ë©´ Leak ë°œìƒ.
 
 	return nReturn;
 }
 
 ///////////////////////////////////////////////////////////////////////////
-// ¸ğµç Ä³¸¯ÅÍ¸¦ ¿ÀÇÁ¶óÀÎ »óÅÂ·Î ¸¸µç´Ù.
+// ëª¨ë“  ìºë¦­í„°ë¥¼ ì˜¤í”„ë¼ì¸ ìƒíƒœë¡œ ë§Œë“ ë‹¤.
 int COdbcManager::SetAllCharacterOffline()
 {
 	std::strstream strTemp;
@@ -453,7 +453,7 @@ int COdbcManager::SetAllCharacterOffline()
 	_snprintf( szTemp, 128, "{call UpdateAllCharacterOffline}" );
 
 	int nReturn = m_pGameDB->ExecuteSp(szTemp);
-	//strTemp.freeze( false );	// Note : std::strstreamÀÇ freeze. ¾È ÇÏ¸é Leak ¹ß»ı.
+	//strTemp.freeze( false );	// Note : std::strstreamì˜ freeze. ì•ˆ í•˜ë©´ Leak ë°œìƒ.
 
 	return nReturn;
 }
@@ -471,110 +471,110 @@ int COdbcManager::GetTopKill(VEC_TOP_KILL& vecKill, int nIndex)
 	{
 	case 0:
 	{
-		_snprintf(szTemp, 256, "SELECT TOP 50 "
+		_snprintf(szTemp, 256, "SELECT "
 			"ChaNum, ChaName, ChaLevel, ChaClass, ChaSchool, GuNum, ChaPKScore, ChaPKDeath "
 			"FROM ChaInfo "
-			"WHERE ChaPKScore <> 0"
-			"ORDER BY ChaPKScore DESC ");
+			"WHERE ChaPKScore <> 0 "
+			"ORDER BY ChaPKScore DESC LIMIT 50");
 	}
 	break;
 
 	case 1:
 	{
-		_snprintf(szTemp, 256, "SELECT TOP 50 "
+		_snprintf(szTemp, 256, "SELECT "
 			"ChaNum, ChaName, ChaLevel, ChaClass, ChaSchool, GuNum, ChaPKScore, ChaPKDeath "
 			"FROM ChaInfo "
 			"WHERE ( ChaClass = 1 AND ChaPKScore <> 0 ) "
 			"OR ( ChaClass = 64 AND ChaPKScore <> 0 ) "
-			"ORDER BY ChaPKScore DESC ");
+			"ORDER BY ChaPKScore DESC LIMIT 50");
 	}
 	break;
 
 	case 2:
 	{
-		_snprintf(szTemp, 256, "SELECT TOP 50 "
+		_snprintf(szTemp, 256, "SELECT "
 			"ChaNum, ChaName, ChaLevel, ChaClass, ChaSchool, GuNum, ChaPKScore, ChaPKDeath "
 			"FROM ChaInfo "
 			"WHERE ( ChaClass = 2 AND ChaPKScore <> 0 ) "
 			"OR ( ChaClass = 128 AND ChaPKScore <> 0 ) "
-			"ORDER BY ChaPKScore DESC ");
+			"ORDER BY ChaPKScore DESC LIMIT 50");
 	}
 	break;
 
 	case 3:
 	{
-		_snprintf(szTemp, 256, "SELECT TOP 50 "
+		_snprintf(szTemp, 256, "SELECT "
 			"ChaNum, ChaName, ChaLevel, ChaClass, ChaSchool, GuNum, ChaPKScore, ChaPKDeath "
 			"FROM ChaInfo "
 			"WHERE ( ChaClass = 4 AND ChaPKScore <> 0 ) "
 			"OR ( ChaClass = 256 AND ChaPKScore <> 0 ) "
-			"ORDER BY ChaPKScore DESC ");
+			"ORDER BY ChaPKScore DESC LIMIT 50");
 	}
 	break;
 
 	case 4:
 	{
-		_snprintf(szTemp, 256, "SELECT TOP 50 "
+		_snprintf(szTemp, 256, "SELECT "
 			"ChaNum, ChaName, ChaLevel, ChaClass, ChaSchool, GuNum, ChaPKScore, ChaPKDeath "
 			"FROM ChaInfo "
 			"WHERE ( ChaClass = 8 AND ChaPKScore <> 0 ) "
 			"OR ( ChaClass = 512 AND ChaPKScore <> 0 ) "
-			"ORDER BY ChaPKScore DESC ");
+			"ORDER BY ChaPKScore DESC LIMIT 50");
 	}
 	break;
 
 	case 5:
 	{
-		_snprintf(szTemp, 256, "SELECT TOP 50 "
+		_snprintf(szTemp, 256, "SELECT "
 			"ChaNum, ChaName, ChaLevel, ChaClass, ChaSchool, GuNum, ChaPKScore, ChaPKDeath "
 			"FROM ChaInfo "
 			"WHERE ( ChaClass = 16 AND ChaPKScore <> 0 ) "
 			"OR ( ChaClass = 32 AND ChaPKScore <> 0 ) "
-			"ORDER BY ChaPKScore DESC ");
+			"ORDER BY ChaPKScore DESC LIMIT 50");
 	}
 	break;
 
 	case 6:
 	{
-		_snprintf(szTemp, 256, "SELECT TOP 50 "
+		_snprintf(szTemp, 256, "SELECT "
 			"ChaNum, ChaName, ChaLevel, ChaClass, ChaSchool, GuNum, ChaPKScore, ChaPKDeath "
 			"FROM ChaInfo "
 			"WHERE ( ChaClass = 1024 AND ChaPKScore <> 0 ) "
 			"OR ( ChaClass = 2048 AND ChaPKScore <> 0 ) "
-			"ORDER BY ChaPKScore DESC ");
+			"ORDER BY ChaPKScore DESC LIMIT 50");
 	}
 	break;
 
 	case 7:
 	{
-		_snprintf(szTemp, 256, "SELECT TOP 50 "
+		_snprintf(szTemp, 256, "SELECT "
 			"ChaNum, ChaName, ChaLevel, ChaClass, ChaSchool, GuNum, ChaPKScore, ChaPKDeath "
 			"FROM ChaInfo "
 			"WHERE ( ChaClass = 4096 AND ChaPKScore <> 0 ) "
 			"OR ( ChaClass = 8192 AND ChaPKScore <> 0 ) "
-			"ORDER BY ChaPKScore DESC ");
+			"ORDER BY ChaPKScore DESC LIMIT 50");
 	}
 	break;
 
 	case 8:
 	{
-		_snprintf(szTemp, 256, "SELECT TOP 50 "
+		_snprintf(szTemp, 256, "SELECT "
 			"ChaNum, ChaName, ChaLevel, ChaClass, ChaSchool, GuNum, ChaPKScore, ChaPKDeath "
 			"FROM ChaInfo "
 			"WHERE ( ChaClass = 16384 AND ChaPKScore <> 0 ) "
 			"OR ( ChaClass = 32768 AND ChaPKScore <> 0 ) "
-			"ORDER BY ChaPKScore DESC ");
+			"ORDER BY ChaPKScore DESC LIMIT 50");
 	}
 	break;
 
 	case 9:
 	{
-		_snprintf(szTemp, 256, "SELECT TOP 50 "
+		_snprintf(szTemp, 256, "SELECT "
 			"ChaNum, ChaName, ChaLevel, ChaClass, ChaSchool, GuNum, ChaPKScore, ChaPKDeath "
 			"FROM ChaInfo "
 			"WHERE ( ChaClass = 262144 AND ChaPKScore <> 0 ) "
 			"OR ( ChaClass = 524288 AND ChaPKScore <> 0 ) "
-			"ORDER BY ChaPKScore DESC ");
+			"ORDER BY ChaPKScore DESC LIMIT 50");
 	}
 	break;
 
@@ -659,11 +659,11 @@ int COdbcManager::GetTopRich(VEC_TOP_RICH& vecRich)
 	if (!pConn) return DB_ERROR;
 
 	TCHAR szTemp[256] = { 0 };
-	_snprintf(szTemp, 256, "SELECT TOP 50 "
+	_snprintf(szTemp, 256, "SELECT "
 		"ChaNum, ChaName, ChaLevel, ChaClass, ChaSchool, GuNum, ChaMoney "
 		"FROM ChaInfo "
 		"WHERE ChaMoney > 0 "
-		"ORDER BY ChaMoney DESC ");
+		"ORDER BY ChaMoney DESC LIMIT 50");
 
 	sReturn = ::SQLExecDirect(pConn->hStmt,
 		(SQLCHAR*)szTemp,
@@ -739,11 +739,11 @@ int COdbcManager::GetTopGuild(VEC_TOP_GUILD& vecGuild)
 	if (!pConn) return DB_ERROR;
 
 	TCHAR szTemp[256] = { 0 };
-	_snprintf(szTemp, 256, "SELECT TOP 50 "
+	_snprintf(szTemp, 256, "SELECT "
 		"GuNum, GuName, GuRank, GuMarkVer, GuBattleWin, GuBattleLose, GuBattleDraw "
 		"FROM GuildInfo "
 		"WHERE GuBattleWin > 0 "
-		"ORDER BY GuBattleWin DESC ");
+		"ORDER BY GuBattleWin DESC LIMIT 50");
 
 	sReturn = ::SQLExecDirect(pConn->hStmt,
 		(SQLCHAR*)szTemp,
