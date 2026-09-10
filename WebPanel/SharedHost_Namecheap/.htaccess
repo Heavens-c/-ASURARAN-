@@ -1,0 +1,45 @@
+# ============================================================================
+# Apache Security & Hardening Configuration for Namecheap Shared Hosting
+# ============================================================================
+
+# Disable directory listing
+Options -Indexes
+
+# Follow symlinks
+Options +FollowSymLinks
+
+# Protect hidden files and directories
+<FilesMatch "^\.">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+# Protect sensitive files and directories
+<FilesMatch "(config\.php|database_setup\.sql|\.log|\.env|\.md|\.git)">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+# Protect includes directory directly
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /
+
+    # Block direct web access to internal PHP includes
+    RewriteRule ^includes/ - [F,L]
+
+    # Force HTTPS (uncomment if SSL is active on your domain)
+    # RewriteCond %{HTTPS} off
+    # RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+</IfModule>
+
+# Security HTTP Headers
+<IfModule mod_headers.c>
+    Header set X-Content-Type-Options "nosniff"
+    Header set X-Frame-Options "SAMEORIGIN"
+    Header set X-XSS-Protection "1; mode=block"
+    Header set Referrer-Policy "strict-origin-when-cross-origin"
+</IfModule>
+
+# Character encoding
+AddDefaultCharset UTF-8

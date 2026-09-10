@@ -1,0 +1,17 @@
+{
+  "name": "ranonline-game-relay",
+  "version": "1.0.0",
+  "description": "Secure hardened bridge between Namecheap Shared Hosting and Windows Game Server",
+  "main": "relay_server.js",
+  "scripts": {
+    "start": "node relay_server.js",
+    "test": "powershell -ExecutionPolicy Bypass -File ./test_relay.ps1"
+  },
+  "dependencies": {
+    "express": "^4.19.2",
+    "helmet": "^7.1.0",
+    "pg": "^8.11.5"
+  },
+  "author": "DevOps",
+  "license": "ISC"
+}
